@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vewww/views/driver_home_screen.dart';
+import 'package:vewww/views/warning_light_screen.dart';
 
 import '../views/splash_screen.dart';
 
@@ -8,7 +10,8 @@ class AppRoot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: SplashScreen(),
+      debugShowCheckedModeBanner: false,
+      home: DriverHomeScreen(),
     );
   }
 }
