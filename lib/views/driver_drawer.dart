@@ -13,7 +13,7 @@ class DriverDrawer extends StatelessWidget {
         child: Column(
           children: [
             //logo first
-            Text('Logo'),
+            Image(image: AssetImage('assets/images/vewwwLogo.jpeg'),),
             HorizontalLine(),
             Row(
               children: [

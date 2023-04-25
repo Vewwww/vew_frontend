@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/views/driver_home_screen.dart';
+import 'package:vewww/views/email_verification_screen.dart';
 import 'package:vewww/views/warning_light_screen.dart';
 
+import '../views/email_verified_screen.dart';
+import '../views/phone_pin_verification.dart';
+import '../views/phone_verification_screen.dart';
 import '../views/splash_screen.dart';
 
 class AppRoot extends StatelessWidget {
@@ -11,7 +15,7 @@ class AppRoot extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: DriverHomeScreen(),
+      home: PhonePINVerification(),
     );
   }
 }
