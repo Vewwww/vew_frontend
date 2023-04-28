@@ -4,7 +4,6 @@ import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/button_style/app_button_style.dart';
 import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/views/driver_home_screen.dart';
-
 import '../model/diagnose_result.dart';
 
 class DiagnoseResultScreen extends StatelessWidget {
