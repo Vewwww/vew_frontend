@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vewww/bloc/chat_cubit/chat_cubit.dart';
 import 'package:vewww/bloc/diagnose_cunit/diagnose_cubit.dart';
 import 'package:vewww/views/driver_home_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +14,9 @@ class AppRoot extends StatelessWidget {
         providers: [
           BlocProvider(
             create: (context) => DiagnoseCubit(),
+          ),
+          BlocProvider(
+            create: (context) => ChatCubit(),
           ),
         ],
         child: const MaterialApp(
