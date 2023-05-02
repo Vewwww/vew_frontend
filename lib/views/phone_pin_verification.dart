@@ -15,6 +15,7 @@ class PhonePINVerification extends StatelessWidget {
         elevation: 0,
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Image(
             height: 200,
