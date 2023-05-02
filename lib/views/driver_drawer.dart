@@ -5,6 +5,9 @@ import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/views/chats_screen.dart';
 import 'package:vewww/views/notifications_screen.dart';
 
+import '../core/components/logo.dart';
+import 'sign_in_screen.dart';
+
 class DriverDrawer extends StatelessWidget {
   const DriverDrawer({Key? key}) : super(key: key);
 
@@ -16,8 +19,13 @@ class DriverDrawer extends StatelessWidget {
 
         child: Column(children: [
           //logo first
-          Image(image: AssetImage('assets/images/vewwwLogo.jpeg'),),
+          SizedBox(height: 30),
+          Logo(
+            size: 180,
+          ),
+          SizedBox(height: 30),
           HorizontalLine(),
+          SizedBox(height: 10),
           Row(
             children: [
               circularIcon(
@@ -36,9 +44,7 @@ class DriverDrawer extends StatelessWidget {
               )
             ],
           ),
-          const SizedBox(
-            height: 15,
-          ),
+
           // Row(
           //   children: [
           //     circularIcon(child: Switch(value: value, onChanged: onChanged))
@@ -111,19 +117,25 @@ class DriverDrawer extends StatelessWidget {
           const SizedBox(
             height: 15,
           ),
-          Row(
-            children: [
-              circularIcon(child: const Icon(Icons.logout)),
-              const SizedBox(
-                width: 15,
-              ),
-              const Text(
-                'Logout',
-                style: TextStyle(
-                  fontSize: 20,
+          GestureDetector(
+            onTap: () {
+              NavigationUtils.navigateAndClearStack(
+                  context: context, destinationScreen: SignInScreen());
+            },
+            child: Row(
+              children: [
+                circularIcon(child: const Icon(Icons.logout)),
+                const SizedBox(
+                  width: 15,
                 ),
-              )
-            ],
+                const Text(
+                  'Logout',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                )
+              ],
+            ),
           ),
         ]),
       ),
