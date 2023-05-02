@@ -16,6 +16,7 @@ class DriverDrawer extends StatelessWidget {
     return Drawer(
       child: Padding(
         padding: const EdgeInsets.all(10.0),
+
         child: Column(children: [
           //logo first
           SizedBox(height: 30),
@@ -23,7 +24,6 @@ class DriverDrawer extends StatelessWidget {
             size: 180,
           ),
           SizedBox(height: 30),
-
           HorizontalLine(),
           SizedBox(height: 10),
           Row(
