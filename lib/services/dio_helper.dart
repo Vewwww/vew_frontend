@@ -7,37 +7,33 @@ class DioHelper {
     dio = Dio(
       BaseOptions(
         //TODO::add base url
-        baseUrl:"", 
+        baseUrl: "",
         receiveDataWhenStatusError: true,
       ),
     );
   }
 
-  static Future<Response> getData({
-    required String url,
-    Map<String, dynamic>? query,
-    String? token
-  }) async {
+  static Future<Response> getData(
+      {required String url, Map<String, dynamic>? query, String? token}) async {
     /*dio.options.headers = {
       "Content-Type": "application/json",
     };*/
-    if(token != null) dio.options.headers["Authorization"] = "Bearer $token";
+    if (token != null) dio.options.headers["Authorization"] = "Bearer $token";
     return await dio.get(
       url,
       queryParameters: query,
     );
   }
 
-  static Future<Response> postData({
-    required String url,
-    required Map<String, dynamic> data,
-    Map<String, dynamic>? query,
-    String? token
-  }) async {
+  static Future<Response> postData(
+      {required String url,
+      required Map<String, dynamic> data,
+      Map<String, dynamic>? query,
+      String? token}) async {
     /*dio.options.headers = {
       "Content-Type": "application/json",
     };*/
-    if(token != null) dio.options.headers["Authorization"] = "Bearer $token";
+    if (token != null) dio.options.headers["Authorization"] = "Bearer $token";
     return await dio
         .post(
       url,
@@ -48,14 +44,13 @@ class DioHelper {
       print(e);
     });
   }
-  static Future<Response> patchData({
-    required String url,
-    required Map<String, dynamic> data,
-    Map<String, dynamic>? query,
-    String? token
-  }) async {
 
-    if(token != null) dio.options.headers["Authorization"] = "Bearer $token";
+  static Future<Response> patchData(
+      {required String url,
+      required Map<String, dynamic> data,
+      Map<String, dynamic>? query,
+      String? token}) async {
+    if (token != null) dio.options.headers["Authorization"] = "Bearer $token";
     return await dio
         .patch(
       url,

@@ -13,7 +13,7 @@ class WarningLightScreen extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        leading: backwardArrow(function: () {
+        leading: BackwardArrow(function: () {
           Navigator.pop(context);
         }),
         title: Center(
