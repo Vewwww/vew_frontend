@@ -13,9 +13,10 @@ class DriverDrawer extends StatelessWidget {
     return Drawer(
       child: Padding(
         padding: const EdgeInsets.all(10.0),
+
         child: Column(children: [
           //logo first
-          const Text('Logo'),
+          Image(image: AssetImage('assets/images/vewwwLogo.jpeg'),),
           HorizontalLine(),
           Row(
             children: [
