@@ -7,6 +7,8 @@ Widget defaultButton({
   //TODO::make it required
   /*required*/ Function? function,
   required String text,
+  Color textColor=Colors.white,
+  IconData ? buttonIcon,
 }) {
   return Container(
       width: width,
@@ -20,12 +22,19 @@ Widget defaultButton({
         onPressed: () {
           if (function != null) function();
         },
-        child: Text(
-          text,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+                if(buttonIcon != null)
+                Icon(buttonIcon),
+                Text(
+                  text,
+                  style: TextStyle(
+                    color:textColor ,
+                    fontSize: 20,
+                  ),
+                ),
+              ],
         ),
       )));
 }

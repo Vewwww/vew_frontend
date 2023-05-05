@@ -10,6 +10,7 @@ import '../views/phone_pin_verification.dart';
 import '../views/phone_verification_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../views/splash_screen.dart';
+import '../views/winch_on_the_way_screen.dart';
 
 class AppRoot extends StatelessWidget {
   const AppRoot({Key? key}) : super(key: key);
@@ -27,7 +28,7 @@ class AppRoot extends StatelessWidget {
         ],
         child: const MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: PhonePINVerification(),
+          home: WinchOnTheWayScreen(),
         ));
   }
 }
