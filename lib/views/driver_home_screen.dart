@@ -3,6 +3,7 @@ import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/views/diagnose_screen.dart';
 import 'package:vewww/views/driver_drawer.dart';
+import 'package:vewww/views/request_winch_screen.dart';
 import 'package:vewww/views/warning_light_screen.dart';
 
 class DriverHomeScreen extends StatelessWidget {
@@ -73,7 +74,10 @@ class DriverHomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 defaultButton(text: 'Mechanic', height: 75, width: 150),
-                defaultButton(text: 'Winch', height: 75, width: 150),
+                defaultButton(text: 'Winch', height: 75, width: 150, function: (){
+                  NavigationUtils.navigateTo(
+                      context: context, destinationScreen: RequestWinchScreen());
+                }),
               ],
             ),
             const SizedBox(

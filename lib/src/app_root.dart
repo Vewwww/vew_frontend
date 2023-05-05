@@ -16,6 +16,7 @@ import '../bloc/reminder_cubit/reminder_cubit.dart';
 import '../bloc/select_choice_cubit/select_choice_cubit.dart';
 import '../bloc/select_color_cubit/select_color_cubit.dart';
 import '../views/splash_screen.dart';
+import '../views/winch_on_the_way_screen.dart';
 
 class AppRoot extends StatelessWidget {
   const AppRoot({Key? key}) : super(key: key);
@@ -55,8 +56,8 @@ class AppRoot extends StatelessWidget {
                       backgroundColor: const Color.fromARGB(255, 2, 113, 106))),
               primaryColor: const Color.fromARGB(255, 2, 113, 106)),
           debugShowCheckedModeBanner: false,
-          home: SplashScreen(),
 
+          home: SplashScreen(),
         ));
   }
 }
