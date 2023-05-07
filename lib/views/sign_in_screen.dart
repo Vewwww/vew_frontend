@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/views/driver_home_screen.dart';
+import 'package:vewww/views/forgot_password_screen.dart';
 import '../bloc/add_car_cubit/add_car_cubit.dart';
 import '../core/components/custom_text_field.dart';
 import '../core/components/logo.dart';
@@ -91,6 +92,17 @@ class SignInScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+                  TextButton(
+                        child: Text("Forgot Password",
+                            style: AppTextStyle.titleTextStyle(14)),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ForgotPasswordScreen()),
+                          );
+                        },
+                      ),
                   Row(
                     children: [
                       const Expanded(
