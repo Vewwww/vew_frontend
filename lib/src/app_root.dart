@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/bloc/chat_cubit/chat_cubit.dart';
 import 'package:vewww/bloc/diagnose_cunit/diagnose_cubit.dart';
+import 'package:vewww/views/change_password_screen.dart';
 import 'package:vewww/views/driver_home_screen.dart';
 import 'package:vewww/views/email_verification_screen.dart';
 import 'package:vewww/views/loading_winch_screen.dart';
@@ -57,7 +58,7 @@ class AppRoot extends StatelessWidget {
               primaryColor: const Color.fromARGB(255, 2, 113, 106)),
           debugShowCheckedModeBanner: false,
 
-          home: SplashScreen(),
+          home: DriverHomeScreen(),
         ));
   }
 }
