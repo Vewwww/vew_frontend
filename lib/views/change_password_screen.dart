@@ -5,6 +5,9 @@ import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/components/pop_up.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 
+import '../core/utils/navigation.dart';
+import 'driver_home_screen.dart';
+
 class ChangePasswordScreen extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final TextEditingController _oldPassword = TextEditingController();
@@ -16,7 +19,10 @@ class ChangePasswordScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: BackwardArrow(function: () {}),
+        leading: BackwardArrow(function: () {
+          NavigationUtils.navigateTo(
+              context: context, destinationScreen: DriverHomeScreen());
+        }),
         title: Center(
           child: Text(
             'Change Password',
@@ -94,8 +100,8 @@ class ChangePasswordScreen extends StatelessWidget {
                       if (_formKey.currentState!.validate()) {
                         showDialog(
                           context: context,
-                          builder: (BuildContext context) =>
-                              popUp(context, titleOFPopUp: 'Password Changed Successfully'),
+                          builder: (BuildContext context) => popUp(context,
+                              titleOFPopUp: 'Password Changed Successfully'),
                         );
                       }
                     }),
