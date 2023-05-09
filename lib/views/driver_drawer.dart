@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vewww/core/components/circular_icon.dart';
 import 'package:vewww/core/components/horizontal_line.dart';
 import 'package:vewww/core/utils/navigation.dart';
+import 'package:vewww/views/change_password_screen.dart';
 import 'package:vewww/views/chats_screen.dart';
 import 'package:vewww/views/notifications_screen.dart';
 
@@ -53,19 +54,26 @@ class DriverDrawer extends StatelessWidget {
           const SizedBox(
             height: 15,
           ),
-          Row(
-            children: [
-              circularIcon(child: const Icon(Icons.lock)),
-              const SizedBox(
-                width: 15,
-              ),
-              const Text(
-                'Change Password',
-                style: TextStyle(
-                  fontSize: 20,
+          GestureDetector(
+            onTap: (){
+              NavigationUtils.navigateAndClearStack(
+                  context: context,
+                  destinationScreen: ChangePasswordScreen());
+            },
+            child: Row(
+              children: [
+                circularIcon(child: const Icon(Icons.lock)),
+                const SizedBox(
+                  width: 15,
                 ),
-              )
-            ],
+                const Text(
+                  'Change Password',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                )
+              ],
+            ),
           ),
           const SizedBox(
             height: 15,
