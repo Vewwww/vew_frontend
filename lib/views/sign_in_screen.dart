@@ -43,6 +43,7 @@ class SignInScreen extends StatelessWidget {
                   CustomTextField(
                     label: "Email",
                     controller: _email,
+                    keyboardType:TextInputType.emailAddress ,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Email is required';

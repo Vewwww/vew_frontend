@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:vewww/bloc/chat_cubit/chat_cubit.dart';
 import 'package:vewww/bloc/diagnose_cunit/diagnose_cubit.dart';
 import 'package:vewww/views/change_password_screen.dart';
 import 'package:vewww/views/driver_home_screen.dart';
 import 'package:vewww/views/email_verification_screen.dart';
 import 'package:vewww/views/loading_winch_screen.dart';
+import 'package:vewww/views/request_winch_screen.dart';
 import 'package:vewww/views/warning_light_screen.dart';
+import '../bloc/loaction_cubit/loaction_cubit.dart';
+import '../bloc/verification_cubit/verification_cubit.dart';
 import '../views/email_verified_screen.dart';
+import '../views/gas_stattion_preview.dart';
+import '../views/maintenance_center_preview.dart';
+import '../views/mechanic_preview_screen.dart';
 import '../views/phone_pin_verification.dart';
 import '../views/phone_verification_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,6 +49,8 @@ class AppRoot extends StatelessWidget {
           BlocProvider(create: (context) => SelectColorCubit()),
           BlocProvider(create: (context) => GenderCubit()),
           BlocProvider(create: (context) => ReminderCubit()),
+          BlocProvider(create: (context)=> LocationCubit()),
+          BlocProvider(create: (context)=> VerificationCubit()),
         ],
         child: MaterialApp(
           theme: ThemeData(
