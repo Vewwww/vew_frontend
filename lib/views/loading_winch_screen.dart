@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
+import 'package:vewww/views/request_winch_screen.dart';
+
+import '../core/components/backward_arrow.dart';
+import '../core/utils/navigation.dart';
 
 class LoadingWinchScreen extends StatelessWidget {
   const LoadingWinchScreen({Key? key}) : super(key: key);
@@ -18,6 +22,10 @@ class LoadingWinchScreen extends StatelessWidget {
           height: 110,
           width: 110,
         )),
+        leading: BackwardArrow(function: () {
+          NavigationUtils.navigateTo(
+              context: context, destinationScreen: RequestWinchScreen());
+        }),
       ),
       body: Center(
         child:
@@ -40,7 +48,11 @@ class LoadingWinchScreen extends StatelessWidget {
               ),
             ],
           ),
-          defaultButton(text: 'Cancel', width: 300, function: () {}),
+          defaultButton(text: 'Cancel', width: 300,
+             function: () {
+          NavigationUtils.navigateTo(
+              context: context, destinationScreen: RequestWinchScreen());
+           }),
         ]),
       ),
     );

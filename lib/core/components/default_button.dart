@@ -4,9 +4,11 @@ Widget defaultButton({
   double width = double.infinity,
   double? height,
   Color background = const Color.fromRGBO(2, 113, 106, 1),
-  //TODO::make it required
-  /*required*/ Function? function,
+  Function? function,
   required String text,
+  Color textColor = Colors.white,
+  IconData? buttonIcon,
+  Color iconColor = Colors.white,
 }) {
   return Container(
       width: width,
@@ -20,12 +22,18 @@ Widget defaultButton({
         onPressed: () {
           if (function != null) function();
         },
-        child: Text(
-          text,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (buttonIcon != null) Icon(buttonIcon, color:iconColor ,),
+            Text(
+              text,
+              style: TextStyle(
+                color: textColor,
+                fontSize: 20,
+              ),
+            ),
+          ],
         ),
       )));
 }
