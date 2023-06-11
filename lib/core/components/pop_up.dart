@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
-import 'package:vewww/views/sign_in_screen.dart';
+import 'package:vewww/views/driver/sign_in_screen.dart';
 
 Widget popUp(BuildContext context, {required String titleOFPopUp}) {
   return new AlertDialog(

@@ -24,4 +24,9 @@ class AppTextStyle {
       color: const Color.fromARGB(255, 2, 113, 106),
       fontSize: size,
       fontWeight: FontWeight.w400);
+
+  static TextStyle lightGrayTextStyle(double size) => TextStyle(
+      color: const Color.fromARGB(255, 173, 173, 173),
+      fontSize: size,
+      fontWeight: FontWeight.w400);
 }

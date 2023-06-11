@@ -6,7 +6,7 @@ import '../style/app_colors.dart';
 
 Widget BackwardArrow({
   required Function() function,
-  Color? iconColor, 
+  Color iconColor = const Color.fromRGBO(2, 113, 106, 1),
 }) {
   return IconButton(
     onPressed: function,

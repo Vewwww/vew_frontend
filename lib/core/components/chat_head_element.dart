@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/model/chat.dart';
 
-import '../../views/single_chat.dart';
+import '../../views/common/single_chat.dart';
 import '../style/app_Text_Style/app_text_style.dart';
 import '../utils/navigation.dart';
 

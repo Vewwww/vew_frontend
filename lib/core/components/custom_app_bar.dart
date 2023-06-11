@@ -18,8 +18,8 @@ class CustomAppBar extends StatelessWidget {
       this.haveBackArrow,
       this.haveLogo,
       this.actions,
-      this.backgroundcolor=const Color.fromARGB(98, 255, 255, 255),
-      this.iconColor= const Color.fromRGBO(2, 113, 106, 1),
+      this.backgroundcolor = const Color.fromARGB(98, 255, 255, 255),
+      this.iconColor = const Color.fromRGBO(2, 113, 106, 1),
       Key? key})
       : super(key: key) {
     haveBackArrow ??= false;
@@ -29,14 +29,20 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor:backgroundcolor,
+      backgroundColor: backgroundcolor,
       elevation: 0,
       centerTitle: true,
-      title: (haveLogo!) ? Image.asset("assets/images/Logo(1).png") : title,
+      title: (haveLogo!)
+          ? SizedBox(
+              child: Image.asset("assets/images/Logo(1).png"),
+              height: 50,
+            )
+          : title,
       leading: (haveBackArrow!)
-          ? BackwardArrow(function: () {
-              Navigator.pop(context);
-            },
+          ? BackwardArrow(
+              function: () {
+                Navigator.pop(context);
+              },
             )
           : leading,
       actions: actions,

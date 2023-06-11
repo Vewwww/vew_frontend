@@ -3,7 +3,7 @@ import 'package:vewww/core/components/rating_bar.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/core/utils/navigation.dart';
-import 'package:vewww/views/driver_profile.dart';
+import 'package:vewww/views/driver/driver_profile.dart';
 
 class NearRepairerCard extends StatelessWidget {
 //Repairer repairer;
