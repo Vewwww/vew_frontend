@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vewww/bloc/auth_cubit/auth_cubit.dart';
 import 'package:vewww/views/common/choose_role_screen.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
 import 'package:vewww/views/common/forgot_password_screen.dart';
@@ -7,6 +8,7 @@ import '../../core/components/custom_text_field.dart';
 import '../../core/components/logo.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/navigation.dart';
+import '../../model/driver.dart';
 import 'sign_up_screen.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -19,6 +21,7 @@ class SignInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double constraintsHight = MediaQuery.of(context).size.height;
     AddCarCubit addCarCubit = AddCarCubit.get(context);
+    AuthCubit authCubit = AuthCubit.get(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -67,9 +70,12 @@ class SignInScreen extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            NavigationUtils.navigateAndClearStack(
-                                context: context,
-                                destinationScreen: DriverHomeScreen());
+                            Driver driver = Driver(
+                                email: _email.text, password: _password.text);
+                            authCubit.signIn(driver);
+                            // NavigationUtils.navigateAndClearStack(
+                            //     context: context,
+                            //     destinationScreen: DriverHomeScreen());
                           }
                         },
                         child: Text("Login"),

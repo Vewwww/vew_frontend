@@ -15,8 +15,8 @@ class DriverProfile extends StatelessWidget {
   final TextEditingController _licenseRenewalDate = TextEditingController();
   DriverProfile({required this.driver, Key? key}) : super(key: key) {
     _email.text = driver.email!;
-    _phone.text = driver.phone!;
-    _licenseRenewalDate.text = driver.licenseRenewalDate!;
+    _phone.text = driver.phoneNumber!;
+    _licenseRenewalDate.text = driver.lisenceRenewalDate!;
   }
 
   @override
@@ -65,8 +65,8 @@ class DriverProfile extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height / 6 * 4,
               child: Container(
-                padding: EdgeInsets.fromLTRB(20, 30, 20, 10),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
+                decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(15))),
@@ -77,7 +77,7 @@ class DriverProfile extends StatelessWidget {
                           right: 5,
                           top: -10,
                           child: IconButton(
-                            icon: Icon(Icons.edit),
+                            icon: const Icon(Icons.edit),
                             onPressed: () {
                               NavigationUtils.navigateTo(
                                   context: context,
@@ -88,7 +88,7 @@ class DriverProfile extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           CustomTextField(
                             readOnly: true,
                             label: "Email",
@@ -107,11 +107,11 @@ class DriverProfile extends StatelessWidget {
                             controller: _licenseRenewalDate,
                             validator: (value) {},
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           ListView.builder(
                             shrinkWrap: true,
                             primary: false,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             padding: EdgeInsets.zero,
                             itemCount: driver.cars!.length,
                             itemBuilder: (BuildContext context, int index) {
@@ -138,17 +138,17 @@ class DriverProfile extends StatelessWidget {
           "Car $index",
           style: AppTextStyle.mainStyle(size: 14),
         ),
-        Divider(
+        const Divider(
           thickness: 1,
         ),
         Center(
             child: CircleAvatar(
                 radius: 30,
                 backgroundColor: mainColor.withOpacity(0.3),
-                child: Icon(
+                child: const Icon(
                   Icons.drive_eta,
                   size: 30,
-                  color: car.color,
+                  color: Colors.black //car.color,
                 ))),
         CustomTextField(
           readOnly: true,
@@ -159,38 +159,38 @@ class DriverProfile extends StatelessWidget {
         CustomTextField(
           readOnly: true,
           label: "Car Model",
-          controller: TextEditingController(text: car.carModel),
+          controller: TextEditingController(text: "car.carModel"),
           validator: (value) {},
         ),
         CustomTextField(
           readOnly: true,
           label: "Last Periodic Maintenance Date",
           controller:
-              TextEditingController(text: car.lastPeriodicMaintenanceDate),
+              TextEditingController(text: "car.lastPeriodicMaintenanceDate"),
           validator: (value) {},
         ),
         CustomTextField(
           readOnly: true,
           label: "License renewal date",
-          controller: TextEditingController(text: car.licenseRenewalDate),
+          controller: TextEditingController(text: "car.licenseRenewalDate"),
           validator: (value) {},
         ),
         CustomTextField(
           readOnly: true,
           label: "Current Miles",
-          controller: TextEditingController(text: car.currentMiles),
+          controller: TextEditingController(text: "car.currentMiles"),
           validator: (value) {},
         ),
         CustomTextField(
           readOnly: true,
           label: "Average Mile per Week ",
-          controller: TextEditingController(text: car.averageMileperWeek),
+          controller: TextEditingController(text: "car.averageMileperWeek"),
           validator: (value) {},
         ),
         CustomTextField(
           readOnly: true,
           label: "Remind you before",
-          controller: TextEditingController(text: car.remindYouBefore),
+          controller: TextEditingController(text: "car.remindYouBefore"),
           validator: (value) {},
         ),
       ],

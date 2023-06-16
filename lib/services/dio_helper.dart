@@ -6,8 +6,7 @@ class DioHelper {
   static init() {
     dio = Dio(
       BaseOptions(
-        //TODO::add base url
-        baseUrl: "",
+        baseUrl: "https://vewwwapi.onrender.com/",
         receiveDataWhenStatusError: true,
       ),
     );

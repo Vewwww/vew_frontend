@@ -3,6 +3,7 @@ import 'package:vewww/bloc/chat_cubit/chat_cubit.dart';
 import 'package:vewww/bloc/diagnose_cunit/diagnose_cubit.dart';
 import 'package:vewww/views/common/splash_screen.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
+import '../bloc/auth_cubit/auth_cubit.dart';
 import '../bloc/loaction_cubit/loaction_cubit.dart';
 import '../bloc/selected page index/cubit/selected_page_index_cubit.dart';
 import '../bloc/verification_cubit/verification_cubit.dart';
@@ -41,6 +42,7 @@ class AppRoot extends StatelessWidget {
           BlocProvider(create: (context) => ReminderCubit()),
           BlocProvider(create: (context)=> LocationCubit()),
           BlocProvider(create: (context)=> SelectedPageIndexCubit()),
+          BlocProvider(create: (context)=> AuthCubit()),
           BlocProvider(create: (context)=> VerificationCubit()),
         ],
         child: MaterialApp(

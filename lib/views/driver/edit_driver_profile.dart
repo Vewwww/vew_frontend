@@ -29,7 +29,7 @@ class EditDriverProfile extends StatelessWidget {
       : super(key: key) {
     _email.text = driver.email!;
     _name.text = driver.name!;
-    _phone.text = driver.phone!;
+    _phone.text = driver.phoneNumber!;
   }
 
   @override
@@ -189,10 +189,11 @@ class EditDriverProfile extends StatelessWidget {
                                 child: CircleAvatar(
                                     radius: 30,
                                     backgroundColor: mainColor.withOpacity(0.3),
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.drive_eta,
                                       size: 30,
-                                      color: driver.cars![0].color,
+                                      //TODO::confirm color structure with back team
+                                      color:Colors.black // driver.cars![0].color,
                                     ))),
                             BlocConsumer<SelectChoiceCubit, SelectChoiceState>(
                                 listener: (context, snapshot) {},

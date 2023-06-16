@@ -1,43 +1,75 @@
-import 'package:flutter/material.dart';
-
-import 'car.dart';
+import 'package:vewww/model/car.dart';
 
 class Driver {
   String? name;
-  String? phone;
   String? email;
   String? password;
-  String? token;
   String? gender;
-  String? licenseRenewalDate;
+  String? lisenceRenewalDate;
+  String? role;
+  String? phoneNumber;
   List<Car>? cars;
 
   Driver(
-      {this.email,
-      this.cars,
-      this.name,
-      this.gender,
+      {this.name,
+      this.email,
       this.password,
-      this.phone,
-      this.licenseRenewalDate = "00/00/0000",
-      this.token});
+      this.gender,
+      this.lisenceRenewalDate,
+      this.role,
+      this.phoneNumber,
+      this.cars});
+
+  Driver.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    email = json['email'];
+    password = json['password'];
+    gender = json['gender'];
+    lisenceRenewalDate = json['lisenceRenewalDate'];
+    role = json['role'];
+    phoneNumber = json['phoneNumber'];
+    if (json['cars'] != null) {
+      cars = <Car>[];
+      json['cars'].forEach((v) {
+        cars!.add(Car.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data =  Map<String, dynamic>();
+    data['name'] = name;
+    data['email'] = email;
+    data['password'] = password;
+    data['gender'] = gender;
+    data['lisenceRenewalDate'] = lisenceRenewalDate;
+    data['role'] = role;
+    data['phoneNumber'] = phoneNumber;
+    if (cars != null) {
+      data['cars'] = cars!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
 }
+
+
+
 
 Driver driver = Driver(
   email: "hello@email.com",
   gender: "male",
-  phone: "0112111210",
+  phoneNumber: "0112111210",
   name: "wael mohamed",
-  licenseRenewalDate: "05/09/2023",
-  cars: [
-    Car(
-        carType: "Jeep",
-        carModel: "M12 2019",
-        color: Colors.black,
-        averageMileperWeek: "200",
-        currentMiles: "603",
-        remindYouBefore: "week",
-        licenseRenewalDate: "10/08/2023",
-        lastPeriodicMaintenanceDate: "09/03/2023"),
-  ],
+  lisenceRenewalDate: "05/09/2023",
+  // cars: [
+  //   Car(
+  //       carType: "Jeep",
+  //       carModel: "M12 2019",
+  //       color: Colors.black,
+  //       averageMileperWeek: "200",
+  //       currentMiles: "603",
+  //       remindYouBefore: "week",
+  //       licenseRenewalDate: "10/08/2023",
+  //       lastPeriodicMaintenanceDate: "09/03/2023"),
+  // ],
 );
