@@ -16,7 +16,6 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
   @override
   var nameController = TextEditingController();
   var phoneController = TextEditingController();
-  var nationalIDController = TextEditingController();
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -63,19 +62,6 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
                             return null;
                           },
                           label: 'Phone Number'),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      CustomTextField(
-                          controller: nationalIDController,
-                          keyboardType: TextInputType.number,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return '*Required';
-                            }
-                            return null;
-                          },
-                          label: 'NationalID'),
                       const SizedBox(
                         height: 20,
                       ),
