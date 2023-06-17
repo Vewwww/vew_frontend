@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:vewww/core/components/horizontal_line.dart';
 
 import '../../core/components/backward_arrow.dart';
+import '../../core/components/custom_app_bar.dart';
+import '../../core/style/app_Text_Style/app_text_style.dart';
 
 class SingleWarningSignScreen extends StatelessWidget {
   const SingleWarningSignScreen({Key? key}) : super(key: key);
@@ -10,27 +12,12 @@ class SingleWarningSignScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: BackwardArrow(function: () {
-            Navigator.pop(context);
-          }),
-          title: Center(
-            child: Text(
-              'Check Engine',
-              style: TextStyle(
-                color: Color.fromRGBO(2, 113, 106, 1),
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          )),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            CustomAppBar(title: Text('Check Engine', style: AppTextStyle.mainStyle(size: 25),), haveBackArrow: true,),
             Center(
               child: Image.network(
                 'https://hips.hearstapps.com/hmg-prod/images/check-engine-light-icon-1616189100.jpg',

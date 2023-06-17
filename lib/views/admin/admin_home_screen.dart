@@ -19,43 +19,6 @@ class AdminHomeScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       key: _globalKey,
       endDrawer: const AdminDrawer(),
-
-      /*appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-              //tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              icon: Icon(Icons.menu),
-              iconSize: 35,
-              color: Color.fromRGBO(2, 113, 106, 1),
-            );
-          },
-        ),
-        title: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 80),
-          child: Column(
-            children: [
-              Image(
-                image: AssetImage('assets/images/vewwwLogo.png'),
-                height: 100,
-                width: 100,
-              ),
-              Text(
-                'Vewww',
-                style: TextStyle(
-                    color: Color.fromRGBO(2, 113, 106, 1),
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ),
-      ),*/
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: Column(

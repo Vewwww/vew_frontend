@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vewww/core/components/add_button.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
@@ -31,22 +32,13 @@ class ViewAdminsScreen extends StatelessWidget {
           ),
         ),
       ),*/
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: mainColor,
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
-            size: 50,
-          ),
-          onPressed: () {
+      floatingActionButton:addButton(function: () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const AddAdminScreen()));
           }),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
+      body: Column(
           children: [
             CustomAppBar(
               haveBackArrow: true,
@@ -55,7 +47,6 @@ class ViewAdminsScreen extends StatelessWidget {
                 style: AppTextStyle.mainStyle(size: 25),
               ),
             ),
-            SizedBox(height: 15),
             Expanded(
               child: ListView.separated(
                   itemBuilder: (context, index) => userItem(
@@ -71,31 +62,8 @@ class ViewAdminsScreen extends StatelessWidget {
                       ),
                   itemCount: 15),
             ),
-            // Container(
-            //   height: 90,
-            //   width: 90,
-            //   decoration: const BoxDecoration(
-            //     shape: BoxShape.circle,
-            //     color: Color.fromRGBO(2, 113, 106, 1),
-            //   ),
-            //   child: IconButton(
-            //     icon: const Icon(
-            //       Icons.add,
-            //       color: Colors.white,
-            //       size: 60,
-            //     ),
-            //     alignment: Alignment.center,
-            //     onPressed: () {
-            //       Navigator.push(
-            //           context,
-            //           MaterialPageRoute(
-            //               builder: (context) => const AddAdminScreen()));
-            //     },
-            //   ),
-            // ),
           ],
         ),
-      ),
     );
   }
 }

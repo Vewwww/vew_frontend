@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:vewww/core/utils/navigation.dart';
+import 'package:vewww/views/admin/admin_profile.dart';
+
+import '../../model/admin.dart';
+
+Admin admin=Admin(name: 'Ali', email: 'ali@gmail.com', password: 'ali123', phoneNumber: '01111548');
 
 class AdminDrawer extends StatelessWidget {
   const AdminDrawer({Key? key}) : super(key: key);
@@ -28,19 +34,27 @@ class AdminDrawer extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: Row(
               children: [
-                Container(
-                  height: 50,
-                  width: 50,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color.fromRGBO(2, 113, 106, 1),
+                GestureDetector(
+                  onTap: (){
+                      Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>  AdminProfile(admin: admin,)));
+                    },
+                  child: Container( 
+                    height: 50,
+                    width: 50,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color.fromRGBO(2, 113, 106, 1),
+                    ),
+                    child: const Icon(
+                      Icons.person,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                    alignment: Alignment.center,
                   ),
-                  child: const Icon(
-                    Icons.person,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                  alignment: Alignment.center,
                 ),
                 const SizedBox(
                   width: 15,
