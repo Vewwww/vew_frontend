@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
+import 'package:vewww/core/style/app_colors.dart';
 
-Widget nameAddressCard({
-  required String title,
-  required String subtitle,
+Widget uaserCard({ 
   required Function() function,
-}){
-return GestureDetector(
+  required String title,
+  required IconData? icon,
+  }){
+  return GestureDetector(
     onTap: function,
     child: Container(
       height: 70,
@@ -30,16 +31,12 @@ return GestureDetector(
       ),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style:AppTextStyle.darkGreyStyle(size: 20) , ),
-            Text(subtitle, style:AppTextStyle.greyStyle() , ),
-          ],
-        ),
+        child: Row(children: [
+          Icon(icon, color: mainColor, size: 25,),
+          SizedBox(width: 30,),
+          Text(title, style: AppTextStyle.mainStyle(size: 20),),
+        ],),
       ),
       ),
     );
-  
-
 }

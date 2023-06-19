@@ -29,7 +29,7 @@ class ViewMaitenanceCenterScreen extends StatelessWidget {
             ),
             Expanded(
               child: ListView.separated(
-                itemBuilder: (context, index) => nameAddressCard(name: 'Name of Maintenance Center', address: 'Address of MC', function: (){}),
+                itemBuilder: (context, index) => nameAddressCard(title: 'Name of Maintenance Center', subtitle: 'Address of MC', function: (){}),
                 separatorBuilder: (context, index) => const SizedBox(
                   height: 15,
                 ),

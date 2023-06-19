@@ -5,7 +5,7 @@ import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
 
 import '../../core/components/backward_arrow.dart';
-import '../../core/components/user_item.dart';
+import '../../core/components/admin_item.dart';
 import 'add_admin.screen.dart';
 
 class ViewAdminsScreen extends StatelessWidget {
@@ -49,7 +49,7 @@ class ViewAdminsScreen extends StatelessWidget {
             ),
             Expanded(
               child: ListView.separated(
-                  itemBuilder: (context, index) => userItem(
+                  itemBuilder: (context, index) => adminItem(
                       name: 'Mohammed Kamel',
                       email: 'emai_example@gmail.com',
                       icon: const Icon(

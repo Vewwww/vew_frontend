@@ -1,158 +1,71 @@
 import 'package:flutter/material.dart';
+import 'package:vewww/core/components/custom_app_bar.dart';
+import 'package:vewww/core/components/user_card.dart';
+import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
+import 'package:vewww/views/admin/view_drivers_screen.dart';
+import 'package:vewww/views/admin/view_mechanic_screen.dart';
+import 'package:vewww/views/admin/view_winch_screen.dart';
 
 import '../../core/components/backward_arrow.dart';
-import '../../core/components/user_item.dart';
-
-
 
 class ViewAppUsersScreen extends StatelessWidget {
-  var searchController = TextEditingController();
   @override
-
-  
-
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: BackwardArrow(function: (){ Navigator.pop(context);}),
-        title: const Center(
-          child: Text(
-            'Application \' s Users',
-            style: TextStyle(
-              color: Color.fromRGBO(2, 113, 106, 1),
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-            ),
+      body: Column(children: [
+        CustomAppBar(
+          title: Text(
+            'Application\' s Users',
+            style: AppTextStyle.mainStyle(size: 25),
+          ),
+          haveBackArrow: true,
+        ),
+        SizedBox(height: 175,),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              uaserCard(
+                function: () {
+                  Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) =>
+                                   ViewDriversScreen())));
+                }, 
+                title: 'Drivers', 
+                icon: Icons.person),
+              SizedBox(
+                height: 25,
+              ),
+              uaserCard(
+                  function: () {
+                    Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) =>
+                                   ViewWinchScreen())));
+                  },
+                  title: 'Winch Driver',
+                  icon: Icons.car_repair),
+              SizedBox(
+                height: 25,
+              ),
+              uaserCard(
+                  function: () {
+                    Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) =>
+                                   ViewMechanicScreen())));
+                  },
+                  title: 'Mechnaic',
+                  icon: Icons.handyman_outlined),
+            ],
           ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextFormField(
-              controller: searchController,
-              decoration: const InputDecoration(
-                labelText: 'Search',
-                prefixIcon: Icon(
-                  Icons.search,
-                ),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(30))),
-              ),
-            ),
-            const SizedBox(height: 15),
-            const Text(
-              'Driver:',
-              style: TextStyle(
-                fontSize: 15,
-                color: Color.fromRGBO(2, 113, 106, 1),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 7, 0),
-              child: Container(
-                height: 2.0,
-                color: Colors.grey[400],
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Expanded(
-              child: ListView.separated(
-                itemBuilder: (contrxt, indx) => userItem(
-                  name: 'Zainab Mamoud',
-                  email: 'zainab@gmail.com',
-                  icon: const Icon(
-                    Icons.person,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                ),
-                separatorBuilder: (context, index) => const SizedBox(
-                  height: 15,
-                ),
-                itemCount: 10,
-              ),
-            ),
-            const SizedBox(height: 15),
-            const Text(
-              'Winch Driver:',
-              style: TextStyle(
-                fontSize: 15,
-                color: Color.fromRGBO(2, 113, 106, 1),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 7, 0),
-              child: Container(
-                height: 2.0,
-                color: Colors.grey[400],
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Expanded(
-              child: ListView.separated(
-                itemBuilder: (contrxt, indx) => userItem(
-                  name: 'Hatem Hatem',
-                  email: 'hatem@gmail.com',
-                  icon: const Icon(
-                    Icons.car_repair,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                ),
-                separatorBuilder: (context, index) => const SizedBox(
-                  height: 15,
-                ),
-                itemCount: 10,
-              ),
-            ),
-            const SizedBox(height: 15),
-            const Text(
-              'Mechanists:',
-              style: TextStyle(
-                fontSize: 15,
-                color: Color.fromRGBO(2, 113, 106, 1),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 7, 0),
-              child: Container(
-                height: 2.0,
-                color: Colors.grey[400],
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Expanded(
-              child: ListView.separated(
-                itemBuilder: (contrxt, indx) => userItem(
-                  name: 'Omar Ahmed',
-                  email: 'omar@gmail.com',
-                  icon: const Icon(
-                    Icons.hail,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                ),
-                separatorBuilder: (context, index) => const SizedBox(
-                  height: 15,
-                ),
-                itemCount: 10,
-              ),
-            ),
-          ],
-        ),
-      ),
+      ]),
     );
   }
 }
