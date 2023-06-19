@@ -1,14 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../style/app_Text_Style/app_text_style.dart';
+
 Widget userItem({
-  required String name,
-  required String email,
-  required Icon icon,
-}) =>
-    Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.symmetric(vertical: 10),
+  required String title,
+  required String subtitle,
+  required Function() function,
+}){
+return  Container(
+      height: 70,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         color: Colors.white,
@@ -27,35 +27,15 @@ Widget userItem({
           ),
         ],
       ),
-      child: Row(
-        children: [
-          Container(
-            height: 50,
-            width: 50,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color.fromRGBO(2, 113, 106, 1),
-            ),
-            child: icon,
-            alignment: Alignment.center,
-          ),
-          const SizedBox(
-            width: 15,
-          ),
-          Column(
-            children: [
-              Text(
-                name,
-                style: const TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-              Text(
-                email,
-                style: const TextStyle(fontSize: 15, color: Colors.grey),
-              ),
-            ],
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style:AppTextStyle.darkGreyStyle(size: 20) , ),
+            Text(subtitle, style:AppTextStyle.greyStyle() , ),
+          ],
+        ),
       ),
-    );
+      );
+}
