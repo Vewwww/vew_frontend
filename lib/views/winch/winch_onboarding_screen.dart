@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/style/app_colors.dart';
+import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import 'package:vewww/views/winch/sign_up_screen.dart';
 
 import '../../bloc/onboarding_cubit/onboarding_cubit.dart';
@@ -107,6 +108,7 @@ class _WinchOnBoardingScreenState extends State<WinchOnBoardingScreen> {
                     (pageCubit.pageIndex == content.length - 1)
                         ? OutlinedButton(
                             onPressed: () {
+                              SharedPreferencesHelper.saveData(key: "vewwwIsFirst", value: true);
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(

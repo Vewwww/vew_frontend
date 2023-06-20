@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vewww/core/components/logo.dart';
 import 'package:vewww/core/style/app_colors.dart';
 
 import '../../core/components/custom_app_bar.dart';
@@ -30,25 +31,22 @@ class WinchEditProfileScreen extends StatelessWidget {
     double constraintsHight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: Size(double.infinity, 75),
-          child: Container(
-              margin: EdgeInsets.only(top: 60), child: CustomAppBar())),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Form(
             key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                SizedBox(
-                    height: 150,
-                    child: CircleAvatar(
-                        radius: 40,
-                        backgroundColor: mainColor,
-                        child: const Icon(Icons.person,
-                            size: 50, color: Colors.white))),
+                const SizedBox(height: 20),
+                CustomAppBar(
+                  haveBackArrow: true,
+                  haveLogo: true,
+                ),
+                const SizedBox(height: 40),
+                Text("Edit Profile", style: AppTextStyle.mainStyle(size: 20)),
+                const SizedBox(height: 10),
                 const Divider(thickness: 2),
                 const SizedBox(height: 10),
                 CustomTextField(
@@ -127,7 +125,7 @@ class WinchEditProfileScreen extends StatelessWidget {
                           onPressed: () {
                             NavigationUtils.navigateTo(
                                 context: context,
-                                destinationScreen: SelectColorScreen());
+                                destinationScreen: const SelectColorScreen());
                           },
                           icon: Icon(
                             Icons.keyboard_arrow_down_outlined,
