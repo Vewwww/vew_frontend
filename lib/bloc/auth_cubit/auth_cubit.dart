@@ -24,7 +24,7 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  void signIn(Driver driver) async{
+  Future<void> signIn(Driver driver) async{
     print("driver signin request : ${driver.toJson()}");
     emit(SignInLoadingState());
     await DioHelper.postData(
