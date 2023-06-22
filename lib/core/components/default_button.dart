@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 Widget defaultButton({
   double width = double.infinity,
   double? height,
+  double textSize = 20,
   Color background = const Color.fromRGBO(2, 113, 106, 1),
   Function? function,
   required String text,
@@ -30,7 +31,7 @@ Widget defaultButton({
               text,
               style: TextStyle(
                 color: textColor,
-                fontSize: 20,
+                fontSize: textSize,
               ),
             ),
           ],
