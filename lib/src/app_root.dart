@@ -61,7 +61,7 @@ class AppRoot extends StatelessWidget {
               primaryColor: const Color.fromARGB(255, 2, 113, 106)),
           debugShowCheckedModeBanner: false,
 
-          home: AdminHomeScreen(),
+          home: SplashScreen(),
         ));
   }
 }
