@@ -1,0 +1,2 @@
+TODO:: convert edit profile icon to app logo , add back arrow , remove top padding , rtl
+TODO:: switch color button in sign in , move it to common , defult arabic
