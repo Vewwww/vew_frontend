@@ -11,7 +11,7 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
   static AuthCubit get(context) => BlocProvider.of(context);
 
-  void driverSignUp(Driver driver) async{
+  void driverSignUp(Driver driver) async {
     print("driver signup request : ${driver.toJson()}");
     emit(SignUpLoadingState());
     await DioHelper.postData(url: "driver/signup/", data: driver.toJson())
@@ -24,11 +24,11 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  Future<void> signIn(Driver driver) async{
+  Future<void> signIn(Driver driver) async {
     print("driver signin request : ${driver.toJson()}");
     emit(SignInLoadingState());
     await DioHelper.postData(
-            url: "allusers/login/",
+            url: "/allusers/login/",
             data: {"email": driver.email, "password": driver.password})
         .then((value) {
       print("driver sign in response : ${value.data}");
