@@ -6,6 +6,7 @@ import 'package:vewww/views/common/on_boarding_screen.dart';
 import 'package:vewww/views/driver/sign_in_screen.dart';
 import '../../core/components/logo.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
+import '../admin/admin_home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -60,14 +61,13 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   route() {
-    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
-      if(SharedPreferencesHelper.getData(key: "vewwwisFirst") != false ){
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+      if (SharedPreferencesHelper.getData(key: "vewwwisFirst") != false) {
         return OnBoardingScreen();
-      }
-      else if (SharedPreferencesHelper.getData(key: "accessToken") == null)
+      } else if (SharedPreferencesHelper.getData(key: "accessToken") == null)
         return SignInScreen();
       else
-        return DriverHomeScreen();
+        return AdminHomeScreen();
     }), (route) => true);
   }
 }
