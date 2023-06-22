@@ -1,15 +1,17 @@
-class CarTypeResponse {
+import 'package:flutter/material.dart';
+
+class CarColorResponse {
   int? results;
-  List<CarType>? carType;
+  List<CarColor>? carColor;
 
-  CarTypeResponse({this.results, this.carType});
+  CarColorResponse({this.results, this.carColor});
 
-  CarTypeResponse.fromJson(Map<String, dynamic> json) {
+  CarColorResponse.fromJson(Map<String, dynamic> json) {
     results = json['results'];
     if (json['data'] != null) {
-      carType = <CarType>[];
+      carColor = <CarColor>[];
       json['data'].forEach((v) {
-        carType!.add(new CarType.fromJson(v));
+        carColor!.add(new CarColor.fromJson(v));
       });
     }
   }
@@ -17,23 +19,32 @@ class CarTypeResponse {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['results'] = this.results;
-    if (this.carType != null) {
-      data['data'] = this.carType!.map((v) => v.toJson()).toList();
+    if (this.carColor != null) {
+      data['data'] = this.carColor!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class CarType {
+class CarColor {
   Name? name;
   String? sId;
+  Color? code;
   int? iV;
 
-  CarType({this.name, this.sId, this.iV});
+  CarColor({this.name, this.sId, this.code, this.iV});
 
-  CarType.fromJson(Map<String, dynamic> json) {
+  CarColor.fromJson(Map<String, dynamic> json) {
     name = json['name'] != null ? new Name.fromJson(json['name']) : null;
     sId = json['_id'];
+    var codeString = json['code'];
+    var hexColor = codeString.replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    if (hexColor.length == 8) {
+      code = Color(int.parse("0x$hexColor"));
+    }
     iV = json['__v'];
   }
 
@@ -43,26 +54,27 @@ class CarType {
       data['name'] = this.name!.toJson();
     }
     data['_id'] = this.sId;
+    data['code'] = this.code;
     data['__v'] = this.iV;
     return data;
   }
 }
 
 class Name {
-  String? ar;
   String? en;
+  String? ar;
 
-  Name({this.ar, this.en});
+  Name({this.en, this.ar});
 
   Name.fromJson(Map<String, dynamic> json) {
-    ar = json['ar'];
     en = json['en'];
+    ar = json['ar'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['ar'] = this.ar;
     data['en'] = this.en;
+    data['ar'] = this.ar;
     return data;
   }
 }

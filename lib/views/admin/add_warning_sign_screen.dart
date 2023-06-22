@@ -89,7 +89,7 @@ Widget addImage(){
       children: [
         CircleAvatar(
           radius: 80,
-          backgroundImage: /*(imageFile == null) ?*/ const AssetImage('assets/images/addImage.png')/*: FileImage(File(imageFile!.path))*/ ,
+          backgroundImage: (imageFile == null) ? const AssetImage('assets/images/addImage.png'): FileImage(File(imageFile!.path)) as ImageProvider ,
           backgroundColor: Colors.white,
         ),
          Positioned(

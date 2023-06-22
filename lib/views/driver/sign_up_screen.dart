@@ -5,6 +5,7 @@ import 'package:vewww/bloc/select_color_cubit/select_color_cubit.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/model/car_type.dart';
 import 'package:vewww/model/driver.dart';
+import 'package:vewww/views/driver/driver_home_screen.dart';
 import 'package:vewww/views/common/select_color_screen.dart';
 import 'package:vewww/views/driver/sign_in_screen.dart';
 import '../../bloc/add_car_cubit/add_car_cubit.dart';
@@ -15,6 +16,7 @@ import '../../core/components/custom_text_field.dart';
 import '../../core/components/logo.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/navigation.dart';
+import '../../model/car.dart';
 import 'select_car_model_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -39,6 +41,7 @@ class SignUpScreen extends StatelessWidget {
     double constraintsHight = MediaQuery.of(context).size.height;
     AddCarCubit addCarCubit = AddCarCubit.get(context);
     GenderCubit genderCubit = GenderCubit.get(context);
+    SelectChoiceCubit selectChoiceCubit = SelectChoiceCubit.get(context);
     ReminderCubit reminderCubit = ReminderCubit.get(context);
     AuthCubit authCubit = AuthCubit.get(context);
     return Scaffold(
@@ -227,11 +230,19 @@ class SignUpScreen extends StatelessWidget {
                                   return CustomTextField(
                                     label: "Car Type",
                                     controller: _carType,
-                                    hint: carTyps[SelectChoiceCubit.get(context)
-                                            .choice]
-                                        .type,
+                                    hint: (selectChoiceCubit.carTypeResponse !=
+                                            null)
+                                        ? selectChoiceCubit
+                                            .carTypeResponse!
+                                            .carType![
+                                                SelectChoiceCubit.get(context)
+                                                    .choice]
+                                            .name!
+                                            .en!
+                                        : "",
                                     isDroped: true,
                                     onDrop: () {
+                                      selectChoiceCubit.getAllCarTypes();
                                       NavigationUtils.navigateTo(
                                           context: context,
                                           destinationScreen:
@@ -248,10 +259,20 @@ class SignUpScreen extends StatelessWidget {
                                   return CustomTextField(
                                     label: "Car Color",
                                     controller: _carColor,
-                                    hint: colors[
-                                        SelectColorCubit.get(context).color],
+                                    hint: (SelectColorCubit.get(context)
+                                                .carColorResponse !=
+                                            null)
+                                        ? SelectColorCubit.get(context)
+                                            .carColorResponse!
+                                            .carColor![
+                                                SelectColorCubit.get(context)
+                                                    .color]
+                                            .name!
+                                            .en!
+                                        : "",
                                     isDroped: true,
                                     onDrop: () {
+                                      SelectColorCubit.get(context).getcolors();
                                       NavigationUtils.navigateTo(
                                           context: context,
                                           destinationScreen:
@@ -372,6 +393,18 @@ class SignUpScreen extends StatelessWidget {
                   SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
+                        /*{
+  "cars":[{
+      "carType":"643528431c01869f2d835be7",
+      "color":"6469f59993253d535309dc62",
+      "plateNumber":"123456"
+  },{
+      "carType":"643528431c01869f2d835be9",
+      "color":"6469f59f93253d535309dc6b",
+      "plateNumber":"123456"
+  }]
+    
+} */
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             Driver driver = Driver(
