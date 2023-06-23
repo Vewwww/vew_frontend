@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vewww/views/winch/winch_home_page.dart';
 import '../../bloc/add_car_cubit/add_car_cubit.dart';
 import '../../core/components/custom_text_field.dart';
@@ -12,7 +13,10 @@ class SignInScreen extends StatelessWidget {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final TextEditingController _name = TextEditingController();
-  SignInScreen({Key? key}) : super(key: key);
+  String? language;
+  SignInScreen({Key? key}) : super(key: key) {
+    //type = SharedPreferences
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +106,7 @@ class SignInScreen extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 6),
                         child: Text(
                           "أو",
-                          style: AppTextStyle.greyStyle(size:12),
+                          style: AppTextStyle.greyStyle(size: 12),
                         ),
                       ),
                       const Expanded(

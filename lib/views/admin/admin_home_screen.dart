@@ -21,88 +21,90 @@ class AdminHomeScreen extends StatelessWidget {
       endDrawer: const AdminDrawer(),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Column(
-          children: [
-            CustomAppBar(
-              haveLogo: true,
-              leading: IconButton(
-                icon: Icon(Icons.menu),
-                iconSize: 35,
-                color: Color.fromRGBO(2, 113, 106, 1),
-                onPressed: () {
-                  _globalKey.currentState!.openDrawer();
-                },
-              ),
-            ),
-            Padding(
-                padding: const EdgeInsets.all(20),
-                child: defaultButton(
-                    height: 70,
-                    function: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) =>
-                                  const ViewAdminsScreen())));
-                    },
-                    text: 'Admins')),
-            Padding(
-                padding: const EdgeInsets.all(20),
-                child: defaultButton(
-                    height: 70,
-                    function: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) =>
-                                  const WarningLightScreen())));
-                    },
-                    text: 'Warning Sign')),
-            Padding(
-                padding: const EdgeInsets.all(20),
-                child: defaultButton(
-                    height: 70,
-                    function: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) => ViewAppUsersScreen())));
-                    },
-                    text: 'Users')),
-            Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: defaultButton(
-                    height: 70,
-                    function: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) =>
-                                  const ViewMaitenanceCenterScreen())));
-                    },
-                    text: 'Maintenance Centers')),
-            Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: defaultButton(
-                    height: 70,
-                    function: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) =>
-                                  const ViewGasStationScreen())));
-                    },
-                    text: 'Gas Stations')),
-            Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: defaultButton(
-                  height: 70,
-                  text: 'Analytics',
-                  function: () {
-                    print('Analytics');
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              CustomAppBar(
+                haveLogo: true,
+                leading: IconButton(
+                  icon: Icon(Icons.menu),
+                  iconSize: 35,
+                  color: Color.fromRGBO(2, 113, 106, 1),
+                  onPressed: () {
+                    _globalKey.currentState!.openDrawer();
                   },
-                )),
-          ],
+                ),
+              ),
+              Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: defaultButton(
+                      height: 70,
+                      function: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) =>
+                                    const ViewAdminsScreen())));
+                      },
+                      text: 'Admins')),
+              Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: defaultButton(
+                      height: 70,
+                      function: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) =>
+                                    const WarningLightScreen())));
+                      },
+                      text: 'Warning Sign')),
+              Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: defaultButton(
+                      height: 70,
+                      function: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) => ViewAppUsersScreen())));
+                      },
+                      text: 'Users')),
+              Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: defaultButton(
+                      height: 70,
+                      function: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) =>
+                                    const ViewMaitenanceCenterScreen())));
+                      },
+                      text: 'Maintenance Centers')),
+              Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: defaultButton(
+                      height: 70,
+                      function: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) =>
+                                    const ViewGasStationScreen())));
+                      },
+                      text: 'Gas Stations')),
+              Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: defaultButton(
+                    height: 70,
+                    text: 'Analytics',
+                    function: () {
+                      print('Analytics');
+                    },
+                  )),
+            ],
+          ),
         ),
       ),
       drawer: const AdminDrawer(),

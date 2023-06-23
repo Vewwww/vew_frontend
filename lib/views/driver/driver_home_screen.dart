@@ -4,7 +4,9 @@ import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/views/driver/diagnose_screen.dart';
 import 'package:vewww/views/driver/driver_drawer.dart';
 import 'package:vewww/views/driver/request_winch_screen.dart';
-import 'package:vewww/views/common/warning_light_screen.dart';
+
+import 'driver_warning_sign.dart';
+
 
 class DriverHomeScreen extends StatelessWidget {
   const DriverHomeScreen({Key? key}) : super(key: key);
@@ -104,7 +106,7 @@ class DriverHomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 defaultButton(
-                    text: 'Maintenance Center', height: 75, width: 150),
+                    text: 'Maintenance \n Center', height: 75, width: 150),
                 defaultButton(text: 'Gas Station', height: 75, width: 150)
               ],
             ),
@@ -119,7 +121,7 @@ class DriverHomeScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: ((context) => const WarningLightScreen())));
+                        builder: ((context) =>  DriverWarningSign())));
               },
             ),
           ],

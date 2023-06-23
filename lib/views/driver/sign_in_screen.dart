@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/bloc/auth_cubit/auth_cubit.dart';
+import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import 'package:vewww/views/common/choose_role_screen.dart';
-import 'package:vewww/views/driver/driver_home_screen.dart';
-import 'package:vewww/views/common/forgot_password_screen.dart';
+import 'package:vewww/core/components/forgot_password_screen.dart';
 import '../../bloc/add_car_cubit/add_car_cubit.dart';
 import '../../core/components/custom_text_field.dart';
 import '../../core/components/logo.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
-import '../../core/utils/navigation.dart';
 import '../../model/driver.dart';
-import 'sign_up_screen.dart';
 
 class SignInScreen extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -68,17 +66,35 @@ class SignInScreen extends StatelessWidget {
                   SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             Driver driver = Driver(
                                 email: _email.text, password: _password.text);
-                            authCubit.signIn(driver);
-                            // NavigationUtils.navigateAndClearStack(
-                            //     context: context,
-                            //     destinationScreen: DriverHomeScreen());
+                            await authCubit.signIn(driver);
+                            if (authCubit.state is SignInSuccessState) {
+                              const snackBar = SnackBar(
+                                  content: Text("Loged in successfully !"));
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                              SharedPreferencesHelper.saveData(
+                                  key: "token",
+                                  value:
+                                      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2RlbE5hbWUiOiJkcml2ZXIiLCJ1c2VySWQiOiI2NDhjOGQ5Y2UzMWQwNDJiMGM1MmI5ZmEiLCJpYXQiOjE2ODcyNjgxMDB9.vPjcJWMjFdHvELIkYO_jUBz2fdS2L3RHCga6SKHHifc");
+                              // NavigationUtils.navigateAndClearStack(
+                              //     context: context,
+                              //     destinationScreen: DriverHomeScreen());
+                            } else {
+                              const snackBar = SnackBar(
+                                  content:
+                                      Text("Something went wrong try again !"));
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            }
                           }
                         },
-                        child: Text("Login"),
+                        child: (authCubit.state is SignInLoadingState)
+                            ? CircularProgressIndicator()
+                            : Text("Login"),
                       )),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

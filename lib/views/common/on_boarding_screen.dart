@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/style/app_colors.dart';
+import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import 'package:vewww/views/driver/sign_up_screen.dart';
 import '../../bloc/onboarding_cubit/onboarding_cubit.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../model/onboarding_content.dart';
 
-class DriverOnBoardingScreen extends StatefulWidget {
-  const DriverOnBoardingScreen({Key? key}) : super(key: key);
+class OnBoardingScreen extends StatefulWidget {
+  const OnBoardingScreen({Key? key}) : super(key: key);
 
   @override
-  State<DriverOnBoardingScreen> createState() => _DriverOnBoardingScreenState();
+  State<OnBoardingScreen> createState() => _OnBoardingScreenState();
 }
 
-class _DriverOnBoardingScreenState extends State<DriverOnBoardingScreen> {
+class _OnBoardingScreenState extends State<OnBoardingScreen> {
   late PageController _controller;
   @override
   void initState() {
@@ -105,6 +106,7 @@ class _DriverOnBoardingScreenState extends State<DriverOnBoardingScreen> {
                     (pageCubit.pageIndex == content.length - 1)
                         ? OutlinedButton(
                             onPressed: () {
+                              SharedPreferencesHelper.saveData(key: "vewwwIsFirst", value: false);
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(

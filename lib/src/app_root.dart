@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/bloc/chat_cubit/chat_cubit.dart';
 import 'package:vewww/bloc/diagnose_cunit/diagnose_cubit.dart';
+import 'package:vewww/views/common/map.dart';
 import 'package:vewww/views/common/splash_screen.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
+import '../bloc/add_image_cubit/add_image_cubit.dart';
 import '../bloc/auth_cubit/auth_cubit.dart';
 import '../bloc/loaction_cubit/loaction_cubit.dart';
 import '../bloc/selected page index/cubit/selected_page_index_cubit.dart';
@@ -15,7 +17,6 @@ import '../bloc/reminder_cubit/reminder_cubit.dart';
 import '../bloc/select_choice_cubit/select_choice_cubit.dart';
 import '../bloc/select_color_cubit/select_color_cubit.dart';
 import '../views/admin/admin_home_screen.dart';
-
 
 class AppRoot extends StatelessWidget {
   const AppRoot({Key? key}) : super(key: key);
@@ -40,10 +41,11 @@ class AppRoot extends StatelessWidget {
           BlocProvider(create: (context) => SelectColorCubit()),
           BlocProvider(create: (context) => GenderCubit()),
           BlocProvider(create: (context) => ReminderCubit()),
-          BlocProvider(create: (context)=> LocationCubit()),
-          BlocProvider(create: (context)=> SelectedPageIndexCubit()),
-          BlocProvider(create: (context)=> AuthCubit()),
-          BlocProvider(create: (context)=> VerificationCubit()),
+          BlocProvider(create: (context) => LocationCubit()),
+          BlocProvider(create: (context) => SelectedPageIndexCubit()),
+          BlocProvider(create: (context) => AuthCubit()),
+          BlocProvider(create: (context) => AddImageCubit()),
+          BlocProvider(create: (context) => VerificationCubit()),
         ],
         child: MaterialApp(
           theme: ThemeData(
@@ -59,7 +61,6 @@ class AppRoot extends StatelessWidget {
                       backgroundColor: const Color.fromARGB(255, 2, 113, 106))),
               primaryColor: const Color.fromARGB(255, 2, 113, 106)),
           debugShowCheckedModeBanner: false,
-
           home: SplashScreen(),
         ));
   }

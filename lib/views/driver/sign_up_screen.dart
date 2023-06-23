@@ -41,6 +41,7 @@ class SignUpScreen extends StatelessWidget {
     double constraintsHight = MediaQuery.of(context).size.height;
     AddCarCubit addCarCubit = AddCarCubit.get(context);
     GenderCubit genderCubit = GenderCubit.get(context);
+    SelectChoiceCubit selectChoiceCubit = SelectChoiceCubit.get(context);
     ReminderCubit reminderCubit = ReminderCubit.get(context);
     AuthCubit authCubit = AuthCubit.get(context);
     return Scaffold(
@@ -229,11 +230,19 @@ class SignUpScreen extends StatelessWidget {
                                   return CustomTextField(
                                     label: "Car Type",
                                     controller: _carType,
-                                    hint: carTyps[SelectChoiceCubit.get(context)
-                                            .choice]
-                                        .type,
+                                    hint: (selectChoiceCubit.carTypeResponse !=
+                                            null)
+                                        ? selectChoiceCubit
+                                            .carTypeResponse!
+                                            .carType![
+                                                SelectChoiceCubit.get(context)
+                                                    .choice]
+                                            .name!
+                                            .en!
+                                        : "",
                                     isDroped: true,
                                     onDrop: () {
+                                      selectChoiceCubit.getAllCarTypes();
                                       NavigationUtils.navigateTo(
                                           context: context,
                                           destinationScreen:
@@ -250,10 +259,20 @@ class SignUpScreen extends StatelessWidget {
                                   return CustomTextField(
                                     label: "Car Color",
                                     controller: _carColor,
-                                    hint: colors[
-                                        SelectColorCubit.get(context).color],
+                                    hint: (SelectColorCubit.get(context)
+                                                .carColorResponse !=
+                                            null)
+                                        ? SelectColorCubit.get(context)
+                                            .carColorResponse!
+                                            .carColor![
+                                                SelectColorCubit.get(context)
+                                                    .color]
+                                            .name!
+                                            .en!
+                                        : "",
                                     isDroped: true,
                                     onDrop: () {
+                                      SelectColorCubit.get(context).getcolors();
                                       NavigationUtils.navigateTo(
                                           context: context,
                                           destinationScreen:

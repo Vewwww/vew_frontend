@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vewww/core/components/backward_arrow.dart';
+import 'package:vewww/core/components/rating_bar.dart';
 import 'package:vewww/core/style/app_colors.dart';
 
 import '../../core/components/data_element.dart';
@@ -6,7 +8,8 @@ import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/navigation.dart';
 
 class SingleRequestScreen extends StatelessWidget {
-  const SingleRequestScreen({Key? key}) : super(key: key);
+  String type; // accepted or comming
+  SingleRequestScreen({this.type = "accepted", Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,20 +50,24 @@ class SingleRequestScreen extends StatelessWidget {
                     "أحمد ناصر",
                     style: AppTextStyle.whiteTextStyle(28),
                   ),
-                  Image.asset(
-                    "assets/images/rating.png",
-                    width: 120,
-                    fit: BoxFit.cover,
-                  )
+                  RatingBar(4),
                 ]),
               ),
             ),
             Positioned(
-              top: 40,
+                top: 20,
+                child: BackwardArrow(
+                    function: () {
+                      NavigationUtils.navigateBack(context: context);
+                    },
+                    iconColor: Colors.white)),
+            Positioned(
+              top: 20,
+              right: 20,
               child: PopupMenuButton(
                   icon: const Icon(
                     Icons.menu,
-                    size: 40,
+                    size: 30,
                   ),
                   itemBuilder: (context) => [
                         const PopupMenuItem(
@@ -81,7 +88,7 @@ class SingleRequestScreen extends StatelessWidget {
                 bottom: 0,
                 child: Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 2 * MediaQuery.of(context).size.height / 3,
+                    height: 2 * MediaQuery.of(context).size.height / 3 + 30,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 15, vertical: 10),
                     decoration: const BoxDecoration(
@@ -108,8 +115,26 @@ class SingleRequestScreen extends StatelessWidget {
                                   NavigationUtils.navigateBack(
                                       context: context);
                                 },
-                                child: const Text("تم")),
-                          )
+                                child:
+                                    Text((type == "accepted") ? "تم" : "قبول")),
+                          ),
+                          (type == "comming")
+                              ? SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Color.fromARGB(
+                                              255, 220, 220, 220)),
+                                      onPressed: () {
+                                        NavigationUtils.navigateBack(
+                                            context: context);
+                                      },
+                                      child: Text(
+                                        "رفض",
+                                        style: AppTextStyle.mainStyle(),
+                                      )),
+                                )
+                              : Container()
                         ]))))
           ])),
     );

@@ -20,7 +20,7 @@ class SelectCarModelScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 45),
             height: MediaQuery.of(context).size.height,
             child: ListView.builder(
-                itemCount: carTyps.length,
+                itemCount: selectChoiceCubit.carTypeResponse!.carType!.length,
                 itemBuilder: (context, index) => GestureDetector(
                       onTap: () {
                         selectChoiceCubit.chose(index);
@@ -35,8 +35,8 @@ class SelectCarModelScreen extends StatelessWidget {
                               SizedBox(
                                 //width: double.infinity,
                                 child: Text(
-                                  carTyps[index].type,
-                                  style: AppTextStyle.greyStyle(size: 20),
+                                  selectChoiceCubit.carTypeResponse!.carType![index].name!.en!,
+                                  style: AppTextStyle.greyStyle(size: 20)
                                 ),
                               ),
                               Container(

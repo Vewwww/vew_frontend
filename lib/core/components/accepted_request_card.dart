@@ -5,6 +5,7 @@ import '../../views/common/chats_screen.dart';
 import '../../views/winch/single_request_screen.dart';
 import '../style/app_Text_Style/app_text_style.dart';
 import '../utils/navigation.dart';
+import 'rating_bar.dart';
 
 class AcceptedRequestCard extends StatefulWidget {
   const AcceptedRequestCard({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class _AcceptedRequestCardState extends State<AcceptedRequestCard> {
     return InkWell(
       onTap: () {
         NavigationUtils.navigateTo(
-            context: context, destinationScreen: const SingleRequestScreen());
+            context: context, destinationScreen: SingleRequestScreen());
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -47,13 +48,10 @@ class _AcceptedRequestCardState extends State<AcceptedRequestCard> {
                   "احمد كمال",
                   style: AppTextStyle.titleTextStyle(20),
                 ),
-                Container(
-                    height: 20,
-                    width: 70,
-                    child: Image.asset("assets/images/rating.png")),
+                RatingBar(4.4, size: 15),
                 Text(
                   "Jeep : السيارة",
-                  style: AppTextStyle.darkGreyStyle(size:13),
+                  style: AppTextStyle.darkGreyStyle(size: 13),
                 ),
                 Row(
                   children: [

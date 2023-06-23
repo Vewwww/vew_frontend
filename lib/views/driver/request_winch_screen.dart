@@ -11,6 +11,7 @@ import 'package:vewww/views/driver/loading_winch_screen.dart';
 
 import '../../core/components/backward_arrow.dart';
 import '../../core/utils/navigation.dart';
+import '../common/map.dart';
 
 class RequestWinchScreen extends StatelessWidget {
   //const RequestWinchScreen({Key? key}) : super(key: key);
@@ -66,7 +67,7 @@ class RequestWinchScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         leading: BackwardArrow(function: () {
           NavigationUtils.navigateTo(
-              context: context, destinationScreen: DriverHomeScreen());
+              context: context, destinationScreen: const DriverHomeScreen());
         }),
         title: Center(
           child: Text(
@@ -76,7 +77,7 @@ class RequestWinchScreen extends StatelessWidget {
         ),
       ),
       body: loactionCubit.isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : Padding(
@@ -91,55 +92,64 @@ class RequestWinchScreen extends StatelessWidget {
                     'Please enter your current location here',
                     style: AppTextStyle.darkGreyStyle(size: 15),
                   ),
-                  Container(
-                    width: 350,
-                    height: 50,
-                    decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        border: Border.all(
-                          color: Color.fromRGBO(2, 113, 106, 1),
-                        )),
-                    child: Row(
-                      children: [
-                        BlocConsumer<LocationCubit, LocationState>(
-                          listener: (context, state) {
-                            // TODO: implement listener
-                          },
-                          builder: (context, state) {
-                            return Text(
-                              loactionCubit.placemark != null
-                                  ? "${loactionCubit.placemark![0].street} ${loactionCubit.placemark![0].locality} ${loactionCubit.placemark![0].administrativeArea} ${loactionCubit.placemark![0].country}"
-                                  : " ",
-                              overflow: TextOverflow.ellipsis,
-                            );
-                          },
-                        ),
-                      ],
+                  Flexible(
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 7),
+                      //height: 50,
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          border: Border.all(
+                            color: const Color.fromRGBO(2, 113, 106, 1),
+                          )),
+                      child: BlocConsumer<LocationCubit, LocationState>(
+                        listener: (context, state) {},
+                        builder: (context, state) {
+                          return Text(
+                              // loactionCubit.placemark != null
+                              //     ? "${loactionCubit.placemark![0].street} ${loactionCubit.placemark![0].locality} ${loactionCubit.placemark![0].administrativeArea} ${loactionCubit.placemark![0].country}"
+                              //     : " ",
+                              loactionCubit.address,
+                              overflow: TextOverflow.ellipsis);
+                        },
+                      ),
                     ),
                   ),
+                  const SizedBox(height: 15),
                   SizedBox(
-                    height: 15,
+                      height: 250,
+                      child: MapElement(
+                        locationCubit: loactionCubit,
+                      )),
+                  const SizedBox(height: 15),
+                  // defaultButton(
+                  //     text: 'Current Location',
+                  //     buttonIcon: Icons.location_on,
+                  //     background: Colors.grey.shade100,
+                  //     textColor: const Color.fromRGBO(2, 113, 106, 1),
+                  //     width: 300,
+                  //     function: () async {
+                  //       await loactionCubit.getPermission();
+                  //       loactionCubit.getAddress();
+                  //     }),
+                  BlocConsumer<LocationCubit, LocationState>(
+                    listener: (context, state) {},
+                    builder: (context, state) {
+                      return defaultButton(
+                          text: 'Request',
+                          width: 300,
+                          function: () {
+                            print(loactionCubit.address);
+                            print(
+                                ("lat = ${loactionCubit.lat.toString()} , \nlon = ${loactionCubit.longitude.toString()}"));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) =>
+                                        const LoadingWinchScreen())));
+                          });
+                    },
                   ),
-                  defaultButton(
-                      text: 'Current Location',
-                      buttonIcon: Icons.location_on,
-                      background: Colors.grey.shade100,
-                      textColor: Color.fromRGBO(2, 113, 106, 1),
-                      width: 300,
-                      function: () async {
-                        await loactionCubit.getPermission();
-                        loactionCubit.getAddress();
-                      }),
-                  defaultButton(
-                      text: 'Request',
-                      width: 300,
-                      function: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) =>
-                                    const LoadingWinchScreen())));
-                      }),
                 ],
               ),
             ),
