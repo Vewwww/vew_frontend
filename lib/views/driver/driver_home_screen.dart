@@ -50,7 +50,7 @@ class DriverHomeScreen extends StatelessWidget {
                       context: context, destinationScreen: DiagnoseScreen());
                 },
                 text: 'Do Not Know Car Problem',
-                width: 330,
+                width: 350,
                 height: 75),
             const SizedBox(
               height: 10,
