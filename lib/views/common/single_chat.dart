@@ -12,7 +12,9 @@ import '../../core/utils/navigation.dart';
 
 class SingleChat extends StatelessWidget {
   ChatModel chat;
-  SingleChat({required this.chat, Key? key}) : super(key: key);
+  String? language; //ar = arabic , en= english
+  SingleChat({required this.chat, this.language = "en", Key? key})
+      : super(key: key);
   final TextEditingController _message = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class SingleChat extends StatelessWidget {
           children: [
             CustomAppBar(
               title: Text(
-                "Chat",
+                (language == "en") ? "Chat" : "المحادثة",
                 style: AppTextStyle.boldStyle(),
               ),
               leading: IconButton(
@@ -83,9 +85,13 @@ class SingleChat extends StatelessWidget {
                     child: TextFormField(
                       keyboardType: TextInputType.text,
                       controller: _message,
-                      decoration: const InputDecoration(
-                        hintTextDirection: TextDirection.rtl,
-                        hintText: 'اكتب رسالتك...',
+                      decoration: InputDecoration(
+                        hintTextDirection: (language == "ar")
+                            ? TextDirection.rtl
+                            : TextDirection.ltr,
+                        hintText: (language == "ar")
+                            ? 'اكتب رسالتك...'
+                            : ' write your message...',
                         isDense: true,
                         contentPadding: EdgeInsets.fromLTRB(10, 20, 10, 0),
                         border: OutlineInputBorder(
@@ -94,6 +100,9 @@ class SingleChat extends StatelessWidget {
                       validator: (value) {},
                     ),
                   ),
+                  SizedBox(
+                    width: 12,
+                  )
                 ],
               ),
             ),

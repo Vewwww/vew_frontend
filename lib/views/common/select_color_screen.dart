@@ -9,17 +9,6 @@ import '../../bloc/select_color_cubit/select_color_cubit.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/style/app_text_style/app_text_style.dart';
 
-List<String> colors = [
-  "white",
-  "Black",
-  "Red",
-  "Grey",
-  "Blue",
-  "Yellow",
-  "Brown",
-  "Green"
-];
-
 class SelectColorScreen extends StatelessWidget {
   const SelectColorScreen({Key? key}) : super(key: key);
   @override
@@ -33,7 +22,7 @@ class SelectColorScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 45),
             height: MediaQuery.of(context).size.height,
             child: ListView.builder(
-                itemCount: colors.length,
+                itemCount: selectColorCubit.carColorResponse!.carColor!.length,
                 itemBuilder: (context, index) => GestureDetector(
                       onTap: () {
                         selectColorCubit.choseColor(index);
@@ -48,7 +37,8 @@ class SelectColorScreen extends StatelessWidget {
                               SizedBox(
                                 //width: double.infinity,
                                 child: Text(
-                                  colors[index],
+                                  selectColorCubit.carColorResponse!
+                                      .carColor![index].name!.en!,
                                   style: AppTextStyle.greyStyle(size: 20),
                                 ),
                               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vewww/views/common/sign_in_screen.dart';
 import 'package:vewww/views/winch/winch_home_page.dart';
 
 import '../../bloc/add_car_cubit/add_car_cubit.dart';
@@ -9,8 +10,6 @@ import '../../core/components/logo.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/style/app_colors.dart';
 import '../../core/utils/navigation.dart';
-import '../common/sign_in_screen.dart';
-
 
 class WinchSignUpScreen extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -134,7 +133,7 @@ class WinchSignUpScreen extends StatelessWidget {
                       if (!addCarCubit.carExist) {
                         return Text(
                           "لم يتم اضافة سيارة",
-                          style: AppTextStyle.greyStyle(size:18),
+                          style: AppTextStyle.greyStyle(size: 18),
                         );
                       } else {
                         return Column(
@@ -183,7 +182,7 @@ class WinchSignUpScreen extends StatelessWidget {
                       ),
                       Text(
                         "تمتلك بالفعل حساب؟",
-                        style: AppTextStyle.greyStyle(size:14),
+                        style: AppTextStyle.greyStyle(size: 14),
                       ),
                     ],
                   ),
@@ -198,7 +197,7 @@ class WinchSignUpScreen extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 6),
                         child: Text(
                           "أو",
-                          style: AppTextStyle.greyStyle(size:12),
+                          style: AppTextStyle.greyStyle(size: 12),
                         ),
                       ),
                       const Expanded(

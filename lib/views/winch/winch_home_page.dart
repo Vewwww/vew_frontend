@@ -21,6 +21,7 @@ class WinchHomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+            SizedBox(height: 20),
             CustomAppBar(
               leading: IconButton(
                   onPressed: () {
@@ -31,6 +32,7 @@ class WinchHomePage extends StatelessWidget {
                     size: 30,
                     color: Colors.grey,
                   )),
+              haveLogo: true,
             ),
             Padding(
               padding:
@@ -44,10 +46,7 @@ class WinchHomePage extends StatelessWidget {
                 child: ListView.builder(
                     itemCount: 10,
                     itemBuilder: (BuildContext context, int index) {
-                      if (index % 2 == 0)
-                        return AcceptedRequestCard();
-                      else
-                        return ComingRequestCard();
+                      return AcceptedRequestCard();
                     }))
           ],
         ),

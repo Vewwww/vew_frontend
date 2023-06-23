@@ -14,8 +14,16 @@ List<OnboardingContent> content = [
     description: "A perfect solution\for your car\nproblem",
   ),
   OnboardingContent(
-    imagePath: "assets/images/onboarding2.png",
+    imagePath: "assets/images/onBoarding1.png",
     description: "Find the nearest\nand the best place \nto fix your car",
+  ),
+  OnboardingContent(
+    imagePath: "assets/images/onboarding2.png",
+    description: "Make your workshop or \nservices discoverable",
+  ),
+  OnboardingContent(
+    imagePath: "assets/images/profit.png",
+    description: "Grow your buisness",
   ),
   OnboardingContent(
     imagePath: "assets/images/onboarding3.png",

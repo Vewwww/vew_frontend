@@ -77,7 +77,7 @@ class RatingBar extends StatelessWidget {
         rating: rating,
         itemBuilder: (context, index) => Icon(
           Icons.star,
-          color: mainColor,
+          color: Colors.amberAccent,
         ),
       ),
     );

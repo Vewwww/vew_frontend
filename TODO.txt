@@ -1,5 +1,2 @@
-TODO::convert rating images in winch to wedgit
-TODO:: add back arrow to single request screen (winch)
 TODO:: convert edit profile icon to app logo , add back arrow , remove top padding , rtl
-TODO:: mix onboarding
 TODO:: switch color button in sign in , move it to common , defult arabic

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:vewww/core/components/custom_app_bar.dart';
+import 'package:vewww/core/components/rating_bar.dart';
 import 'package:vewww/core/style/app_colors.dart';
+import 'package:vewww/views/winch/winch_home_page.dart';
 
+import '../../core/components/backward_arrow.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/navigation.dart';
 import 'winch_edit_profile_screen.dart';
-
 
 class WinchProfile extends StatelessWidget {
   const WinchProfile({Key? key}) : super(key: key);
@@ -32,9 +35,17 @@ class WinchProfile extends StatelessWidget {
                 width: double.infinity,
                 child: Center(
                   child: Column(children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 10,
-                    ),
+                    const SizedBox(height: 20),
+                    Row(children: [
+                      BackwardArrow(
+                          iconColor: Colors.white,
+                          function: () {
+                            NavigationUtils.navigateAndClearStack(
+                                context: context,
+                                destinationScreen: WinchHomePage());
+                          })
+                    ]),
+                    const SizedBox(height: 10),
                     const CircleAvatar(
                       radius: 40,
                       backgroundColor: Colors.white,
@@ -48,11 +59,10 @@ class WinchProfile extends StatelessWidget {
                       "أحمد ناصر",
                       style: AppTextStyle.whiteTextStyle(28),
                     ),
-                    Image.asset(
-                      "assets/images/rating.png",
-                      width: 120,
-                      fit: BoxFit.cover,
-                    )
+                    RatingBar(
+                      3.2,
+                      size: 20,
+                    ),
                   ]),
                 ),
               ),
@@ -63,7 +73,7 @@ class WinchProfile extends StatelessWidget {
                       Container(
                           width: MediaQuery.of(context).size.width,
                           height: 2 * MediaQuery.of(context).size.height / 3,
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 10),
                           decoration: const BoxDecoration(
                               color: Colors.white,
@@ -86,12 +96,14 @@ class WinchProfile extends StatelessWidget {
                               ]))),
                       Positioned(
                           child: Container(
-                        margin: EdgeInsets.all(5),
+                        height: 30,
+                        width: 40,
+                        margin: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                             color: Colors.white,
                             border: Border.all(color: mainColor),
                             borderRadius:
-                                BorderRadius.all(Radius.circular(50))),
+                                const BorderRadius.all(Radius.circular(30))),
                         child: IconButton(
                             onPressed: () {
                               NavigationUtils.navigateTo(
@@ -99,7 +111,7 @@ class WinchProfile extends StatelessWidget {
                                   destinationScreen: WinchEditProfileScreen());
                             },
                             icon: Icon(Icons.edit_outlined,
-                                color: mainColor)),
+                                color: mainColor, size: 15)),
                       ))
                     ],
                   ))

@@ -4,3 +4,9 @@ part of 'auth_cubit.dart';
 abstract class AuthState {}
 
 class AuthInitial extends AuthState {}
+class SignInLoadingState extends AuthState {}
+class SignInSuccessState extends AuthState {}
+class SignInErrorState extends AuthState {}
+class SignUpLoadingState extends AuthState {}
+class SignUpSuccessState extends AuthState {}
+class SignUpErrorState extends AuthState {}

@@ -189,20 +189,20 @@ class EditDriverProfile extends StatelessWidget {
                                 child: CircleAvatar(
                                     radius: 30,
                                     backgroundColor: mainColor.withOpacity(0.3),
-                                    child: const Icon(
-                                      Icons.drive_eta,
-                                      size: 30,
-                                      //TODO::confirm color structure with back team
-                                      color:Colors.black // driver.cars![0].color,
-                                    ))),
+                                    child: const Icon(Icons.drive_eta,
+                                        size: 30,
+                                        //TODO::confirm color structure with back team
+                                        color: Colors
+                                            .black // driver.cars![0].color,
+                                        ))),
                             BlocConsumer<SelectChoiceCubit, SelectChoiceState>(
                                 listener: (context, snapshot) {},
                                 builder: (context, snapshot) {
                                   return CustomTextField(
                                     label: "Car Type",
-                                    hint: carTyps[SelectChoiceCubit.get(context)
+                                    hint: SelectChoiceCubit.get(context).carTypeResponse!.carType![SelectChoiceCubit.get(context)
                                             .choice]
-                                        .type,
+                                        .name!.en,
                                     isDroped: true,
                                     onDrop: () {
                                       NavigationUtils.navigateTo(
@@ -220,8 +220,8 @@ class EditDriverProfile extends StatelessWidget {
                                 builder: (context, snapshot) {
                                   return CustomTextField(
                                     label: "Car Color",
-                                    hint: colors[
-                                        SelectColorCubit.get(context).color],
+                                    // hint: colors[
+                                    //     SelectColorCubit.get(context).color],
                                     isDroped: true,
                                     onDrop: () {
                                       NavigationUtils.navigateTo(
