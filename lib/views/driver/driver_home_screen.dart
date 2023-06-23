@@ -76,8 +76,8 @@ class DriverHomeScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                defaultButton(text: 'Mechanic', height: 80, width: 175),
-                defaultButton(text: 'Winch', height: 80, width: 175, function: (){
+                defaultButton(text: 'Mechanic', height: 80, width: 170),
+                defaultButton(text: 'Winch', height: 80, width: 170, function: (){
                   NavigationUtils.navigateTo(
                       context: context, destinationScreen: RequestWinchScreen());
                 }),
@@ -106,8 +106,8 @@ class DriverHomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 defaultButton(
-                    text: 'Maintenance \n Center', height: 80, width: 150),
-                defaultButton(text: 'Gas Station', height: 80, width: 150)
+                    text: 'Maintenance \n Center', height: 80, width: 170),
+                defaultButton(text: 'Gas Station', height: 80, width: 170)
               ],
             ),
             const SizedBox(
@@ -116,7 +116,7 @@ class DriverHomeScreen extends StatelessWidget {
             defaultButton(
               text: 'Warning Light',
               height: 80,
-              width: 330,
+              width: 350,
               function: () {
                 Navigator.push(
                     context,
