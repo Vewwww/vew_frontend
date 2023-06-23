@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/bloc/chat_cubit/chat_cubit.dart';
 import 'package:vewww/bloc/diagnose_cunit/diagnose_cubit.dart';
+import 'package:vewww/model/driver.dart';
 import 'package:vewww/views/common/map.dart';
 import 'package:vewww/views/common/splash_screen.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
@@ -16,6 +17,7 @@ import '../bloc/onboarding_cubit/onboarding_cubit.dart';
 import '../bloc/reminder_cubit/reminder_cubit.dart';
 import '../bloc/select_choice_cubit/select_choice_cubit.dart';
 import '../bloc/select_color_cubit/select_color_cubit.dart';
+import '../bloc/warning_sign_cubit/warning_sign_cubit.dart';
 import '../views/admin/admin_home_screen.dart';
 
 class AppRoot extends StatelessWidget {
@@ -46,6 +48,7 @@ class AppRoot extends StatelessWidget {
           BlocProvider(create: (context) => AuthCubit()),
           BlocProvider(create: (context) => AddImageCubit()),
           BlocProvider(create: (context) => VerificationCubit()),
+          BlocProvider(create: (context) => WarningSignCubit()),
         ],
         child: MaterialApp(
           theme: ThemeData(
@@ -61,7 +64,7 @@ class AppRoot extends StatelessWidget {
                       backgroundColor: const Color.fromARGB(255, 2, 113, 106))),
               primaryColor: const Color.fromARGB(255, 2, 113, 106)),
           debugShowCheckedModeBanner: false,
-          home: SplashScreen(),
+          home: DriverHomeScreen(),
         ));
   }
 }

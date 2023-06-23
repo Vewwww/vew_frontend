@@ -1,51 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vewww/bloc/warning_sign_cubit/warning_sign_cubit.dart';
+import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/views/driver/diagnose_screen.dart';
 import 'package:vewww/views/driver/driver_drawer.dart';
 import 'package:vewww/views/driver/request_winch_screen.dart';
+import 'package:vewww/views/driver/select_car_model_screen.dart';
 
 import 'driver_warning_sign.dart';
 
-
 class DriverHomeScreen extends StatelessWidget {
   const DriverHomeScreen({Key? key}) : super(key: key);
-  
 
   @override
   Widget build(BuildContext context) {
+    WarningSignCubit warningSignCubit = WarningSignCubit.get(context);
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-              //tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              icon: const Icon(Icons.menu),
-              iconSize: 35,
-              color: const Color.fromRGBO(2, 113, 106, 1),
-            );
-          },
-        ),
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.search,
-                color: Color.fromRGBO(2, 113, 106, 1),
-                size: 30,
-              )),
-        ],
-      ),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
+            CustomAppBar(
+              haveLogo: true,
+              leading: Builder(
+                builder: (BuildContext context) {
+                  return IconButton(
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    //tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                    icon: const Icon(Icons.menu),
+                    iconSize: 35,
+                    color: const Color.fromRGBO(2, 113, 106, 1),
+                  );
+                },
+              ),
+              actions: [
+                IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.search,
+                      color: Color.fromRGBO(2, 113, 106, 1),
+                      size: 30,
+                    )),
+              ],
+            ),
+            const SizedBox(
+              height: 50,
+            ),
             defaultButton(
                 function: () {
                   NavigationUtils.navigateTo(
@@ -77,10 +82,15 @@ class DriverHomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 defaultButton(text: 'Mechanic', height: 80, width: 170),
-                defaultButton(text: 'Winch', height: 80, width: 170, function: (){
-                  NavigationUtils.navigateTo(
-                      context: context, destinationScreen: RequestWinchScreen());
-                }),
+                defaultButton(
+                    text: 'Winch',
+                    height: 80,
+                    width: 170,
+                    function: () {
+                      NavigationUtils.navigateTo(
+                          context: context,
+                          destinationScreen: RequestWinchScreen());
+                    }),
               ],
             ),
             const SizedBox(
@@ -106,22 +116,37 @@ class DriverHomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 defaultButton(
-                    text: 'Maintenance \n Center', height: 80, width: 170),
+                    text: 'Maintenance \n Center',
+                    height: 80,
+                    width: 170,
+                    function: () {
+                      NavigationUtils.navigateTo(
+                          context: context,
+                          destinationScreen: const SelectCarModelScreen());
+                    }),
                 defaultButton(text: 'Gas Station', height: 80, width: 170)
               ],
             ),
             const SizedBox(
               height: 30,
             ),
-            defaultButton(
-              text: 'Warning Light',
-              height: 80,
-              width: 350,
-              function: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: ((context) =>  DriverWarningSign())));
+            BlocConsumer<WarningSignCubit, WarningSignState>(
+              listener: (context, state) {
+                // TODO: implement listener
+              },
+              builder: (context, state) {
+                return defaultButton(
+                  text: 'Warning Light',
+                  height: 80,
+                  width: 350,
+                  function: () {
+                    warningSignCubit.getAllSigns();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => DriverWarningSign())));
+                  },
+                );
               },
             ),
           ],
