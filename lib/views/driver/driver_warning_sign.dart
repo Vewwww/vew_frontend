@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:vewww/bloc/warning_sign_cubit/warning_sign_cubit.dart';
 
 import '../../core/components/a_warning_sign.dart';
 import '../../core/components/custom_app_bar.dart';
@@ -9,9 +10,9 @@ import '../common/single_warning_sign_screen.dart';
 
 class DriverWarningSign extends StatelessWidget {
   const DriverWarningSign({super.key});
-
   @override
   Widget build(BuildContext context) {
+    WarningSignCubit warningSignCubit =WarningSignCubit.get(context);
    return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -29,9 +30,9 @@ class DriverWarningSign extends StatelessWidget {
               child: ListView.separated(
                 shrinkWrap: true,
                 itemBuilder: (context, index) => aWarningSign(
-                    title: 'Check Engine',
+                    title: warningSignCubit.signResponse!.name!.en![index],
                     imageURL:
-                        'https://hips.hearstapps.com/hmg-prod/images/check-engine-light-icon-1616189100.jpg',
+                        warningSignCubit.signResponse!.image![index],
                     function: () {
                       Navigator.push(
                           context,
@@ -39,7 +40,7 @@ class DriverWarningSign extends StatelessWidget {
                               builder: ((context) =>
                                   SingleWarningSignScreen())));
                     }),
-                itemCount: 15,
+                itemCount: warningSignCubit.signResponse!.sId!.length,
                 separatorBuilder: (context, index) => SizedBox(
                   height: 15,
                 ),
