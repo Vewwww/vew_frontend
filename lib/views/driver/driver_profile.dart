@@ -14,7 +14,7 @@ class DriverProfile extends StatelessWidget {
   final TextEditingController _phone = TextEditingController();
   final TextEditingController _licenseRenewalDate = TextEditingController();
   DriverProfile({required this.driver, Key? key}) : super(key: key) {
-    _email.text = driver.email!;
+    _email.text = driver.person!.email!;
     _phone.text = driver.phoneNumber!;
     _licenseRenewalDate.text = driver.lisenceRenewalDate!;
   }

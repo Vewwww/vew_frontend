@@ -17,6 +17,7 @@ import '../../core/components/logo.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/navigation.dart';
 import '../../model/car.dart';
+import '../../model/person.dart';
 import 'select_car_model_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -246,7 +247,7 @@ class SignUpScreen extends StatelessWidget {
                                       NavigationUtils.navigateTo(
                                           context: context,
                                           destinationScreen:
-                                              const SelectCarModelScreen());
+                                              SelectCarModelScreen());
                                     },
                                     validator: (value) {
                                       //TODO::return and validate car model
@@ -408,11 +409,13 @@ class SignUpScreen extends StatelessWidget {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             Driver driver = Driver(
-                                email: _email.text,
-                                name: _name.text,
-                                password: _password.text,
+                                person: Person(
+                                  email: _email.text,
+                                  name: _name.text,
+                                  password: _password.text,
+                                  role: "user",
+                                ),
                                 lisenceRenewalDate: _lisenceRenewalDate.text,
-                                role: "user",
                                 phoneNumber: _phoneNumber.text,
                                 gender: genderCubit.genderInText,
                                 cars: []);

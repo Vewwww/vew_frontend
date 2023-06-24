@@ -3,8 +3,9 @@ import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/views/admin/admin_profile.dart';
 
 import '../../model/admin.dart';
+import '../../model/person.dart';
 
-Admin admin=Admin(name: 'Ali', email: 'ali@gmail.com', password: 'ali123', phoneNumber: '01111548');
+Admin admin=Admin(   person:  Person (name: 'Ali', email: 'ali@gmail.com', password: 'ali123',),phoneNumber: '01111548');
 
 class AdminDrawer extends StatelessWidget {
   const AdminDrawer({Key? key}) : super(key: key);

@@ -7,6 +7,7 @@ import 'package:vewww/views/driver/sign_in_screen.dart';
 import '../../core/components/logo.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
 import '../admin/admin_home_screen.dart';
+import '../winch/winch_home_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -62,12 +63,22 @@ class _SplashScreenState extends State<SplashScreen> {
 
   route() {
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-      if (SharedPreferencesHelper.getData(key: "vewwwisFirst") != false) {
+      if (SharedPreferencesHelper.getData(key: "vewIsFirst") != false) {
         return OnBoardingScreen();
-      } else if (SharedPreferencesHelper.getData(key: "accessToken") == null)
+      } else if (SharedPreferencesHelper.getData(key: "vewRole") == null)
         return SignInScreen();
-      else
-        return AdminHomeScreen();
+      else {
+        if (SharedPreferencesHelper.getData(key: "vewRole") == "admin")
+          return AdminHomeScreen();
+        else if (SharedPreferencesHelper.getData(key: "vewRole") == "driver")
+          return DriverHomeScreen();
+        else if (SharedPreferencesHelper.getData(key: "vewRole") == "winch")
+          return WinchHomePage();
+        else {
+          //TODO:: add mechanic home screen
+          return DriverHomeScreen();
+        }
+      }
     }), (route) => true);
   }
 }

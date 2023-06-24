@@ -8,9 +8,13 @@ import 'package:vewww/views/common/warning_light_screen.dart';
 import 'package:vewww/views/driver/diagnose_screen.dart';
 import 'package:vewww/views/driver/driver_drawer.dart';
 import 'package:vewww/views/driver/request_winch_screen.dart';
+import 'package:vewww/views/driver/search_screen.dart';
 import 'package:vewww/views/driver/select_car_model_screen.dart';
 
+import '../../bloc/select_choice_cubit/select_choice_cubit.dart';
 import 'driver_warning_sign.dart';
+import 'maintenance_center_preview.dart';
+import 'search_result_screen.dart';
 
 class DriverHomeScreen extends StatelessWidget {
   const DriverHomeScreen({Key? key}) : super(key: key);
@@ -22,128 +26,133 @@ class DriverHomeScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            CustomAppBar(
-              haveLogo: true,
-              leading: Builder(
-                builder: (BuildContext context) {
-                  return IconButton(
-                    onPressed: () {
-                      Scaffold.of(context).openDrawer();
-                    },
-                    //tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-                    icon: const Icon(Icons.menu),
-                    iconSize: 35,
-                    color: const Color.fromRGBO(2, 113, 106, 1),
-                  );
-                },
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              CustomAppBar(
+                haveLogo: true,
+                leading: Builder(
+                  builder: (BuildContext context) {
+                    return IconButton(
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                      //tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                      icon: const Icon(Icons.menu),
+                      iconSize: 35,
+                      color: const Color.fromRGBO(2, 113, 106, 1),
+                    );
+                  },
+                ),
+                actions: [
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.search,
+                        color: Color.fromRGBO(2, 113, 106, 1),
+                        size: 30,
+                      )),
+                ],
               ),
-              actions: [
-                IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.search,
-                      color: Color.fromRGBO(2, 113, 106, 1),
-                      size: 30,
-                    )),
-              ],
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            defaultButton(
-                function: () {
-                  NavigationUtils.navigateTo(
-                      context: context, destinationScreen: DiagnoseScreen());
-                },
-                text: 'Do Not Know Car Problem',
+              const SizedBox(
+                height: 50,
+              ),
+              defaultButton(
+                  function: () {
+                    NavigationUtils.navigateTo(
+                        context: context, destinationScreen: DiagnoseScreen());
+                  },
+                  text: 'Do Not Know Car Problem',
+                  width: 350,
+                  height: 80),
+              const SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 28),
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    'Request ',
+                    style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  defaultButton(text: 'Mechanic', height: 80, width: 170),
+                  defaultButton(
+                      text: 'Winch',
+                      height: 80,
+                      width: 170,
+                      function: () {
+                        NavigationUtils.navigateTo(
+                            context: context,
+                            destinationScreen: RequestWinchScreen());
+                      }),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 28),
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    'Find Nearest',
+                    style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  defaultButton(
+                      text: 'Maintenance \n Center',
+                      height: 80,
+                      width: 170,
+                      function: () {
+                        SelectChoiceCubit.get(context).getAllCarTypes();
+                        NavigationUtils.navigateTo(
+                            context: context,
+                            destinationScreen: SelectCarModelScreen(
+                              destinationScreen: SearchResultScreen(),
+                            ));
+                      }),
+                  defaultButton(text: 'Gas Station', height: 80, width: 170)
+                ],
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              defaultButton(
+                text: 'Warning Light',
+                height: 80,
                 width: 350,
-                height: 80),
-            const SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 28),
-              child: Container(
-                alignment: Alignment.centerLeft,
-                child: const Text(
-                  'Request ',
-                  style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
+                function: () {
+                  // warningSignCubit.getAllSigns();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => WarningLightScreen())));
+                },
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                defaultButton(text: 'Mechanic', height: 80, width: 170),
-                defaultButton(
-                    text: 'Winch',
-                    height: 80,
-                    width: 170,
-                    function: () {
-                      NavigationUtils.navigateTo(
-                          context: context,
-                          destinationScreen: RequestWinchScreen());
-                    }),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 28),
-              child: Container(
-                alignment: Alignment.centerLeft,
-                child: const Text(
-                  'Find Nearest',
-                  style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                defaultButton(
-                    text: 'Maintenance \n Center',
-                    height: 80,
-                    width: 170,
-                    function: () {
-                      NavigationUtils.navigateTo(
-                          context: context,
-                          destinationScreen: const SelectCarModelScreen());
-                    }),
-                defaultButton(text: 'Gas Station', height: 80, width: 170)
-              ],
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            defaultButton(
-              text: 'Warning Light',
-              height: 80,
-              width: 350,
-              function: () {
-                // warningSignCubit.getAllSigns();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: ((context) => WarningLightScreen())));
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       drawer: const DriverDrawer(),
