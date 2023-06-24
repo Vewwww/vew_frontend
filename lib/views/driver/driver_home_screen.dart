@@ -4,6 +4,7 @@ import 'package:vewww/bloc/warning_sign_cubit/warning_sign_cubit.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/utils/navigation.dart';
+import 'package:vewww/views/common/warning_light_screen.dart';
 import 'package:vewww/views/driver/diagnose_screen.dart';
 import 'package:vewww/views/driver/driver_drawer.dart';
 import 'package:vewww/views/driver/request_winch_screen.dart';
@@ -130,23 +131,16 @@ class DriverHomeScreen extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            BlocConsumer<WarningSignCubit, WarningSignState>(
-              listener: (context, state) {
-                // TODO: implement listener
-              },
-              builder: (context, state) {
-                return defaultButton(
-                  text: 'Warning Light',
-                  height: 80,
-                  width: 350,
-                  function: () {
-                    warningSignCubit.getAllSigns();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: ((context) => DriverWarningSign())));
-                  },
-                );
+            defaultButton(
+              text: 'Warning Light',
+              height: 80,
+              width: 350,
+              function: () {
+                // warningSignCubit.getAllSigns();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => WarningLightScreen())));
               },
             ),
           ],

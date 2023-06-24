@@ -37,9 +37,12 @@ Widget aWarningSign({
           const SizedBox(
             width: 15,
           ),
-          Text(
-            title,
-            style: const TextStyle(fontSize: 17),
+          Flexible(
+            child: Text(
+              title,
+              style: const TextStyle(fontSize: 17),
+              overflow: TextOverflow.ellipsis,
+            ),
           )
         ],
       ),
