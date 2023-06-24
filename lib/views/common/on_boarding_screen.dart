@@ -106,7 +106,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     (pageCubit.pageIndex == content.length - 1)
                         ? OutlinedButton(
                             onPressed: () {
-                              SharedPreferencesHelper.saveData(key: "vewwwIsFirst", value: false);
+                              SharedPreferencesHelper.saveData(key: "vewIsFirst", value: false);
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(

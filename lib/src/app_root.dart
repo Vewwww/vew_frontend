@@ -64,7 +64,7 @@ class AppRoot extends StatelessWidget {
                       backgroundColor: const Color.fromARGB(255, 2, 113, 106))),
               primaryColor: const Color.fromARGB(255, 2, 113, 106)),
           debugShowCheckedModeBanner: false,
-          home: DriverHomeScreen(),
+          home: SplashScreen(),
         ));
   }
 }

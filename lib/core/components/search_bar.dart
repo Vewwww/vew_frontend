@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SearchBar extends StatelessWidget {
-  const SearchBar({Key? key}) : super(key: key);
+  SearchBar({this.searchKey, Key? key}) : super(key: key);
+  String? searchKey;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class SearchBar extends StatelessWidget {
           border: InputBorder.none,
           prefixIcon: Icon(Icons.search),
           prefixIconColor: Color.fromRGBO(46, 180, 171, 1),
-          hintText: 'Search',
+          hintText: (searchKey) ?? 'Search',
           hintStyle: TextStyle(fontSize: 14),
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         ),

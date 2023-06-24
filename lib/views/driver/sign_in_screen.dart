@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/bloc/auth_cubit/auth_cubit.dart';
 import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
+import 'package:vewww/model/person.dart';
+import 'package:vewww/views/admin/admin_home_screen.dart';
 import 'package:vewww/views/common/choose_role_screen.dart';
 import 'package:vewww/core/components/forgot_password_screen.dart';
+import 'package:vewww/views/winch/winch_home_page.dart';
 import '../../bloc/add_car_cubit/add_car_cubit.dart';
 import '../../core/components/custom_text_field.dart';
 import '../../core/components/logo.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
+import '../../core/utils/navigation.dart';
 import '../../model/driver.dart';
+import 'driver_home_screen.dart';
 
 class SignInScreen extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -68,21 +73,30 @@ class SignInScreen extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            Driver driver = Driver(
+                            Person person = Person(
                                 email: _email.text, password: _password.text);
-                            await authCubit.signIn(driver);
+                            await authCubit.signIn(person);
                             if (authCubit.state is SignInSuccessState) {
+                              String role = SharedPreferencesHelper.getData(
+                                  key: "vewRole");
+                              print("role is $role");
                               const snackBar = SnackBar(
                                   content: Text("Loged in successfully !"));
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
-                              SharedPreferencesHelper.saveData(
-                                  key: "token",
-                                  value:
-                                      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2RlbE5hbWUiOiJkcml2ZXIiLCJ1c2VySWQiOiI2NDhjOGQ5Y2UzMWQwNDJiMGM1MmI5ZmEiLCJpYXQiOjE2ODcyNjgxMDB9.vPjcJWMjFdHvELIkYO_jUBz2fdS2L3RHCga6SKHHifc");
-                              // NavigationUtils.navigateAndClearStack(
-                              //     context: context,
-                              //     destinationScreen: DriverHomeScreen());
+                              Widget screen;
+                              if (role == "user")
+                                screen = DriverHomeScreen();
+                              else if (role == "winch")
+                                screen = WinchHomePage();
+                              else if (role == "admin")
+                                screen = AdminHomeScreen();
+                              else {
+                                //TODO::put mechanic home screen
+                                screen = DriverHomeScreen();
+                              }
+                              NavigationUtils.navigateAndClearStack(
+                                  context: context, destinationScreen: screen);
                             } else {
                               const snackBar = SnackBar(
                                   content:

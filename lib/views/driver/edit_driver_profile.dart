@@ -27,8 +27,8 @@ class EditDriverProfile extends StatelessWidget {
   final TextEditingController _phone = TextEditingController();
   EditDriverProfile({required this.driver, this.color, Key? key})
       : super(key: key) {
-    _email.text = driver.email!;
-    _name.text = driver.name!;
+    _email.text = driver.person! .email!;
+    _name.text = driver.person!.name!;
     _phone.text = driver.phoneNumber!;
   }
 
@@ -208,7 +208,7 @@ class EditDriverProfile extends StatelessWidget {
                                       NavigationUtils.navigateTo(
                                           context: context,
                                           destinationScreen:
-                                              const SelectCarModelScreen());
+                                              SelectCarModelScreen());
                                     },
                                     validator: (value) {
                                       //TODO::return and validate car model
