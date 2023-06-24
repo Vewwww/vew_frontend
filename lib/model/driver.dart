@@ -1,32 +1,28 @@
 import 'package:vewww/model/car.dart';
+import 'package:vewww/model/person.dart';
 
 class Driver {
-  String? name;
-  String? email;
-  String? password;
+  Person? person;
   String? gender;
   String? lisenceRenewalDate;
-  String? role;
   String? phoneNumber;
   List<Car>? cars;
 
   Driver(
-      {this.name,
-      this.email,
-      this.password,
-      this.gender,
+      {this.gender,
       this.lisenceRenewalDate,
-      this.role,
+      this.person,
       this.phoneNumber,
       this.cars});
 
   Driver.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    email = json['email'];
-    password = json['password'];
+    var name = json['name'];
+    var email = json['email'];
+    var password = json['password'];
+    var role = json['role'];
+    person = Person(name: name, email: email, password: password, role: role);
     gender = json['gender'];
     lisenceRenewalDate = json['lisenceRenewalDate'];
-    role = json['role'];
     phoneNumber = json['phoneNumber'];
     if (json['cars'] != null) {
       cars = <Car>[];
@@ -37,13 +33,13 @@ class Driver {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
-    data['name'] = name;
-    data['email'] = email;
-    data['password'] = password;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['name'] = person!.name;
+    data['email'] = person!.email;
+    data['password'] = person!.password;
     data['gender'] = gender;
     data['lisenceRenewalDate'] = lisenceRenewalDate;
-    data['role'] = role;
+    data['role'] = person!.role;
     data['phoneNumber'] = phoneNumber;
     if (cars != null) {
       data['cars'] = cars!.map((v) => v.toJson()).toList();
@@ -52,14 +48,13 @@ class Driver {
   }
 }
 
-
-
-
 Driver driver = Driver(
-  email: "hello@email.com",
+  person: Person(
+    email: "hello@email.com",
+  name: "wael mohamed",
+  ),
   gender: "male",
   phoneNumber: "0112111210",
-  name: "wael mohamed",
   lisenceRenewalDate: "05/09/2023",
   // cars: [
   //   Car(

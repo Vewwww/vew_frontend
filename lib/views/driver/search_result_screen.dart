@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:vewww/core/components/near_repairer_card.dart';
-import 'package:vewww/core/components/search_bar.dart';
+import 'package:vewww/core/components/filter_card.dart';
+import 'package:vewww/views/driver/search_screen.dart';
 
 import '../../core/components/custom_app_bar.dart';
+import '../../core/components/near_repairer_card.dart';
+import '../../core/components/search_bar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/style/app_colors.dart';
 import '../../core/utils/navigation.dart';
-import 'driver_home_screen.dart';
 
-class SearchScreen extends StatelessWidget {
-  const SearchScreen({Key? key}) : super(key: key);
+class SearchResultScreen extends StatelessWidget {
+  const SearchResultScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
@@ -24,7 +25,7 @@ class SearchScreen extends StatelessWidget {
                   onPressed: () {
                     NavigationUtils.navigateTo(
                         context: context,
-                        destinationScreen: const DriverHomeScreen());
+                        destinationScreen: const SearchScreen());
                   },
                   icon: Icon(
                     Icons.arrow_back_ios,
@@ -33,14 +34,17 @@ class SearchScreen extends StatelessWidget {
             ),
             SearchBar(),
             const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Near Repairers", style: AppTextStyle.greyStyle()),
-                InkWell(
-                    onTap: () {},
-                    child: Text("See All", style: AppTextStyle.mainStyle())),
-              ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  FilterCard(filter: "All"),
+                  FilterCard(filter: "Mechanist"),
+                  FilterCard(filter: "Gas Station"),
+                  FilterCard(filter: "Maintenance Centers"),
+                ],
+              ),
             ),
             const Divider(
               thickness: 1,

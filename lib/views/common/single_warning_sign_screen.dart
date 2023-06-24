@@ -43,83 +43,104 @@ class _SingleWarningSignScreenState extends State<SingleWarningSignScreen> {
     //print(sign.name!.en!);
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: BlocBuilder<WarningSignCubit, WarningSignState>(
-          builder: (context, state) {
-            if(state is GetSingleWarningSignSuccessState)
-            {
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: BlocBuilder<WarningSignCubit, WarningSignState>(
+              builder: (context, state) {
+            if (state is GetSingleWarningSignSuccessState) {
               print(state.sign.name!.en);
               return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomAppBar(
-                  haveLogo: true,
-                  leading: IconButton(icon:Icon( Icons.arrow_back_ios_new, color: mainColor,), onPressed: (){
-                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>WarningLightScreen()), (route) => false);
-                  },),
-                ),
-                 SizedBox(height: 20,),
-                Center(
-                  child: Image.network(
-                    state.sign.image!,
-                    height: 150,
-                    width: 150,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomAppBar(
+                    haveLogo: true,
+                    leading: IconButton(
+                      icon: Icon(
+                        Icons.arrow_back_ios_new,
+                        color: mainColor,
+                      ),
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => WarningLightScreen()),
+                            (route) => false);
+                      },
+                    ),
                   ),
-                ),
-                SizedBox(height: 20,),
-                Center(
-                  child: Text(
-                    state.sign.name!.en!,
-                    style: AppTextStyle.mainStyle(size: 20),
+                  SizedBox(
+                    height: 20,
                   ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  'Description: ',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey,
+                  Center(
+                    child: Image.network(
+                      state.sign.image!,
+                      height: 150,
+                      width: 150,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  state.sign.description!.en!,
-                  style: TextStyle(
-                    fontSize: 20,
+                  SizedBox(
+                    height: 20,
                   ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  'Solution: ',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey,
+                  Center(
+                    child: Text(
+                      state.sign.name!.en!,
+                      style: AppTextStyle.mainStyle(size: 20),
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  state.sign.solution!.en!,
-                  style: TextStyle(
-                    fontSize: 20,
+                  SizedBox(
+                    height: 20,
                   ),
-                )
-              ],
-            );
-          }else{
-            return CircularProgressIndicator();
-          }
-          }
+                  Text(
+                    'Description: ',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    state.sign.description!.en!,
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Text(
+                    'Solution: ',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    state.sign.solution!.en!,
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  )
+                ],
+              );
+            } else {
+              return Center(
+                  child: Column(
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height / 3),
+                  CircularProgressIndicator(),
+                ],
+              ));
+            }
+          }),
         ),
       ),
     );

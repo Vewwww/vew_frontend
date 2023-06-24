@@ -1,9 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import 'package:vewww/services/dio_helper.dart';
 
 import '../../model/driver.dart';
+import '../../model/person.dart';
 
 part 'auth_state.dart';
 
@@ -24,14 +26,18 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  Future<void> signIn(Driver driver) async {
+  Future<void> signIn(Person person) async {
     print("driver signin request : ${driver.toJson()}");
     emit(SignInLoadingState());
     await DioHelper.postData(
             url: "/allusers/login/",
-            data: {"email": driver.email, "password": driver.password})
+            data: {"email": person.email, "password": person.password})
         .then((value) {
-      print("driver sign in response : ${value.data}");
+      print("sign in response : ${value.data}");
+      Person person = SignInResponse.fromJson(value.data).person!;
+      print("person = ${person.token} , ${person.role}");
+      SharedPreferencesHelper.saveData(key: 'vewToken', value: person.token);
+      SharedPreferencesHelper.saveData(key: 'vewRole', value: person.role);
       emit(SignInSuccessState());
     }).onError((error, stackTrace) {
       print("error in driver sign in : $error");

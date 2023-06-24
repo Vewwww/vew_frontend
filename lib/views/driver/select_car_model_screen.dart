@@ -8,92 +8,121 @@ import '../../core/components/custom_app_bar.dart';
 import '../../core/style/app_text_style/app_text_style.dart';
 
 class SelectCarModelScreen extends StatelessWidget {
-  const SelectCarModelScreen({Key? key}) : super(key: key);
+  SelectCarModelScreen({this.destinationScreen, Key? key}) : super(key: key);
+  Widget? destinationScreen;
   @override
   Widget build(BuildContext context) {
     SelectChoiceCubit selectChoiceCubit = SelectChoiceCubit.get(context);
     return Scaffold(
       //appBar:
-      body: Stack(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 45),
-            height: MediaQuery.of(context).size.height,
-            child: ListView.builder(
-                itemCount: selectChoiceCubit.carTypeResponse!.carType!.length,
-                itemBuilder: (context, index) => GestureDetector(
-                      onTap: () {
-                        selectChoiceCubit.chose(index);
-                      },
-                      child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                //width: double.infinity,
-                                child: Text(
-                                  selectChoiceCubit.carTypeResponse!.carType![index].name!.en!,
-                                  style: AppTextStyle.greyStyle(size: 20)
-                                ),
-                              ),
-                              Container(
-                                height: 15,
-                                width: 15,
-                                margin: const EdgeInsets.all(4),
-                                padding: const EdgeInsets.all(2),
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: mainColor),
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: BlocConsumer<SelectChoiceCubit,
-                                        SelectChoiceState>(
-                                    listener: (context, state) {},
-                                    builder: (context, snapshot) {
-                                      return Container(
-                                        decoration: BoxDecoration(
-                                            color: (selectChoiceCubit.choice ==
-                                                    index)
-                                                ? mainColor
-                                                : Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(20)),
-                                      );
-                                    }),
-                              ),
-                            ],
+      body: BlocConsumer<SelectChoiceCubit, SelectChoiceState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (selectChoiceCubit.state is GetAllCarTypesSuccessState ||
+              selectChoiceCubit.state is ChoiceSelected) {
+            return Stack(
+              children: [
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 25, vertical: 45),
+                  height: MediaQuery.of(context).size.height,
+                  child: ListView.builder(
+                      itemCount:
+                          selectChoiceCubit.carTypeResponse!.carType!.length,
+                      itemBuilder: (context, index) => GestureDetector(
+                            onTap: () {
+                              selectChoiceCubit.chose(index);
+                            },
+                            child: Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      //width: double.infinity,
+                                      child: Text(
+                                          selectChoiceCubit.carTypeResponse!
+                                              .carType![index].name!.en!,
+                                          style:
+                                              AppTextStyle.greyStyle(size: 20)),
+                                    ),
+                                    Container(
+                                      height: 15,
+                                      width: 15,
+                                      margin: const EdgeInsets.all(4),
+                                      padding: const EdgeInsets.all(2),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(color: mainColor),
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: BlocConsumer<SelectChoiceCubit,
+                                              SelectChoiceState>(
+                                          listener: (context, state) {},
+                                          builder: (context, snapshot) {
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                  color: (selectChoiceCubit
+                                                              .choice ==
+                                                          index)
+                                                      ? mainColor
+                                                      : Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
+                                            );
+                                          }),
+                                    ),
+                                  ],
+                                )),
                           )),
-                    )),
-          ),
-          Positioned(
-            top: 0,
-            child: Container(
-              color: Colors.white,
-              width: MediaQuery.of(context).size.width,
-              child: CustomAppBar(
-                haveBackArrow: true,
-                title: Text(
-                  "Car Type",
-                  style: AppTextStyle.mainStyle(),
                 ),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 20,
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 11 / 12,
-              child: ElevatedButton(
-                onPressed: () {
-                  NavigationUtils.navigateBack(context: context);
-                },
-                child: const Text("Done"),
-              ),
-            ),
-          ),
-        ],
+                Positioned(
+                  top: 0,
+                  child: Container(
+                    color: Colors.white,
+                    width: MediaQuery.of(context).size.width,
+                    child: CustomAppBar(
+                      haveBackArrow: true,
+                      title: Text(
+                        "Car Type",
+                        style: AppTextStyle.mainStyle(),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  left: 20,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 11 / 12,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (destinationScreen == null)
+                          NavigationUtils.navigateBack(context: context);
+                        else
+                          NavigationUtils.navigateTo(
+                              context: context,
+                              destinationScreen: destinationScreen!);
+                      },
+                      child: const Text("Done"),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          } else {
+            return Center(
+                child: Column(
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.height / 3),
+                CircularProgressIndicator(),
+              ],
+            ));
+          }
+        },
       ),
     );
   }
