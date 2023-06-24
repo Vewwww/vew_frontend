@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:vewww/core/components/custom_app_bar.dart';
-import 'package:vewww/core/components/rating_bar.dart';
-import 'package:vewww/core/style/app_colors.dart';
-import 'package:vewww/views/winch/winch_home_page.dart';
-
+import 'package:vewww/views/mechanic/mechanic_home_screen.dart';
 import '../../core/components/backward_arrow.dart';
 import '../../core/components/data_element.dart';
+import '../../core/components/rating_bar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
+import '../../core/style/app_colors.dart';
 import '../../core/utils/navigation.dart';
-import 'winch_edit_profile_screen.dart';
+import 'mechanic_edit_profile_screen.dart';
 
-class WinchProfile extends StatelessWidget {
-  const WinchProfile({Key? key}) : super(key: key);
+class MechanicProfile extends StatelessWidget {
+  const MechanicProfile({super.key});
 
   @override
-  Widget build(BuildContext context) {
+ Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
             width: double.infinity,
@@ -43,7 +41,7 @@ class WinchProfile extends StatelessWidget {
                           function: () {
                             NavigationUtils.navigateAndClearStack(
                                 context: context,
-                                destinationScreen: WinchHomePage());
+                                destinationScreen: MechanicHomeScreen());
                           })
                     ]),
                     const SizedBox(height: 10),
@@ -88,9 +86,9 @@ class WinchProfile extends StatelessWidget {
                                 DataElement("رقم الهاتف", "011111111"),
                                 const Divider(
                                     color: Colors.grey, thickness: 0.8),
-                                Text("السيارة",
+                                Text("الخدمات",
                                     style: AppTextStyle.lightGrayTextStyle(14)),
-                                DataElement("رقم السيارة", "286 أ خ د"),                             
+                                DataElement(" ", "سمكره و دهان"),
                               ]))),
                       Positioned(
                           child: Container(
@@ -106,7 +104,7 @@ class WinchProfile extends StatelessWidget {
                             onPressed: () {
                               NavigationUtils.navigateTo(
                                   context: context,
-                                  destinationScreen: WinchEditProfileScreen());
+                                  destinationScreen: MechanicEditProfile());
                             },
                             icon: Icon(Icons.edit_outlined,
                                 color: mainColor, size: 15)),
@@ -115,5 +113,4 @@ class WinchProfile extends StatelessWidget {
                   ))
             ])));
   }
-
 }

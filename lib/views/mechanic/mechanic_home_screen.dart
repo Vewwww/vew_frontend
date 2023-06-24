@@ -1,44 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:vewww/views/winch/winch_profile.dart';
-import 'package:vewww/views/winch/winch_upcoming_requests_screen.dart';
-
+import 'package:vewww/views/mechanic/mechanic_profile.dart';
 import '../../core/components/accepted_request_card.dart';
 import '../../core/components/app_nav_bar.dart';
-import '../../core/components/coming_request_card.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/sidebar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
+import 'mechanic_upcoming_req_screen.dart';
 
-class WinchHomePage extends StatelessWidget {
-  WinchHomePage({Key? key}) : super(key: key);
+class MechanicHomeScreen extends StatelessWidget {
+   MechanicHomeScreen({super.key});
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
-
   @override
-  Widget build(BuildContext context) {
+   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar:  AppNavigationBar(homeFunction: (){
-        Navigator.pushAndRemoveUntil(
+      bottomNavigationBar:  AppNavigationBar(
+         homeFunction: (){
+          Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => WinchHomePage()),
+            MaterialPageRoute(builder: (context) => MechanicHomeScreen()),
             (route) => false);
-      },
-      upComingReqFunction: (){
+         },
+         upComingReqFunction: (){
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => WinchUpcomingRequestsScreen(),
+              builder: (context) => MechanicUpComingReqScreen(),
             ));
       },
       ),
       key: _globalKey,
-      endDrawer: Sidebar(
-        function: () {
-          Navigator.pushAndRemoveUntil(
+      endDrawer:  Sidebar(function: (){
+         Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => const WinchProfile()),
+              MaterialPageRoute(builder: (context) => const MechanicProfile()),
               (route) => true);
-        },
-      ),
+      },),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -76,19 +72,3 @@ class WinchHomePage extends StatelessWidget {
     );
   }
 }
-
-/*
-Expanded(child: Container()),
-            Image.asset(
-              "assets/images/Empty.png",
-              width: 300,
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Text(
-              "Requests will be here",
-              style: AppTextStyle.lightGrayTextStyle(25),
-            ),
-            Expanded(child: Container()),
-*/ 

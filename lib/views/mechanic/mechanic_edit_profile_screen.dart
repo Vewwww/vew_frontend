@@ -1,31 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:vewww/core/components/logo.dart';
-import 'package:vewww/core/style/app_colors.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/custom_text_field.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
+import '../../core/style/app_colors.dart';
 import '../../core/utils/navigation.dart';
-import '../common/select_color_screen.dart';
 
-class WinchEditProfileScreen extends StatelessWidget {
+class MechanicEditProfile extends StatelessWidget {
+  MechanicEditProfile({super.key});
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final TextEditingController _name = TextEditingController();
   final TextEditingController _phone = TextEditingController();
-  final List<String> items = [
-    'Item1',
-    'Item2',
-    'Item3',
-    'Item4',
-    'Item5',
-    'Item6',
-    'Item7',
-    'Item8',
-  ];
-  WinchEditProfileScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     double constraintsHight = MediaQuery.of(context).size.height;
@@ -50,6 +39,7 @@ class WinchEditProfileScreen extends StatelessWidget {
                 const Divider(thickness: 2),
                 const SizedBox(height: 10),
                 CustomTextField(
+                    isArabic: true,
                     controller: _name,
                     label: "الاسم",
                     validator: (value) {
@@ -86,59 +76,19 @@ class WinchEditProfileScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Divider(color: Colors.grey, thickness: 0.8),
-                    Text("السيارة", style: AppTextStyle.lightGrayTextStyle(14)),
+                    Text("الخدمات", style: AppTextStyle.lightGrayTextStyle(14), textDirection: TextDirection.rtl,),
                   ],
                 ),
                 CustomTextField(
                     controller: _password,
-                    label: "رقم السيارة",
+                    label: "الخدمات",
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'برجاء ادخال رقم السيارة';
+                        return 'برجاء ادخال الخدمات ';
                       }
                       return null;
                     }),
-                CustomTextField(
-                  label: "نوع السيارة",
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'برجاء ادخال نوع السيارة';
-                    }
-                    return null;
-                  },
-                ),
-                CustomTextField(
-                  label: "موديل السيارة",
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'برجاء ادخال موديل السيارة';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            NavigationUtils.navigateTo(
-                                context: context,
-                                destinationScreen: const SelectColorScreen());
-                          },
-                          icon: Icon(
-                            Icons.keyboard_arrow_down_outlined,
-                            color: mainColor,
-                          )),
-                      Expanded(child: Container()),
-                      Text(
-                        "لون السيارة",
-                        style: AppTextStyle.greyStyle(size: 14),
-                      ),
-                    ],
-                  ),
-                ),
+    
                 const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,

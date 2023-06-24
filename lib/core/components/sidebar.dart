@@ -8,7 +8,8 @@ import 'logo.dart';
 
 
 class Sidebar extends StatelessWidget {
-  const Sidebar({super.key});
+  Function function;
+  Sidebar({super.key, required this.function});
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -31,12 +32,7 @@ class Sidebar extends StatelessWidget {
           SidebarElement(
             "الملف الشخصى",
             Icons.person_outline,
-            onpress: () {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => const WinchProfile()),
-                  (route) => true);
-            },
+            onpress: function,
           ),
           
           SidebarElement(
