@@ -130,10 +130,19 @@ class DriverHomeScreen extends StatelessWidget {
                         NavigationUtils.navigateTo(
                             context: context,
                             destinationScreen: SelectCarModelScreen(
-                              destinationScreen: SearchResultScreen(),
+                              destinationScreen: SearchResultScreen(
+                                filter: "Maintenance Centers",
+                              ),
                             ));
                       }),
-                  defaultButton(text: 'Gas Station', height: 80, width: 170)
+                  defaultButton(text: 'Gas Station', height: 80, width: 170 ,  function: () {
+                        NavigationUtils.navigateTo(
+                            context: context,
+                              destinationScreen: SearchResultScreen(
+                                filter: "Gas Station",
+                              ),
+                            );
+                      })
                 ],
               ),
               const SizedBox(
