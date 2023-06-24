@@ -5,6 +5,7 @@ import 'package:vewww/model/driver.dart';
 import 'package:vewww/views/common/map.dart';
 import 'package:vewww/views/common/splash_screen.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
+import 'package:vewww/views/winch/winch_home_page.dart';
 import '../bloc/add_image_cubit/add_image_cubit.dart';
 import '../bloc/auth_cubit/auth_cubit.dart';
 import '../bloc/loaction_cubit/loaction_cubit.dart';
@@ -19,6 +20,7 @@ import '../bloc/select_choice_cubit/select_choice_cubit.dart';
 import '../bloc/select_color_cubit/select_color_cubit.dart';
 import '../bloc/warning_sign_cubit/warning_sign_cubit.dart';
 import '../views/admin/admin_home_screen.dart';
+import '../views/mechanic/mechanic_home_screen.dart';
 
 class AppRoot extends StatelessWidget {
   const AppRoot({Key? key}) : super(key: key);
@@ -64,7 +66,7 @@ class AppRoot extends StatelessWidget {
                       backgroundColor: const Color.fromARGB(255, 2, 113, 106))),
               primaryColor: const Color.fromARGB(255, 2, 113, 106)),
           debugShowCheckedModeBanner: false,
-          home: DriverHomeScreen(),
+          home: SplashScreen(),
         ));
   }
 }

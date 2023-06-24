@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/core/components/empty_requests.dart';
+import 'package:vewww/views/winch/winch_home_page.dart';
+import 'package:vewww/views/winch/winch_profile.dart';
 
 import '../../core/components/accepted_request_card.dart';
 import '../../core/components/app_nav_bar.dart';
@@ -8,14 +10,34 @@ import '../../core/components/custom_app_bar.dart';
 import '../../core/components/sidebar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 
-class UpcomingRequestsScreen extends StatelessWidget {
-  UpcomingRequestsScreen({Key? key}) : super(key: key);
+class WinchUpcomingRequestsScreen extends StatelessWidget {
+  WinchUpcomingRequestsScreen({Key? key}) : super(key: key);
   GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: const Sidebar(),
-      bottomNavigationBar: const AppNavigationBar(),
+      endDrawer: Sidebar(
+        function: () {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const WinchProfile()),
+              (route) => true);
+        },
+      ),
+      bottomNavigationBar: AppNavigationBar(homeFunction: (){
+         Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => WinchHomePage()),
+            (route) => false);
+      },
+      upComingReqFunction: (){
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => WinchUpcomingRequestsScreen(),
+            ));
+      },
+      ),
       key: _globalKey,
       body: SafeArea(
           child: Column(

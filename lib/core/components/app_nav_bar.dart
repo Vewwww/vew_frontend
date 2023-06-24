@@ -5,28 +5,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/style/app_colors.dart';
 
 import '../../bloc/selected page index/cubit/selected_page_index_cubit.dart';
-import '../../views/winch/upcoming_requests_screen.dart';
+import '../../views/winch/winch_upcoming_requests_screen.dart';
 import '../../views/winch/winch_home_page.dart';
 
 
 class AppNavigationBar extends StatelessWidget {
-  const AppNavigationBar({Key? key}) : super(key: key);
+  AppNavigationBar({required this.homeFunction,required this.upComingReqFunction,Key? key}) : super(key: key);
+  Function homeFunction;
+  Function upComingReqFunction;
   @override
   Widget build(BuildContext context) {
     List<Function> actions = [
-      () {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => WinchHomePage()),
-            (route) => false);
-      },
-      () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => UpcomingRequestsScreen(),
-            ));
-      },
+      homeFunction,
+      upComingReqFunction,
     ];
     SelectedPageIndexCubit selectedIndexCubit =
         SelectedPageIndexCubit.get(context);

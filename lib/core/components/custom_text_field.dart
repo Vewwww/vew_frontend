@@ -20,6 +20,7 @@ class CustomTextField extends StatelessWidget {
   final Widget? prefix;
   final bool? isDroped;
   final VoidCallback? onDrop;
+  final bool isArabic;
 
   CustomTextField(
       {this.controller,
@@ -39,7 +40,9 @@ class CustomTextField extends StatelessWidget {
       this.prefix,
       this.enabled = true,
       this.onEditingCompleted,
-      this.onChanged});
+      this.onChanged,
+      this.isArabic=false,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +54,7 @@ class CustomTextField extends StatelessWidget {
           Text(
             "$label",
             style: AppTextStyle.darkGreyStyle(size: 14),
+            textDirection:(isArabic) ? TextDirection.rtl : TextDirection.ltr, 
           ),
           const SizedBox(
             height: 10,
