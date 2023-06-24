@@ -9,6 +9,8 @@ import 'package:vewww/views/winch/winch_home_page.dart';
 import '../bloc/add_image_cubit/add_image_cubit.dart';
 import '../bloc/auth_cubit/auth_cubit.dart';
 import '../bloc/loaction_cubit/loaction_cubit.dart';
+import '../bloc/nearest_repairer_cubit/nearest_repairer_cubit.dart';
+import '../bloc/search_cubit/seaech_cubit.dart';
 import '../bloc/selected page index/cubit/selected_page_index_cubit.dart';
 import '../bloc/verification_cubit/verification_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,6 +50,8 @@ class AppRoot extends StatelessWidget {
           BlocProvider(create: (context) => LocationCubit()),
           BlocProvider(create: (context) => SelectedPageIndexCubit()),
           BlocProvider(create: (context) => AuthCubit()),
+          BlocProvider(create: (context) => SearchCubit()),
+          BlocProvider(create: (context) => NearestRepairerCubit()),
           BlocProvider(create: (context) => AddImageCubit()),
           BlocProvider(create: (context) => VerificationCubit()),
           BlocProvider(create: (context) => WarningSignCubit()),
