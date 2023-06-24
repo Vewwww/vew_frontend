@@ -1,72 +1,125 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vewww/bloc/warning_sign_cubit/warning_sign_cubit.dart';
 import 'package:vewww/core/components/horizontal_line.dart';
+import 'package:vewww/core/style/app_colors.dart';
+import 'package:vewww/views/common/warning_light_screen.dart';
+import 'package:vewww/views/driver/driver_warning_sign.dart';
+
+import '../../bloc/warning_sign_cubit/warning_sign_cubit.dart';
 
 import '../../core/components/backward_arrow.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
+import '../../model/warning_sign.dart';
 
-class SingleWarningSignScreen extends StatelessWidget {
-  const SingleWarningSignScreen({Key? key}) : super(key: key);
+class SingleWarningSignScreen extends StatefulWidget {
+  SingleWarningSignScreen({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
+  //Signs sign;
+  String id;
+
+  @override
+  State<SingleWarningSignScreen> createState() =>
+      _SingleWarningSignScreenState(id);
+}
+
+class _SingleWarningSignScreenState extends State<SingleWarningSignScreen> {
+  String id;
+  _SingleWarningSignScreenState(this.id);
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    final warningSignCubit = context.read<WarningSignCubit>();
+    warningSignCubit.getSignWithId(id);
+  }
 
   @override
   Widget build(BuildContext context) {
+    WarningSignCubit warningSignCubit = WarningSignCubit.get(context);
+    //print(sign.name!.en!);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomAppBar(title: Text('Check Engine', style: AppTextStyle.mainStyle(size: 25),), haveBackArrow: true,),
-            Center(
-              child: Image.network(
-                'https://hips.hearstapps.com/hmg-prod/images/check-engine-light-icon-1616189100.jpg',
-                height: 150,
-                width: 150,
-              ),
-            ),
-            Text(
-              'Description: ',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              'Indicator light turns on whenever the engine is turned on to check the bulb. If the light stays illuminated, the car’s diagnostic systems have detected a malfunction that needs to be investigated.',
-              style: TextStyle(
-                fontSize: 20,
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            HorizontalLine(),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              'Solution: ',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              'Indicator light turns on whenever the engine is turned on to check the bulb. If the light stays illuminated, the car’s diagnostic systems have detected a malfunction that needs to be investigated.',
-              style: TextStyle(
-                fontSize: 20,
-              ),
-            )
-          ],
+        child: BlocBuilder<WarningSignCubit, WarningSignState>(
+          builder: (context, state) {
+            if(state is GetSingleWarningSignSuccessState)
+            {
+              print(state.sign.name!.en);
+              return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomAppBar(
+                  haveLogo: true,
+                  leading: IconButton(icon:Icon( Icons.arrow_back_ios_new, color: mainColor,), onPressed: (){
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>WarningLightScreen()), (route) => false);
+                  },),
+                ),
+                 SizedBox(height: 20,),
+                Center(
+                  child: Image.network(
+                    state.sign.image!,
+                    height: 150,
+                    width: 150,
+                  ),
+                ),
+                SizedBox(height: 20,),
+                Center(
+                  child: Text(
+                    state.sign.name!.en!,
+                    style: AppTextStyle.mainStyle(size: 20),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  'Description: ',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  state.sign.description!.en!,
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Text(
+                  'Solution: ',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  state.sign.solution!.en!,
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                )
+              ],
+            );
+          }else{
+            return CircularProgressIndicator();
+          }
+          }
         ),
       ),
     );

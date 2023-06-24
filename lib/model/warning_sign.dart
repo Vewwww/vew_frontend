@@ -1,4 +1,30 @@
 class SignResponse {
+  int? results;
+  List<Signs>? signs;
+
+  SignResponse({this.results, this.signs});
+
+  SignResponse.fromJson(Map<String, dynamic> json) {
+    results = json['results'];
+    if (json['data'] != null) {
+      signs = <Signs>[];
+      json['data'].forEach((v) {
+        signs!.add(new Signs.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['results'] = this.results;
+    if (this.signs != null) {
+      data['data'] = this.signs!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Signs {
   Name? name;
   Name? description;
   Name? solution;
@@ -6,7 +32,7 @@ class SignResponse {
   String? image;
   int? iV;
 
-  SignResponse(
+  Signs(
       {this.name,
       this.description,
       this.solution,
@@ -14,7 +40,7 @@ class SignResponse {
       this.image,
       this.iV});
 
-  SignResponse.fromJson(Map<String, dynamic> json) {
+  Signs.fromJson(Map<String, dynamic> json) {
     name = json['name'] != null ? new Name.fromJson(json['name']) : null;
     description = json['description'] != null
         ? new Name.fromJson(json['description'])
