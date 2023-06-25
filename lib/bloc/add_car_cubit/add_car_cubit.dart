@@ -2,6 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
+import '../../model/car.dart';
+import '../../services/dio_helper.dart';
+
 part 'add_car_state.dart';
 
 class AddCarCubit extends Cubit<AddCarState> {
@@ -19,4 +22,5 @@ class AddCarCubit extends Cubit<AddCarState> {
     carExist = false;
     emit(CarRemovedState());
   }
+
 }

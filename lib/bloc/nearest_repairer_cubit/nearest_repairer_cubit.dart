@@ -6,6 +6,7 @@ import 'package:vewww/services/dio_helper.dart';
 
 import '../../core/utils/sp_helper/cache_helper.dart';
 import '../../model/nearest_gas_station_response.dart';
+import '../../model/nearest_mechnaic.dart';
 import '../../model/repairer.dart';
 
 part 'nearest_repairer_state.dart';
@@ -45,6 +46,22 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
     }).onError((error, stackTrace) {
       print("neareat gas station error : $error");
       emit(GettingNearestGasStationErrorState());
+    });
+  }
+
+  Future getNearestMechanic(String serviceId) async{
+    String url = "/mechanic/getNearestMechanicWorkshop?service=${serviceId}";
+    emit(GettingNearestMechanicLoadingState());
+    await DioHelper.getData(
+        url: url,
+        token: SharedPreferencesHelper.getData(key: 'vewToken'),
+        ).then((value) {
+      print("neareat mechanic response : ${value.data}");
+      NearestMechanicResponse nearesetMechanicResponse =NearestMechanicResponse.fromJson(value.data);
+      emit(GettingNearestMechanicSuccessState(mechanics:nearesetMechanicResponse.mechanic!));
+    }).onError((error, stackTrace) {
+      print("neareat mechanic error : ${error}");
+      emit(GettingNearestMechanicErrorState());
     });
   }
 }

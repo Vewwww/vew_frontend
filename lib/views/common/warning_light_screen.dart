@@ -25,8 +25,6 @@ class WarningLightScreen extends StatefulWidget {
 class _WarningLightScreenState extends State<WarningLightScreen> {
   void initState() {
     super.initState();
-    print("inside init");
-    // TODO: implement initState
     final warningSignCubit = context.read<WarningSignCubit>();
     warningSignCubit.getAllSigns();
   }

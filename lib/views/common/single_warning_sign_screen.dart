@@ -4,10 +4,7 @@ import 'package:vewww/bloc/warning_sign_cubit/warning_sign_cubit.dart';
 import 'package:vewww/core/components/horizontal_line.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/views/common/warning_light_screen.dart';
-import 'package:vewww/views/driver/driver_warning_sign.dart';
-
 import '../../bloc/warning_sign_cubit/warning_sign_cubit.dart';
-
 import '../../core/components/backward_arrow.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
