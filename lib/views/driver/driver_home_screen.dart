@@ -4,15 +4,14 @@ import 'package:vewww/bloc/warning_sign_cubit/warning_sign_cubit.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/utils/navigation.dart';
+import 'package:vewww/views/common/services_screen.dart';
 import 'package:vewww/views/common/warning_light_screen.dart';
 import 'package:vewww/views/driver/diagnose_screen.dart';
 import 'package:vewww/views/driver/driver_drawer.dart';
 import 'package:vewww/views/driver/request_winch_screen.dart';
 import 'package:vewww/views/driver/search_screen.dart';
 import 'package:vewww/views/driver/select_car_model_screen.dart';
-
 import '../../bloc/select_choice_cubit/select_choice_cubit.dart';
-import 'driver_warning_sign.dart';
 import 'maintenance_center_preview.dart';
 import 'search_result_screen.dart';
 
@@ -87,7 +86,12 @@ class DriverHomeScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  defaultButton(text: 'Mechanic', height: 80, width: 170),
+                  defaultButton(text: 'Mechanic', height: 80, width: 170, function: (){
+                     Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => ServicesScreen())));
+                  }),
                   defaultButton(
                       text: 'Winch',
                       height: 80,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vewww/bloc/car_cubit/car_cubit.dart';
 import 'package:vewww/bloc/select_choice_cubit/select_choice_cubit.dart';
 import 'package:vewww/bloc/select_color_cubit/select_color_cubit.dart';
 import 'package:vewww/core/style/app_colors.dart';
@@ -27,11 +28,17 @@ class SignUpScreen extends StatelessWidget {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final TextEditingController _name = TextEditingController();
-  final TextEditingController _lisenceRenewalDate = TextEditingController();
+  final TextEditingController _driverlisenceRenewalDate =
+      TextEditingController();
   final TextEditingController _phoneNumber = TextEditingController();
   final TextEditingController _carType = TextEditingController();
   final TextEditingController _carPlateNum = TextEditingController();
   final TextEditingController _carColor = TextEditingController();
+  final TextEditingController _carlisenceRenewalDate = TextEditingController();
+  final TextEditingController _lastPeriodicMaintenanceDate =
+      TextEditingController();
+  final TextEditingController _miles = TextEditingController();
+  final TextEditingController _avgMilesPerMonth = TextEditingController();
   SignUpScreen({this.carType, this.color, Key? key}) : super(key: key) {
     print("color $color");
     print("carType $carType");
@@ -45,6 +52,7 @@ class SignUpScreen extends StatelessWidget {
     SelectChoiceCubit selectChoiceCubit = SelectChoiceCubit.get(context);
     ReminderCubit reminderCubit = ReminderCubit.get(context);
     AuthCubit authCubit = AuthCubit.get(context);
+    CarCubit carCubit = CarCubit.get(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -169,8 +177,8 @@ class SignUpScreen extends StatelessWidget {
                   ),
                   CustomTextField(
                     label: "License Renewal Date",
-                    controller: _lisenceRenewalDate,
-                    keyboardType: TextInputType.number,
+                    controller: _driverlisenceRenewalDate,
+                    //keyboardType: TextInputType.number,
                     validator: (value) {
                       if (value!.isEmpty || value == null) {
                         return 'License Renewal Date is required';
@@ -297,6 +305,7 @@ class SignUpScreen extends StatelessWidget {
                             ),
                             CustomTextField(
                               label: "Last Periodic Maintenance Date",
+                              controller: _lastPeriodicMaintenanceDate,
                               validator: (value) {
                                 if (addCarCubit.carExist) {
                                   if (value!.isEmpty || value == null) {
@@ -307,6 +316,7 @@ class SignUpScreen extends StatelessWidget {
                             ),
                             CustomTextField(
                               label: "License renewal date",
+                              controller: _carlisenceRenewalDate,
                               validator: (value) {
                                 if (addCarCubit.carExist) {
                                   if (value!.isEmpty || value == null) {
@@ -318,6 +328,7 @@ class SignUpScreen extends StatelessWidget {
                             CustomTextField(
                               label: "Miles",
                               keyboardType: TextInputType.number,
+                              controller: _miles,
                               validator: (value) {
                                 if (addCarCubit.carExist) {
                                   if (value!.isEmpty || value == null) {
@@ -327,12 +338,13 @@ class SignUpScreen extends StatelessWidget {
                               },
                             ),
                             CustomTextField(
-                              label: "Average Miles per week",
+                              label: "Average Miles per month",
+                              controller: _avgMilesPerMonth,
                               keyboardType: TextInputType.number,
                               validator: (value) {
                                 if (addCarCubit.carExist) {
                                   if (value!.isEmpty || value == null) {
-                                    return 'Average Miles per week is required';
+                                    return 'Average Miles per Month is required';
                                   }
                                 }
                               },
@@ -408,6 +420,15 @@ class SignUpScreen extends StatelessWidget {
 } */
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
+                            Car car=Car(
+                                    plateNumber: _carPlateNum.text,
+                                    carType: _carType.text,
+                                    carLicenseRenewalDate: _carlisenceRenewalDate.text,
+                                    miles: _miles.text ,
+                                    averageMilesPerMonth: _avgMilesPerMonth.text,
+                                    lastPeriodicMaintenanceDate: _lastPeriodicMaintenanceDate.text,
+                                    
+                                  );
                             Driver driver = Driver(
                                 person: Person(
                                   email: _email.text,
@@ -415,11 +436,15 @@ class SignUpScreen extends StatelessWidget {
                                   password: _password.text,
                                   role: "user",
                                 ),
-                                lisenceRenewalDate: _lisenceRenewalDate.text,
+                                lisenceRenewalDate:
+                                    _driverlisenceRenewalDate.text,
                                 phoneNumber: _phoneNumber.text,
                                 gender: genderCubit.genderInText,
-                                cars: []);
+                                cars: [
+                                  car
+                                ]);
                             authCubit.driverSignUp(driver);
+                            carCubit.createCar(car);
                             NavigationUtils.navigateAndClearStack(
                                 context: context,
                                 destinationScreen: SignInScreen());

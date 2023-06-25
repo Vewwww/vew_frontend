@@ -8,10 +8,12 @@ import 'package:vewww/views/driver/driver_home_screen.dart';
 import 'package:vewww/views/winch/winch_home_page.dart';
 import '../bloc/add_image_cubit/add_image_cubit.dart';
 import '../bloc/auth_cubit/auth_cubit.dart';
+import '../bloc/car_cubit/car_cubit.dart';
 import '../bloc/loaction_cubit/loaction_cubit.dart';
 import '../bloc/nearest_repairer_cubit/nearest_repairer_cubit.dart';
 import '../bloc/search_cubit/seaech_cubit.dart';
 import '../bloc/selected page index/cubit/selected_page_index_cubit.dart';
+import '../bloc/service_cubit/services_cubit.dart';
 import '../bloc/verification_cubit/verification_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/add_car_cubit/add_car_cubit.dart';
@@ -22,6 +24,7 @@ import '../bloc/select_choice_cubit/select_choice_cubit.dart';
 import '../bloc/select_color_cubit/select_color_cubit.dart';
 import '../bloc/warning_sign_cubit/warning_sign_cubit.dart';
 import '../views/admin/admin_home_screen.dart';
+import '../views/common/services_screen.dart';
 import '../views/mechanic/mechanic_home_screen.dart';
 
 class AppRoot extends StatelessWidget {
@@ -55,6 +58,8 @@ class AppRoot extends StatelessWidget {
           BlocProvider(create: (context) => AddImageCubit()),
           BlocProvider(create: (context) => VerificationCubit()),
           BlocProvider(create: (context) => WarningSignCubit()),
+          BlocProvider(create: (context) => ServicesCubit()),
+          BlocProvider(create: (context) => CarCubit()),
         ],
         child: MaterialApp(
           theme: ThemeData(
