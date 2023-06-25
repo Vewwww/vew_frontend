@@ -40,6 +40,7 @@ class CustomAppBar extends StatelessWidget {
           : title,
       leading: (haveBackArrow!)
           ? BackwardArrow(
+              iconColor: iconColor ?? mainColor,
               function: () {
                 Navigator.pop(context);
               },

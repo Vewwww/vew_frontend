@@ -6,6 +6,7 @@ import '../../core/components/custom_app_bar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/style/app_colors.dart';
 import '../../core/utils/navigation.dart';
+import '../../model/repairer.dart';
 import 'driver_home_screen.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -50,7 +51,7 @@ class SearchScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(0),
                 itemCount: 12,
                 itemBuilder: (BuildContext context, int index) {
-                  return const NearRepairerCard();
+                  return NearRepairerCard(repairer: MaintenanceCenter());
                 },
               ),
             ),
