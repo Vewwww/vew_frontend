@@ -210,3 +210,56 @@ class GasStation extends Repairer {
     return data;
   }
 }
+
+class Place extends Repairer {
+  List<String>? carType;
+  bool? isVerified;
+  int? iV;
+
+  Place(
+      {name,
+      location,
+      sId,
+      phoneNumber,
+      this.carType,
+      this.isVerified,
+      rate,
+      ratesNumber,
+      this.iV})
+      : super.named(
+            name: name,
+            location: location,
+            sId: sId,
+            phoneNumber: phoneNumber,
+            rate: rate,
+            ratesNumber: ratesNumber);
+
+  Place.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
+    if (json['carType'] != null) {
+      carType = <String>[];
+      json['carType'].forEach((v) {
+        carType!.add(v);
+      });
+    }
+    isVerified = json['isVerified'];
+    iV = json['__v'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.name != null) {
+      data['name'] = this.name!.toJson();
+    }
+    if (this.location != null) {
+      data['location'] = this.location!.toJson();
+    }
+    data['_id'] = this.sId;
+    data['phoneNumber'] = this.phoneNumber;
+    data['carType'] = this.carType;
+    data['isVerified'] = this.isVerified;
+    data['rate'] = this.rate;
+    data['ratesNumber'] = this.ratesNumber;
+    data['__v'] = this.iV;
+    return data;
+  }
+}

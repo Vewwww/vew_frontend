@@ -39,6 +39,9 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
       nearestRepairerCubit.getNearestGasStation();
     else if (filter == "Mechanist")
       nearestRepairerCubit.getNearestMechanic(serviceId!);
+    if(searchKey !=null && filter == null){
+      nearestRepairerCubit.getNearest();
+    }
   }
 
   @override
@@ -162,7 +165,24 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                   } else {
                     return buildLoading(context);
                   }
-                } else {
+                }
+                else if (filter == null && searchKey != null) {
+                  if (state is GettingNearestMechanicSuccessState) {
+                    return Expanded(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(0),
+                        itemCount: state.mechanics.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return NearRepairerCard(
+                              repairer: state.mechanics[index]);
+                        },
+                      ),
+                    );
+                  } else {
+                    return buildLoading(context);
+                  }
+                }
+                 else {
                   return buildLoading(context);
                 }
               },
