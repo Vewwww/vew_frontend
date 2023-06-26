@@ -129,23 +129,23 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                   }
                 }
                 //TODO::solve and remove comment
-                // else if (filter=="Gas Station"){
-                //   if (state is GettingNearestGasStationSuccessState) {
-                //   return Expanded(
-                //     child: ListView.builder(
-                //       padding: const EdgeInsets.all(0),
-                //       itemCount: state.gasStations.length,
-                //       itemBuilder: (BuildContext context, int index) {
+                else if (filter=="Gas Station"){
+                  if (state is GettingNearestGasStationSuccessState) {
+                  return Expanded(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(0),
+                      itemCount: state.gasStations.length,
+                      itemBuilder: (BuildContext context, int index) {
 
-                //         return NearRepairerCard(
-                //             repairer: state.gasStations[index]);
-                //       },
-                //     ),
-                //   );
-                // }else {
-                //   return buildLoading(context);
-                // }
-                // }
+                        return NearRepairerCard(
+                            repairer: state.gasStations[index]);
+                      },
+                    ),
+                  );
+                }else {
+                  return buildLoading(context);
+                }
+                }
 
                 else if (filter == "Mechanist") {
                   if (state is GettingNearestMechanicSuccessState) {

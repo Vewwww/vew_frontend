@@ -44,7 +44,7 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
       NearesetGasStationResponse nearesetGasStationResponse =
           NearesetGasStationResponse.fromJson(value.data);
       emit(GettingNearestGasStationSuccessState(
-          nearesetGasStationResponse.gasStation!));
+          nearesetGasStationResponse.gasStations!));
     }).onError((error, stackTrace) {
       print("neareat gas station error : $error");
       emit(GettingNearestGasStationErrorState());

@@ -19,11 +19,14 @@ class SelectColorCubit extends Cubit<SelectColorState> {
 
   Future<void> getcolors() async {
     await DioHelper.getData(url: "/color/").then((value) {
+      emit(GettingColorsLoadingState());
       print("colors response : ${value.data}");
       carColorResponse = CarColorResponse.fromJson(value.data);
+      emit(GettingColorsSuccessState());
       //print(carColorResponse!.carColor![5].code);
     }).onError((error, stackTrace) {
       print("colors error : ${error}");
+      emit(GettingColorsErrorState());
     });
   }
 }

@@ -1,20 +1,21 @@
+import 'report.dart';
+
 class SignInResponse {
   Person? person;
 
   SignInResponse({this.person});
 
   SignInResponse.fromJson(Map<String, dynamic> json) {
-    print("data from signresponse from json = $json");
     var token = json['token'];
-    person = json['user'] != null ? new Person.fromJson(json['user']) : null;
+    person = json['user'] != null ? Person.fromJson(json['user']) : null;
     person!.token = token;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['token'] = this.person!.token;
-    if (this.person != null) {
-      data['user'] = this.person!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['token'] = person!.token;
+    if (person != null) {
+      data['user'] = person!.toJson();
     }
     return data;
   }
@@ -54,7 +55,7 @@ class Person {
 
   Person.fromJson(Map<String, dynamic> json) {
     report =
-        json['report'] != null ? new Report.fromJson(json['report']) : null;
+        json['report'] != null ? Report.fromJson(json['report']) : null;
     sId = json['_id'];
     name = json['name'];
     email = json['email'];
@@ -70,42 +71,24 @@ class Person {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.report != null) {
-      data['report'] = this.report!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (report != null) {
+      data['report'] = report!.toJson();
     }
     // data['token'] = this.token;
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['password'] = this.password;
-    data['phoneNumber'] = this.phoneNumber;
-    data['gender'] = this.gender;
-    data['role'] = this.role;
-    data['lisenceRenewalDate'] = this.lisenceRenewalDate;
-    data['isSuspended'] = this.isSuspended;
-    data['emailConfirm'] = this.emailConfirm;
-    data['logedIn'] = this.logedIn;
-    data['__v'] = this.iV;
+    data['_id'] = sId;
+    data['name'] = name;
+    data['email'] = email;
+    data['password'] = password;
+    data['phoneNumber'] = phoneNumber;
+    data['gender'] = gender;
+    data['role'] = role;
+    data['lisenceRenewalDate'] = lisenceRenewalDate;
+    data['isSuspended'] = isSuspended;
+    data['emailConfirm'] = emailConfirm;
+    data['logedIn'] = logedIn;
+    data['__v'] = iV;
     return data;
   }
 }
 
-class Report {
-  String? dateReport;
-  int? reportsNumber;
-
-  Report({this.dateReport, this.reportsNumber});
-
-  Report.fromJson(Map<String, dynamic> json) {
-    dateReport = json['dateReport'];
-    reportsNumber = json['reportsNumber'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['dateReport'] = this.dateReport;
-    data['reportsNumber'] = this.reportsNumber;
-    return data;
-  }
-}

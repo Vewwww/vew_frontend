@@ -1,6 +1,7 @@
 import 'car_type.dart';
 import 'location.dart';
 import 'name.dart';
+import 'report.dart';
 import 'services.dart';
 
 abstract class Repairer {
@@ -30,7 +31,7 @@ abstract class Repairer {
     sId = json['_id'];
     phoneNumber = json['phoneNumber'];
     //print("object 111 ${json['rate']}");
-    rate = json['rate'] * 1.0;
+    if (json['rate'] != null) rate = json['rate'] * 1.0;
     if (isMechanic)
       ratesNumber = json['numOfRates'];
     else
@@ -186,21 +187,26 @@ class Mechanic extends Repairer {
   }
 }
 
-class Report {
-  int? reportsNumber;
-  String? dateReport;
+class GasStation extends Repairer {
+  int? iV;
 
-  Report({this.reportsNumber, this.dateReport});
+  GasStation({name, location, sId, this.iV})
+      : super.named(name: name, location: location, sId: sId);
 
-  Report.fromJson(Map<String, dynamic> json) {
-    reportsNumber = json['reportsNumber'];
-    dateReport = json['dateReport'];
+  GasStation.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
+    iV = json['__v'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['reportsNumber'] = reportsNumber;
-    data['dateReport'] = dateReport;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.name != null) {
+      data['name'] = this.name!.toJson();
+    }
+    if (this.location != null) {
+      data['location'] = this.location!.toJson();
+    }
+    data['_id'] = this.sId;
+    data['__v'] = this.iV;
     return data;
   }
 }

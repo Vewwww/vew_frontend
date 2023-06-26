@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-
+import 'package:vewww/controllers/driver_controller.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/default_button.dart';
-import '../../core/components/rating_stars.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/style/app_colors.dart';
+import '../../model/repairer.dart';
 
-class GasStation extends StatelessWidget {
-  const GasStation({super.key});
+class GasStationPreview extends StatelessWidget {
+  GasStationPreview({required this.gasStation, super.key});
+  GasStation gasStation;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +16,7 @@ class GasStation extends StatelessWidget {
       backgroundColor: mainColor,
       body: Column(children: [
         Expanded(
-          child: Container(
+          child: SizedBox(
             width: double.infinity,
             child: Column(
               children: [
@@ -26,39 +25,45 @@ class GasStation extends StatelessWidget {
                   backgroundcolor: mainColor,
                   iconColor: Colors.white,
                 ),
-                CircleAvatar(
+                const CircleAvatar(
                   backgroundImage: AssetImage(
                     'assets/images/gasStation.webp',
                   ),
                   radius: 85,
-
                 ),
-                SizedBox(
-                  height: 15,
+                const SizedBox(
+                  height: 10,
                 ),
                 Text(
-                  'Gas Station Name',
+                  gasStation.name!.en ?? gasStation.name!.ar!,
                   style: AppTextStyle.whiteTextStyle(20),
                 ),
-                SizedBox(
-                  height: 15,
+                const SizedBox(
+                  height: 10,
                 ),
-                ratingStars(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.location_on, color: Colors.white, size: 30,), onPressed: () {  },
-                    ),
-                  ],
-                )
+                // ratingStars(),
+                IconButton(
+                  icon: const Icon(
+                    Icons.location_on,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    DriverController.goToGoogleMaps(gasStation.location!);
+                  },
+                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //   ],
+                // )
               ],
             ),
           ),
         ),
         Expanded(
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(40.0),
                 topLeft: Radius.circular(40.0),
@@ -75,25 +80,25 @@ class GasStation extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                    'Address :',
-                    style: AppTextStyle.mainStyle(size: 20),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    ' Al Manial، 37 El-Rawda Square, Al Manyal Al Gharbi, Old Cairo, Cairo Governorate',
-                    style: AppTextStyle.darkGreyStyle(size: 17),
-                  ),          
+                        'Address :',
+                        style: AppTextStyle.mainStyle(size: 20),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        ' Al Manial، 37 El-Rawda Square, Al Manyal Al Gharbi, Old Cairo, Cairo Governorate',
+                        style: AppTextStyle.darkGreyStyle(size: 17),
+                      ),
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                SizedBox(height:15),
+                const SizedBox(height: 15),
                 defaultButton(text: 'Request Winch', width: 390),
-                ],
+              ],
             ),
           ),
         ),
