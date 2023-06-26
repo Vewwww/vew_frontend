@@ -44,4 +44,21 @@ class AuthCubit extends Cubit<AuthState> {
       emit(SignInErrorState());
     });
   }
+  Future<void> logout() async {
+    print("driver logout request : ${driver.toJson()}");
+    emit(LogoutLoadingState());
+    await DioHelper.getData(
+            url: "/allusers/logout/",
+            token: SharedPreferencesHelper.getData(key: 'vewToken'),
+            )
+        .then((value) {
+      print("logout response : ${value.data}");
+      SharedPreferencesHelper.removeData(key: 'vewToken');
+      SharedPreferencesHelper.removeData(key: 'vewRole');
+      emit(LogoutSuccessState());
+    }).onError((error, stackTrace) {
+      print("error in driver sign in : $error");
+      emit(LogoutErrorState());
+    });
+  }
 }

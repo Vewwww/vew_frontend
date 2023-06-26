@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vewww/bloc/auth_cubit/auth_cubit.dart';
 import 'package:vewww/core/components/circular_icon.dart';
 import 'package:vewww/core/components/horizontal_line.dart';
 import 'package:vewww/core/utils/navigation.dart';
@@ -87,9 +88,16 @@ class DriverDrawer extends StatelessWidget {
             height: 15,
           ),
           GestureDetector(
-            onTap: () {
-              NavigationUtils.navigateAndClearStack(
-                  context: context, destinationScreen: SignInScreen());
+            onTap: () async {
+              await AuthCubit.get(context).logout();
+              if (AuthCubit.get(context).state is LogoutSuccessState)
+                NavigationUtils.navigateAndClearStack(
+                    context: context, destinationScreen: SignInScreen());
+              else {
+                const snackBar =
+                    SnackBar(content: Text("Something went wrong try again !"));
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }
             },
             child:
                 CircularIcon(title: 'Logout', child: const Icon(Icons.logout)),

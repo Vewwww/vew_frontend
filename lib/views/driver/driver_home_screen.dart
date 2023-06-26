@@ -45,7 +45,11 @@ class DriverHomeScreen extends StatelessWidget {
                 ),
                 actions: [
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        NavigationUtils.navigateTo(
+                            context: context,
+                            destinationScreen: SearchScreen());
+                      },
                       icon: const Icon(
                         Icons.search,
                         color: Color.fromRGBO(2, 113, 106, 1),
@@ -86,12 +90,16 @@ class DriverHomeScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  defaultButton(text: 'Mechanic', height: 80, width: 170, function: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) => ServicesScreen())));
-                  }),
+                  defaultButton(
+                      text: 'Mechanic',
+                      height: 80,
+                      width: 170,
+                      function: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) => ServicesScreen())));
+                      }),
                   defaultButton(
                       text: 'Winch',
                       height: 80,
@@ -139,13 +147,17 @@ class DriverHomeScreen extends StatelessWidget {
                               ),
                             ));
                       }),
-                  defaultButton(text: 'Gas Station', height: 80, width: 170 ,  function: () {
+                  defaultButton(
+                      text: 'Gas Station',
+                      height: 80,
+                      width: 170,
+                      function: () {
                         NavigationUtils.navigateTo(
-                            context: context,
-                              destinationScreen: SearchResultScreen(
-                                filter: "Gas Station",
-                              ),
-                            );
+                          context: context,
+                          destinationScreen: SearchResultScreen(
+                            filter: "Gas Station",
+                          ),
+                        );
                       })
                 ],
               ),

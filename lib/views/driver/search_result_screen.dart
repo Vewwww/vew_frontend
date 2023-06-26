@@ -8,11 +8,13 @@ import 'package:vewww/views/driver/search_screen.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/near_repairer_card.dart';
 import '../../core/components/search_bar.dart';
+import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/style/app_colors.dart';
 import '../../core/utils/navigation.dart';
 
 class SearchResultScreen extends StatefulWidget {
-  SearchResultScreen({this.filter, Key? key, this.serviceId, this.searchKey})
+  SearchResultScreen(
+      {this.filter = "All", Key? key, this.serviceId, this.searchKey})
       : super(key: key);
   String? filter;
   String? serviceId;
@@ -27,18 +29,36 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
   String? filter;
   String? serviceId;
   String? searchKey;
-  _SearchResultScreenState({this.filter, this.serviceId, this.searchKey});
+  _SearchResultScreenState(
+      {this.filter = "All", this.serviceId, this.searchKey});
 
   @override
   void initState() {
     super.initState();
+    print("saearch : $searchKey ,  $filter");
     final nearestRepairerCubit = context.read<NearestRepairerCubit>();
-    if (filter == "Maintenance Centers")
-      nearestRepairerCubit.getNearestMC();
-    else if (filter == "Gas Station")
+    if (filter == "Maintenance Centers") {
+      {
+        print("here getNearestMC");
+        nearestRepairerCubit.getNearestMC();
+      }
+    } else if (filter == "Gas Station") {
       nearestRepairerCubit.getNearestGasStation();
-    else if (filter == "Mechanist")
+    } else if (filter == "Mechanist") {
       nearestRepairerCubit.getNearestMechanic(serviceId!);
+    } else if (searchKey != null && searchKey!.length <= 0 && filter == "All") {
+      print("in search4  *${searchKey}**");
+      nearestRepairerCubit.getNearest();
+    } else if (searchKey != null && filter == "All") {
+      print("in search1  *${searchKey}*");
+      nearestRepairerCubit.search(searchKey!);
+    } else if (searchKey == null && filter == "All") {
+      print("in search1  *${searchKey}**");
+      nearestRepairerCubit.getNearest();
+    } else if (searchKey != null && filter == null) {
+      print("in search3  *${searchKey}**");
+      nearestRepairerCubit.search(searchKey!);
+    }
   }
 
   @override
@@ -69,9 +89,15 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   FilterCard(
-                    onPress: () {},
+                    onPress: () {
+                      NavigationUtils.navigateTo(
+                          context: context,
+                          destinationScreen: SearchResultScreen(
+                            filter: "All",
+                          ));
+                    },
                     filter: "All",
-                    enabled: (filter == null),
+                    enabled: (filter == "All"),
                   ),
                   FilterCard(
                       onPress: () {
@@ -94,7 +120,6 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                       enabled: (filter == "Gas Station")),
                   FilterCard(
                       onPress: () {
-                        if(searchKey != null)
                         NavigationUtils.navigateTo(
                             context: context,
                             destinationScreen: SearchResultScreen(
@@ -127,27 +152,22 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                   } else {
                     return buildLoading(context);
                   }
-                }
-                //TODO::solve and remove comment
-                else if (filter=="Gas Station"){
+                } else if (filter == "Gas Station") {
                   if (state is GettingNearestGasStationSuccessState) {
-                  return Expanded(
-                    child: ListView.builder(
-                      padding: const EdgeInsets.all(0),
-                      itemCount: state.gasStations.length,
-                      itemBuilder: (BuildContext context, int index) {
-
-                        return NearRepairerCard(
-                            repairer: state.gasStations[index]);
-                      },
-                    ),
-                  );
-                }else {
-                  return buildLoading(context);
-                }
-                }
-
-                else if (filter == "Mechanist") {
+                    return Expanded(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(0),
+                        itemCount: state.gasStations.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return NearRepairerCard(
+                              repairer: state.gasStations[index]);
+                        },
+                      ),
+                    );
+                  } else {
+                    return buildLoading(context);
+                  }
+                } else if (filter == "Mechanist") {
                   if (state is GettingNearestMechanicSuccessState) {
                     return Expanded(
                       child: ListView.builder(
@@ -159,6 +179,125 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                         },
                       ),
                     );
+                  } else {
+                    return buildLoading(context);
+                  }
+                } else if (filter == "All" &&
+                    searchKey != null &&
+                    searchKey!.length > 0) {
+                  if (state is SearchSuccessState) {
+                    if (state.places.length <= 0) {
+                      return Expanded(
+                        child: ListView.builder(
+                          padding: const EdgeInsets.all(0),
+                          itemCount: state.places.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return NearRepairerCard(
+                                repairer: state.places[index]);
+                          },
+                        ),
+                      );
+                    } else {
+                      return SingleChildScrollView(
+                        child: Center(
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                "assets/images/Empty.png",
+                                width: 50,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "No Repairers were found",
+                                textDirection: TextDirection.rtl,
+                                style: AppTextStyle.lightGrayTextStyle(25),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                  } else {
+                    return buildLoading(context);
+                  }
+                } else if ((filter == null || filter == "All") &&
+                    searchKey != null &&
+                    searchKey!.length == 0) {
+                  if (state is GettingNearestSuccessState) {
+                    if (state.places.length > 0) {
+                      return Expanded(
+                        child: ListView.builder(
+                          padding: const EdgeInsets.all(0),
+                          itemCount: state.places.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return NearRepairerCard(
+                                repairer: state.places[index]);
+                          },
+                        ),
+                      );
+                    } else {
+                      return Center(
+                        child: SingleChildScrollView(
+                          physics: NeverScrollableScrollPhysics(),
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                "assets/images/Empty.png",
+                                width: 200,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "No Repairers were found",
+                                textDirection: TextDirection.rtl,
+                                style: AppTextStyle.lightGrayTextStyle(25),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                  } else {
+                    return buildLoading(context);
+                  }
+                } else if (searchKey == null && filter == "All") {
+                  if (state is GettingNearestSuccessState) {
+                    if (state.places.length > 0) {
+                      return Expanded(
+                        child: ListView.builder(
+                          padding: const EdgeInsets.all(0),
+                          itemCount: state.places.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return NearRepairerCard(
+                                repairer: state.places[index]);
+                          },
+                        ),
+                      );
+                    } else {
+                      return SingleChildScrollView(
+                        child: Center(
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                "assets/images/Empty.png",
+                                width: 50,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "No Repairers were found",
+                                textDirection: TextDirection.rtl,
+                                style: AppTextStyle.lightGrayTextStyle(25),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
                   } else {
                     return buildLoading(context);
                   }

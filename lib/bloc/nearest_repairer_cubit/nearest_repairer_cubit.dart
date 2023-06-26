@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
 import 'package:vewww/model/nearest_MC_response.dart';
 import 'package:vewww/services/dio_helper.dart';
@@ -7,6 +9,7 @@ import 'package:vewww/services/dio_helper.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
 import '../../model/nearest_gas_station_response.dart';
 import '../../model/nearest_mechnaic.dart';
+import '../../model/nearest_repairer_response.dart';
 import '../../model/repairer.dart';
 
 part 'nearest_repairer_state.dart';
@@ -18,14 +21,18 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
   //getNearestMaintainaceCenter
   Future getNearestMC({String? carTypeID, String? isVerified}) async {
     String url = "/driver/maintenanceCenter/getNearestMaintenanceCenters";
+    Map<String, dynamic> query = await getCurrentLocation();
+    query.addAll({"carType": carTypeID, "isVerified": isVerified});
+    print("${query}");
     emit(GettingNearestMCLoadingState());
-    await DioHelper.getData(
-        url: url,
-        token: SharedPreferencesHelper.getData(key: 'vewToken'),
-        query: {"carType": carTypeID, "isVerified": isVerified}).then((value) {
-      print("neareat MC response : ${value.data}");
+    await DioHelper.getWithBody(
+            url: url,
+            token: SharedPreferencesHelper.getData(key: 'vewToken'),
+            query: query)
+        .then((value) {
       NearesetMCResponse nearesetMCResponse =
           NearesetMCResponse.fromJson(value.data);
+      print("neareat MC response : ${nearesetMCResponse.results}");
       emit(GettingNearestMCSuccessState(nearesetMCResponse.maintenanceCenter!));
     }).onError((error, stackTrace) {
       print("neareat MC error : $error");
@@ -53,6 +60,7 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
 
   Future getNearestMechanic(String serviceId) async {
     String url = "/mechanic/getNearestMechanicWorkshop?service=${serviceId}";
+
     emit(GettingNearestMechanicLoadingState());
     await DioHelper.getData(
       url: url,
@@ -67,5 +75,71 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
       print("neareat mechanic error : ${error}");
       emit(GettingNearestMechanicErrorState());
     });
+  }
+
+  Future getNearest() async {
+    Map<String, dynamic> query = await getCurrentLocation();
+    print("queryy : $query");
+    await DioHelper.getWithBody(
+      url: "/driver/getNearest",
+      query: query,
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
+    ).then((value) {
+      print("nearest  response : ${value.data}");
+      NearesetPlaceResponse nearesetPlaceResponse =
+          NearesetPlaceResponse.fromJson(value.data);
+      emit(GettingNearestSuccessState(places: nearesetPlaceResponse.places!));
+    }).onError((error, stackTrace) {
+      print("nearest mechanic error : ${error}");
+      emit(GettingNearestErrorState());
+    });
+  }
+
+  Future search(String searchKey) async {
+    Map<String, dynamic> query = await getCurrentLocation();
+    String url = "/driver/search?keyword=$searchKey";
+    print("queryy : $query \n url:$url");
+    emit(SearchLoadingState());
+    await DioHelper.getWithBody(
+      url: url,
+      query: query,
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
+    ).then((value) {
+      print("neareat response : ${value.data}");
+      NearesetPlaceResponse nearesetPlaceResponse =
+          NearesetPlaceResponse.fromJson(value.data);
+      emit(SearchSuccessState(places: nearesetPlaceResponse.places!));
+    }).onError((error, stackTrace) {
+      print("neareat mechanic error : ${error}");
+      emit(SearchErrorState());
+    });
+  }
+
+  Future<Map<String, dynamic>> getCurrentLocation() async {
+    LocationPermission locationPermission;
+    bool isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
+    //check if user enable service for location permission
+    if (!isLocationServiceEnabled) {
+      debugPrint("user don't enable location permission");
+    }
+
+    locationPermission = await Geolocator.checkPermission();
+
+    //check if user denied location and retry requesting for permission
+    if (locationPermission == LocationPermission.denied) {
+      locationPermission = await Geolocator.requestPermission();
+      if (locationPermission == LocationPermission.denied) {
+        debugPrint("user denied location permission");
+      }
+    }
+
+    //check if user denied permission forever
+    if (locationPermission == LocationPermission.deniedForever) {
+      debugPrint("user denied permission forever");
+    }
+
+    var location = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
+    return {"latitude": location.latitude, "longitude": location.latitude};
   }
 }
