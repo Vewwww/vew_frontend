@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/nearest_repairer_cubit/nearest_repairer_cubit.dart';
 import 'package:vewww/core/components/near_repairer_card.dart';
 import 'package:vewww/core/components/search_bar.dart';
+import 'package:vewww/views/driver/search_result_screen.dart';
 
 import '../../core/components/custom_app_bar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
@@ -53,7 +54,11 @@ class _SearchScreenState extends State<SearchScreen> {
               children: [
                 Text("Near Repairers", style: AppTextStyle.greyStyle()),
                 InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      NavigationUtils.navigateTo(
+                          context: context,
+                          destinationScreen: SearchResultScreen());
+                    },
                     child: Text("See All", style: AppTextStyle.mainStyle())),
               ],
             ),
@@ -66,7 +71,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   return Expanded(
                     child: ListView.builder(
                       padding: const EdgeInsets.all(0),
-                      itemCount: state.places.length,
+                      itemCount: 10,
                       itemBuilder: (BuildContext context, int index) {
                         return NearRepairerCard(repairer: state.places[index]);
                       },

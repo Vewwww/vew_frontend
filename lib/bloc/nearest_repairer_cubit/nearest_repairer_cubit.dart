@@ -21,14 +21,18 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
   //getNearestMaintainaceCenter
   Future getNearestMC({String? carTypeID, String? isVerified}) async {
     String url = "/driver/maintenanceCenter/getNearestMaintenanceCenters";
+    Map<String, dynamic> query = await getCurrentLocation();
+    query.addAll({"carType": carTypeID, "isVerified": isVerified});
+    print("${query}");
     emit(GettingNearestMCLoadingState());
-    await DioHelper.getData(
-        url: url,
-        token: SharedPreferencesHelper.getData(key: 'vewToken'),
-        query: {"carType": carTypeID, "isVerified": isVerified}).then((value) {
-      print("neareat MC response : ${value.data}");
+    await DioHelper.getWithBody(
+            url: url,
+            token: SharedPreferencesHelper.getData(key: 'vewToken'),
+            query: query)
+        .then((value) {
       NearesetMCResponse nearesetMCResponse =
           NearesetMCResponse.fromJson(value.data);
+      print("neareat MC response : ${nearesetMCResponse.results}");
       emit(GettingNearestMCSuccessState(nearesetMCResponse.maintenanceCenter!));
     }).onError((error, stackTrace) {
       print("neareat MC error : $error");
@@ -56,6 +60,7 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
 
   Future getNearestMechanic(String serviceId) async {
     String url = "/mechanic/getNearestMechanicWorkshop?service=${serviceId}";
+
     emit(GettingNearestMechanicLoadingState());
     await DioHelper.getData(
       url: url,
@@ -74,19 +79,39 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
 
   Future getNearest() async {
     Map<String, dynamic> query = await getCurrentLocation();
-    print(query);
+    print("queryy : $query");
     await DioHelper.getWithBody(
       url: "/driver/getNearest",
       query: query,
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
     ).then((value) {
-      print("neareat mechanic response : ${value.data}");
+      print("nearest  response : ${value.data}");
       NearesetPlaceResponse nearesetPlaceResponse =
           NearesetPlaceResponse.fromJson(value.data);
       emit(GettingNearestSuccessState(places: nearesetPlaceResponse.places!));
     }).onError((error, stackTrace) {
-      print("neareat mechanic error : ${error}");
+      print("nearest mechanic error : ${error}");
       emit(GettingNearestErrorState());
+    });
+  }
+
+  Future search(String searchKey) async {
+    Map<String, dynamic> query = await getCurrentLocation();
+    String url = "/driver/search?keyword=$searchKey";
+    print("queryy : $query \n url:$url");
+    emit(SearchLoadingState());
+    await DioHelper.getWithBody(
+      url: url,
+      query: query,
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
+    ).then((value) {
+      print("neareat response : ${value.data}");
+      NearesetPlaceResponse nearesetPlaceResponse =
+          NearesetPlaceResponse.fromJson(value.data);
+      emit(SearchSuccessState(places: nearesetPlaceResponse.places!));
+    }).onError((error, stackTrace) {
+      print("neareat mechanic error : ${error}");
+      emit(SearchErrorState());
     });
   }
 

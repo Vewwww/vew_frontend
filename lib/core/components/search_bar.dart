@@ -3,7 +3,7 @@ import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/views/driver/search_result_screen.dart';
 
 class SearchBar extends StatelessWidget {
-  SearchBar({Key? key}) : super(key: key);
+  SearchBar({String? searchKey, Key? key}) : super(key: key){if(searchKey != null) this._searchKeyController.text = searchKey;}
   TextEditingController _searchKeyController = TextEditingController();
 
   @override

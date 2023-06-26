@@ -40,3 +40,12 @@ class GettingNearestSuccessState extends NearestRepairerState {
 }
 
 class GettingNearestErrorState extends NearestRepairerState {}
+
+class SearchLoadingState extends NearestRepairerState {}
+
+class SearchSuccessState extends NearestRepairerState {
+  final List<Place> places;
+  SearchSuccessState({required this.places});
+}
+
+class SearchErrorState extends NearestRepairerState {}
