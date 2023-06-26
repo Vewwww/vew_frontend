@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:vewww/controllers/driver_controller.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/default_button.dart';
 import '../../core/components/rating_bar.dart';
@@ -57,7 +58,7 @@ class MaintenanceCenterPreview extends StatelessWidget {
                       ),
                       onPressed: () async {
                         if (maintenanceCenter.phoneNumber != null)
-                          await FlutterPhoneDirectCaller.callNumber(
+                          await DriverController.call(
                               maintenanceCenter.phoneNumber!);
                       },
                     ),
@@ -71,13 +72,8 @@ class MaintenanceCenterPreview extends StatelessWidget {
                           size: 30,
                         ),
                         onPressed: () async {
-                          String googleUrl =
-                              'https://www.google.com/maps/search/?api=1&query=${maintenanceCenter.location!.latitude},${maintenanceCenter.location!.longitude}';
-                          //if (await canLaunchUrl(Uri.parse(googleUrl))) {
-                          await launchUrl(Uri.parse(googleUrl));
-                          // } else {
-                          //   throw 'Could not open the map.';
-                          // }
+                          await DriverController.goToGoogleMaps(maintenanceCenter.location!);
+
                         }),
                   ],
                 )

@@ -32,33 +32,37 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
       emit(GettingNearestMCErrorState());
     });
   }
+
   Future getNearestGasStation() async {
     String url = "/gasStation/";
     emit(GettingNearestGasStationLoadingState());
     await DioHelper.getData(
-        url: url,
-        token: SharedPreferencesHelper.getData(key: 'vewToken'),
-        ).then((value) {
+      url: url,
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
+    ).then((value) {
       print("neareat gas station response : ${value.data}");
       NearesetGasStationResponse nearesetGasStationResponse =
           NearesetGasStationResponse.fromJson(value.data);
-      emit(GettingNearestGasStationSuccessState(nearesetGasStationResponse.gasStation!));
+      emit(GettingNearestGasStationSuccessState(
+          nearesetGasStationResponse.gasStation!));
     }).onError((error, stackTrace) {
       print("neareat gas station error : $error");
       emit(GettingNearestGasStationErrorState());
     });
   }
 
-  Future getNearestMechanic(String serviceId) async{
+  Future getNearestMechanic(String serviceId) async {
     String url = "/mechanic/getNearestMechanicWorkshop?service=${serviceId}";
     emit(GettingNearestMechanicLoadingState());
     await DioHelper.getData(
-        url: url,
-        token: SharedPreferencesHelper.getData(key: 'vewToken'),
-        ).then((value) {
+      url: url,
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
+    ).then((value) {
       print("neareat mechanic response : ${value.data}");
-      NearestMechanicResponse nearesetMechanicResponse =NearestMechanicResponse.fromJson(value.data);
-      emit(GettingNearestMechanicSuccessState(mechanics:nearesetMechanicResponse.mechanic!));
+      NearestMechanicResponse nearesetMechanicResponse =
+          NearestMechanicResponse.fromJson(value.data);
+      emit(GettingNearestMechanicSuccessState(
+          mechanics: nearesetMechanicResponse.mechanic!));
     }).onError((error, stackTrace) {
       print("neareat mechanic error : ${error}");
       emit(GettingNearestMechanicErrorState());

@@ -4,6 +4,7 @@ import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/views/admin/view_gas_stations_screen.dart';
 import 'package:vewww/views/driver/gas_stattion_preview.dart';
+import 'package:vewww/views/driver/mechanic_preview_screen.dart';
 import '../../model/repairer.dart';
 import '../../views/driver/maintenance_center_preview.dart';
 import '../utils/navigation.dart';
@@ -30,6 +31,15 @@ class NearRepairerCard extends StatelessWidget {
               context: context,
               destinationScreen: ViewGasStationScreen(
                 //gasStation: repairer as GasStation,
+              )
+                );
+
+        }
+        else if (repairer is Mechanic){
+           NavigationUtils.navigateTo(
+              context: context,
+              destinationScreen: MechanicPreviewScreen(
+                mechanic: repairer as Mechanic,
               )
                 );
 

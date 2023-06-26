@@ -108,17 +108,20 @@ class DriverProfile extends StatelessWidget {
                             validator: (value) {},
                           ),
                           const SizedBox(height: 20),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            primary: false,
-                            physics: const NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.zero,
-                            itemCount: driver.cars!.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return buildCarDetails(
-                                  driver.cars![index], index + 1);
-                            },
-                          ),
+                          (driver.cars != null)
+                              ? ListView.builder(
+                                  shrinkWrap: true,
+                                  primary: false,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  padding: EdgeInsets.zero,
+                                  itemCount: driver.cars!.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return buildCarDetails(
+                                        driver.cars![index], index + 1);
+                                  },
+                                )
+                              : Container(),
                         ],
                       ),
                     ],
@@ -145,11 +148,9 @@ class DriverProfile extends StatelessWidget {
             child: CircleAvatar(
                 radius: 30,
                 backgroundColor: mainColor.withOpacity(0.3),
-                child: const Icon(
-                  Icons.drive_eta,
-                  size: 30,
-                  color: Colors.black //car.color,
-                ))),
+                child: const Icon(Icons.drive_eta,
+                    size: 30, color: Colors.black //car.color,
+                    ))),
         CustomTextField(
           readOnly: true,
           label: "Car Type",

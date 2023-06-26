@@ -1,3 +1,5 @@
+import 'name.dart';
+
 class SignResponse {
   int? results;
   List<Signs>? signs;
@@ -9,13 +11,13 @@ class SignResponse {
     if (json['data'] != null) {
       signs = <Signs>[];
       json['data'].forEach((v) {
-        signs!.add(new Signs.fromJson(v));
+        signs!.add(Signs.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['results'] = this.results;
     if (this.signs != null) {
       data['data'] = this.signs!.map((v) => v.toJson()).toList();
@@ -41,19 +43,19 @@ class Signs {
       this.iV});
 
   Signs.fromJson(Map<String, dynamic> json) {
-    name = json['name'] != null ? new Name.fromJson(json['name']) : null;
+    name = json['name'] != null ? Name.fromJson(json['name']) : null;
     description = json['description'] != null
-        ? new Name.fromJson(json['description'])
+        ? Name.fromJson(json['description'])
         : null;
     solution =
-        json['solution'] != null ? new Name.fromJson(json['solution']) : null;
+        json['solution'] != null ? Name.fromJson(json['solution']) : null;
     sId = json['_id'];
     image = json['image'];
     iV = json['__v'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.name != null) {
       data['name'] = this.name!.toJson();
     }
@@ -70,21 +72,4 @@ class Signs {
   }
 }
 
-class Name {
-  String? en;
-  String? ar;
 
-  Name({this.en, this.ar});
-
-  Name.fromJson(Map<String, dynamic> json) {
-    en = json['en'];
-    ar = json['ar'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['en'] = this.en;
-    data['ar'] = this.ar;
-    return data;
-  }
-}

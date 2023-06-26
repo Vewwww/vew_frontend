@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'name.dart';
+
 class CarColorResponse {
   int? results;
   List<CarColor>? carColor;
@@ -11,13 +13,13 @@ class CarColorResponse {
     if (json['data'] != null) {
       carColor = <CarColor>[];
       json['data'].forEach((v) {
-        carColor!.add(new CarColor.fromJson(v));
+        carColor!.add(CarColor.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['results'] = this.results;
     if (this.carColor != null) {
       data['data'] = this.carColor!.map((v) => v.toJson()).toList();
@@ -35,7 +37,7 @@ class CarColor {
   CarColor({this.name, this.sId, this.code, this.iV});
 
   CarColor.fromJson(Map<String, dynamic> json) {
-    name = json['name'] != null ? new Name.fromJson(json['name']) : null;
+    name = json['name'] != null ? Name.fromJson(json['name']) : null;
     sId = json['_id'];
     var codeString = json['code'];
     var hexColor = codeString.replaceAll("#", "");
@@ -49,7 +51,7 @@ class CarColor {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.name != null) {
       data['name'] = this.name!.toJson();
     }
@@ -60,21 +62,3 @@ class CarColor {
   }
 }
 
-class Name {
-  String? en;
-  String? ar;
-
-  Name({this.en, this.ar});
-
-  Name.fromJson(Map<String, dynamic> json) {
-    en = json['en'];
-    ar = json['ar'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['en'] = this.en;
-    data['ar'] = this.ar;
-    return data;
-  }
-}

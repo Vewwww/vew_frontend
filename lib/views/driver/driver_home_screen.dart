@@ -87,7 +87,7 @@ class DriverHomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   defaultButton(text: 'Mechanic', height: 80, width: 170, function: (){
-                     Navigator.push(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: ((context) => ServicesScreen())));
