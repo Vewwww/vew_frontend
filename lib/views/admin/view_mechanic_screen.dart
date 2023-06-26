@@ -1,41 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/components/user_item.dart';
+import '../../bloc/get_all_cubit/get_all_cubit.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 
-class ViewMechanicScreen extends StatelessWidget {
- var searchController = TextEditingController();
+class ViewMechanicScreen extends StatefulWidget {
+  @override
+  State<ViewMechanicScreen> createState() => _ViewMechanicScreenState();
+}
+
+class _ViewMechanicScreenState extends State<ViewMechanicScreen> {
+  void initState() {
+    super.initState();
+    final getAllCubit = context.read<GetAllCubit>();
+    getAllCubit.getAllMechanicShop();
+  }
+
+  var searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(children: [
-        CustomAppBar(haveBackArrow: true, title: Text('Application\' s Mechanics', style: AppTextStyle.mainStyle(size: 25),),),
+        CustomAppBar(
+          haveBackArrow: true,
+          title: Text(
+            'Application\' s Mechanics',
+            style: AppTextStyle.mainStyle(size: 25),
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: TextFormField(
-                controller: searchController,
-                decoration: const InputDecoration(
-                  labelText: 'Search',
-                  prefixIcon: Icon(
-                    Icons.search,
-                  ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(30))),
-                ),
+            controller: searchController,
+            decoration: const InputDecoration(
+              labelText: 'Search',
+              prefixIcon: Icon(
+                Icons.search,
               ),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30))),
+            ),
+          ),
         ),
-         Expanded(
+        BlocBuilder<GetAllCubit, GetAllState>(
+          builder: (context, state) {
+            print(state);
+           if(state is GetAllMechanicShopSuccessState) {
+            return Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: ListView.separated(
-                  itemBuilder: (contrxt, indx) => userItem(title: 'Mohammad Yehia', subtitle: 'mohammad@gmail.com', function: (){}),
+                  itemBuilder: (contrxt, index) => userItem(
+                    icon: Icons.handyman_outlined,
+                      title: state.mechanicShops[index].ownerName!,
+                      subtitle: state.mechanicShops[index].email!,
+                      function: () {}),
                   separatorBuilder: (context, index) => const SizedBox(
                     height: 15,
                   ),
-                  itemCount: 10,
+                  itemCount: state.mechanicShops.length,
                 ),
               ),
-            ),
+            );
+          } else{
+            return CircularProgressIndicator();
+          }
+          },
+        ),
       ]),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vewww/core/style/app_colors.dart';
 
 import '../style/app_Text_Style/app_text_style.dart';
 
@@ -6,6 +7,7 @@ Widget userItem({
   required String title,
   required String subtitle,
   required Function() function,
+  required IconData icon,
 }){
 return  Container(
       height: 70,
@@ -29,11 +31,17 @@ return  Container(
       ),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            Text(title, style:AppTextStyle.darkGreyStyle(size: 20) , ),
-            Text(subtitle, style:AppTextStyle.greyStyle() , ),
+            Icon(icon, color: mainColor, size: 45,),
+            SizedBox(width: 10,),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style:AppTextStyle.darkGreyStyle(size: 20) , ),
+                Text(subtitle, style:AppTextStyle.greyStyle() , ),
+              ],
+            ),
           ],
         ),
       ),
