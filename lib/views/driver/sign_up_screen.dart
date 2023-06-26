@@ -436,11 +436,12 @@ class SignUpScreen extends StatelessWidget {
                                   name: _name.text,
                                   password: _password.text,
                                   role: "user",
+                                   gender: genderCubit.genderInText,
                                 ),
                                 lisenceRenewalDate:
                                     _driverlisenceRenewalDate.text,
                                 phoneNumber: _phoneNumber.text,
-                                gender: genderCubit.genderInText,
+                               
                                 cars: [car]);
                             authCubit.driverSignUp(driver);
                             //carCubit.createCar(car);

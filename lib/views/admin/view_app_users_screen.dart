@@ -20,12 +20,11 @@ class ViewAppUsersScreen extends StatelessWidget {
           ),
           haveBackArrow: true,
         ),
-        SizedBox(height: 175,),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              Image.asset('assets/images/Logo(1).png', height: 200, width: 200,),
               uaserCard(
                 function: () {
                   Navigator.push(

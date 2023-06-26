@@ -9,6 +9,7 @@ import 'package:vewww/views/winch/winch_home_page.dart';
 import '../bloc/add_image_cubit/add_image_cubit.dart';
 import '../bloc/auth_cubit/auth_cubit.dart';
 import '../bloc/car_cubit/car_cubit.dart';
+import '../bloc/get_all_cubit/get_all_cubit.dart';
 import '../bloc/loaction_cubit/loaction_cubit.dart';
 import '../bloc/nearest_repairer_cubit/nearest_repairer_cubit.dart';
 import '../bloc/search_cubit/seaech_cubit.dart';
@@ -60,6 +61,7 @@ class AppRoot extends StatelessWidget {
           BlocProvider(create: (context) => WarningSignCubit()),
           BlocProvider(create: (context) => ServicesCubit()),
           BlocProvider(create: (context) => CarCubit()),
+          BlocProvider(create: (context) => GetAllCubit()),
         ],
         child: MaterialApp(
           theme: ThemeData(

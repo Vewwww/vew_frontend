@@ -1,15 +1,38 @@
 import 'package:vewww/model/car.dart';
 import 'package:vewww/model/person.dart';
+class DriverResponse {
+  int? results;
+  List<Driver>? driver;
 
+  DriverResponse({this.results, this.driver});
+
+  DriverResponse.fromJson(Map<String, dynamic> json) {
+    results = json['results'];
+    if (json['Users'] != null) {
+      driver = <Driver>[];
+      json['Users'].forEach((v) {
+        driver!.add(new Driver.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['results'] = this.results;
+    if (this.driver != null) {
+      data['Users'] = this.driver!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
 class Driver {
   Person? person;
-  String? gender;
   String? lisenceRenewalDate;
   String? phoneNumber;
   List<Car>? cars;
 
   Driver(
-      {this.gender,
+      {
       this.lisenceRenewalDate,
       this.person,
       this.phoneNumber,
@@ -21,7 +44,6 @@ class Driver {
     var password = json['password'];
     var role = json['role'];
     person = Person(name: name, email: email, password: password, role: role);
-    gender = json['gender'];
     lisenceRenewalDate = json['lisenceRenewalDate'];
     phoneNumber = json['phoneNumber'];
     if (json['cars'] != null) {
@@ -37,7 +59,6 @@ class Driver {
     data['name'] = person!.name;
     data['email'] = person!.email;
     data['password'] = person!.password;
-    data['gender'] = gender;
     data['lisenceRenewalDate'] = lisenceRenewalDate;
     data['role'] = person!.role;
     data['phoneNumber'] = phoneNumber;
@@ -52,8 +73,8 @@ Driver driver = Driver(
   person: Person(
     email: "hello@email.com",
   name: "wael mohamed",
-  ),
   gender: "male",
+  ),
   phoneNumber: "0112111210",
   lisenceRenewalDate: "05/09/2023",
   // cars: [
