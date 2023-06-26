@@ -26,23 +26,18 @@ class NearRepairerCard extends StatelessWidget {
               destinationScreen: MaintenanceCenterPreview(
                 maintenanceCenter: repairer as MaintenanceCenter,
               ));
-        else if (repairer is GasStation){
-           NavigationUtils.navigateTo(
+        else if (repairer is GasStation) {
+          NavigationUtils.navigateTo(
               context: context,
-              destinationScreen: ViewGasStationScreen(
-                //gasStation: repairer as GasStation,
-              )
-                );
-
-        }
-        else if (repairer is Mechanic){
-           NavigationUtils.navigateTo(
+              destinationScreen: GasStationPreview(
+                gasStation: repairer as GasStation,
+              ));
+        } else if (repairer is Mechanic) {
+          NavigationUtils.navigateTo(
               context: context,
               destinationScreen: MechanicPreviewScreen(
                 mechanic: repairer as Mechanic,
-              )
-                );
-
+              ));
         }
       },
       child: Container(
@@ -89,12 +84,18 @@ class NearRepairerCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 5),
-                RatingBar(repairer.rate!),
+                (repairer.rate != null)
+                    ? RatingBar(repairer.rate!)
+                    : Container(),
                 const SizedBox(height: 15),
                 Text(
                     (repairer is MaintenanceCenter)
                         ? "Maintenance Center"
-                        : "Repairer",
+                        : (repairer is GasStation)
+                            ? "Gas Station"
+                            : (repairer is Mechanic)
+                                ? "Mechanic"
+                                : "Repairer",
                     style: AppTextStyle.greyStyle(size: 15)),
                 const SizedBox(height: 5),
               ],
