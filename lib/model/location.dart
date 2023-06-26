@@ -1,4 +1,4 @@
-import 'car_color.dart';
+import 'name.dart';
 
 class Location {
   Name? description;
@@ -9,14 +9,14 @@ class Location {
 
   Location.fromJson(Map<String, dynamic> json) {
     description = json['description'] != null
-        ? new Name.fromJson(json['description'])
+        ? Name.fromJson(json['description'])
         : null;
     latitude = json['latitude'];
     longitude = json['longitude'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.description != null) {
       data['description'] = this.description!.toJson();
     }

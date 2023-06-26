@@ -16,7 +16,9 @@ class ForgotPasswordScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: BackwardArrow(function: () {Navigator.pop(context);}),
+        leading: BackwardArrow(function: () {
+          Navigator.pop(context);
+        }),
         title: Center(
           child: Text(
             'Forgot Password',
@@ -32,23 +34,48 @@ class ForgotPasswordScreen extends StatelessWidget {
         padding: const EdgeInsets.all(15.0),
         child: Column(
           children: [
-            Image.asset('assets/images/password.png',height: 250,width: 250,),
-            SizedBox(height: 15,),
-            Text('Select which contact details should we use to reset your password: ',
-            style: AppTextStyle.boldStyle(size: 15) ,
+            Image.asset(
+              'assets/images/password.png',
+              height: 250,
+              width: 250,
             ),
-            SizedBox(height: 15,),
-            forgotPassCard(title: 'Via SMS', content: '01111517649',icon: Icons.sms,),
-            SizedBox(height: 15,),
-            forgotPassCard(title: 'Via Email', content: 'zainab@gmail.com',icon: Icons.email,),
-            SizedBox(height: 150,),
-            defaultButton(text: 'Continue', function: (){
-              Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CreateNewPassScreen()),
-                          );
-            })
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              'Select which contact details should we use to reset your password: ',
+              style: AppTextStyle.boldStyle(size: 15),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            forgotPassCard(
+              title: 'Via SMS',
+              content: '01111517649',
+              icon: Icons.sms,
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            forgotPassCard(
+              title: 'Via Email',
+              content: 'zainab@gmail.com',
+              icon: Icons.email,
+            ),
+            Expanded(
+              child: Container(
+                  // height: 150,
+                  ),
+            ),
+            defaultButton(
+                text: 'Continue',
+                function: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CreateNewPassScreen()),
+                  );
+                })
           ],
         ),
       ),

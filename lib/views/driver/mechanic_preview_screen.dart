@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
 
-import '../../core/components/rating_stars.dart';
+import '../../controllers/driver_controller.dart';
+import '../../core/components/rating_bar.dart';
+import '../../model/repairer.dart';
 
 class MechanicPreviewScreen extends StatelessWidget {
-  const MechanicPreviewScreen({super.key});
+  Mechanic mechanic;
+  MechanicPreviewScreen({required this.mechanic, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,30 +29,54 @@ class MechanicPreviewScreen extends StatelessWidget {
                 ),
                 Image.asset(
                   'assets/images/shop.png',
-                  height: 175,
-                  width: 175,
+                  height: 100,
+                  width: 100,
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 10,
                 ),
                 Text(
-                  'Mechanic Workshop Name',
+                  mechanic.name!.en ?? mechanic.name!.ar!,
                   style: AppTextStyle.whiteTextStyle(20),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 10,
                 ),
-                ratingStars(),
+                Text(
+                  "Owner : ${mechanic.ownerName!}",
+                  style: AppTextStyle.greyStyle(size: 15),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                RatingBar(mechanic.rate!),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     IconButton(
-                      icon: Icon(Icons.phone, color: Colors.white, size: 30,), onPressed: () {  },
+                      icon: Icon(
+                        Icons.phone,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      onPressed: () async {
+                        if (mechanic.phoneNumber != null)
+                          await DriverController.call(mechanic.phoneNumber!);
+                      },
                     ),
-                    SizedBox(width: 7,),
-                     IconButton(
-                      icon: Icon(Icons.location_on, color: Colors.white, size: 30,), onPressed: () {  },
+                    const SizedBox(
+                      width: 7,
                     ),
+                    IconButton(
+                        icon: const Icon(
+                          Icons.location_on,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                        onPressed: () async {
+                          await DriverController.goToGoogleMaps(
+                              mechanic.location!);
+                        }),
                   ],
                 )
               ],
@@ -61,7 +85,8 @@ class MechanicPreviewScreen extends StatelessWidget {
         ),
         Expanded(
           child: Container(
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(40.0),
                 topLeft: Radius.circular(40.0),
@@ -71,39 +96,42 @@ class MechanicPreviewScreen extends StatelessWidget {
             width: double.infinity,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                  'Services :',
-                  style: AppTextStyle.mainStyle(size: 20),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Text(
-                  'Regular maintenance service',
-                  style: AppTextStyle.darkGreyStyle(size: 17),
-                ),
-                SizedBox(
-                  height: 7,
-                ),
-                Text(
-                  'Change oil',
-                  style: AppTextStyle.darkGreyStyle(size: 17),
-                ),
+                      'Services:',
+                      style: AppTextStyle.mainStyle(size: 20),
+                    ),
+                    const SizedBox(height: 15),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / 3,
+                      child: ListView.separated(
+                        padding: EdgeInsets.zero,
+                        itemCount: mechanic.service!.length,
+                        separatorBuilder: (context, int index) =>
+                            const SizedBox(height: 3),
+                        itemBuilder: (BuildContext context, int index) {
+                          return Text(
+                            mechanic.service![index].name!.en ??
+                                mechanic.service![index].name!.ar!,
+                            style: AppTextStyle.darkGreyStyle(),
+                          );
+                        },
+                      ),
+                    ),
                   ],
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                SizedBox(height:15),
-                defaultButton(text: 'Request Winch', width: 390),
-                ],
+                const SizedBox(height: 3),
+                (mechanic.hasDelivery == true)
+                    ? defaultButton(text: 'Request Mechanic', width: 390)
+                    : defaultButton(text: 'Request Winch', width: 390),
+              ],
             ),
           ),
-        ),
+        )
       ]),
     );
   }

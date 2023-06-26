@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/nearest_repairer_cubit/nearest_repairer_cubit.dart';
 import 'package:vewww/core/components/filter_card.dart';
+import 'package:vewww/views/common/services_screen.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
 import 'package:vewww/views/driver/search_screen.dart';
 import '../../core/components/custom_app_bar.dart';
@@ -11,17 +12,22 @@ import '../../core/style/app_colors.dart';
 import '../../core/utils/navigation.dart';
 
 class SearchResultScreen extends StatefulWidget {
-  SearchResultScreen({this.filter, Key? key}) : super(key: key);
+  SearchResultScreen({this.filter, Key? key, this.serviceId, this.searchKey})
+      : super(key: key);
   String? filter;
+  String? serviceId;
+  String? searchKey;
 
   @override
-  State<SearchResultScreen> createState() =>
-      _SearchResultScreenState(filter: filter);
+  State<SearchResultScreen> createState() => _SearchResultScreenState(
+      filter: filter, serviceId: serviceId, searchKey: searchKey);
 }
 
 class _SearchResultScreenState extends State<SearchResultScreen> {
   String? filter;
-  _SearchResultScreenState({this.filter});
+  String? serviceId;
+  String? searchKey;
+  _SearchResultScreenState({this.filter, this.serviceId, this.searchKey});
 
   @override
   void initState() {
@@ -31,6 +37,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
       nearestRepairerCubit.getNearestMC();
     else if (filter == "Gas Station")
       nearestRepairerCubit.getNearestGasStation();
+    else if (filter == "Mechanist")
+      nearestRepairerCubit.getNearestMechanic(serviceId!);
   }
 
   @override
@@ -60,13 +68,40 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  FilterCard(filter: "All", enabled: (filter == null)),
                   FilterCard(
-                      filter: "Mechanist", enabled: (filter == "Mechanist")),
+                    onPress: () {},
+                    filter: "All",
+                    enabled: (filter == null),
+                  ),
                   FilterCard(
+                      onPress: () {
+                        NavigationUtils.navigateTo(
+                            context: context,
+                            destinationScreen: const ServicesScreen());
+                      },
+                      filter: "Mechanist",
+                      enabled: (filter == "Mechanist")),
+                  FilterCard(
+                      onPress: () {
+                        NavigationUtils.navigateTo(
+                            context: context,
+                            destinationScreen: SearchResultScreen(
+                              filter: "Gas Station",
+                              searchKey: searchKey,
+                            ));
+                      },
                       filter: "Gas Station",
                       enabled: (filter == "Gas Station")),
                   FilterCard(
+                      onPress: () {
+                        if(searchKey != null)
+                        NavigationUtils.navigateTo(
+                            context: context,
+                            destinationScreen: SearchResultScreen(
+                              filter: "Maintenance Centers",
+                              searchKey: searchKey,
+                            ));
+                      },
                       filter: "Maintenance Centers",
                       enabled: (filter == "Maintenance Centers")),
                 ],
@@ -111,7 +146,23 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                 //   return buildLoading(context);
                 // }
                 // }
-                else {
+
+                else if (filter == "Mechanist") {
+                  if (state is GettingNearestMechanicSuccessState) {
+                    return Expanded(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(0),
+                        itemCount: state.mechanics.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return NearRepairerCard(
+                              repairer: state.mechanics[index]);
+                        },
+                      ),
+                    );
+                  } else {
+                    return buildLoading(context);
+                  }
+                } else {
                   return buildLoading(context);
                 }
               },

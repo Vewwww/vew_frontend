@@ -406,29 +406,30 @@ class SignUpScreen extends StatelessWidget {
                   SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        /*{
-  "cars":[{
-      "carType":"643528431c01869f2d835be7",
-      "color":"6469f59993253d535309dc62",
-      "plateNumber":"123456"
-  },{
-      "carType":"643528431c01869f2d835be9",
-      "color":"6469f59f93253d535309dc6b",
-      "plateNumber":"123456"
-  }]
-    
-} */
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            Car car=Car(
-                                    plateNumber: _carPlateNum.text,
-                                    carType: _carType.text,
-                                    carLicenseRenewalDate: _carlisenceRenewalDate.text,
-                                    miles: _miles.text ,
-                                    averageMilesPerMonth: _avgMilesPerMonth.text,
-                                    lastPeriodicMaintenanceDate: _lastPeriodicMaintenanceDate.text,
-                                    
-                                  );
+                          if (_formKey.currentState!.validate() &&
+                              SelectColorCubit.get(context).carColorResponse !=
+                                  null &&
+                              selectChoiceCubit.carTypeResponse != null) {
+                            Car car = Car(
+                              plateNumber: _carPlateNum.text,
+                              carType: selectChoiceCubit
+                                  .carTypeResponse!
+                                  .carType![
+                                      SelectChoiceCubit.get(context).choice]
+                                  .sId,
+                              color: SelectColorCubit.get(context)
+                                  .carColorResponse!
+                                  .carColor![
+                                      SelectColorCubit.get(context).color]
+                                  .sId,
+                              carLicenseRenewalDate:
+                                  _carlisenceRenewalDate.text,
+                              miles: _miles.text,
+                              averageMilesPerMonth: _avgMilesPerMonth.text,
+                              lastPeriodicMaintenanceDate:
+                                  _lastPeriodicMaintenanceDate.text,
+                            );
                             Driver driver = Driver(
                                 person: Person(
                                   email: _email.text,
@@ -440,17 +441,31 @@ class SignUpScreen extends StatelessWidget {
                                     _driverlisenceRenewalDate.text,
                                 phoneNumber: _phoneNumber.text,
                                 gender: genderCubit.genderInText,
-                                cars: [
-                                  car
-                                ]);
+                                cars: [car]);
                             authCubit.driverSignUp(driver);
-                            carCubit.createCar(car);
-                            NavigationUtils.navigateAndClearStack(
-                                context: context,
-                                destinationScreen: SignInScreen());
+                            //carCubit.createCar(car);
+                            if (authCubit.state is SignUpSuccessState) {
+                              NavigationUtils.navigateAndClearStack(
+                                  context: context,
+                                  destinationScreen: SignInScreen());
+                            } else if (authCubit.state is SignUpErrorState) {
+                              const snackBar = SnackBar(
+                                  content:
+                                      Text("Something went wrong try again !"));
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            }
                           }
                         },
-                        child: const Text("Sign Up"),
+                        child: BlocConsumer<AuthCubit, AuthState>(
+                          listener: (context, state) {},
+                          builder: (context, state) {
+                            if (state is SignUpLoadingState)
+                              return CircularProgressIndicator();
+                            else
+                              return Text("Sign Up");
+                          },
+                        ),
                       )),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

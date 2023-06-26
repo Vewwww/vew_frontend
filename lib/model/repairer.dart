@@ -1,5 +1,7 @@
 import 'car_type.dart';
 import 'location.dart';
+import 'name.dart';
+import 'services.dart';
 
 abstract class Repairer {
   Name? name;
@@ -17,15 +19,22 @@ abstract class Repairer {
     this.rate,
     this.ratesNumber,
   });
-  Repairer.fromJson(Map<String, dynamic> json) {
-    name = json['name'] != null ? Name.fromJson(json['name']) : null;
+  Repairer.fromJson(Map<String, dynamic> json, {bool isMechanic = false}) {
+    if (isMechanic) {
+      name = Name(en: json['name']);
+    } else {
+      name = json['name'] != null ? Name.fromJson(json['name']) : null;
+    }
     location =
         json['location'] != null ? Location.fromJson(json['location']) : null;
     sId = json['_id'];
     phoneNumber = json['phoneNumber'];
     //print("object 111 ${json['rate']}");
     rate = json['rate'] * 1.0;
-    ratesNumber = json['ratesNumber'];
+    if (isMechanic)
+      ratesNumber = json['numOfRates'];
+    else
+      ratesNumber = json['ratesNumber'];
   }
 }
 
@@ -91,6 +100,107 @@ class MaintenanceCenter extends Repairer {
     data['rate'] = rate;
     data['ratesNumber'] = ratesNumber;
     data['__v'] = iV;
+    return data;
+  }
+}
+
+class Mechanic extends Repairer {
+  Report? report;
+  String? ownerName;
+  String? email;
+  String? password;
+  String? mechanicPhone;
+  String? mechanicName;
+  bool? hasDelivery;
+  List<Service>? service;
+  bool? isSuspended;
+  String? role;
+
+  Mechanic(
+      {this.report,
+      location,
+      sId,
+      this.ownerName,
+      this.email,
+      this.password,
+      this.mechanicPhone,
+      name,
+      phoneNumber,
+      this.hasDelivery,
+      this.service,
+      rate,
+      numOfRates,
+      this.isSuspended,
+      this.role})
+      : super.named(
+            location: location,
+            name: Name(en: name),
+            phoneNumber: phoneNumber,
+            rate: rate,
+            ratesNumber: numOfRates,
+            sId: sId);
+
+  Mechanic.fromJson(Map<String, dynamic> json)
+      : super.fromJson(json, isMechanic: true) {
+    report = json['report'] != null ? Report.fromJson(json['report']) : null;
+    ownerName = json['ownerName'];
+    email = json['email'];
+    password = json['password'];
+    mechanicPhone = json['mechanicPhone'];
+
+    hasDelivery = json['hasDelivery'];
+    if (json['service'] != null) {
+      service = <Service>[];
+      json['service'].forEach((v) {
+        service!.add(Service.fromJson(v));
+      });
+    }
+    isSuspended = json['isSuspended'];
+    role = json['role'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (report != null) {
+      data['report'] = report!.toJson();
+    }
+    if (location != null) {
+      data['location'] = location!.toJson();
+    }
+    data['_id'] = sId;
+    data['ownerName'] = ownerName;
+    data['email'] = email;
+    data['password'] = password;
+    data['mechanicPhone'] = mechanicPhone;
+    data['name'] = name!.en!;
+    data['phoneNumber'] = phoneNumber;
+    data['hasDelivery'] = hasDelivery;
+    if (service != null) {
+      data['service'] = service!.map((v) => v.toJson()).toList();
+    }
+    data['rate'] = rate;
+    data['numOfRates'] = ratesNumber;
+    data['isSuspended'] = isSuspended;
+    data['role'] = role;
+    return data;
+  }
+}
+
+class Report {
+  int? reportsNumber;
+  String? dateReport;
+
+  Report({this.reportsNumber, this.dateReport});
+
+  Report.fromJson(Map<String, dynamic> json) {
+    reportsNumber = json['reportsNumber'];
+    dateReport = json['dateReport'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['reportsNumber'] = reportsNumber;
+    data['dateReport'] = dateReport;
     return data;
   }
 }

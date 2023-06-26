@@ -20,8 +20,8 @@ class SelectChoiceCubit extends Cubit<SelectChoiceState> {
 
   Future<void> getAllCarTypes() async {
     emit(GetAllCarTypesLoadingState());
-    await DioHelper.getData(url: "/cartype/").then((value) {
-      //print("get all car types response : ${value.data}");
+    await DioHelper.getData(url: "/carType" ).then((value) {
+      print("get all car types response : ${value.data}");
       carTypeResponse = CarTypeResponse.fromJson(value.data);
       //print("get all car types : ${carTypeResponse!.carType}");
       emit(GetAllCarTypesSuccessState());
