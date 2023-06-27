@@ -4,6 +4,7 @@ import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/components/user_item.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 
+
 import '../../bloc/get_all_cubit/get_all_cubit.dart';
 
 class ViewDriversScreen extends StatefulWidget {
@@ -56,7 +57,7 @@ class _ViewDriversScreenState extends State<ViewDriversScreen> {
                       icon: Icons.person,
                       title: state.drivers[index].person!.name!,
                       subtitle: state.drivers[index].person!.email!,
-                      function: () {}),
+                      ),
                   separatorBuilder: (context, index) => const SizedBox(
                     height: 15,
                   ),

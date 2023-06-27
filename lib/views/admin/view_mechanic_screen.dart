@@ -55,7 +55,7 @@ class _ViewMechanicScreenState extends State<ViewMechanicScreen> {
                     icon: Icons.handyman_outlined,
                       title: state.mechanicShops[index].ownerName!,
                       subtitle: state.mechanicShops[index].email!,
-                      function: () {}),
+                      ),
                   separatorBuilder: (context, index) => const SizedBox(
                     height: 15,
                   ),
