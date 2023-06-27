@@ -7,6 +7,7 @@ import 'package:vewww/views/common/splash_screen.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
 import 'package:vewww/views/winch/winch_home_page.dart';
 import '../bloc/add_image_cubit/add_image_cubit.dart';
+import '../bloc/admin_analysis_cubit/admin_analysis_cubit.dart';
 import '../bloc/auth_cubit/auth_cubit.dart';
 import '../bloc/car_cubit/car_cubit.dart';
 import '../bloc/get_all_cubit/get_all_cubit.dart';
@@ -24,9 +25,6 @@ import '../bloc/reminder_cubit/reminder_cubit.dart';
 import '../bloc/select_choice_cubit/select_choice_cubit.dart';
 import '../bloc/select_color_cubit/select_color_cubit.dart';
 import '../bloc/warning_sign_cubit/warning_sign_cubit.dart';
-import '../views/admin/admin_home_screen.dart';
-import '../views/common/services_screen.dart';
-import '../views/mechanic/mechanic_home_screen.dart';
 
 class AppRoot extends StatelessWidget {
   const AppRoot({Key? key}) : super(key: key);
@@ -62,6 +60,7 @@ class AppRoot extends StatelessWidget {
           BlocProvider(create: (context) => ServicesCubit()),
           BlocProvider(create: (context) => CarCubit()),
           BlocProvider(create: (context) => GetAllCubit()),
+          BlocProvider(create: (context) => AdminAnalysisCubit()),
         ],
         child: MaterialApp(
           theme: ThemeData(

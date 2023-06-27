@@ -56,7 +56,7 @@ class _ViewWinchScreenState extends State<ViewWinchScreen> {
                       icon:Icons.car_repair,
                       title: state.winchDriver[index].name!,
                       subtitle: state.winchDriver[index].email!,
-                      function: () {}),
+                      ),
                   separatorBuilder: (context, index) => const SizedBox(
                     height: 15,
                   ),
