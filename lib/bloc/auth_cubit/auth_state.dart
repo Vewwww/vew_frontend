@@ -9,7 +9,10 @@ class SignInLoadingState extends AuthState {}
 
 class SignInSuccessState extends AuthState {}
 
-class SignInErrorState extends AuthState {}
+class SignInErrorState extends AuthState {
+  final errMessage;
+  SignInErrorState({required this.errMessage});
+}
 
 class LogoutLoadingState extends AuthState {}
 
@@ -21,7 +24,10 @@ class SignUpLoadingState extends AuthState {}
 
 class SignUpSuccessState extends AuthState {}
 
-class SignUpErrorState extends AuthState {}
+class SignUpErrorState extends AuthState {
+  final errMessage;
+  SignUpErrorState({required this.errMessage});
+}
 
 class SendingCodeLoadingState extends AuthState {}
 
@@ -39,4 +45,13 @@ class ResetPasswordSuccessState extends AuthState {}
 class ResetPasswordErrorState extends AuthState {
   final errMessage;
   ResetPasswordErrorState({required this.errMessage});
+}
+
+class ChangePasswordLoadingState extends AuthState {}
+
+class ChangePasswordSuccessState extends AuthState {}
+
+class ChangePasswordErrorState extends AuthState {
+  final errMessage;
+  ChangePasswordErrorState({required this.errMessage});
 }

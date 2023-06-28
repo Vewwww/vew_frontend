@@ -4,10 +4,9 @@ import 'package:vewww/bloc/car_cubit/car_cubit.dart';
 import 'package:vewww/bloc/select_choice_cubit/select_choice_cubit.dart';
 import 'package:vewww/bloc/select_color_cubit/select_color_cubit.dart';
 import 'package:vewww/core/style/app_colors.dart';
-import 'package:vewww/model/car_type.dart';
 import 'package:vewww/model/driver.dart';
-import 'package:vewww/views/driver/driver_home_screen.dart';
 import 'package:vewww/views/common/select_color_screen.dart';
+import 'package:vewww/views/driver/select_car_model.dart';
 import 'package:vewww/views/driver/sign_in_screen.dart';
 import '../../bloc/add_car_cubit/add_car_cubit.dart';
 import '../../bloc/auth_cubit/auth_cubit.dart';
@@ -19,7 +18,7 @@ import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/navigation.dart';
 import '../../model/car.dart';
 import '../../model/person.dart';
-import 'select_car_model_screen.dart';
+import 'select_car_type_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   String? carType;
@@ -39,10 +38,7 @@ class SignUpScreen extends StatelessWidget {
       TextEditingController();
   final TextEditingController _miles = TextEditingController();
   final TextEditingController _avgMilesPerMonth = TextEditingController();
-  SignUpScreen({this.carType, this.color, Key? key}) : super(key: key) {
-    print("color $color");
-    print("carType $carType");
-  }
+  SignUpScreen({this.carType, this.color, Key? key}) : super(key: key) {}
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +48,7 @@ class SignUpScreen extends StatelessWidget {
     SelectChoiceCubit selectChoiceCubit = SelectChoiceCubit.get(context);
     ReminderCubit reminderCubit = ReminderCubit.get(context);
     AuthCubit authCubit = AuthCubit.get(context);
-    CarCubit carCubit = CarCubit.get(context);
+    //CarCubit carCubit = CarCubit.get(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -153,8 +149,8 @@ class SignUpScreen extends StatelessWidget {
                     controller: _password,
                     label: "Password",
                     validator: (value) {
-                      RegExp regex = RegExp(
-                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])');
+                      RegExp regex =
+                          RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])');
                       if (value == null || value.isEmpty) {
                         return 'Password is required';
                       }
@@ -236,30 +232,86 @@ class SignUpScreen extends StatelessWidget {
                             BlocConsumer<SelectChoiceCubit, SelectChoiceState>(
                                 listener: (context, snapshot) {},
                                 builder: (context, snapshot) {
-                                  return CustomTextField(
-                                    label: "Car Type",
-                                    controller: _carType,
-                                    hint: (selectChoiceCubit.carTypeResponse !=
-                                            null)
-                                        ? selectChoiceCubit
-                                            .carTypeResponse!
-                                            .carType![
-                                                SelectChoiceCubit.get(context)
-                                                    .choice]
-                                            .name!
-                                            .en!
-                                        : "",
-                                    isDroped: true,
-                                    onDrop: () {
-                                      selectChoiceCubit.getAllCarTypes();
-                                      NavigationUtils.navigateTo(
-                                          context: context,
-                                          destinationScreen:
-                                              SelectCarModelScreen());
-                                    },
-                                    validator: (value) {
-                                      //TODO::return and validate car model
-                                    },
+                                  return Column(
+                                    children: [
+                                      CustomTextField(
+                                        label: "Car Type",
+                                        controller: _carType,
+                                        hint: (selectChoiceCubit
+                                                    .carTypeResponse !=
+                                                null)
+                                            ? selectChoiceCubit
+                                                .carTypeResponse!
+                                                .carType![SelectChoiceCubit.get(
+                                                        context)
+                                                    .carTypeChoice]
+                                                .name!
+                                                .en!
+                                            : "",
+                                        isDroped: true,
+                                        onDrop: () {
+                                          selectChoiceCubit.getAllCarTypes();
+                                          NavigationUtils.navigateTo(
+                                              context: context,
+                                              destinationScreen:
+                                                  SelectCarTypeScreen());
+                                        },
+                                        validator: (value) {
+                                          if (selectChoiceCubit
+                                                  .carTypeResponse ==
+                                              null) {
+                                            return "car type is required";
+                                          }
+                                        },
+                                      ),
+                                      CustomTextField(
+                                        label: "Car Model",
+                                        //controller: _carModel,
+                                        hint: (selectChoiceCubit
+                                                    .carModelResponse !=
+                                                null)
+                                            ? selectChoiceCubit
+                                                .carModelResponse!
+                                                .carModels![
+                                                    SelectChoiceCubit.get(
+                                                            context)
+                                                        .carModelChoice]
+                                                .name!
+                                            : "",
+                                        isDroped: true,
+                                        onDrop: () {
+                                          if (selectChoiceCubit
+                                                  .carTypeResponse !=
+                                              null) {
+                                            String id = selectChoiceCubit
+                                                .carTypeResponse!
+                                                .carType![selectChoiceCubit
+                                                    .carTypeChoice]
+                                                .sId!;
+                                            selectChoiceCubit
+                                                .getAllCarModels(id);
+                                            NavigationUtils.navigateTo(
+                                                context: context,
+                                                destinationScreen:
+                                                    SelectCarModelScreen(
+                                                        id: id));
+                                          } else {
+                                            const snackBar = SnackBar(
+                                                content: Text(
+                                                    "Please chose car type first!"));
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(snackBar);
+                                          }
+                                        },
+                                        validator: (value) {
+                                          if (selectChoiceCubit
+                                                  .carTypeResponse ==
+                                              null) {
+                                            return "car type is required";
+                                          }
+                                        },
+                                      ),
+                                    ],
                                   );
                                 }),
                             BlocConsumer<SelectColorCubit, SelectColorState>(
@@ -285,7 +337,7 @@ class SignUpScreen extends StatelessWidget {
                                       NavigationUtils.navigateTo(
                                           context: context,
                                           destinationScreen:
-                                              const SelectColorScreen());
+                                               SelectColorScreen());
                                     },
                                     validator: (value) {
                                       //TODO::return and validate car model
@@ -415,8 +467,8 @@ class SignUpScreen extends StatelessWidget {
                               plateNumber: _carPlateNum.text,
                               carType: selectChoiceCubit
                                   .carTypeResponse!
-                                  .carType![
-                                      SelectChoiceCubit.get(context).choice]
+                                  .carType![SelectChoiceCubit.get(context)
+                                      .carTypeChoice]
                                   .sId,
                               color: SelectColorCubit.get(context)
                                   .carColorResponse!
@@ -436,12 +488,11 @@ class SignUpScreen extends StatelessWidget {
                                   name: _name.text,
                                   password: _password.text,
                                   role: "user",
-                                   gender: genderCubit.genderInText,
+                                  gender: genderCubit.genderInText,
                                 ),
                                 lisenceRenewalDate:
                                     _driverlisenceRenewalDate.text,
                                 phoneNumber: _phoneNumber.text,
-                               
                                 cars: [car]);
                             authCubit.driverSignUp(driver);
                             //carCubit.createCar(car);

@@ -1,3 +1,6 @@
+import 'location.dart';
+import 'report.dart';
+
 class MechnaicShopResponse {
   int? results;
   List<MechanicShop>? mechanicShop;
@@ -116,66 +119,3 @@ class MechanicShop {
   }
 }
 
-class Report {
-  int? reportsNumber;
-  String? dateReport;
-
-  Report({this.reportsNumber, this.dateReport});
-
-  Report.fromJson(Map<String, dynamic> json) {
-    reportsNumber = json['reportsNumber'];
-    dateReport = json['dateReport'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['reportsNumber'] = this.reportsNumber;
-    data['dateReport'] = this.dateReport;
-    return data;
-  }
-}
-
-class Location {
-  Description? description;
-  double? latitude;
-  double? longitude;
-
-  Location({this.description, this.latitude, this.longitude});
-
-  Location.fromJson(Map<String, dynamic> json) {
-    description = json['description'] != null
-        ? new Description.fromJson(json['description'])
-        : null;
-    latitude = json['latitude'];
-    longitude = json['longitude'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.description != null) {
-      data['description'] = this.description!.toJson();
-    }
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    return data;
-  }
-}
-
-class Description {
-  String? ar;
-  String? en;
-
-  Description({this.ar, this.en});
-
-  Description.fromJson(Map<String, dynamic> json) {
-    ar = json['ar'];
-    en = json['en'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['ar'] = this.ar;
-    data['en'] = this.en;
-    return data;
-  }
-}

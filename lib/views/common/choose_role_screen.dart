@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/views/driver/sign_up_screen.dart';
-import 'package:vewww/views/winch/sign_up_screen.dart';
+import 'package:vewww/views/winch/winch_sign_up_screen.dart';
 
 import '../../core/style/app_Text_Style/app_text_style.dart';
 

@@ -9,6 +9,7 @@ import 'package:vewww/views/driver/notifications_screen.dart';
 
 import '../../core/components/logo.dart';
 import '../../model/driver.dart';
+import '../common/change_password_screen.dart';
 import 'driver_profile.dart';
 import 'sign_in_screen.dart';
 
@@ -56,8 +57,8 @@ class DriverDrawer extends StatelessWidget {
           GestureDetector(
             onTap: () {
               //TODO::change password screen
-              // NavigationUtils.navigateAndClearStack(
-              //     context: context, destinationScreen: ChangePasswordScreen());
+              NavigationUtils.navigateAndClearStack(
+                  context: context, destinationScreen: ChangePasswordScreen());
             },
             child: CircularIcon(
                 child: const Icon(Icons.lock), title: 'Change Password'),

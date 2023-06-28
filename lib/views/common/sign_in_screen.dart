@@ -6,7 +6,7 @@ import '../../core/components/custom_text_field.dart';
 import '../../core/components/logo.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/navigation.dart';
-import '../winch/sign_up_screen.dart';
+import '../winch/winch_sign_up_screen.dart';
 
 class SignInScreen extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey();

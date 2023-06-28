@@ -22,39 +22,40 @@ class CustomTextField extends StatelessWidget {
   final VoidCallback? onDrop;
   final bool isArabic;
 
-  CustomTextField(
-      {this.controller,
-      required this.validator,
-      this.onDrop,
-      this.keyboardType = TextInputType.text,
-      this.obsecure = false,
-      this.isDroped = false,
-      this.onTap,
-      this.hint,
-      this.isMulti = false,
-      this.readOnly = false,
-      this.autofocus = false,
-      this.errorText,
-      required this.label,
-      this.suffix,
-      this.prefix,
-      this.enabled = true,
-      this.onEditingCompleted,
-      this.onChanged,
-      this.isArabic=false,
-      });
+  CustomTextField({
+    this.controller,
+    required this.validator,
+    this.onDrop,
+    this.keyboardType = TextInputType.text,
+    this.obsecure = false,
+    this.isDroped = false,
+    this.onTap,
+    this.hint,
+    this.isMulti = false,
+    this.readOnly = false,
+    this.autofocus = false,
+    this.errorText,
+    required this.label,
+    this.suffix,
+    this.prefix,
+    this.enabled = true,
+    this.onEditingCompleted,
+    this.onChanged,
+    this.isArabic = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment:
+            (isArabic) ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Text(
             "$label",
             style: AppTextStyle.darkGreyStyle(size: 14),
-            textDirection:(isArabic) ? TextDirection.rtl : TextDirection.ltr, 
+            textDirection: (isArabic) ? TextDirection.rtl : TextDirection.ltr,
           ),
           const SizedBox(
             height: 10,
@@ -88,16 +89,29 @@ class CustomTextField extends StatelessWidget {
                       border: Border.all(color: Colors.grey)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      (hint != null)
-                          ? Text(hint!, style: AppTextStyle.darkGreyStyle())
-                          : Container(),
-                      IconButton(
-                          onPressed: () {
-                            if (onDrop != null) onDrop!();
-                          },
-                          icon: const Icon(Icons.keyboard_arrow_down))
-                    ],
+                    children: (!isArabic)
+                        ? [
+                            (hint != null)
+                                ? Text(hint!,
+                                    style: AppTextStyle.darkGreyStyle())
+                                : Container(),
+                            IconButton(
+                                onPressed: () {
+                                  if (onDrop != null) onDrop!();
+                                },
+                                icon: const Icon(Icons.keyboard_arrow_down))
+                          ]
+                        : [
+                            IconButton(
+                                onPressed: () {
+                                  if (onDrop != null) onDrop!();
+                                },
+                                icon: const Icon(Icons.keyboard_arrow_down)),
+                            (hint != null)
+                                ? Text(hint!,
+                                    style: AppTextStyle.darkGreyStyle())
+                                : Container(),
+                          ],
                   ),
                 ),
         ],

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
-import 'package:vewww/views/winch/sign_up_screen.dart';
+import 'package:vewww/views/winch/winch_sign_up_screen.dart';
 
 import '../../bloc/onboarding_cubit/onboarding_cubit.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';

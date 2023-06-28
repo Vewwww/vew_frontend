@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/components/backward_arrow.dart';
 import 'package:vewww/core/components/custom_text_field.dart';
 import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/components/pop_up.dart';
+import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
+import 'package:vewww/views/driver/sign_in_screen.dart';
+import 'package:vewww/views/mechanic/mechanic_home_screen.dart';
+import 'package:vewww/views/winch/winch_home_page.dart';
+import '../../bloc/auth_cubit/auth_cubit.dart';
 import '../../core/utils/navigation.dart';
 import '../driver/driver_home_screen.dart';
-
 
 class ChangePasswordScreen extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -45,16 +50,16 @@ class ChangePasswordScreen extends StatelessWidget {
                   height: 250,
                   width: 250,
                 ),
-                CustomTextField(
-                  controller: _oldPassword,
-                  validator: (value) {
-                    if (value!.isEmpty || value == null) {
-                      return 'Field cannot be empty';
-                    }
-                    return null;
-                  },
-                  label: 'Old Password',
-                ),
+                // CustomTextField(
+                //   controller: _oldPassword,
+                //   validator: (value) {
+                //     if (value!.isEmpty || value == null) {
+                //       return 'Field cannot be empty';
+                //     }
+                //     return null;
+                //   },
+                //   label: 'Old Password',
+                // ),
                 const SizedBox(
                   height: 15,
                 ),
@@ -93,17 +98,44 @@ class ChangePasswordScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                defaultButton(
-                    text: 'Save',
-                    function: () {
-                      if (_formKey.currentState!.validate()) {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => popUp(context,
-                              titleOFPopUp: 'Password Changed Successfully'),
-                        );
-                      }
-                    }),
+                BlocBuilder<AuthCubit, AuthState>(
+                  builder: (context, state) {
+                    return defaultButton(
+                        text: 'Save',
+                        function: () async {
+                          if (_formKey.currentState!.validate()) {
+                            AuthCubit authCubit = AuthCubit.get(context);
+                            await authCubit.changePassword(_newPassword.text);
+                            if (state is ChangePasswordSuccessState) {
+                              var snackBar = SnackBar(
+                                  content:
+                                      Text('Password Changed Successfully'));
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                              var role = SharedPreferencesHelper.getData(
+                                  key: "vewRole");
+                              Widget destinationScreen;
+                              if (role == "winch")
+                                destinationScreen = WinchHomePage();
+                              else if (role == "user")
+                                destinationScreen = DriverHomeScreen();
+                              else if (role == "mechanic")
+                                destinationScreen = MechanicHomeScreen();
+                              else
+                                destinationScreen = SignInScreen();
+                              NavigationUtils.navigateTo(
+                                  context: context,
+                                  destinationScreen: destinationScreen);
+                            } else if (state is ChangePasswordErrorState) {
+                              var snackBar =
+                                  SnackBar(content: Text(state.errMessage));
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            }
+                          }
+                        });
+                  },
+                ),
               ],
             ),
           ),
