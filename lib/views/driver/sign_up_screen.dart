@@ -154,12 +154,12 @@ class SignUpScreen extends StatelessWidget {
                     label: "Password",
                     validator: (value) {
                       RegExp regex = RegExp(
-                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~])');
+                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])');
                       if (value == null || value.isEmpty) {
                         return 'Password is required';
                       }
                       if (!regex.hasMatch(value)) {
-                        return 'Password should Contain: \nAt least 8 chatacters\nAt least an uppercase latter  \nAt least a lowercase latter   \nAt least one number \nAt least one special character';
+                        return 'Password should Contain: \nAt least 8 chatacters\nAt least an uppercase latter  \nAt least a lowercase latter   \nAt least one number';
                       }
                       return null;
                     },

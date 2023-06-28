@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
+import 'package:vewww/model/error_response.dart';
 import 'package:vewww/services/dio_helper.dart';
 
 import '../../model/driver.dart';
@@ -44,14 +46,14 @@ class AuthCubit extends Cubit<AuthState> {
       emit(SignInErrorState());
     });
   }
+
   Future<void> logout() async {
     print("driver logout request : ${driver.toJson()}");
     emit(LogoutLoadingState());
     await DioHelper.getData(
-            url: "/allusers/logout/",
-            token: SharedPreferencesHelper.getData(key: 'vewToken'),
-            )
-        .then((value) {
+      url: "/allusers/logout/",
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
+    ).then((value) {
       print("logout response : ${value.data}");
       SharedPreferencesHelper.removeData(key: 'vewToken');
       SharedPreferencesHelper.removeData(key: 'vewRole');
@@ -59,6 +61,56 @@ class AuthCubit extends Cubit<AuthState> {
     }).onError((error, stackTrace) {
       print("error in driver sign in : $error");
       emit(LogoutErrorState());
+    });
+  }
+
+  Future sendResetPasswordCode(String email) async {
+    emit(SendingCodeLoadingState());
+    await DioHelper.postData(
+        url: "/allusers/forgetPassword/", data: {"email": email}).then((value) {
+      print("sending reset password code response: ${value.data}");
+      emit(SendingCodeSuccessState());
+    }).catchError((err) {
+      if (err is DioError) {
+        print(
+            "sending reset password code  error message : ${err.response!.data}");
+        if ((err.response != null)) {
+          ErrorResponse errorResponse =
+              ErrorResponse.fromJson(err.response!.data);
+          emit(SendingCodeErrorState(
+              errMessage: (errorResponse.message != null)
+                  ? errorResponse.message!
+                  : "Something went wrong, try again"));
+        } else {
+          emit(SendingCodeErrorState(
+              errMessage: "Something went wrong, try again"));
+        }
+      }
+    });
+  }
+
+  Future resetPassword(String email, String newPassword) async {
+    emit(ResetPasswordLoadingState());
+    await DioHelper.postData(
+        url: "/allusers/resetPassword/",
+        data: {"email": email, "password": newPassword}).then((value) {
+      print(" reset password  response: ${value.data}");
+      emit(ResetPasswordSuccessState());
+    }).catchError((err) {
+      if (err is DioError) {
+        print("reset password  error message : ${err.response!.data} ");
+        if ((err.response != null)) {
+          ErrorResponse errorResponse =
+              ErrorResponse.fromJson(err.response!.data);
+          emit(ResetPasswordErrorState(
+              errMessage: (errorResponse.message != null)
+                  ? errorResponse.message!
+                  : "Something went wrong, try again"));
+        } else {
+          emit(ResetPasswordErrorState(
+              errMessage: "Something went wrong, try again"));
+        }
+      }
     });
   }
 }

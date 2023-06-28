@@ -23,18 +23,16 @@ class DioHelper {
       queryParameters: query,
     );
   }
+
   static Future<Response> getWithBody(
       {required String url, Map<String, dynamic>? query, String? token}) async {
     // dio.options.headers = {
     //   "Content-Type": "application/json",
     // };
     if (token != null) dio.options.headers["Authorization"] = "Bearer $token";
-    return await dio.request(
-      url,
-      data: query,
-      options: Options(method: "GET", contentType: "application/json")
-
-    );
+    return await dio.request(url,
+        data: query,
+        options: Options(method: "GET", contentType: "application/json"));
   }
 
   static Future<Response> postData(
@@ -46,15 +44,11 @@ class DioHelper {
       "Content-Type": "application/json",
     };*/
     if (token != null) dio.options.headers["Authorization"] = "Bearer $token";
-    return await dio
-        .post(
+    return await dio.post(
       url,
       queryParameters: query,
       data: data,
-    )
-        .catchError((e) {
-      print(e);
-    });
+    );
   }
 
   static Future<Response> patchData(
@@ -68,9 +62,6 @@ class DioHelper {
       url,
       queryParameters: query,
       data: data,
-    )
-        .catchError((e) {
-      print(e);
-    });
+    );
   }
 }
