@@ -45,7 +45,11 @@ class WinchEditProfileScreen extends StatelessWidget {
                   haveLogo: true,
                 ),
                 const SizedBox(height: 40),
-                Text("تعديل الملف الشخصي", style: AppTextStyle.mainStyle(size: 20), textDirection: TextDirection.rtl,),
+                Text(
+                  "تعديل الملف الشخصي",
+                  style: AppTextStyle.mainStyle(size: 20),
+                  textDirection: TextDirection.rtl,
+                ),
                 const SizedBox(height: 10),
                 const Divider(thickness: 2),
                 const SizedBox(height: 10),
@@ -125,7 +129,7 @@ class WinchEditProfileScreen extends StatelessWidget {
                           onPressed: () {
                             NavigationUtils.navigateTo(
                                 context: context,
-                                destinationScreen: const SelectColorScreen());
+                                destinationScreen: SelectColorScreen());
                           },
                           icon: Icon(
                             Icons.keyboard_arrow_down_outlined,

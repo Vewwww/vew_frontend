@@ -1,5 +1,8 @@
 import 'package:vewww/model/person.dart';
 
+import 'location.dart';
+import 'report.dart';
+
 class WinchDriverResponse {
   int? results;
   List<WinchDriver>? winchDriver;
@@ -11,16 +14,16 @@ class WinchDriverResponse {
     if (json['data'] != null) {
       winchDriver = <WinchDriver>[];
       json['data'].forEach((v) {
-        winchDriver!.add(new WinchDriver.fromJson(v));
+        winchDriver!.add(WinchDriver.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['results'] = this.results;
-    if (this.winchDriver != null) {
-      data['data'] = this.winchDriver!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['results'] = results;
+    if (winchDriver != null) {
+      data['data'] = winchDriver!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -42,6 +45,7 @@ class WinchDriver {
   bool? emailConfirm;
   bool? logedIn;
   String? role;
+  String? plateNumber;
   int? iV;
 
   WinchDriver(
@@ -51,6 +55,7 @@ class WinchDriver {
       this.sId,
       this.name,
       this.email,
+      this.plateNumber,
       this.password,
       this.phoneNumber,
       this.rate,
@@ -62,11 +67,9 @@ class WinchDriver {
       this.iV});
 
   WinchDriver.fromJson(Map<String, dynamic> json) {
-    report =
-        json['report'] != null ? new Report.fromJson(json['report']) : null;
-    location = json['location'] != null
-        ? new Location.fromJson(json['location'])
-        : null;
+    report = json['report'] != null ? Report.fromJson(json['report']) : null;
+    location =
+        json['location'] != null ? Location.fromJson(json['location']) : null;
     available = json['available'];
     sId = json['_id'];
     name = json['name'];
@@ -77,70 +80,40 @@ class WinchDriver {
     numOfRates = json['numOfRates'];
     isSuspended = json['isSuspended'];
     emailConfirm = json['emailConfirm'];
+    plateNumber = json['plateNumber'];
     logedIn = json['logedIn'];
     role = json['role'];
     iV = json['__v'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.report != null) {
-      data['report'] = this.report!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (report != null) {
+      data['report'] = report!.toJson();
     }
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
+    if (location != null) {
+      data['location'] = location!.toJson();
     }
-    data['available'] = this.available;
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['password'] = this.password;
-    data['phoneNumber'] = this.phoneNumber;
-    data['rate'] = this.rate;
-    data['numOfRates'] = this.numOfRates;
-    data['isSuspended'] = this.isSuspended;
-    data['emailConfirm'] = this.emailConfirm;
-    data['logedIn'] = this.logedIn;
-    data['role'] = this.role;
-    data['__v'] = this.iV;
-    return data;
-  }
-}
-
-class Report {
-  int? reportsNumber;
-  String? dateReport;
-
-  Report({this.reportsNumber, this.dateReport});
-
-  Report.fromJson(Map<String, dynamic> json) {
-    reportsNumber = json['reportsNumber'];
-    dateReport = json['dateReport'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['reportsNumber'] = this.reportsNumber;
-    data['dateReport'] = this.dateReport;
-    return data;
-  }
-}
-
-class Location {
-  double? latitude;
-  double? longitude;
-
-  Location({this.latitude, this.longitude});
-
-  Location.fromJson(Map<String, dynamic> json) {
-    latitude = json['latitude'];
-    longitude = json['longitude'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
+    if (available != null) data['available'] = available;
+    if (sId != null) data['_id'] = sId;
+    if (name != null) data['name'] = name;
+    if (email != null) data['email'] = email;
+    if (password != null) data['password'] = password;
+    if (phoneNumber != null) data['phoneNumber'] = phoneNumber;
+    if (rate != null) data['rate'] = rate;
+    if (numOfRates != null) data['numOfRates'] = numOfRates;
+    if (isSuspended != null) data['isSuspended'] = isSuspended;
+    if (plateNumber != null) data['plateNumber'] = plateNumber;
+    if (emailConfirm != null) data['emailConfirm'] = emailConfirm;
+    if (logedIn != null) data['logedIn'] = logedIn;
+    if (role != null) data['role'] = role;
+    if (iV != null) data['__v'] = iV;
+    //TODO::remome car
+    data['car'] = {
+      "carType": "643528431c01869f2d835be5",
+      "plateNumber": "123456",
+      "color": "6469f59993253d535309dc62"
+    };
     return data;
   }
 }

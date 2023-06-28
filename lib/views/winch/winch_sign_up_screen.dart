@@ -1,27 +1,45 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vewww/bloc/loaction_cubit/loaction_cubit.dart';
+import 'package:vewww/model/winch.dart';
 import 'package:vewww/views/common/sign_in_screen.dart';
 import 'package:vewww/views/winch/winch_home_page.dart';
 
 import '../../bloc/add_car_cubit/add_car_cubit.dart';
+import '../../bloc/auth_cubit/auth_cubit.dart';
+import '../../bloc/select_choice_cubit/select_choice_cubit.dart';
+import '../../bloc/select_color_cubit/select_color_cubit.dart';
 import '../../core/components/custom_text_field.dart';
 import '../../core/components/logo.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
-import '../../core/style/app_colors.dart';
 import '../../core/utils/navigation.dart';
+import '../../model/location.dart';
+import '../../model/winch_driver.dart';
+import '../common/map.dart';
+import '../common/select_color_screen.dart';
+import '../driver/select_car_model.dart';
+import '../driver/select_car_type_screen.dart';
+import 'map_screen.dart';
 
 class WinchSignUpScreen extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
+  final TextEditingController _phoneNumber = TextEditingController();
   final TextEditingController _name = TextEditingController();
+  final TextEditingController _carType = TextEditingController();
+  final TextEditingController _carPlateNum = TextEditingController();
+  final TextEditingController _carColor = TextEditingController();
   WinchSignUpScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     double constraintsHight = MediaQuery.of(context).size.height;
     AddCarCubit addCarCubit = AddCarCubit.get(context);
+    AuthCubit authCubit = AuthCubit.get(context);
+    SelectChoiceCubit selectChoiceCubit = SelectChoiceCubit.get(context);
+    LocationCubit locationCubit = LocationCubit.get(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -47,6 +65,7 @@ class WinchSignUpScreen extends StatelessWidget {
                   CustomTextField(
                     controller: _name,
                     label: "الاسم",
+                    isArabic: true,
                     validator: (value) {
                       if (value!.length < 1 || value == null) {
                         return 'برجاء ادخال الاسم';
@@ -56,6 +75,7 @@ class WinchSignUpScreen extends StatelessWidget {
                   CustomTextField(
                     label: "الايميل",
                     controller: _email,
+                    isArabic: true,
                     hint: "example@mail.com",
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -68,6 +88,7 @@ class WinchSignUpScreen extends StatelessWidget {
                   ),
                   CustomTextField(
                     controller: _password,
+                    isArabic: true,
                     label: "كلمة السر",
                     validator: (value) {
                       RegExp regex = RegExp(
@@ -83,6 +104,7 @@ class WinchSignUpScreen extends StatelessWidget {
                   ),
                   CustomTextField(
                     label: "تأكيد كلمة السر",
+                    isArabic: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'برجاء اعد ادخال كلمة السر';
@@ -92,79 +114,87 @@ class WinchSignUpScreen extends StatelessWidget {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 10),
-                  Stack(
-                    children: [
-                      const Divider(
-                        color: Colors.grey,
-                      ),
-                      BlocConsumer<AddCarCubit, AddCarState>(
-                        listener: (context, state) {},
-                        builder: (context, state) {
-                          return InkWell(
-                            onTap: () {
-                              if (!addCarCubit.carExist)
-                                addCarCubit.add();
-                              else
-                                addCarCubit.remove();
-                            },
-                            child: CircleAvatar(
-                              radius: 14,
-                              backgroundColor: (addCarCubit.carExist)
-                                  ? Colors.grey
-                                  : mainColor,
-                              child: Icon(
-                                (!addCarCubit.carExist)
-                                    ? Icons.add
-                                    : Icons.remove,
-                                size: 15,
-                                color: Colors.white,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  BlocConsumer<AddCarCubit, AddCarState>(
-                    listener: (context, state) {},
-                    builder: (context, state) {
-                      if (!addCarCubit.carExist) {
-                        return Text(
-                          "لم يتم اضافة سيارة",
-                          style: AppTextStyle.greyStyle(size: 18),
-                        );
-                      } else {
-                        return Column(
-                          children: [
-                            CustomTextField(
-                              label: "رقم السيارة",
-                              validator: (value) {
-                                if (addCarCubit.carExist) {
-                                  if (value!.length < 1 || value == null) {
-                                    return 'برجاء اختيار نوع السيارة';
-                                  }
-                                }
-                              },
-                            ),
-                          ],
-                        );
+                  CustomTextField(
+                    controller: _phoneNumber,
+                    label: "رقم الهاتف",
+                    isArabic: true,
+                    validator: (value) {
+                      if (value!.length < 1 || value == null) {
+                        return 'برجاء ادخال رقم الهاتف';
                       }
                     },
                   ),
-                  const SizedBox(height: 20),
+                  CustomTextField(
+                    isArabic: true,
+                    controller: _carPlateNum,
+                    label: "رقم السيارة",
+                    validator: (value) {
+                      if (addCarCubit.carExist) {
+                        if (value!.length < 1 || value == null) {
+                          return 'برجاء ادخال رقم السيارة';
+                        }
+                      }
+                    },
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            NavigationUtils.navigateTo(
+                                context: context,
+                                destinationScreen: MapScreen(
+                                  locationCubit: locationCubit,
+                                ));
+                          },
+                          icon: Icon(Icons.location_on)),
+                      Expanded(child: Container()),
+                      Text("الموقع"),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
                   SizedBox(
                       width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            NavigationUtils.navigateAndClearStack(
-                                context: context,
-                                destinationScreen: WinchHomePage());
-                          }
+                      child: BlocBuilder<AuthCubit, AuthState>(
+                        builder: (context, state) {
+                          return ElevatedButton(
+                            onPressed: () async {
+                              print(
+                                  "lat:${locationCubit.lat} , address:${locationCubit.address}");
+                              if (_formKey.currentState!.validate()) {
+                                WinchDriver winch = WinchDriver(
+                                    name: _name.text,
+                                    email: _email.text,
+                                    password: _password.text,
+                                    phoneNumber: _phoneNumber.text,
+                                    plateNumber: _carPlateNum.text,
+                                    location: Location(
+                                        latitude: locationCubit.lat,
+                                        longitude: locationCubit.long));
+                                await authCubit.winchSignUp(winch);
+                                if (state is SignUpSuccessState) {
+                                  NavigationUtils.navigateAndClearStack(
+                                      context: context,
+                                      destinationScreen: SignInScreen());
+                                } else if (state is SignUpErrorState) {
+                                  var snackBar =
+                                      SnackBar(content: Text(state.errMessage));
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                }
+                              }
+                            },
+                            child: BlocConsumer<AuthCubit, AuthState>(
+                              listener: (context, state) {},
+                              builder: (context, state) {
+                                if (state is SignUpLoadingState)
+                                  return CircularProgressIndicator();
+                                else
+                                  return Text("انشاء حساب");
+                              },
+                            ),
+                          );
                         },
-                        child: const Text("انشاء حساب"),
                       )),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

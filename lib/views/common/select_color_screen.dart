@@ -5,9 +5,13 @@ import 'package:vewww/core/utils/navigation.dart';
 import '../../bloc/select_color_cubit/select_color_cubit.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/style/app_text_style/app_text_style.dart';
+import '../../core/utils/sp_helper/cache_helper.dart';
 
 class SelectColorScreen extends StatelessWidget {
-  const SelectColorScreen({Key? key}) : super(key: key);
+  SelectColorScreen({Key? key}) : super(key: key) {
+    isArabic = (SharedPreferencesHelper.getData(key: "vewRole") != "user");
+  }
+  late bool isArabic;
   @override
   Widget build(BuildContext context) {
     SelectColorCubit selectColorCubit = SelectColorCubit.get(context);
@@ -34,17 +38,22 @@ class SelectColorScreen extends StatelessWidget {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 20),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: (isArabic)
+                                      ? MainAxisAlignment.start
+                                      : MainAxisAlignment.end,
                                   children: [
                                     SizedBox(
                                       //width: double.infinity,
                                       child: Text(
-                                        selectColorCubit.carColorResponse!
-                                            .carColor![index].name!.en!,
+                                        (isArabic)
+                                            ? selectColorCubit.carColorResponse!
+                                                .carColor![index].name!.ar!
+                                            : selectColorCubit.carColorResponse!
+                                                .carColor![index].name!.en!,
                                         style: AppTextStyle.greyStyle(size: 20),
                                       ),
                                     ),
+                                    Expanded(child: Container()),
                                     Container(
                                       height: 15,
                                       width: 15,

@@ -8,6 +8,8 @@ import 'package:vewww/services/dio_helper.dart';
 
 import '../../model/driver.dart';
 import '../../model/person.dart';
+import '../../model/winch.dart';
+import '../../model/winch_driver.dart';
 
 part 'auth_state.dart';
 
@@ -22,9 +24,45 @@ class AuthCubit extends Cubit<AuthState> {
         .then((value) {
       print("driver signup response : ${value}");
       emit(SignUpSuccessState());
-    }).onError((error, stackTrace) {
-      print("error in driver sign up : $error");
-      emit(SignUpErrorState());
+    }).catchError((err) {
+      if (err is DioError) {
+        print("driver signup error message : ${err.response!.data}");
+        if ((err.response != null)) {
+          ErrorResponse errorResponse =
+              ErrorResponse.fromJson(err.response!.data);
+          emit(SignUpErrorState(
+              errMessage: (errorResponse.message != null)
+                  ? errorResponse.message!
+                  : "Something went wrong, try again"));
+        } else {
+          emit(SignUpErrorState(errMessage: "Something went wrong, try again"));
+        }
+      }
+    });
+  }
+
+  Future<void> winchSignUp(WinchDriver winch) async {
+    print("winch signup request : ${driver.toJson()}");
+    emit(SignUpLoadingState());
+    print("winch signup request = ${winch.toJson()}");
+    await DioHelper.postData(url: "winch/signup/", data: winch.toJson())
+        .then((value) {
+      print("winch signup response : ${value}");
+      emit(SignUpSuccessState());
+    }).catchError((err) {
+      if (err is DioError) {
+        print("winch signup error message : ${err.response!.data}");
+        if ((err.response != null)) {
+          ErrorResponse errorResponse =
+              ErrorResponse.fromJson(err.response!.data);
+          emit(SignUpErrorState(
+              errMessage: (errorResponse.message != null)
+                  ? errorResponse.message!
+                  : "Something went wrong, try again"));
+        } else {
+          emit(SignUpErrorState(errMessage: "Something went wrong, try again"));
+        }
+      }
     });
   }
 
@@ -41,9 +79,20 @@ class AuthCubit extends Cubit<AuthState> {
       SharedPreferencesHelper.saveData(key: 'vewToken', value: person.token);
       SharedPreferencesHelper.saveData(key: 'vewRole', value: person.role);
       emit(SignInSuccessState());
-    }).onError((error, stackTrace) {
-      print("error in driver sign in : $error");
-      emit(SignInErrorState());
+    }).catchError((err) {
+      if (err is DioError) {
+        print("sign in error message : ${err.response!.data}");
+        if ((err.response != null)) {
+          ErrorResponse errorResponse =
+              ErrorResponse.fromJson(err.response!.data);
+          emit(SignInErrorState(
+              errMessage: (errorResponse.message != null)
+                  ? errorResponse.message!
+                  : "Something went wrong, try again"));
+        } else {
+          emit(SignInErrorState(errMessage: "Something went wrong, try again"));
+        }
+      }
     });
   }
 
@@ -108,6 +157,32 @@ class AuthCubit extends Cubit<AuthState> {
                   : "Something went wrong, try again"));
         } else {
           emit(ResetPasswordErrorState(
+              errMessage: "Something went wrong, try again"));
+        }
+      }
+    });
+  }
+
+  Future changePassword(String newPassword) async {
+    emit(ChangePasswordLoadingState());
+    await DioHelper.patchData(
+        url: "/driver/changePassword/",
+        token: SharedPreferencesHelper.getData(key: 'vewToken'),
+        data: {"password": newPassword}).then((value) {
+      print(" change password  response: ${value.data}");
+      emit(ChangePasswordSuccessState());
+    }).catchError((err) {
+      if (err is DioError) {
+        print("change password  error message : ${err.response!.data} ");
+        if ((err.response != null)) {
+          ErrorResponse errorResponse =
+              ErrorResponse.fromJson(err.response!.data);
+          emit(ChangePasswordErrorState(
+              errMessage: (errorResponse.message != null)
+                  ? errorResponse.message!
+                  : "Something went wrong, try again"));
+        } else {
+          emit(ChangePasswordErrorState(
               errMessage: "Something went wrong, try again"));
         }
       }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:vewww/bloc/auth_cubit/auth_cubit.dart';
 import 'package:vewww/core/components/sidebar_element.dart';
 
 import '../../views/common/chats_screen.dart';
 import '../../views/common/sign_in_screen.dart';
 import '../../views/winch/winch_profile.dart';
 import 'logo.dart';
-
 
 class Sidebar extends StatelessWidget {
   Function function;
@@ -34,7 +34,6 @@ class Sidebar extends StatelessWidget {
             Icons.person_outline,
             onpress: function,
           ),
-          
           SidebarElement(
             "المحادثات",
             Icons.chat_rounded,
@@ -48,11 +47,18 @@ class Sidebar extends StatelessWidget {
           SidebarElement(
             "تسجيل الخروج",
             Icons.logout_rounded,
-            onpress: () {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => SignInScreen()),
-                  (route) => true);
+            onpress: () async {
+              await AuthCubit.get(context).logout();
+              if (AuthCubit.get(context).state is LogoutSuccessState) {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignInScreen()),
+                    (route) => true);
+              } else {
+                var snackBar =
+                    SnackBar(content: Text("Something went wrong , try again"));
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }
             },
           ),
         ],

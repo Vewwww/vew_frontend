@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vewww/views/driver/select_car_model_screen.dart';
+import 'package:vewww/views/driver/select_car_model.dart';
+import 'package:vewww/views/driver/select_car_type_screen.dart';
 
 import '../../bloc/add_car_cubit/add_car_cubit.dart';
 import '../../bloc/gender_cubit/gender_cubit.dart';
@@ -27,7 +28,7 @@ class EditDriverProfile extends StatelessWidget {
   final TextEditingController _phone = TextEditingController();
   EditDriverProfile({required this.driver, this.color, Key? key})
       : super(key: key) {
-    _email.text = driver.person! .email!;
+    _email.text = driver.person!.email!;
     _name.text = driver.person!.name!;
     _phone.text = driver.phoneNumber!;
   }
@@ -38,6 +39,7 @@ class EditDriverProfile extends StatelessWidget {
     AddCarCubit addCarCubit = AddCarCubit.get(context);
     GenderCubit genderCubit = GenderCubit.get(context);
     ReminderCubit reminderCubit = ReminderCubit.get(context);
+    SelectChoiceCubit selectChoiceCubit = SelectChoiceCubit.get(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -198,21 +200,86 @@ class EditDriverProfile extends StatelessWidget {
                             BlocConsumer<SelectChoiceCubit, SelectChoiceState>(
                                 listener: (context, snapshot) {},
                                 builder: (context, snapshot) {
-                                  return CustomTextField(
-                                    label: "Car Type",
-                                    hint: SelectChoiceCubit.get(context).carTypeResponse!.carType![SelectChoiceCubit.get(context)
-                                            .choice]
-                                        .name!.en,
-                                    isDroped: true,
-                                    onDrop: () {
-                                      NavigationUtils.navigateTo(
-                                          context: context,
-                                          destinationScreen:
-                                              SelectCarModelScreen());
-                                    },
-                                    validator: (value) {
-                                      //TODO::return and validate car model
-                                    },
+                                  return Column(
+                                    children: [
+                                      CustomTextField(
+                                        label: "Car Type",
+                                        //controller: _carType,
+                                        hint: (selectChoiceCubit
+                                                    .carTypeResponse !=
+                                                null)
+                                            ? selectChoiceCubit
+                                                .carTypeResponse!
+                                                .carType![SelectChoiceCubit.get(
+                                                        context)
+                                                    .carTypeChoice]
+                                                .name!
+                                                .en!
+                                            : "",
+                                        isDroped: true,
+                                        onDrop: () {
+                                          selectChoiceCubit.getAllCarTypes();
+                                          NavigationUtils.navigateTo(
+                                              context: context,
+                                              destinationScreen:
+                                                  SelectCarTypeScreen());
+                                        },
+                                        validator: (value) {
+                                          if (selectChoiceCubit
+                                                  .carTypeResponse ==
+                                              null) {
+                                            return "car type is required";
+                                          }
+                                        },
+                                      ),
+                                      CustomTextField(
+                                        label: "Car Model",
+                                        //controller: _carModel,
+                                        hint: (selectChoiceCubit
+                                                    .carModelResponse !=
+                                                null)
+                                            ? selectChoiceCubit
+                                                .carModelResponse!
+                                                .carModels![
+                                                    SelectChoiceCubit.get(
+                                                            context)
+                                                        .carModelChoice]
+                                                .name!
+                                            : "",
+                                        isDroped: true,
+                                        onDrop: () {
+                                          if (selectChoiceCubit
+                                                  .carTypeResponse !=
+                                              null) {
+                                            String id = selectChoiceCubit
+                                                .carTypeResponse!
+                                                .carType![selectChoiceCubit
+                                                    .carTypeChoice]
+                                                .sId!;
+                                            selectChoiceCubit
+                                                .getAllCarModels(id);
+                                            NavigationUtils.navigateTo(
+                                                context: context,
+                                                destinationScreen:
+                                                    SelectCarModelScreen(
+                                                        id: id));
+                                          } else {
+                                            const snackBar = SnackBar(
+                                                content: Text(
+                                                    "Please chose car type first!"));
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(snackBar);
+                                          }
+                                        },
+                                        validator: (value) {
+                                          if (selectChoiceCubit
+                                                  .carTypeResponse ==
+                                              null) {
+                                            return "car type is required";
+                                          }
+                                        },
+                                      ),
+                                    ],
                                   );
                                 }),
                             BlocConsumer<SelectColorCubit, SelectColorState>(
@@ -227,10 +294,13 @@ class EditDriverProfile extends StatelessWidget {
                                       NavigationUtils.navigateTo(
                                           context: context,
                                           destinationScreen:
-                                              const SelectColorScreen());
+                                              SelectColorScreen());
                                     },
                                     validator: (value) {
-                                      //TODO::return and validate car model
+                                      if (selectChoiceCubit.carModelResponse ==
+                                          null) {
+                                        return "car model is required";
+                                      }
                                     },
                                   );
                                 }),
