@@ -9,7 +9,7 @@ Widget nameAddressCard({
 return GestureDetector(
     onTap: function,
     child: Container(
-      height: 70,
+      height: 85,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         color: Colors.white,
@@ -32,8 +32,9 @@ return GestureDetector(
         padding: const EdgeInsets.all(10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(title, style:AppTextStyle.darkGreyStyle(size: 20) , ),
+            Text(title, style:AppTextStyle.darkGreyStyle(size: 20),maxLines: 1, overflow: TextOverflow.ellipsis, ),
             Text(subtitle, style:AppTextStyle.greyStyle() , ),
           ],
         ),

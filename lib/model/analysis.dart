@@ -26,3 +26,22 @@ class UserAnalysisResponse {
     return data;
   }
 }
+
+class GenderAnalysisResponse {
+  double? maleRatio;
+  double? femaleRatio;
+
+  GenderAnalysisResponse({this.maleRatio, this.femaleRatio});
+
+  GenderAnalysisResponse.fromJson(Map<String, dynamic> json) {
+    maleRatio = json['maleRatio']*1.0;
+    femaleRatio = json['femaleRatio']*1.0;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['maleRatio'] = this.maleRatio;
+    data['femaleRatio'] = this.femaleRatio;
+    return data;
+  }
+}

@@ -31,6 +31,20 @@ class GetAllAdminsSuccessState extends GetAllState {
 }
 class GetAllAdminsErrorState extends GetAllState {}
 
+class GetAllGasStationLoadingState extends GetAllState {}
+class GetAllGasStationSuccessState extends GetAllState {
+  final List<GasStation> gasStations;
+  GetAllGasStationSuccessState(this.gasStations);
+}
+class GetAllGasStationErrorState extends GetAllState {}
+
+class GetAllMCLoadingState extends GetAllState {}
+class GetAllMCSuccessState extends GetAllState {
+  final List<MaintenanceCenter> maintenanceCenters;
+  GetAllMCSuccessState(this.maintenanceCenters);
+}
+class GetAllMCErrorState extends GetAllState {}
+
 
 class GetUserWithIdLoadingState extends GetAllState {}
 class GetDriverWithIdSuccessState extends GetAllState {
