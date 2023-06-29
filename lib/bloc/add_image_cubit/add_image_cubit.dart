@@ -12,11 +12,8 @@ class AddImageCubit extends Cubit<AddImageState> {
   XFile? imageFile;
 
 void addImage(pickedFile) {
-  if (imageFile != null) {
     imageFile = pickedFile;
     emit(ImageAddedState());
-  }
-  
 }
 }
 

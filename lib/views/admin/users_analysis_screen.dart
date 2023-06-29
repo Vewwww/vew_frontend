@@ -6,27 +6,32 @@ import 'package:pie_chart/pie_chart.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 
 
-class UsersAnalysisScreen extends StatelessWidget {
+class UsersAnalysisScreen extends StatefulWidget {
   UsersAnalysisScreen({super.key});
 
+  @override
+  State<UsersAnalysisScreen> createState() => _UsersAnalysisScreenState();
+}
+
+class _UsersAnalysisScreenState extends State<UsersAnalysisScreen> {
   List<Color> colors = [
     Color.fromRGBO(2, 113, 106, 1),
     Color.fromRGBO(15, 150, 156, 1),
     Color.fromARGB(255, 2, 87, 87)
   ];
 
-  // void initState() {
-  //   super.initState();
-  //   final adminAnalysisCubit = context.read<AdminAnalysisCubit>();
-  //   adminAnalysisCubit.getUserAnalysis();
-  // }
+   void initState() {
+    super.initState();
+    final adminAnalysisCubit = context.read<AdminAnalysisCubit>();
+    adminAnalysisCubit.getUserAnalysis();
+  }
 
   @override
   Widget build(BuildContext context) {
-    AdminAnalysisCubit adminAnalysisCubit = AdminAnalysisCubit.get(context);
+    //AdminAnalysisCubit adminAnalysisCubit = AdminAnalysisCubit.get(context);
     return Scaffold(
       body: BlocBuilder<AdminAnalysisCubit, AdminAnalysisState>(
-        builder: (context, state) {
+        builder: (context, state) {  
           if (state is GetUserAnalysisSuccessState) {
             print(state);
             return Column(children: [
@@ -49,7 +54,7 @@ class UsersAnalysisScreen extends StatelessWidget {
                   "Driver": state.userAnalysisResponse.numOfDrivers!,
                   "Winch": state.userAnalysisResponse.numOfWinches!,
                   "Mechanic":
-                      state.userAnalysisResponse.numOfMechanists! as double,
+                      state.userAnalysisResponse.numOfMechanists! ,
                 },
                 animationDuration: Duration(milliseconds: 800),
                 //chartLegendSpacing: 42,
@@ -80,7 +85,14 @@ class UsersAnalysisScreen extends StatelessWidget {
               )
             ]);
           } else {
-            return CircularProgressIndicator();
+            return Column(children: [
+                CustomAppBar(
+                haveLogo: true,
+                haveBackArrow: true,
+              ),
+              Center(child: CircularProgressIndicator(),),
+            ],);
+            
           }
         },
       ),

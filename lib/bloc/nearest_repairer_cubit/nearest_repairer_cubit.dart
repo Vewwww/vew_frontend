@@ -17,7 +17,9 @@ part 'nearest_repairer_state.dart';
 class NearestRepairerCubit extends Cubit<NearestRepairerState> {
   NearestRepairerCubit() : super(NearestRepairerInitial());
   static NearestRepairerCubit get(context) => BlocProvider.of(context);
-
+  NearesetMCResponse? nearesetMCResponse;
+  NearestMechanicResponse? nearesetMechanicResponse;
+  NearesetGasStationResponse? nearesetGasStationResponse;
   //getNearestMaintainaceCenter
   Future getNearestMC({String? carTypeID, String? isVerified}) async {
     String url = "/driver/maintenanceCenter/getNearestMaintenanceCenters";
@@ -25,43 +27,54 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
     query.addAll({"carType": carTypeID, "isVerified": isVerified});
     print("${query}");
     emit(GettingNearestMCLoadingState());
-    await DioHelper.getWithBody(
-            url: url,
-            token: SharedPreferencesHelper.getData(key: 'vewToken'),
-            query: query)
-        .then((value) {
-      NearesetMCResponse nearesetMCResponse =
-          NearesetMCResponse.fromJson(value.data);
-      print("neareat MC response : ${nearesetMCResponse.results}");
-      emit(GettingNearestMCSuccessState(nearesetMCResponse.maintenanceCenter!));
-    }).onError((error, stackTrace) {
-      print("neareat MC error : $error");
-      emit(GettingNearestMCErrorState());
-    });
+    if (nearesetMCResponse == null) {
+      await DioHelper.getWithBody(
+              url: url,
+              token: SharedPreferencesHelper.getData(key: 'vewToken'),
+              query: query)
+          .then((value) {
+        NearesetMCResponse nearesetMCResponse =
+            NearesetMCResponse.fromJson(value.data);
+        print("neareat MC response : ${nearesetMCResponse.results}");
+        emit(GettingNearestMCSuccessState(
+            nearesetMCResponse.maintenanceCenter!));
+      }).onError((error, stackTrace) {
+        print("neareat MC error : $error");
+        emit(GettingNearestMCErrorState());
+      });
+    } else {
+      emit(
+          GettingNearestMCSuccessState(nearesetMCResponse!.maintenanceCenter!));
+    }
   }
 
   Future getNearestGasStation() async {
     String url = "/gasStation/";
     emit(GettingNearestGasStationLoadingState());
-    await DioHelper.getData(
-      url: url,
-      token: SharedPreferencesHelper.getData(key: 'vewToken'),
-    ).then((value) {
-      print("neareat gas station response : ${value.data}");
-      NearesetGasStationResponse nearesetGasStationResponse =
-          NearesetGasStationResponse.fromJson(value.data);
-      emit(GettingNearestGasStationSuccessState(
-          nearesetGasStationResponse.gasStations!));
-    }).onError((error, stackTrace) {
-      print("neareat gas station error : $error");
-      emit(GettingNearestGasStationErrorState());
-    });
+    if (NearesetGasStationResponse == null) {
+      await DioHelper.getData(
+        url: url,
+        token: SharedPreferencesHelper.getData(key: 'vewToken'),
+      ).then((value) {
+        print("neareat gas station response : ${value.data}");
+        NearesetGasStationResponse nearesetGasStationResponse =
+            NearesetGasStationResponse.fromJson(value.data);
+        emit(GettingNearestGasStationSuccessState(
+            nearesetGasStationResponse.gasStations!));
+      }).onError((error, stackTrace) {
+        print("neareat gas station error : $error");
+        emit(GettingNearestGasStationErrorState());
+      });
+    } else {
+       emit(GettingNearestGasStationSuccessState(
+            nearesetGasStationResponse!.gasStations!));
+    }
   }
 
   Future getNearestMechanic(String serviceId) async {
     String url = "/mechanic/getNearestMechanicWorkshop?service=${serviceId}";
-
     emit(GettingNearestMechanicLoadingState());
+    if(nearesetMechanicResponse == null){
     await DioHelper.getData(
       url: url,
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
@@ -75,6 +88,10 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
       print("neareat mechanic error : ${error}");
       emit(GettingNearestMechanicErrorState());
     });
+    }else{
+      emit(GettingNearestMechanicSuccessState(
+          mechanics: nearesetMechanicResponse!.mechanic!));
+    }
   }
 
   Future getNearest() async {

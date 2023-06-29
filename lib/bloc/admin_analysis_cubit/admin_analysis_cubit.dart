@@ -12,9 +12,9 @@ class AdminAnalysisCubit extends Cubit<AdminAnalysisState> {
   AdminAnalysisCubit() : super(AdminAnalysisInitial());
   static AdminAnalysisCubit get(context) => BlocProvider.of(context);
   Future getUserAnalysis() async {
-    String url = "/admin/userStatistics";
+    String url = "/admin/userStatistics/";
     emit(GetUserAnalysisLoadingState());
-    await DioHelper.getData(
+    DioHelper.getData(
       url: url,
       token:SharedPreferencesHelper.getData(key: 'vewToken'),
     ).then((value) {
@@ -27,5 +27,22 @@ class AdminAnalysisCubit extends Cubit<AdminAnalysisState> {
       emit(GetUserAnalysisErrorState());
     });
   }
+
+  // Future getGenderAnalysis() async {
+  //   String url = "/admin/genderAnalytics/";
+  //   emit(GetGenderAnalysisLoadingState());
+  //   DioHelper.getData(
+  //     url: url,
+  //     token:SharedPreferencesHelper.getData(key: 'vewToken'),
+  //   ).then((value) {
+  //     print("Get users analysis response : ${value.data}");
+  //     UserAnalysisResponse userAnalysisResponse =
+  //         UserAnalysisResponse.fromJson(value.data);
+  //     emit(GetGenderrAnalysisSuccessState(userAnalysisResponse));
+  //   }).onError((error, stackTrace) {
+  //     print("Get users analysis error : $error");
+  //     emit(GetGenderAnalysisErrorState());
+  //   });
+  // }
 
 }

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:vewww/bloc/admin_add_cubit/admin_add_cubit.dart';
+import 'package:vewww/model/driver.dart';
+import 'package:vewww/model/person.dart';
 import '../../core/components/backward_arrow.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/custom_text_field.dart';
@@ -20,7 +23,9 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
   var passwordController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  @override
   Widget build(BuildContext context) {
+    AdminAddCubit adminAddCubit = AdminAddCubit.get(context);
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -67,7 +72,7 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
                       ),
                       CustomTextField(
                         controller: emailController,
-                        keyboardType: TextInputType.phone,
+                        keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return '*Required';
@@ -82,7 +87,7 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
                       ),
                       CustomTextField(
                         controller: passwordController,
-                        keyboardType: TextInputType.phone,
+                        //keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return '*Required';
@@ -100,10 +105,31 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
                           function: () {
                             final form = formKey.currentState;
                             if (form!.validate()) {
-                              // take data in a model here
+                              Driver admin = Driver(
+                                lisenceRenewalDate: ' ',
+                                phoneNumber: phoneController.text,
+                                person: Person(
+                                    name: nameController.text,
+                                    email: emailController.text),
+                                cars: [],
+                              );
+                              adminAddCubit.addAdmin(admin);
+                              if (adminAddCubit.state is AddAdminSuccessState) {
+                                const snackBar = SnackBar(
+                                    content: Text("Admin add successfully"));
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              } else if (adminAddCubit.state
+                                  is AddAdminErrorState) {
+                                const snackBar = SnackBar(
+                                    content: Text(
+                                        "Something went wrong try again !"));
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              }
                             }
                           },
-                          text: 'Add')
+                          text: 'Add'),
                     ],
                   ),
                 )

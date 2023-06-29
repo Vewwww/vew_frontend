@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/components/user_item.dart';
+import 'package:vewww/views/admin/other_users_screen.dart';
 import '../../bloc/get_all_cubit/get_all_cubit.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
@@ -55,6 +56,15 @@ class _ViewMechanicScreenState extends State<ViewMechanicScreen> {
                     icon: Icons.handyman_outlined,
                       title: state.mechanicShops[index].ownerName!,
                       subtitle: state.mechanicShops[index].email!,
+                      function: (){
+                        String mechanicId = state.mechanicShops[index].sId!;
+                        String role = state.mechanicShops[index].role!;
+                        Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) =>
+                                        OtherUsersScreen(id: mechanicId,role:role))));
+                      }
                       ),
                   separatorBuilder: (context, index) => const SizedBox(
                     height: 15,

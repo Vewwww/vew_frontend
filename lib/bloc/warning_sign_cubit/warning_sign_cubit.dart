@@ -9,25 +9,29 @@ class WarningSignCubit extends Cubit<WarningSignState> {
   WarningSignCubit() : super(WarningSignInitial());
   static WarningSignCubit get(context) => BlocProvider.of(context);
   SignResponse? signResponse;
-  Signs? sign;
-  Future<void> getAllSigns()async{
+  Sign? sign;
+
+  Future<void> getAllSigns() async {
     emit(GetAllWarningSignLoadingState());
-    await DioHelper.getData(url: "/sign/").then((value) {
-      //print("get all warning sign response : ${value.data}");
-      signResponse = SignResponse.fromJson(value.data);
-      //print("get all warning sign names : ${signResponse!.signs![0].name!.en}");
-      emit(GetAllWarningSignSuccessState(signs:signResponse!.signs!));
-    }).onError((error, stackTrace) {
-      emit(GetAllWarningSignErrorState());
-      print("gat all warning sign error : ${error}");
-    });
+    if (signResponse == null) {
+      DioHelper.getData(url: "/sign/").then((value) {
+        print("get all warning sign response : ${value.data}");
+        signResponse = SignResponse.fromJson(value.data);
+        emit(GetAllWarningSignSuccessState(signs: signResponse!.signs!));
+      }).onError((error, stackTrace) {
+        emit(GetAllWarningSignErrorState());
+        print("gat all warning sign error : ${error}");
+      });
+    } else {
+      emit(GetAllWarningSignSuccessState(signs: signResponse!.signs!));
+    }
   }
 
-  Future<void> getSignWithId (String id) async{
+  Future<void> getSignWithId(String id) async {
     emit(GetSingleWarningSignLoadingState());
     await DioHelper.getData(url: "/sign/${id}").then((value) {
       print("get all warning sign response : ${value.data}");
-      sign = Signs.fromJson(value.data["data"]);
+      sign = Sign.fromJson(value.data["data"]);
       print("get all warning sign names : ${sign!.name!.en}");
       emit(GetSingleWarningSignSuccessState(sign: sign!));
     }).onError((error, stackTrace) {
@@ -35,5 +39,4 @@ class WarningSignCubit extends Cubit<WarningSignState> {
       print("gat all warning sign error : ${error}");
     });
   }
-
 }
