@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vewww/bloc/auth_cubit/auth_cubit.dart';
 import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/views/admin/admin_profile.dart';
+import 'package:vewww/views/driver/sign_in_screen.dart';
 
 import '../../model/admin.dart';
 import '../../model/person.dart';
@@ -12,6 +14,7 @@ class AdminDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthCubit authCubit= AuthCubit.get(context);
     return Drawer(
       child: Column(
         children: [
@@ -71,19 +74,29 @@ class AdminDrawer extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: Row(
               children: [
-                Container(
-                  height: 50,
-                  width: 50,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color.fromRGBO(2, 113, 106, 1),
+                GestureDetector(
+                  onTap: (){
+                    authCubit.logout();
+                    Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) =>
+                                     SignInScreen())));
+                  },
+                  child: Container(
+                    height: 50,
+                    width: 50,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color.fromRGBO(2, 113, 106, 1),
+                    ),
+                    child: const Icon(
+                      Icons.logout,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                    alignment: Alignment.center,
                   ),
-                  child: const Icon(
-                    Icons.logout,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                  alignment: Alignment.center,
                 ),
                 const SizedBox(
                   width: 15,
@@ -91,7 +104,8 @@ class AdminDrawer extends StatelessWidget {
                 Text(
                   'Sign Out',
                   style: TextStyle(fontSize: 20, color: Colors.grey[600]),
-                ),
+                  
+                )
               ],
             ),
           ),

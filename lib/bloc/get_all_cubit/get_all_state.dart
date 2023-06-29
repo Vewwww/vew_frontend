@@ -24,3 +24,25 @@ class GetAllDriversSuccessState extends GetAllState {
 }
 class GetAllDriversErrorState extends GetAllState {}
 
+class GetAllAdminsLoadingState extends GetAllState {}
+class GetAllAdminsSuccessState extends GetAllState {
+   final List<Driver> admins;
+  GetAllAdminsSuccessState(this.admins);
+}
+class GetAllAdminsErrorState extends GetAllState {}
+
+
+class GetUserWithIdLoadingState extends GetAllState {}
+class GetDriverWithIdSuccessState extends GetAllState {
+   final Driver driver;
+  GetDriverWithIdSuccessState(this.driver);
+}
+class GetMechanicWithIdSuccessState extends GetAllState {
+   final MechanicShop mechanicShop;
+  GetMechanicWithIdSuccessState(this.mechanicShop);
+}
+class GetWinchWithIdSuccessState extends GetAllState {
+   final WinchDriver winchDriver;
+  GetWinchWithIdSuccessState(this.winchDriver);
+}
+class GetUserWithIdErrorState extends GetAllState {}

@@ -2,16 +2,16 @@ import 'name.dart';
 
 class SignResponse {
   int? results;
-  List<Signs>? signs;
+  List<Sign>? signs;
 
   SignResponse({this.results, this.signs});
 
   SignResponse.fromJson(Map<String, dynamic> json) {
     results = json['results'];
     if (json['data'] != null) {
-      signs = <Signs>[];
+      signs = <Sign>[];
       json['data'].forEach((v) {
-        signs!.add(Signs.fromJson(v));
+        signs!.add(Sign.fromJson(v));
       });
     }
   }
@@ -26,7 +26,7 @@ class SignResponse {
   }
 }
 
-class Signs {
+class Sign {
   Name? name;
   Name? description;
   Name? solution;
@@ -34,7 +34,7 @@ class Signs {
   String? image;
   int? iV;
 
-  Signs(
+  Sign(
       {this.name,
       this.description,
       this.solution,
@@ -42,7 +42,7 @@ class Signs {
       this.image,
       this.iV});
 
-  Signs.fromJson(Map<String, dynamic> json) {
+  Sign.fromJson(Map<String, dynamic> json) {
     name = json['name'] != null ? Name.fromJson(json['name']) : null;
     description = json['description'] != null
         ? Name.fromJson(json['description'])

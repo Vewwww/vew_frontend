@@ -8,7 +8,7 @@ class WarningSignInitial extends WarningSignState {}
 class GetAllWarningSignLoadingState extends WarningSignState {}
 
 class GetAllWarningSignSuccessState extends WarningSignState {
-final List<Signs> signs;
+final List<Sign> signs;
 GetAllWarningSignSuccessState({required this.signs});
 }
 
@@ -17,7 +17,7 @@ class GetAllWarningSignErrorState extends WarningSignState {}
 class GetSingleWarningSignLoadingState extends WarningSignState {}
 
 class GetSingleWarningSignSuccessState extends WarningSignState {
-  final Signs sign;
+  final Sign sign;
   GetSingleWarningSignSuccessState({required this.sign});
 }
 

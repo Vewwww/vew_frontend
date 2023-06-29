@@ -1,6 +1,6 @@
 class UserAnalysisResponse {
   int? numOfAllUsers;
-  int? numOfMechanists;
+  double? numOfMechanists;
   double? numOfWinches;
   double? numOfDrivers;
 
@@ -12,9 +12,9 @@ class UserAnalysisResponse {
 
   UserAnalysisResponse.fromJson(Map<String, dynamic> json) {
     numOfAllUsers = json['numOfAllUsers'];
-    numOfMechanists = json['numOfMechanists'];
-    numOfWinches = json['numOfWinches'];
-    numOfDrivers = json['numOfDrivers'];
+    numOfMechanists = json['numOfMechanists']*1.0;
+    numOfWinches = json['numOfWinches']*1.0;
+    numOfDrivers = json['numOfDrivers']*1.0;
   }
 
   Map<String, dynamic> toJson() {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/components/user_item.dart';
+import 'package:vewww/views/admin/other_users_screen.dart';
 import '../../bloc/get_all_cubit/get_all_cubit.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
@@ -56,6 +57,15 @@ class _ViewWinchScreenState extends State<ViewWinchScreen> {
                       icon:Icons.car_repair,
                       title: state.winchDriver[index].name!,
                       subtitle: state.winchDriver[index].email!,
+                      function: (){
+                        String winchId = state.winchDriver[index].sId!;
+                        String role = state.winchDriver[index].role!;
+                        Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) =>
+                                        OtherUsersScreen(id: winchId,role:role))));
+                      },
                       ),
                   separatorBuilder: (context, index) => const SizedBox(
                     height: 15,
