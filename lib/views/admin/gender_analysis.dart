@@ -1,37 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vewww/bloc/admin_analysis_cubit/admin_analysis_cubit.dart';
-import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:pie_chart/pie_chart.dart';
-import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 
+import '../../bloc/admin_analysis_cubit/admin_analysis_cubit.dart';
+import '../../core/components/custom_app_bar.dart';
+import '../../core/style/app_Text_Style/app_text_style.dart';
 
-class UsersAnalysisScreen extends StatefulWidget {
-  UsersAnalysisScreen({super.key});
+class GenderAnalysisScreen extends StatefulWidget {
+  const GenderAnalysisScreen({super.key});
 
   @override
-  State<UsersAnalysisScreen> createState() => _UsersAnalysisScreenState();
+  State<GenderAnalysisScreen> createState() => _GenderAnalysisScreenState();
 }
 
-class _UsersAnalysisScreenState extends State<UsersAnalysisScreen> {
+class _GenderAnalysisScreenState extends State<GenderAnalysisScreen> {
   List<Color> colors = [
     Color.fromRGBO(2, 113, 106, 1),
     Color.fromRGBO(15, 150, 156, 1),
     Color.fromARGB(255, 2, 87, 87)
   ];
-
-   void initState() {
+    void initState() {
     super.initState();
     final adminAnalysisCubit = context.read<AdminAnalysisCubit>();
-    adminAnalysisCubit.getUserAnalysis();
+    adminAnalysisCubit.getGenderAnalysis();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<AdminAnalysisCubit, AdminAnalysisState>(
+     body: BlocBuilder<AdminAnalysisCubit, AdminAnalysisState>(
         builder: (context, state) {  
-          if (state is GetUserAnalysisSuccessState) {
+          if (state is GetGenderrAnalysisSuccessState) {
             print(state);
             return Column(children: [
               CustomAppBar(
@@ -42,7 +42,7 @@ class _UsersAnalysisScreenState extends State<UsersAnalysisScreen> {
                 height: 40,
               ),
               Text(
-                'This pie chart show the percentage of drivers, winch drivers and mechanics using Vewww.',
+                'This pie chart shows the percantage of females and males who faced car problems',
                 style: AppTextStyle.boldStyle(size: 20),
               ),
               SizedBox(
@@ -50,10 +50,8 @@ class _UsersAnalysisScreenState extends State<UsersAnalysisScreen> {
               ),
               PieChart(
                 dataMap: {
-                  "Driver": state.userAnalysisResponse.numOfDrivers!,
-                  "Winch": state.userAnalysisResponse.numOfWinches!,
-                  "Mechanic":
-                      state.userAnalysisResponse.numOfMechanists! ,
+                 "Females":state.genderAnalysisResponse.femaleRatio!,
+                 "Males":state.genderAnalysisResponse.maleRatio! ,
                 },
                 animationDuration: Duration(milliseconds: 800),
                 //chartLegendSpacing: 42,
@@ -96,5 +94,6 @@ class _UsersAnalysisScreenState extends State<UsersAnalysisScreen> {
         },
       ),
     );
+    
   }
 }

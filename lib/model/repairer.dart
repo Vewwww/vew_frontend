@@ -62,6 +62,7 @@ class MaintenanceCenter extends Repairer {
             rate: rate,
             ratesNumber: ratesNumber,
             sId: sId);
+            
   MaintenanceCenter.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
     name = json['name'] != null ? Name.fromJson(json['name']) : null;
     //print("here 14");

@@ -5,6 +5,7 @@ import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/components/service_card.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
+import 'package:vewww/views/admin/gender_analysis.dart';
 import 'package:vewww/views/admin/users_analysis_screen.dart';
 
 class AdminAnalysisScreen extends StatelessWidget {
@@ -39,11 +40,17 @@ class AdminAnalysisScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: ((context) =>
-                                   UsersAnalysisScreen())));
+                              builder: ((context) => UsersAnalysisScreen())));
                     },
                     title: 'Vewww user\'s analysis'),
-                serviceCard(function: () {}, title: 'Gender analysis'),
+                serviceCard(
+                    function: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => GenderAnalysisScreen())));
+                    },
+                    title: 'Gender analysis'),
                 serviceCard(function: () {}, title: 'Seasons analysis.'),
                 serviceCard(function: () {}, title: 'Car types analysis'),
               ],
