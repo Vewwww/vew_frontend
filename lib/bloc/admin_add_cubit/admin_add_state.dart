@@ -1,6 +1,6 @@
 part of 'admin_add_cubit.dart';
 
-@immutable
+
 abstract class AdminAddState {}
 
 class AdminAddInitial extends AdminAddState {}

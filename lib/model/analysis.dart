@@ -45,3 +45,46 @@ class GenderAnalysisResponse {
     return data;
   }
 }
+
+class SeasonAnalysisResponse {
+  Season? season;
+
+  SeasonAnalysisResponse({this.season});
+
+  SeasonAnalysisResponse.fromJson(Map<String, dynamic> json) {
+    season = json['data'] != null ? new Season.fromJson(json['data']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.season != null) {
+      data['data'] = this.season!.toJson();
+    }
+    return data;
+  }
+}
+
+class Season {
+  int? summer;
+  int? winter;
+  int? autumn;
+  int? spring;
+
+  Season({this.summer, this.winter, this.autumn, this.spring});
+
+  Season.fromJson(Map<String, dynamic> json) {
+    summer = json['summer'];
+    winter = json['winter'];
+    autumn = json['autumn'];
+    spring = json['spring'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['summer'] = this.summer;
+    data['winter'] = this.winter;
+    data['autumn'] = this.autumn;
+    data['spring'] = this.spring;
+    return data;
+  }
+}

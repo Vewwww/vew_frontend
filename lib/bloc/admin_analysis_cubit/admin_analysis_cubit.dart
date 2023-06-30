@@ -45,4 +45,21 @@ class AdminAnalysisCubit extends Cubit<AdminAnalysisState> {
     });
   }
 
+  Future getSeasonAnalysis() async {
+    String url = "/admin/seasonsAnalytics/";
+    emit(GetSeasonAnalysisLoadingState());
+    DioHelper.getData(
+      url: url,
+      token:SharedPreferencesHelper.getData(key: 'vewToken'),
+    ).then((value) {
+      print("Get season analysis response : ${value.data}");
+      SeasonAnalysisResponse seasonAnalysisResponse =
+          SeasonAnalysisResponse.fromJson(value.data);
+      emit(GetSeasonAnalysisSuccessState(seasonAnalysisResponse));
+    }).onError((error, stackTrace) {
+      print("Get season analysis error : $error");
+      emit(GetSeasonAnalysisErrorState());
+    });
+  }
+
 }

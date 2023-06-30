@@ -76,7 +76,7 @@ class WinchDriver {
     email = json['email'];
     password = json['password'];
     phoneNumber = json['phoneNumber'];
-    rate = json['rate'];
+    rate = json['rate']*1.0;
     numOfRates = json['numOfRates'];
     isSuspended = json['isSuspended'];
     emailConfirm = json['emailConfirm'];

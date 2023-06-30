@@ -18,3 +18,11 @@ class GetGenderrAnalysisSuccessState extends AdminAnalysisState {
   GetGenderrAnalysisSuccessState(this.genderAnalysisResponse);
 }
 class GetGenderAnalysisErrorState extends AdminAnalysisState {}
+
+
+class GetSeasonAnalysisLoadingState extends AdminAnalysisState {}
+class GetSeasonAnalysisSuccessState extends AdminAnalysisState {
+  final SeasonAnalysisResponse seasonAnalysisResponse;
+  GetSeasonAnalysisSuccessState(this.seasonAnalysisResponse);
+}
+class GetSeasonAnalysisErrorState extends AdminAnalysisState {}
