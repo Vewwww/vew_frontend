@@ -6,7 +6,8 @@ class SidebarElement extends StatelessWidget {
   String? title;
   IconData? icon;
   Function? onpress;
-  SidebarElement(this.title, this.icon, {this.onpress, super.key}) {
+  bool dot;
+  SidebarElement(this.title, this.icon, {this.onpress, this.dot=false , super.key}) {
       onpress ??= () {};
   }
 
@@ -31,7 +32,19 @@ class SidebarElement extends StatelessWidget {
           CircleAvatar(
             radius: 15,
             backgroundColor: Colors.white.withOpacity(0),
-            child: Icon(
+            child: (dot)?  Stack(
+                        children: [
+                          Icon(Icons.notifications),
+                          Positioned(
+                            right: 0,
+                            top: 1,
+                            child: CircleAvatar(
+                              radius: 5,
+                              backgroundColor: Colors.red.shade900,
+                            ),
+                          )
+                        ],
+                      ): Icon(
               icon!,
               color: mainColor,
             ),

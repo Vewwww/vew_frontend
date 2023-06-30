@@ -15,9 +15,9 @@ class NotificationCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Divider(thickness: 0.8),
-          Text(notification.message),
+          Text(notification.message!),
           Text(
-            notification.date,
+            notification.date!,
             style: AppTextStyle.greyStyle(size: 12),
           ),
           const Divider(thickness: 0.8),

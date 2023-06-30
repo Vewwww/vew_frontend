@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/bloc/auth_cubit/auth_cubit.dart';
+import 'package:vewww/bloc/chat_cubit/chat_cubit.dart';
 import 'package:vewww/core/components/sidebar_element.dart';
-
 import '../../views/common/chats_screen.dart';
-import '../../views/common/sign_in_screen.dart';
-import '../../views/winch/winch_profile.dart';
+import '../../views/driver/sign_in_screen.dart';
 import 'logo.dart';
 
 class Sidebar extends StatelessWidget {
@@ -37,6 +36,9 @@ class Sidebar extends StatelessWidget {
           SidebarElement(
             "المحادثات",
             Icons.chat_rounded,
+            dot: (ChatCubit.get(context).chatResponse != null)
+                ? ChatCubit.get(context).chatResponse!.newChats!
+                : false,
             onpress: () {
               Navigator.pushAndRemoveUntil(
                   context,

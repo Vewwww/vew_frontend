@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vewww/bloc/loaction_cubit/loaction_cubit.dart';
 
 import '../../core/utils/navigation.dart';
-import '../common/map.dart';
+import 'map.dart';
 
 class MapScreen extends StatelessWidget {
   MapScreen({required this.locationCubit, Key? key}) : super(key: key);

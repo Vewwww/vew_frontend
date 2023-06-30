@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/views/mechanic/mechanic_profile.dart';
+import '../../bloc/chat_cubit/chat_cubit.dart';
 import '../../core/components/accepted_request_card.dart';
 import '../../core/components/app_nav_bar.dart';
 import '../../core/components/custom_app_bar.dart';
@@ -7,9 +9,22 @@ import '../../core/components/sidebar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import 'mechanic_upcoming_req_screen.dart';
 
-class MechanicHomeScreen extends StatelessWidget {
+class MechanicHomeScreen extends StatefulWidget {
    MechanicHomeScreen({super.key});
+
+  @override
+  State<MechanicHomeScreen> createState() => _MechanicHomeScreenState();
+}
+
+class _MechanicHomeScreenState extends State<MechanicHomeScreen> {
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+  @override
+  void initState() {
+    super.initState();
+    var chatCubit = context.read<ChatCubit>();
+    chatCubit.getChats();
+  }
+
   @override
    Widget build(BuildContext context) {
     return Scaffold(

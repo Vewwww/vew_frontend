@@ -11,12 +11,28 @@ import 'package:vewww/views/driver/driver_drawer.dart';
 import 'package:vewww/views/driver/request_winch_screen.dart';
 import 'package:vewww/views/driver/search_screen.dart';
 import 'package:vewww/views/driver/select_car_type_screen.dart';
+import '../../bloc/chat_cubit/chat_cubit.dart';
+import '../../bloc/notification_cubit/notification_cubit.dart';
 import '../../bloc/select_choice_cubit/select_choice_cubit.dart';
 import 'maintenance_center_preview.dart';
 import 'search_result_screen.dart';
 
-class DriverHomeScreen extends StatelessWidget {
+class DriverHomeScreen extends StatefulWidget {
   const DriverHomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<DriverHomeScreen> createState() => _DriverHomeScreenState();
+}
+
+class _DriverHomeScreenState extends State<DriverHomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    var notificationCubit = context.read<NotificationCubit>();
+    notificationCubit.getNotificatin();
+    var chatCubit = context.read<ChatCubit>();
+    chatCubit.getChats();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +53,27 @@ class DriverHomeScreen extends StatelessWidget {
                         Scaffold.of(context).openDrawer();
                       },
                       //tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-                      icon: const Icon(Icons.menu),
+                      icon: BlocBuilder<NotificationCubit, NotificationState>(
+                        builder: (context, state) {
+                          if (state is GettingNotificationSuccessState &&
+                              NotificationCubit.get(context).haveNew)
+                            return Stack(
+                              children: [
+                                Icon(Icons.menu),
+                                Positioned(
+                                  right: 0,
+                                  top: 1,
+                                  child: CircleAvatar(
+                                    radius: 7,
+                                    backgroundColor: Colors.red.shade900,
+                                  ),
+                                )
+                              ],
+                            );
+                          else
+                            return Icon(Icons.menu);
+                        },
+                      ),
                       iconSize: 35,
                       color: const Color.fromRGBO(2, 113, 106, 1),
                     );

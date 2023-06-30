@@ -24,17 +24,21 @@ class Message extends StatelessWidget {
                 ),
               )
             : Container(),
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-          decoration: BoxDecoration(
-            color: color.withOpacity(0.08),
-            border: Border.all(color: color),
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
-          ),
-          child: Text(
-            message,
-            style: TextStyle(color: color),
+        Flexible(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.08),
+              border: Border.all(color: color),
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
+            ),
+            width: 200,
+            child: Text(
+              message,
+              overflow: TextOverflow.fade,
+              style: TextStyle(color: color),
+            ),
           ),
         ),
         (!isSent)

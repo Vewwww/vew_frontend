@@ -1,42 +1,108 @@
-class ChatModel {
-  String sender;
-  List<MessageModel> messages;
-  ChatModel({required this.sender, required this.messages});
+class ChatResponse {
+  bool? newChats;
+  int? result;
+  List<Chat>? chats;
+
+  ChatResponse({this.newChats, this.result, this.chats});
+
+  ChatResponse.fromJson(Map<String, dynamic> json) {
+    newChats = json['newChats'];
+    result = json['result'];
+    if (json['data'] != null) {
+      chats = <Chat>[];
+      json['data'].forEach((v) {
+        chats!.add(new Chat.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['newChats'] = this.newChats;
+    data['result'] = this.result;
+    if (this.chats != null) {
+      data['data'] = this.chats!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
 }
 
-class MessageModel {
-  String sender;
-  String message;
-  String date;
-  MessageModel(
-      {required this.sender, required this.message, required this.date});
+class Chat {
+  String? sId;
+  String? room;
+  List<String>? participants;
+  List<Messages>? messages;
+  int? iV;
+  String? chatName;
+
+  Chat(
+      {this.sId,
+      this.room,
+      this.participants,
+      this.messages,
+      this.iV,
+      this.chatName});
+
+  Chat.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    room = json['room'];
+    participants = json['participants'].cast<String>();
+    if (json['messages'] != null) {
+      messages = <Messages>[];
+      json['messages'].forEach((v) {
+        messages!.add(new Messages.fromJson(v));
+      });
+    }
+    iV = json['__v'];
+    var x = json['chatName'];
+    final startIndex = x!.indexOf("'");
+    final endIndex = x!.lastIndexOf("'");
+    print("namee: ${x!.substring(startIndex + 1, endIndex)}");
+    print("x= $x");
+    x = x!.substring(startIndex + 1, endIndex);
+    chatName = x;
+  }
+
+  
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['room'] = this.room;
+    data['participants'] = this.participants;
+    if (this.messages != null) {
+      data['messages'] = this.messages!.map((v) => v.toJson()).toList();
+    }
+    data['__v'] = this.iV;
+    data['chatName'] = this.chatName;
+    return data;
+  }
 }
 
-List<ChatModel> chats = [
-  ChatModel(
-    messages: [
-      MessageModel(sender: "me", message: "hello", date: "10:05 today"),
-      MessageModel(sender: "me", message: "where are you", date: "10:55 today"),
-      MessageModel(
-          sender: "Ahmed Nader",
-          message: "I'm 5 minues far",
-          date: "10:58 today"),
-      MessageModel(
-          sender: "me", message: "thank you for help", date: "11:30 today"),
-    ],
-    sender: "Ahmed Nader",
-  ),
-  ChatModel(
-    messages: [
-      MessageModel(sender: "me", message: "hi", date: "10:05 today"),
-      MessageModel(sender: "Shimaa Yossef", message: "hi", date: "10:06 today"),
-      MessageModel(
-          sender: "me", message: "is the location clear?", date: "10:10 today"),
-      MessageModel(
-          sender: "Shimaa Yossef",
-          message: "yes, i'm on my way",
-          date: "10:30 today"),
-    ],
-    sender: "Shimaa Yossef",
-  ),
-];
+class Messages {
+  String? sender;
+  String? content;
+  String? time;
+  bool? seen;
+  String? sId;
+
+  Messages({this.sender, this.content, this.time, this.seen, this.sId});
+
+  Messages.fromJson(Map<String, dynamic> json) {
+    sender = json['sender'];
+    content = json['content'];
+    time = json['time'];
+    seen = json['seen'];
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['sender'] = this.sender;
+    data['content'] = this.content;
+    data['time'] = this.time;
+    data['seen'] = this.seen;
+    data['_id'] = this.sId;
+    return data;
+  }
+}

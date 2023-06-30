@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:vewww/bloc/chat_cubit/chat_cubit.dart';
 import 'package:vewww/core/style/app_colors.dart';
+import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import 'package:vewww/model/chat.dart';
 
 import '../../views/common/single_chat.dart';
@@ -7,7 +9,7 @@ import '../style/app_Text_Style/app_text_style.dart';
 import '../utils/navigation.dart';
 
 class ChatHeadElement extends StatelessWidget {
-  ChatModel chat;
+  Chat chat;
   ChatHeadElement({required this.chat, Key? key}) : super(key: key);
 
   @override
@@ -16,6 +18,7 @@ class ChatHeadElement extends StatelessWidget {
       style: ElevatedButton.styleFrom(
           backgroundColor: Colors.white10, elevation: 0),
       onPressed: () {
+        ChatCubit.get(context).setchat(chat);
         NavigationUtils.navigateTo(
             context: context, destinationScreen: SingleChat(chat: chat));
       },
@@ -36,24 +39,28 @@ class ChatHeadElement extends StatelessWidget {
         ),
         width: double.infinity,
         child: Row(
+          mainAxisAlignment:
+              (SharedPreferencesHelper.getData(key: "vewRole") == "user")
+                  ? MainAxisAlignment.start
+                  : MainAxisAlignment.end,
           children: [
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    chat.sender,
+                    chat.chatName!,
                     style: AppTextStyle.darkGreyStyle(size: 22),
                   ),
                   Text(
-                    chat.messages[chat.messages.length - 1].message,
+                    chat.messages![chat.messages!.length - 1].content!,
                     style: AppTextStyle.darkGreyStyle(size: 17),
                   ),
                   SizedBox(
                     height: 15,
                   ),
                   Text(
-                    chat.messages[chat.messages.length - 1].date,
+                    chat.messages![chat.messages!.length - 1].time!,
                     style: AppTextStyle.greyStyle(size: 12),
                   ),
                 ],

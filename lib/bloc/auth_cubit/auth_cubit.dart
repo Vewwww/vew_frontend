@@ -78,6 +78,7 @@ class AuthCubit extends Cubit<AuthState> {
       print("person = ${person.token} , ${person.role}");
       SharedPreferencesHelper.saveData(key: 'vewToken', value: person.token);
       SharedPreferencesHelper.saveData(key: 'vewRole', value: person.role);
+      SharedPreferencesHelper.saveData(key: 'vewId', value: person.sId);
       emit(SignInSuccessState());
     }).catchError((err) {
       if (err is DioError) {
