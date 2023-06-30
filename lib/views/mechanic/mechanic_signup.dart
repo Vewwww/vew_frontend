@@ -172,6 +172,7 @@ class MechanicSignup extends StatelessWidget {
                               print(
                                   "lat:${locationCubit.lat} , address:${locationCubit.address}");
                               if (_formKey.currentState!.validate()) {
+                                
                                 // WinchDriver winch = WinchDriver(
                                 //       name: _name.text,
                                 //       email: _email.text,

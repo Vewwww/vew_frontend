@@ -1,4 +1,6 @@
+import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
 import '../../model/driver.dart';
@@ -29,7 +31,8 @@ class AdminAddCubit extends Cubit<AdminAddState> {
     });
     
   }
-   void addSign(Sign sign) async {
+
+  void addSign(Sign sign) async {
     emit(AddSignLoadingState());
     print(sign.toJson());
     await DioHelper.postData(
@@ -45,6 +48,7 @@ class AdminAddCubit extends Cubit<AdminAddState> {
         emit(AddSignErrorState());
       }
     });
+  }
 
-   }
-   }
+
+}
