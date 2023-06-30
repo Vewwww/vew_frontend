@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/views/winch/winch_profile.dart';
 import 'package:vewww/views/winch/winch_upcoming_requests_screen.dart';
 
+import '../../bloc/chat_cubit/chat_cubit.dart';
 import '../../core/components/accepted_request_card.dart';
 import '../../core/components/app_nav_bar.dart';
 import '../../core/components/coming_request_card.dart';
@@ -9,26 +11,38 @@ import '../../core/components/custom_app_bar.dart';
 import '../../core/components/sidebar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 
-class WinchHomePage extends StatelessWidget {
+class WinchHomePage extends StatefulWidget {
   WinchHomePage({Key? key}) : super(key: key);
-  final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
 
+  @override
+  State<WinchHomePage> createState() => _WinchHomePageState();
+}
+
+class _WinchHomePageState extends State<WinchHomePage> {
+  final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+  @override
+  void initState() {
+    super.initState();
+    var chatCubit = context.read<ChatCubit>();
+    chatCubit.getChats();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar:  AppNavigationBar(homeFunction: (){
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => WinchHomePage()),
-            (route) => false);
-      },
-      upComingReqFunction: (){
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => WinchUpcomingRequestsScreen(),
-            ));
-      },
+      bottomNavigationBar: AppNavigationBar(
+        homeFunction: () {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => WinchHomePage()),
+              (route) => false);
+        },
+        upComingReqFunction: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => WinchUpcomingRequestsScreen(),
+              ));
+        },
       ),
       key: _globalKey,
       endDrawer: Sidebar(
@@ -45,15 +59,36 @@ class WinchHomePage extends StatelessWidget {
           children: [
             SizedBox(height: 20),
             CustomAppBar(
-              leading: IconButton(
-                  onPressed: () {
-                    _globalKey.currentState!.openEndDrawer();
-                  },
-                  icon: const Icon(
+              leading: IconButton(onPressed: () {
+                _globalKey.currentState!.openEndDrawer();
+              }, icon: BlocBuilder<ChatCubit, ChatState>(
+                builder: (context, state) {
+                  if (state is GettingChatsSuccessState && ChatCubit.get(context).chatResponse!.newChats!)
+                  return Stack(
+                    children: [
+                      Icon(
+                        Icons.menu,
+                        size: 30,
+                        color: Colors.grey,
+                      ),
+                      Positioned(
+                            right: 0,
+                            top: 1,
+                            child: CircleAvatar(
+                              radius: 5,
+                              backgroundColor: Colors.red.shade900,
+                            ),
+                          )
+                    ],
+                  );
+                  else
+                  return Icon(
                     Icons.menu,
                     size: 30,
                     color: Colors.grey,
-                  )),
+                  );
+                },
+              )),
               haveLogo: true,
             ),
             Padding(

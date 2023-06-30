@@ -1,42 +1,44 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vewww/bloc/loaction_cubit/loaction_cubit.dart';
-import 'package:vewww/model/winch.dart';
-import 'package:vewww/views/driver/sign_in_screen.dart';
-import 'package:vewww/views/winch/winch_home_page.dart';
 
-import '../../bloc/add_car_cubit/add_car_cubit.dart';
 import '../../bloc/auth_cubit/auth_cubit.dart';
+import '../../bloc/loaction_cubit/loaction_cubit.dart';
 import '../../bloc/select_choice_cubit/select_choice_cubit.dart';
-import '../../bloc/select_color_cubit/select_color_cubit.dart';
 import '../../core/components/custom_text_field.dart';
 import '../../core/components/logo.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/navigation.dart';
-import '../../model/location.dart';
-import '../../model/winch_driver.dart';
-import '../common/map.dart';
-import '../common/select_color_screen.dart';
-import '../driver/select_car_model.dart';
-import '../driver/select_car_type_screen.dart';
 import '../common/map_screen.dart';
+import '../driver/sign_in_screen.dart';
 
-class WinchSignUpScreen extends StatelessWidget {
+class MechanicSignup extends StatelessWidget {
+  MechanicSignup({Key? key}) : super(key: key);
   final GlobalKey<FormState> _formKey = GlobalKey();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final TextEditingController _phoneNumber = TextEditingController();
+  final TextEditingController _mechanicPhone = TextEditingController();
   final TextEditingController _name = TextEditingController();
-  final TextEditingController _carType = TextEditingController();
-  final TextEditingController _carPlateNum = TextEditingController();
-  final TextEditingController _carColor = TextEditingController();
-  WinchSignUpScreen({Key? key}) : super(key: key);
+  final TextEditingController _ownerName = TextEditingController();
+  // {
+  //   "hasDelivery": true,
+  //   "location": {
+  //       "description": {
+  //           "ar": "مجمع الفردوس بجوار نادي السكه خلف ورشة",
+  //           "en": " Al-Firdous Complex, next to Al-Sekka Club, behind Taqah workshop "
+  //       },
+  //       "latitude": 30.0496509,
+  //       "longitude": 31.27362904
+  //   },
+  //   "service": [
+  //       "64837b8cd4a3c95f4207e9e2",
+  //       "64837b87d4a3c95f4207e9df"
+  //   ]
+  // }
 
   @override
   Widget build(BuildContext context) {
     double constraintsHight = MediaQuery.of(context).size.height;
-    AddCarCubit addCarCubit = AddCarCubit.get(context);
     AuthCubit authCubit = AuthCubit.get(context);
     SelectChoiceCubit selectChoiceCubit = SelectChoiceCubit.get(context);
     LocationCubit locationCubit = LocationCubit.get(context);
@@ -64,11 +66,41 @@ class WinchSignUpScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   CustomTextField(
                     controller: _name,
-                    label: "الاسم",
+                    label: "اسم الورشة",
                     isArabic: true,
                     validator: (value) {
                       if (value!.length < 1 || value == null) {
-                        return 'برجاء ادخال الاسم';
+                        return 'برجاء ادخال اسم الورشة"';
+                      }
+                    },
+                  ),
+                  CustomTextField(
+                    controller: _mechanicPhone,
+                    label: "رقم الهاتف",
+                    isArabic: true,
+                    validator: (value) {
+                      if (value!.length < 1 || value == null) {
+                        return 'برجاء ادخال رقم الهاتف';
+                      }
+                    },
+                  ),
+                  CustomTextField(
+                    controller: _ownerName,
+                    label: "اسم المالك",
+                    isArabic: true,
+                    validator: (value) {
+                      if (value!.length < 1 || value == null) {
+                        return 'برجاء ادخال اسم المالك"';
+                      }
+                    },
+                  ),
+                  CustomTextField(
+                    controller: _phoneNumber,
+                    label: "رقم الهاتف المالك",
+                    isArabic: true,
+                    validator: (value) {
+                      if (value!.length < 1 || value == null) {
+                        return 'برجاء ادخال رقم الهاتف المالك';
                       }
                     },
                   ),
@@ -114,28 +146,6 @@ class WinchSignUpScreen extends StatelessWidget {
                       return null;
                     },
                   ),
-                  CustomTextField(
-                    controller: _phoneNumber,
-                    label: "رقم الهاتف",
-                    isArabic: true,
-                    validator: (value) {
-                      if (value!.length < 1 || value == null) {
-                        return 'برجاء ادخال رقم الهاتف';
-                      }
-                    },
-                  ),
-                  CustomTextField(
-                    isArabic: true,
-                    controller: _carPlateNum,
-                    label: "رقم السيارة",
-                    validator: (value) {
-                      if (addCarCubit.carExist) {
-                        if (value!.length < 1 || value == null) {
-                          return 'برجاء ادخال رقم السيارة';
-                        }
-                      }
-                    },
-                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -162,26 +172,26 @@ class WinchSignUpScreen extends StatelessWidget {
                               print(
                                   "lat:${locationCubit.lat} , address:${locationCubit.address}");
                               if (_formKey.currentState!.validate()) {
-                                WinchDriver winch = WinchDriver(
-                                    name: _name.text,
-                                    email: _email.text,
-                                    password: _password.text,
-                                    phoneNumber: _phoneNumber.text,
-                                    plateNumber: _carPlateNum.text,
-                                    location: Location(
-                                        latitude: locationCubit.lat,
-                                        longitude: locationCubit.long));
-                                await authCubit.winchSignUp(winch);
-                                if (state is SignUpSuccessState) {
-                                  NavigationUtils.navigateAndClearStack(
-                                      context: context,
-                                      destinationScreen: SignInScreen());
-                                } else if (state is SignUpErrorState) {
-                                  var snackBar =
-                                      SnackBar(content: Text(state.errMessage));
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
-                                }
+                                // WinchDriver winch = WinchDriver(
+                                //       name: _name.text,
+                                //       email: _email.text,
+                                //       password: _password.text,
+                                //       phoneNumber: _phoneNumber.text,
+                                //       plateNumber: _carPlateNum.text,
+                                //       location: Location(
+                                //           latitude: locationCubit.lat,
+                                //           longitude: locationCubit.long));
+                                //   await authCubit.winchSignUp(winch);
+                                //   if (state is SignUpSuccessState) {
+                                //     NavigationUtils.navigateAndClearStack(
+                                //         context: context,
+                                //         destinationScreen: SignInScreen());
+                                //   } else if (state is SignUpErrorState) {
+                                //     var snackBar =
+                                //         SnackBar(content: Text(state.errMessage));
+                                //     ScaffoldMessenger.of(context)
+                                //         .showSnackBar(snackBar);
+                                //   }
                               }
                             },
                             child: BlocConsumer<AuthCubit, AuthState>(

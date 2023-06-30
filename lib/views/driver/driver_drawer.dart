@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/auth_cubit/auth_cubit.dart';
 import 'package:vewww/core/components/circular_icon.dart';
 import 'package:vewww/core/components/horizontal_line.dart';
@@ -7,6 +8,7 @@ import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/views/common/chats_screen.dart';
 import 'package:vewww/views/driver/notifications_screen.dart';
 
+import '../../bloc/notification_cubit/notification_cubit.dart';
 import '../../core/components/logo.dart';
 import '../../model/driver.dart';
 import '../common/change_password_screen.dart';
@@ -73,7 +75,28 @@ class DriverDrawer extends StatelessWidget {
                   destinationScreen: const NotificationsScreen());
             },
             child: CircularIcon(
-                title: 'Notifications', child: const Icon(Icons.notifications)),
+                title: 'Notifications',
+                child: BlocBuilder<NotificationCubit, NotificationState>(
+                  builder: (context, state) {
+                    if ( state is GettingNotificationSuccessState &&
+                        NotificationCubit.get(context).haveNew)
+                      return Stack(
+                        children: [
+                          Icon(Icons.notifications),
+                          Positioned(
+                            right: 0,
+                            top: 1,
+                            child: CircleAvatar(
+                              radius: 5,
+                              backgroundColor: Colors.red.shade900,
+                            ),
+                          )
+                        ],
+                      );
+                    else
+                      return Icon(Icons.notifications);
+                  },
+                )),
           ),
           const SizedBox(
             height: 15,

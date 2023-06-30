@@ -108,12 +108,6 @@ class WinchDriver {
     if (logedIn != null) data['logedIn'] = logedIn;
     if (role != null) data['role'] = role;
     if (iV != null) data['__v'] = iV;
-    //TODO::remome car
-    data['car'] = {
-      "carType": "643528431c01869f2d835be5",
-      "plateNumber": "123456",
-      "color": "6469f59993253d535309dc62"
-    };
     return data;
   }
 }
