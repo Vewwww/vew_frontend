@@ -55,7 +55,7 @@ class Sign {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.name != null) {
       data['name'] = this.name!.toJson();
     }

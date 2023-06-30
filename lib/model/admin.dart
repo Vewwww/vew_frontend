@@ -1,11 +1,11 @@
 import 'package:vewww/model/person.dart';
 
-class adminResponse {
+class AdminResponse {
   List<Admin>? admins;
 
-  adminResponse({this.admins});
+  AdminResponse({this.admins});
 
-  adminResponse.fromJson(Map<String, dynamic> json) {
+  AdminResponse.fromJson(Map<String, dynamic> json) {
     if (json['admins'] != null) {
       admins = <Admin>[];
       json['admins'].forEach((v) {

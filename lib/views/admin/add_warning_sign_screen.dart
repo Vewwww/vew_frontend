@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/add_image_cubit/add_image_cubit.dart';
 import 'package:vewww/bloc/admin_add_cubit/admin_add_cubit.dart';
 import 'package:vewww/model/mechanic_shop.dart';
 import 'package:vewww/model/name.dart';
+import 'package:vewww/model/sign_image.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/custom_text_field.dart';
 import '../../core/components/default_button.dart';
@@ -20,7 +22,7 @@ class AddWarningSignScreen extends StatefulWidget {
 }
 
 class _AddWarningSignScreenState extends State<AddWarningSignScreen> {
-  String? imagePath;
+  XFile? imageFile;
   Name description = Name();
   Name solution = Name();
   Name title = Name();
@@ -34,7 +36,7 @@ class _AddWarningSignScreenState extends State<AddWarningSignScreen> {
   Widget build(BuildContext context) {
     AddImageCubit addImageCubit = AddImageCubit.get(context);
     AdminAddCubit adminAddCubit = AdminAddCubit.get(context);
-    Sign sign;
+    SignImage sign;
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -92,36 +94,40 @@ class _AddWarningSignScreenState extends State<AddWarningSignScreen> {
                   const SizedBox(
                     height: 15,
                   ),
-                  defaultButton(
-                      function: () {
-                        final form = formKey.currentState;
-                        print("from add button $imagePath");
-                        if (form!.validate()) {
-                          description = Name(en: descriptionController.text);
-                          solution = Name(en: solutionController.text);
-                          title = Name(en: titleController.text);
-                          print("from add button2 $imagePath");
-                          sign = Sign(
-                              description: description,
-                              name: title,
-                              solution: solution,
-                              image: imagePath);
-                          adminAddCubit.addSign(sign);
-                          if (adminAddCubit.state is AddSignSuccessState) {
-                            const snackBar = SnackBar(
-                                content: Text("Sign add successfully"));
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                          } else if (adminAddCubit.state is AddSignErrorState) {
-                            const snackBar = SnackBar(
-                                content:
-                                    Text("Something went wrong try again !"));
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                          }
-                        }
-                      },
-                      text: 'Add'),
+                  BlocBuilder<AdminAddCubit, AdminAddState>(
+                    builder: (context, state) {
+                      return defaultButton(
+                          function: () async {
+                            final form = formKey.currentState;
+                            if (form!.validate()) {
+                              description =
+                                  Name(en: descriptionController.text);
+                              solution = Name(en: solutionController.text);
+                              title = Name(en: titleController.text);
+                              sign = SignImage(
+                                  description: description,
+                                  name: title,
+                                  solution: solution,
+                                  image: await MultipartFile.fromFile(
+                                      imageFile!.path)); //
+                              adminAddCubit.addSign(sign);
+                              if (state is AddSignSuccessState) {
+                                const snackBar = SnackBar(
+                                    content: Text("Sign add successfully"));
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              } else if (state is AddSignErrorState) {
+                                const snackBar = SnackBar(
+                                    content: Text(
+                                        "Something went wrong try again !"));
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              }
+                            }
+                          },
+                          text: 'Add');
+                    },
+                  ),
                 ],
               ),
             ),
@@ -129,14 +135,12 @@ class _AddWarningSignScreenState extends State<AddWarningSignScreen> {
         ));
   }
 
-  Future<String> takePhoto(AddImageCubit addImageCubit) async {
+  Future<XFile> takePhoto(AddImageCubit addImageCubit) async {
     final pickedFile = await picker.pickImage(
       source: ImageSource.gallery,
     );
     addImageCubit.addImage(pickedFile);
-    print("image from take photo : $imagePath");
-    print("image from take photo : ${addImageCubit.imageFile!.path}");
-    return addImageCubit.imageFile!.path;
+    return addImageCubit.imageFile!;
   }
 
   Widget addImage(AddImageCubit addImageCubit) {
@@ -161,8 +165,7 @@ class _AddWarningSignScreenState extends State<AddWarningSignScreen> {
             right: 20,
             child: InkWell(
               onTap: () async {
-                imagePath = await takePhoto(addImageCubit);
-                print("from icon botton  $imagePath");
+                imageFile = await takePhoto(addImageCubit);
               },
               child: Icon(
                 Icons.add_a_photo,

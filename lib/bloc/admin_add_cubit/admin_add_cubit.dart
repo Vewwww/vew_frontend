@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vewww/model/repairer.dart';
+import 'package:vewww/views/admin/add_maintenance_center_screen.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
 import '../../model/driver.dart';
+import '../../model/sign_image.dart';
 import '../../model/warning_sign.dart';
 import '../../services/dio_helper.dart';
 
@@ -29,7 +32,7 @@ class AdminAddCubit extends Cubit<AdminAddState> {
     });
     
   }
-   void addSign(Sign sign) async {
+   void addSign(SignImage sign) async {
     emit(AddSignLoadingState());
     print(sign.toJson());
     await DioHelper.postData(
@@ -44,7 +47,44 @@ class AdminAddCubit extends Cubit<AdminAddState> {
         print(err.response);
         emit(AddSignErrorState());
       }
+      print(err.toString());
     });
-
    }
+   void AddMaintenanceCenter(MaintenanceCenter maintenanceCenter) async {
+    emit(AddGasStationLoadingState());
+    print(maintenanceCenter.toJson());
+    await DioHelper.postData(
+      url: "/maintenanceCenter/",
+      data: maintenanceCenter.toJson(),
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
+    ).then((value) {
+      print("Add maintenanceCenter response : ${value}");
+      emit(AddGasStationSuccessState());
+    }).catchError((error){
+      if(error is DioError){
+        print(error.response);
+      }
+      emit(AddGasStationErrorState());
+    });
+    
+  }
+
+  void AddGasStation(GasStation gasStation) async {
+    emit(AddGasStationLoadingState());
+    print(gasStation.toJson());
+    await DioHelper.postData(
+      url: "/admin/gasStation",
+      data: gasStation.toJson(),
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
+    ).then((value) {
+      print("Add gasStation response : ${value}");
+      emit(AddGasStationSuccessState());
+    }).catchError((error){
+      if(error is DioError){
+        print(error.response);
+      }
+      emit(AddGasStationErrorState());
+    });
+    
+  }
    }
