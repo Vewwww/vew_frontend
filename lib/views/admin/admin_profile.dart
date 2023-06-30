@@ -13,8 +13,8 @@ class AdminProfile extends StatelessWidget {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _phone = TextEditingController();
   AdminProfile({required this.admin, Key? key}) : super(key: key) {
-    _name.text = admin .person!.name!;
-    _email.text = admin.person!.email!;
+    _name.text = admin .name!;
+    _email.text = admin.email!;
     _phone.text = admin.phoneNumber!;
   }
  Widget build(BuildContext context) {
