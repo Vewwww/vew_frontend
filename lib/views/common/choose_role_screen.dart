@@ -34,7 +34,7 @@ class ChooseRoleScreen extends StatelessWidget {
             style: AppTextStyle.mainStyle(size: 20),
           )),
           card("التسجيل كسائق", Icons.person, SignUpScreen(), context),
-          card("التسجيل كميكانيكى", Icons.handyman_rounded, MechanicSignup(),
+          card("التسجيل كميكانيكى", Icons.handyman_rounded, MechanicSignup(services: []),
               context),
           card("التسجيل كمالك ونش", Icons.car_repair, WinchSignUpScreen(),
               context),

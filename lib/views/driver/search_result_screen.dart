@@ -103,7 +103,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                       onPress: () {
                         NavigationUtils.navigateTo(
                             context: context,
-                            destinationScreen: const ServicesScreen());
+                            destinationScreen: ServicesScreen());
                       },
                       filter: "Mechanist",
                       enabled: (filter == "Mechanist")),

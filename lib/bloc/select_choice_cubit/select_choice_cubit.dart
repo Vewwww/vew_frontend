@@ -13,12 +13,18 @@ class SelectChoiceCubit extends Cubit<SelectChoiceState> {
   static SelectChoiceCubit get(context) => BlocProvider.of(context);
   int carTypeChoice = 0;
   int carModelChoice = 0;
+  bool hasDelivery = false;
   CarTypeResponse? carTypeResponse;
   CarModelResponse? carModelResponse;
 
   void choseCarType(int c) {
     carTypeChoice = c;
     emit(CarTypeChoiceSelected());
+  }
+
+  void changeHasDelivey(){
+    hasDelivery  = !hasDelivery;
+    emit(HasDeliveryChangedState());
   }
 
   void choseCarModel(int c) {

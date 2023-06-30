@@ -1,4 +1,6 @@
+import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/model/repairer.dart';
 import 'package:vewww/views/admin/add_maintenance_center_screen.dart';
@@ -32,6 +34,7 @@ class AdminAddCubit extends Cubit<AdminAddState> {
     });
     
   }
+
    void addSign(SignImage sign) async {
     emit(AddSignLoadingState());
     print(sign.toJson());
@@ -49,6 +52,7 @@ class AdminAddCubit extends Cubit<AdminAddState> {
       }
       print(err.toString());
     });
+
    }
    void AddMaintenanceCenter(MaintenanceCenter maintenanceCenter) async {
     emit(AddGasStationLoadingState());
@@ -88,3 +92,4 @@ class AdminAddCubit extends Cubit<AdminAddState> {
     
   }
    }
+

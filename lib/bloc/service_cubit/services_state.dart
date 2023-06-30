@@ -4,6 +4,7 @@ part of 'services_cubit.dart';
 abstract class ServicesState {}
 
 class ServicesInitial extends ServicesState {}
+class ServiceAddedState extends ServicesState {}
 class GetAllServicesLoadingState extends ServicesState {}
 class GetAllServicesSuccessState extends ServicesState {
   final List<Service> services;

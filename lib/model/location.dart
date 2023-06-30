@@ -8,22 +8,19 @@ class Location {
   Location({this.description, this.latitude, this.longitude});
 
   Location.fromJson(Map<String, dynamic> json) {
-    description = json['description'] != null
-        ? Name.fromJson(json['description'])
-        : null;
+    description =
+        json['description'] != null ? Name.fromJson(json['description']) : null;
     latitude = json['latitude'];
     longitude = json['longitude'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    if (this.description != null) {
-      data['description'] = this.description!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (description != null) {
+      data['description'] = description!.toJson();
     }
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
+    if (latitude != null) data['latitude'] = latitude;
+    if (longitude != null) data['longitude'] = longitude;
     return data;
   }
 }
-
-
