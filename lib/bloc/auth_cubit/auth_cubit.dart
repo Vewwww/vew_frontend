@@ -7,7 +7,9 @@ import 'package:vewww/model/error_response.dart';
 import 'package:vewww/services/dio_helper.dart';
 
 import '../../model/driver.dart';
+import '../../model/mechanic_shop.dart';
 import '../../model/person.dart';
+import '../../model/repairer.dart';
 import '../../model/winch.dart';
 import '../../model/winch_driver.dart';
 
@@ -49,6 +51,32 @@ class AuthCubit extends Cubit<AuthState> {
         .then((value) {
       print("winch signup response : ${value}");
       emit(SignUpSuccessState());
+    }).catchError((err) {
+      if (err is DioError) {
+        print("winch signup error message : ${err.response!.data}");
+        if ((err.response != null)) {
+          ErrorResponse errorResponse =
+              ErrorResponse.fromJson(err.response!.data);
+          emit(SignUpErrorState(
+              errMessage: (errorResponse.message != null)
+                  ? errorResponse.message!
+                  : "Something went wrong, try again"));
+        } else {
+          emit(SignUpErrorState(errMessage: "Something went wrong, try again"));
+        }
+      }
+    });
+  }
+
+  Future<void> mechanicSignUp(MechanicShop mechanicShop) async {
+    print("mechanic signup request : ${driver.toJson()}");
+    emit(SignUpLoadingState());
+    print("mechanic signup request = ${mechanicShop.toJson()}");
+    await DioHelper.postData(
+            url: "/mechanic/signup/", data: mechanicShop.toJson())
+        .then((value) {
+      print("mechanic signup response : ${value}");
+      emit(SignUpSuccessState(message: value.data['message']));
     }).catchError((err) {
       if (err is DioError) {
         print("winch signup error message : ${err.response!.data}");

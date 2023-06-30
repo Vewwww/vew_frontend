@@ -22,7 +22,10 @@ class LogoutErrorState extends AuthState {}
 
 class SignUpLoadingState extends AuthState {}
 
-class SignUpSuccessState extends AuthState {}
+class SignUpSuccessState extends AuthState {
+  String? message;
+  SignUpSuccessState({this.message});
+}
 
 class SignUpErrorState extends AuthState {
   final errMessage;

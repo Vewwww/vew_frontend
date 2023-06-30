@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:vewww/core/style/app_colors.dart';
+import 'package:vewww/model/location.dart';
+import 'package:vewww/model/mechanic_shop.dart';
 import '../../bloc/auth_cubit/auth_cubit.dart';
 import '../../bloc/loaction_cubit/loaction_cubit.dart';
 import '../../bloc/select_choice_cubit/select_choice_cubit.dart';
@@ -8,14 +10,34 @@ import '../../core/components/custom_text_field.dart';
 import '../../core/components/logo.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/navigation.dart';
+import '../../model/name.dart';
+import '../../model/services.dart';
 import '../common/map_screen.dart';
+import '../common/services_screen.dart';
 import '../driver/sign_in_screen.dart';
 
 class MechanicSignup extends StatelessWidget {
-  MechanicSignup({Key? key}) : super(key: key);
+  MechanicSignup({required this.services, MechanicShop? mechanicShop, Key? key})
+      : super(key: key) {
+    if (mechanicShop != null) {
+      print(services.length);
+      if (mechanicShop.email != null) _email.text = mechanicShop.email!;
+      if (mechanicShop.email != null) _password.text = mechanicShop.password!;
+      if (mechanicShop.email != null)
+        _confirmPassword.text = mechanicShop.password!;
+      if (mechanicShop.email != null)
+        _phoneNumber.text = mechanicShop.phoneNumber!;
+      if (mechanicShop.email != null)
+        _mechanicPhone.text = mechanicShop.mechanicPhone!;
+      if (mechanicShop.email != null) _name.text = mechanicShop.name!;
+      if (mechanicShop.email != null) _ownerName.text = mechanicShop.ownerName!;
+    }
+  }
+  List<Service> services;
   final GlobalKey<FormState> _formKey = GlobalKey();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
+  final TextEditingController _confirmPassword = TextEditingController();
   final TextEditingController _phoneNumber = TextEditingController();
   final TextEditingController _mechanicPhone = TextEditingController();
   final TextEditingController _name = TextEditingController();
@@ -137,6 +159,7 @@ class MechanicSignup extends StatelessWidget {
                   CustomTextField(
                     label: "تأكيد كلمة السر",
                     isArabic: true,
+                    controller: _confirmPassword,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'برجاء اعد ادخال كلمة السر';
@@ -162,6 +185,51 @@ class MechanicSignup extends StatelessWidget {
                       Text("الموقع"),
                     ],
                   ),
+                  BlocConsumer<SelectChoiceCubit, SelectChoiceState>(
+                    listener: (context, state) {},
+                    builder: (context, state) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Checkbox(
+                              value: selectChoiceCubit.hasDelivery,
+                              checkColor: mainColor,
+                              activeColor: mainColor,
+                              onChanged: (v) {
+                                selectChoiceCubit.changeHasDelivey();
+                              }),
+                          Text("هل تقدم خدمات اصلاح خارج الورشة؟"),
+                        ],
+                      );
+                    },
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            if (locationCubit.lat != null) {
+                              MechanicShop mechanicShop = MechanicShop(
+                                ownerName: _ownerName.text,
+                                email: _email.text,
+                                password: _password.text,
+                                mechanicPhone: _mechanicPhone.text,
+                                name: _name.text,
+                                phoneNumber: _phoneNumber.text,
+                              );
+                              NavigationUtils.navigateTo(
+                                  context: context,
+                                  destinationScreen: ServicesScreen(
+                                    mechanicShop: mechanicShop,
+                                    multiSelect: true,
+                                  ));
+                            }
+                          },
+                          icon: Icon(Icons.arrow_back)),
+                      Expanded(child: Container()),
+                      Text("الخدمات المقدمة"),
+                    ],
+                  ),
                   const SizedBox(height: 10),
                   SizedBox(
                       width: double.infinity,
@@ -169,9 +237,66 @@ class MechanicSignup extends StatelessWidget {
                         builder: (context, state) {
                           return ElevatedButton(
                             onPressed: () async {
-                              print(
-                                  "lat:${locationCubit.lat} , address:${locationCubit.address}");
+                              // print(
+                              //     "lat:${locationCubit.lat} , address:${locationCubit.address}");
                               if (_formKey.currentState!.validate()) {
+                                if (locationCubit.lat != null) {
+                                  if (services.length > 0) {
+                                    List<String> servicesIds = [];
+                                    for (Service service in services) {
+                                      servicesIds.add(service.sId!);
+                                    }
+                                    print(servicesIds.length);
+                                    print(services.length);
+                                    AuthCubit authCubit =
+                                        AuthCubit.get(context);
+                                    MechanicShop mechanicShop = MechanicShop(
+                                        ownerName: _ownerName.text,
+                                        email: _email.text,
+                                        password: _password.text,
+                                        mechanicPhone: _mechanicPhone.text,
+                                        name: _name.text,
+                                        phoneNumber: _phoneNumber.text,
+                                        hasDelivery:
+                                            selectChoiceCubit.hasDelivery,
+                                        location: Location(
+                                          latitude: locationCubit.lat,
+                                          longitude: locationCubit.long,
+                                          description: Name(
+                                              ar: locationCubit.address,
+                                              en: locationCubit.address),
+                                        ),
+                                        service: servicesIds);
+                                    authCubit.mechanicSignUp(mechanicShop);
+                                    if (state is SignUpSuccessState) {
+                                      if (state.message != null) {
+                                        var snackBar = SnackBar(
+                                            content: Text(state.message!));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                      }
+                                      NavigationUtils.navigateAndClearStack(
+                                          context: context,
+                                          destinationScreen: SignInScreen());
+                                    } else if (state is SignUpErrorState) {
+                                      var snackBar = SnackBar(
+                                          content: Text(state.errMessage));
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackBar);
+                                    }
+                                  } else {
+                                    var snackBar = SnackBar(
+                                        content: Text("Select Service"));
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
+                                  }
+                                } else {
+                                  var snackBar = SnackBar(
+                                      content: Text("Select location"));
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                }
+
                                 // WinchDriver winch = WinchDriver(
                                 //       name: _name.text,
                                 //       email: _email.text,

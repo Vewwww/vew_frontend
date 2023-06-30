@@ -107,6 +107,7 @@ class MaintenanceCenter extends Repairer {
 }
 
 class Mechanic extends Repairer {
+  
   Report? report;
   String? ownerName;
   String? email;

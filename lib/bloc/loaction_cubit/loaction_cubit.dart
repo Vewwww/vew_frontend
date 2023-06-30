@@ -18,8 +18,8 @@ class LocationCubit extends Cubit<LocationState> {
   late double latitude;
   late double longitude;
   // this where data from map saved
-  late double lat;
-  late double long;
+  double? lat;
+  double? long;
   String address = "";
   //---------------------------
 
