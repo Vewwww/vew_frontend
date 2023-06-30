@@ -26,7 +26,7 @@ class GetAllDriversErrorState extends GetAllState {}
 
 class GetAllAdminsLoadingState extends GetAllState {}
 class GetAllAdminsSuccessState extends GetAllState {
-   final List<Driver> admins;
+   final List<Admin> admins;
   GetAllAdminsSuccessState(this.admins);
 }
 class GetAllAdminsErrorState extends GetAllState {}
@@ -56,7 +56,7 @@ class GetMechanicWithIdSuccessState extends GetAllState {
   GetMechanicWithIdSuccessState(this.mechanicShop);
 }
 class GetWinchWithIdSuccessState extends GetAllState {
-   final WinchDriver winchDriver;
+  final WinchDriver winchDriver;
   GetWinchWithIdSuccessState(this.winchDriver);
 }
 class GetUserWithIdErrorState extends GetAllState {}

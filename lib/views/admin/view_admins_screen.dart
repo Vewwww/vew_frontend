@@ -3,11 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/components/add_button.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
-import 'package:vewww/core/style/app_colors.dart';
-
 import '../../bloc/get_all_cubit/get_all_cubit.dart';
-import '../../core/components/backward_arrow.dart';
-import '../../core/components/admin_item.dart';
+import '../../core/components/user_item.dart';
 import 'add_admin.screen.dart';
 
 class ViewAdminsScreen extends StatefulWidget {
@@ -47,19 +44,20 @@ class _ViewAdminsScreenState extends State<ViewAdminsScreen> {
               if (state is GetAllAdminsSuccessState) {
                 print(state);
                 return Expanded(
-                  child: ListView.separated(
-                      itemBuilder: (context, index) => adminItem(
-                          name: state.admins[index].person!.name!,
-                          email: state.admins[index].person!.email!,
-                          icon: const Icon(
-                            Icons.admin_panel_settings,
-                            color: Colors.white,
-                            size: 30,
-                          )),
-                      separatorBuilder: (context, index) => const SizedBox(
-                            height: 15,
-                          ),
-                      itemCount: state.admins.length),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: ListView.separated(
+                        itemBuilder: (context, index) => userItem(
+                            title: state.admins[index].name!,
+                            subtitle: state.admins[index].email!,
+                            icon: Icons.admin_panel_settings,
+                            function: (){}
+                            ),
+                        separatorBuilder: (context, index) => const SizedBox(
+                              height: 15,
+                            ),
+                        itemCount: state.admins.length),
+                  ),
                 );
               } else {
                 return CircularProgressIndicator();

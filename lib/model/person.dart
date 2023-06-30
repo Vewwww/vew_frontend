@@ -54,8 +54,7 @@ class Person {
       this.iV});
 
   Person.fromJson(Map<String, dynamic> json) {
-    report =
-        json['report'] != null ? Report.fromJson(json['report']) : null;
+    report = json['report'] != null ? Report.fromJson(json['report']) : null;
     sId = json['_id'];
     name = json['name'];
     email = json['email'];
@@ -75,7 +74,6 @@ class Person {
     if (report != null) {
       data['report'] = report!.toJson();
     }
-    // data['token'] = this.token;
     data['_id'] = sId;
     data['name'] = name;
     data['email'] = email;
@@ -91,4 +89,3 @@ class Person {
     return data;
   }
 }
-

@@ -32,7 +32,6 @@ class WinchDriverResponse {
 class WinchDriver {
   Location? location;
   bool? available;
-  //Person? person;
   Report? report;
   String? sId;
   String? name;
