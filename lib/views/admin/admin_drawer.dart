@@ -7,7 +7,7 @@ import 'package:vewww/views/driver/sign_in_screen.dart';
 import '../../model/admin.dart';
 import '../../model/person.dart';
 
-Admin admin=Admin(   person:  Person (name: 'Ali', email: 'ali@gmail.com', password: 'ali123',),phoneNumber: '01111548');
+Admin admin=Admin(   name: 'Ali', email: 'ali@gmail.com', password: 'ali123',phoneNumber: '01111548');
 
 class AdminDrawer extends StatelessWidget {
   const AdminDrawer({Key? key}) : super(key: key);
