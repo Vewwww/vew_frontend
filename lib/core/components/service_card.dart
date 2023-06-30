@@ -5,6 +5,7 @@ import '../style/app_Text_Style/app_text_style.dart';
 Widget serviceCard({
   required Function() function,
   required String title,
+  bool isSelected = false,
 }) {
   return GestureDetector(
     onTap: function,
@@ -14,7 +15,7 @@ Widget serviceCard({
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         border: Border.all(color: mainColor),
-        color: Colors.white,
+        color: (isSelected) ? mainColor : Colors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
@@ -36,7 +37,9 @@ Widget serviceCard({
             child: Text(
           title,
           textAlign: TextAlign.center,
-          style: AppTextStyle.mainStyle(size: 20),
+          style: (isSelected)
+              ? AppTextStyle.whiteTextStyle(20)
+              : AppTextStyle.mainStyle(size: 20),
         )),
       ),
     ),

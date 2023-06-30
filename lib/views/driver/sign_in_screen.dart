@@ -5,6 +5,7 @@ import 'package:vewww/model/person.dart';
 import 'package:vewww/views/admin/admin_home_screen.dart';
 import 'package:vewww/views/common/choose_role_screen.dart';
 import 'package:vewww/views/common/forgot_password_screen.dart';
+import 'package:vewww/views/mechanic/mechanic_home_screen.dart';
 import 'package:vewww/views/winch/winch_home_page.dart';
 import '../../bloc/add_car_cubit/add_car_cubit.dart';
 import '../../core/components/custom_text_field.dart';
@@ -91,8 +92,7 @@ class SignInScreen extends StatelessWidget {
                               else if (role == "admin")
                                 screen = AdminHomeScreen();
                               else {
-                                //TODO::put mechanic home screen
-                                screen = DriverHomeScreen();
+                                screen = MechanicHomeScreen();
                               }
                               NavigationUtils.navigateAndClearStack(
                                   context: context, destinationScreen: screen);

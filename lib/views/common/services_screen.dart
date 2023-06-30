@@ -5,26 +5,40 @@ import 'package:vewww/bloc/service_cubit/services_cubit.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/components/service_card.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
+import 'package:vewww/views/mechanic/mechanic_signup.dart';
 
+import '../../core/utils/navigation.dart';
+import '../../model/mechanic_shop.dart';
+import '../../model/services.dart';
 import '../driver/search_result_screen.dart';
 
 class ServicesScreen extends StatefulWidget {
-  const ServicesScreen({super.key});
+  bool multiSelect;
+  MechanicShop? mechanicShop;
+  ServicesScreen({this.multiSelect = false, this.mechanicShop, super.key}) {
+    if (mechanicShop != null) print(mechanicShop!.toJson());
+  }
 
   @override
   State<ServicesScreen> createState() => _ServicesScreenState();
 }
 
 class _ServicesScreenState extends State<ServicesScreen> {
+  List<Service> services = [];
   @override
   void initState() {
     super.initState();
+    services = [];
     final servicesCubit = context.read<ServicesCubit>();
     servicesCubit.getAllServices();
+    print("selected services from init : ${servicesCubit.selectedServices}");
+    servicesCubit.selectedServices = [];
   }
 
   @override
   Widget build(BuildContext context) {
+    ServicesCubit servicesCubit = ServicesCubit.get(context);
+
     return Scaffold(
       body: Column(children: [
         CustomAppBar(
@@ -36,29 +50,33 @@ class _ServicesScreenState extends State<ServicesScreen> {
         ),
         BlocBuilder<ServicesCubit, ServicesState>(
           builder: (context, state) {
-            if (state is GetAllServicesSuccessState) {
+            if (state is GetAllServicesSuccessState ||
+                state is ServiceAddedState) {
               return Expanded(
                 child: GridView.builder(
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    String title = state.services[index].name!.en ??
-                        state.services[index].name!.ar!;
+                    String title = servicesCubit.services![index].name!.en ??
+                        servicesCubit.services![index].name!.ar!;
                     return serviceCard(
+                        isSelected: (servicesCubit.selectedServices
+                            .contains(servicesCubit.services![index])),
                         function: () async {
-                          String serviceId = state.services[index].sId!;
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: ((context) => SearchResultScreen(
-                                      filter: "Mechanist",
-                                      serviceId: serviceId))));
+                          servicesCubit
+                              .addService(servicesCubit.services![index]);
+                          String serviceId =
+                              servicesCubit.services![index].sId!;
+                          if (!widget.multiSelect)
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => SearchResultScreen(
+                                        filter: "Mechanist",
+                                        serviceId: serviceId))));
                         },
                         title: title);
                   },
-                  // separatorBuilder: (context, index) => const SizedBox(
-                  //       height: 15,
-                  //     ),
-                  itemCount: state.services.length,
+                  itemCount: servicesCubit.services!.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: (MediaQuery.of(context).orientation ==
                               Orientation.portrait)
@@ -66,11 +84,25 @@ class _ServicesScreenState extends State<ServicesScreen> {
                           : 3),
                 ),
               );
-            } else {
+            } else if (state is GetAllServicesLoadingState) {
               return CircularProgressIndicator();
+            } else {
+              return Container();
             }
           },
         ),
+        SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                NavigationUtils.navigateTo(
+                    context: context,
+                    destinationScreen: MechanicSignup(
+                        mechanicShop: widget.mechanicShop,
+                        services: ServicesCubit.get(context).selectedServices));
+              },
+              child: const Text("تم"),
+            ))
       ]),
     );
   }

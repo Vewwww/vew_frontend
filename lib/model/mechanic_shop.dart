@@ -12,16 +12,16 @@ class MechnaicShopResponse {
     if (json['data'] != null) {
       mechanicShop = <MechanicShop>[];
       json['data'].forEach((v) {
-        mechanicShop!.add(new MechanicShop.fromJson(v));
+        mechanicShop!.add(MechanicShop.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['results'] = this.results;
-    if (this.mechanicShop != null) {
-      data['data'] = this.mechanicShop!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['results'] = results;
+    if (mechanicShop != null) {
+      data['data'] = mechanicShop!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -83,11 +83,9 @@ class MechanicShop {
       this.iV});
 
   MechanicShop.fromJson(Map<String, dynamic> json) {
-    report =
-        json['report'] != null ? new Report.fromJson(json['report']) : null;
-    location = json['location'] != null
-        ? new Location.fromJson(json['location'])
-        : null;
+    report = json['report'] != null ? Report.fromJson(json['report']) : null;
+    location =
+        json['location'] != null ? Location.fromJson(json['location']) : null;
     sId = json['_id'];
     ownerName = json['ownerName'];
     email = json['email'];
@@ -97,7 +95,7 @@ class MechanicShop {
     phoneNumber = json['phoneNumber'];
     hasDelivery = json['hasDelivery'];
     service = json['service'].cast<String>();
-    rate = json['rate']*1.0;
+    rate = json['rate'] * 1.0;
     numOfRates = json['numOfRates'];
     isSuspended = json['isSuspended'];
     emailConfirm = json['emailConfirm'];
@@ -107,30 +105,29 @@ class MechanicShop {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.report != null) {
-      data['report'] = this.report!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (report != null) {
+      data['report'] = report!.toJson();
     }
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
+    if (location != null) {
+      data['location'] = location!.toJson();
     }
-    data['_id'] = this.sId;
-    data['ownerName'] = this.ownerName;
-    data['email'] = this.email;
-    data['password'] = this.password;
-    data['mechanicPhone'] = this.mechanicPhone;
-    data['name'] = this.name;
-    data['phoneNumber'] = this.phoneNumber;
-    data['hasDelivery'] = this.hasDelivery;
-    data['service'] = this.service;
-    data['rate'] = this.rate;
-    data['numOfRates'] = this.numOfRates;
-    data['isSuspended'] = this.isSuspended;
-    data['emailConfirm'] = this.emailConfirm;
-    data['logedIn'] = this.logedIn;
-    data['role'] = this.role;
-    data['__v'] = this.iV;
+    if (sId != null) data['_id'] = sId;
+    if (ownerName != null) data['ownerName'] = ownerName;
+    if (email != null) data['email'] = email;
+    if (password != null) data['password'] = password;
+    if (mechanicPhone != null) data['mechanicPhone'] = mechanicPhone;
+    if (name != null) data['name'] = name;
+    if (phoneNumber != null) data['phoneNumber'] = phoneNumber;
+    if (hasDelivery != null) data['hasDelivery'] = hasDelivery;
+    if (service != null) data['service'] = service;
+    if (rate != null) data['rate'] = rate;
+    if (numOfRates != null) data['numOfRates'] = numOfRates;
+    if (isSuspended != null) data['isSuspended'] = isSuspended;
+    if (emailConfirm != null) data['emailConfirm'] = emailConfirm;
+    if (logedIn != null) data['logedIn'] = logedIn;
+    if (role != null) data['role'] = role;
+    if (iV != null) data['__v'] = iV;
     return data;
   }
 }
-
