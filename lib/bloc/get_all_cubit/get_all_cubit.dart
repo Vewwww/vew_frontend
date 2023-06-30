@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/model/nearest_gas_station_response.dart';
 import 'package:vewww/model/repairer.dart';
@@ -74,9 +75,13 @@ class GetAllCubit extends Cubit<GetAllState> {
     ).then((value) {
       print("Get all Admins response : ${value.data}");
       DriverResponse driverResponse = DriverResponse.fromJson(value.data);
+      print("Admin: ${driverResponse.driver![0].person!.name!}");
       emit(GetAllAdminsSuccessState(driverResponse.driver!));
-    }).onError((error, stackTrace) {
-      print("Get all Admins error : $error");
+    }).catchError((error){
+      if(error is DioError){
+        print(error.response);
+      }
+      print(error);
       emit(GetAllAdminsErrorState());
     });
   }

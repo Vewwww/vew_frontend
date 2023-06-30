@@ -20,7 +20,7 @@ class AddWarningSignScreen extends StatefulWidget {
 }
 
 class _AddWarningSignScreenState extends State<AddWarningSignScreen> {
-  var imagePath ;
+  String? imagePath;
   Name description = Name();
   Name solution = Name();
   Name title = Name();
@@ -30,6 +30,7 @@ class _AddWarningSignScreenState extends State<AddWarningSignScreen> {
   final ImagePicker picker = ImagePicker();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  @override
   Widget build(BuildContext context) {
     AddImageCubit addImageCubit = AddImageCubit.get(context);
     AdminAddCubit adminAddCubit = AdminAddCubit.get(context);
@@ -94,15 +95,17 @@ class _AddWarningSignScreenState extends State<AddWarningSignScreen> {
                   defaultButton(
                       function: () {
                         final form = formKey.currentState;
+                        print("from add button $imagePath");
                         if (form!.validate()) {
                           description = Name(en: descriptionController.text);
                           solution = Name(en: solutionController.text);
                           title = Name(en: titleController.text);
+                          print("from add button2 $imagePath");
                           sign = Sign(
                               description: description,
                               name: title,
                               solution: solution,
-                              image: imagePath as String);
+                              image: imagePath);
                           adminAddCubit.addSign(sign);
                           if (adminAddCubit.state is AddSignSuccessState) {
                             const snackBar = SnackBar(
@@ -131,7 +134,9 @@ class _AddWarningSignScreenState extends State<AddWarningSignScreen> {
       source: ImageSource.gallery,
     );
     addImageCubit.addImage(pickedFile);
-    return  addImageCubit.imageFile!.path;
+    print("image from take photo : $imagePath");
+    print("image from take photo : ${addImageCubit.imageFile!.path}");
+    return addImageCubit.imageFile!.path;
   }
 
   Widget addImage(AddImageCubit addImageCubit) {
@@ -155,8 +160,9 @@ class _AddWarningSignScreenState extends State<AddWarningSignScreen> {
             bottom: 20,
             right: 20,
             child: InkWell(
-              onTap: () {
-                imagePath =  takePhoto(addImageCubit);
+              onTap: () async {
+                imagePath = await takePhoto(addImageCubit);
+                print("from icon botton  $imagePath");
               },
               child: Icon(
                 Icons.add_a_photo,

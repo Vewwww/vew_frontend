@@ -43,7 +43,9 @@ class Driver {
     var email = json['email'];
     var password = json['password'];
     var role = json['role'];
-    person = Person(name: name, email: email, password: password, role: role);
+    var gender=json['gender'];
+    print("Before");
+    person = Person(name: name, email: email, password: password, role: role,gender: gender );
     lisenceRenewalDate = json['lisenceRenewalDate'];
     phoneNumber = json['phoneNumber'];
     if (json['cars'] != null) {
@@ -62,6 +64,7 @@ class Driver {
     data['lisenceRenewalDate'] = lisenceRenewalDate;
     data['role'] = person!.role;
     data['phoneNumber'] = phoneNumber;
+    data['gender']=person!.gender;
     if (cars != null) {
       data['cars'] = cars!.map((v) => v.toJson()).toList();
     }

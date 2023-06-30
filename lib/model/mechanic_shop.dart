@@ -82,7 +82,7 @@ class MechanicShop {
     phoneNumber = json['phoneNumber'];
     hasDelivery = json['hasDelivery'];
     service = json['service'].cast<String>();
-    rate = json['rate'];
+    rate = json['rate']*1.0;
     numOfRates = json['numOfRates'];
     isSuspended = json['isSuspended'];
     emailConfirm = json['emailConfirm'];

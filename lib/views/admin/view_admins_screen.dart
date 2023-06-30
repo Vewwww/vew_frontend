@@ -43,7 +43,9 @@ class _ViewAdminsScreenState extends State<ViewAdminsScreen> {
           ),
           BlocBuilder<GetAllCubit, GetAllState>(
             builder: (context, state) {
+
               if (state is GetAllAdminsSuccessState) {
+                print(state);
                 return Expanded(
                   child: ListView.separated(
                       itemBuilder: (context, index) => adminItem(
