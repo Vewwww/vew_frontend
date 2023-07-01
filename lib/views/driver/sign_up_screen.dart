@@ -192,19 +192,15 @@ class SignUpScreen extends StatelessWidget {
                         builder: (context, state) {
                           return InkWell(
                             onTap: () {
-                              if (!addCarCubit.carExist) {
-                                addCarCubit.add();
-                              } else {
-                                addCarCubit.remove();
-                              }
+                              addCarCubit.remove(0);
                             },
                             child: CircleAvatar(
                               radius: 14,
-                              backgroundColor: (addCarCubit.carExist)
+                              backgroundColor: (true) //(addCarCubit.carExist)
                                   ? Colors.grey
                                   : mainColor,
                               child: Icon(
-                                (!addCarCubit.carExist)
+                                true //(!addCarCubit.carExist)
                                     ? Icons.add
                                     : Icons.remove,
                                 size: 15,
@@ -220,237 +216,238 @@ class SignUpScreen extends StatelessWidget {
                   BlocConsumer<AddCarCubit, AddCarState>(
                     listener: (context, state) {},
                     builder: (context, state) {
-                      if (!addCarCubit.carExist) {
+                      if (true) //!addCarCubit.carExist)
+                      {
                         return Text(
                           "No cars",
                           style: AppTextStyle.greyStyle(size: 18),
                         );
-                      } else {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            BlocConsumer<SelectChoiceCubit, SelectChoiceState>(
-                                listener: (context, snapshot) {},
-                                builder: (context, snapshot) {
-                                  return Column(
-                                    children: [
-                                      CustomTextField(
-                                        label: "Car Type",
-                                        controller: _carType,
-                                        hint: (selectChoiceCubit
-                                                    .carTypeResponse !=
-                                                null)
-                                            ? selectChoiceCubit
-                                                .carTypeResponse!
-                                                .carType![SelectChoiceCubit.get(
-                                                        context)
-                                                    .carTypeChoice]
-                                                .name!
-                                                .en!
-                                            : "",
-                                        isDroped: true,
-                                        onDrop: () {
-                                          selectChoiceCubit.getAllCarTypes();
-                                          NavigationUtils.navigateTo(
-                                              context: context,
-                                              destinationScreen:
-                                                  SelectCarTypeScreen());
-                                        },
-                                        validator: (value) {
-                                          if (selectChoiceCubit
-                                                  .carTypeResponse ==
-                                              null) {
-                                            return "car type is required";
-                                          }
-                                        },
-                                      ),
-                                      CustomTextField(
-                                        label: "Car Model",
-                                        //controller: _carModel,
-                                        hint: (selectChoiceCubit
-                                                    .carModelResponse !=
-                                                null)
-                                            ? selectChoiceCubit
-                                                .carModelResponse!
-                                                .carModels![
-                                                    SelectChoiceCubit.get(
-                                                            context)
-                                                        .carModelChoice]
-                                                .name!
-                                            : "",
-                                        isDroped: true,
-                                        onDrop: () {
-                                          if (selectChoiceCubit
-                                                  .carTypeResponse !=
-                                              null) {
-                                            String id = selectChoiceCubit
-                                                .carTypeResponse!
-                                                .carType![selectChoiceCubit
-                                                    .carTypeChoice]
-                                                .sId!;
-                                            selectChoiceCubit
-                                                .getAllCarModels(id);
-                                            NavigationUtils.navigateTo(
-                                                context: context,
-                                                destinationScreen:
-                                                    SelectCarModelScreen(
-                                                        id: id));
-                                          } else {
-                                            const snackBar = SnackBar(
-                                                content: Text(
-                                                    "Please chose car type first!"));
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(snackBar);
-                                          }
-                                        },
-                                        validator: (value) {
-                                          if (selectChoiceCubit
-                                                  .carTypeResponse ==
-                                              null) {
-                                            return "car type is required";
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                }),
-                            BlocConsumer<SelectColorCubit, SelectColorState>(
-                                listener: (context, snapshot) {},
-                                builder: (context, snapshot) {
-                                  return CustomTextField(
-                                    label: "Car Color",
-                                    controller: _carColor,
-                                    hint: (SelectColorCubit.get(context)
-                                                .carColorResponse !=
-                                            null)
-                                        ? SelectColorCubit.get(context)
-                                            .carColorResponse!
-                                            .carColor![
-                                                SelectColorCubit.get(context)
-                                                    .color]
-                                            .name!
-                                            .en!
-                                        : "",
-                                    isDroped: true,
-                                    onDrop: () {
-                                      SelectColorCubit.get(context).getcolors();
-                                      NavigationUtils.navigateTo(
-                                          context: context,
-                                          destinationScreen:
-                                               SelectColorScreen());
-                                    },
-                                    validator: (value) {
-                                      //TODO::return and validate car model
-                                    },
-                                  );
-                                }),
-                            CustomTextField(
-                              label: "Car Plat Number",
-                              controller: _carPlateNum,
-                              validator: (value) {
-                                if (addCarCubit.carExist) {
-                                  if (value!.isEmpty || value == null) {
-                                    return 'Car Number is required';
-                                  }
-                                }
-                              },
-                            ),
-                            CustomTextField(
-                              label: "Last Periodic Maintenance Date",
-                              controller: _lastPeriodicMaintenanceDate,
-                              validator: (value) {
-                                if (addCarCubit.carExist) {
-                                  if (value!.isEmpty || value == null) {
-                                    return 'Last Periodic Maintenance Date is required';
-                                  }
-                                }
-                              },
-                            ),
-                            CustomTextField(
-                              label: "License renewal date",
-                              controller: _carlisenceRenewalDate,
-                              validator: (value) {
-                                if (addCarCubit.carExist) {
-                                  if (value!.isEmpty || value == null) {
-                                    return 'License renewal date is required';
-                                  }
-                                }
-                              },
-                            ),
-                            CustomTextField(
-                              label: "Miles",
-                              keyboardType: TextInputType.number,
-                              controller: _miles,
-                              validator: (value) {
-                                if (addCarCubit.carExist) {
-                                  if (value!.isEmpty || value == null) {
-                                    return 'Miles is required';
-                                  }
-                                }
-                              },
-                            ),
-                            CustomTextField(
-                              label: "Average Miles per month",
-                              controller: _avgMilesPerMonth,
-                              keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (addCarCubit.carExist) {
-                                  if (value!.isEmpty || value == null) {
-                                    return 'Average Miles per Month is required';
-                                  }
-                                }
-                              },
-                            ),
-                            Text("Remind You Before?",
-                                style: AppTextStyle.darkGreyStyle(size: 14)),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            SizedBox(
-                              height: 20,
-                              child: BlocConsumer<ReminderCubit, ReminderState>(
-                                  listener: (context, snapshot) {},
-                                  builder: (context, snapshot) {
-                                    return Row(
-                                      children: [
-                                        Radio<int>(
-                                            value: 1,
-                                            activeColor: mainColor,
-                                            groupValue: reminderCubit.reminder,
-                                            onChanged: (val) {
-                                              (val != null)
-                                                  ? reminderCubit.choseTime(1)
-                                                  : reminderCubit.choseTime(-1);
-                                            }),
-                                        const Text("Week"),
-                                        const Expanded(child: SizedBox()),
-                                        Radio<int>(
-                                            activeColor: mainColor,
-                                            value: 2,
-                                            groupValue: reminderCubit.reminder,
-                                            onChanged: (val) {
-                                              (val != null)
-                                                  ? reminderCubit.choseTime(2)
-                                                  : reminderCubit.choseTime(-1);
-                                            }),
-                                        const Text("2 Weeks"),
-                                        const Expanded(child: SizedBox()),
-                                        Radio<int>(
-                                            activeColor: mainColor,
-                                            value: 3,
-                                            groupValue: reminderCubit.reminder,
-                                            onChanged: (val) {
-                                              (val != null)
-                                                  ? reminderCubit.choseTime(3)
-                                                  : reminderCubit.choseTime(-1);
-                                            }),
-                                        const Text("Month"),
-                                      ],
-                                    );
-                                  }),
-                            ),
-                          ],
-                        );
+                        // } else {
+                        //   return Column(
+                        //     crossAxisAlignment: CrossAxisAlignment.start,
+                        //     children: [
+                        //       BlocConsumer<SelectChoiceCubit, SelectChoiceState>(
+                        //           listener: (context, snapshot) {},
+                        //           builder: (context, snapshot) {
+                        //             return Column(
+                        //               children: [
+                        //                 CustomTextField(
+                        //                   label: "Car Type",
+                        //                   controller: _carType,
+                        //                   hint: (selectChoiceCubit
+                        //                               .carTypeResponse !=
+                        //                           null)
+                        //                       ? selectChoiceCubit
+                        //                           .carTypeResponse!
+                        //                           .carType![SelectChoiceCubit.get(
+                        //                                   context)
+                        //                               .carTypeChoice]
+                        //                           .name!
+                        //                           .en!
+                        //                       : "",
+                        //                   isDroped: true,
+                        //                   onDrop: () {
+                        //                     selectChoiceCubit.getAllCarTypes();
+                        //                     NavigationUtils.navigateTo(
+                        //                         context: context,
+                        //                         destinationScreen:
+                        //                             SelectCarTypeScreen());
+                        //                   },
+                        //                   validator: (value) {
+                        //                     if (selectChoiceCubit
+                        //                             .carTypeResponse ==
+                        //                         null) {
+                        //                       return "car type is required";
+                        //                     }
+                        //                   },
+                        //                 ),
+                        //                 CustomTextField(
+                        //                   label: "Car Model",
+                        //                   //controller: _carModel,
+                        //                   hint: (selectChoiceCubit
+                        //                               .carModelResponse !=
+                        //                           null)
+                        //                       ? selectChoiceCubit
+                        //                           .carModelResponse!
+                        //                           .carModels![
+                        //                               SelectChoiceCubit.get(
+                        //                                       context)
+                        //                                   .carModelChoice]
+                        //                           .name!
+                        //                       : "",
+                        //                   isDroped: true,
+                        //                   onDrop: () {
+                        //                     if (selectChoiceCubit
+                        //                             .carTypeResponse !=
+                        //                         null) {
+                        //                       String id = selectChoiceCubit
+                        //                           .carTypeResponse!
+                        //                           .carType![selectChoiceCubit
+                        //                               .carTypeChoice]
+                        //                           .sId!;
+                        //                       selectChoiceCubit
+                        //                           .getAllCarModels(id);
+                        //                       NavigationUtils.navigateTo(
+                        //                           context: context,
+                        //                           destinationScreen:
+                        //                               SelectCarModelScreen(
+                        //                                   id: id));
+                        //                     } else {
+                        //                       const snackBar = SnackBar(
+                        //                           content: Text(
+                        //                               "Please chose car type first!"));
+                        //                       ScaffoldMessenger.of(context)
+                        //                           .showSnackBar(snackBar);
+                        //                     }
+                        //                   },
+                        //                   validator: (value) {
+                        //                     if (selectChoiceCubit
+                        //                             .carTypeResponse ==
+                        //                         null) {
+                        //                       return "car type is required";
+                        //                     }
+                        //                   },
+                        //                 ),
+                        //               ],
+                        //             );
+                        //           }),
+                        //       BlocConsumer<SelectColorCubit, SelectColorState>(
+                        //           listener: (context, snapshot) {},
+                        //           builder: (context, snapshot) {
+                        //             return CustomTextField(
+                        //               label: "Car Color",
+                        //               controller: _carColor,
+                        //               hint: (SelectColorCubit.get(context)
+                        //                           .carColorResponse !=
+                        //                       null)
+                        //                   ? SelectColorCubit.get(context)
+                        //                       .carColorResponse!
+                        //                       .carColor![
+                        //                           SelectColorCubit.get(context)
+                        //                               .color]
+                        //                       .name!
+                        //                       .en!
+                        //                   : "",
+                        //               isDroped: true,
+                        //               onDrop: () {
+                        //                 SelectColorCubit.get(context).getcolors();
+                        //                 NavigationUtils.navigateTo(
+                        //                     context: context,
+                        //                     destinationScreen:
+                        //                         SelectColorScreen());
+                        //               },
+                        //               validator: (value) {
+                        //                 //TODO::return and validate car model
+                        //               },
+                        //             );
+                        //           }),
+                        //       CustomTextField(
+                        //         label: "Car Plat Number",
+                        //         controller: _carPlateNum,
+                        //         validator: (value) {
+                        //           if (addCarCubit.carExist) {
+                        //             if (value!.isEmpty || value == null) {
+                        //               return 'Car Number is required';
+                        //             }
+                        //           }
+                        //         },
+                        //       ),
+                        //       CustomTextField(
+                        //         label: "Last Periodic Maintenance Date",
+                        //         controller: _lastPeriodicMaintenanceDate,
+                        //         validator: (value) {
+                        //           if (addCarCubit.carExist) {
+                        //             if (value!.isEmpty || value == null) {
+                        //               return 'Last Periodic Maintenance Date is required';
+                        //             }
+                        //           }
+                        //         },
+                        //       ),
+                        //       CustomTextField(
+                        //         label: "License renewal date",
+                        //         controller: _carlisenceRenewalDate,
+                        //         validator: (value) {
+                        //           if (addCarCubit.carExist) {
+                        //             if (value!.isEmpty || value == null) {
+                        //               return 'License renewal date is required';
+                        //             }
+                        //           }
+                        //         },
+                        //       ),
+                        //       CustomTextField(
+                        //         label: "Miles",
+                        //         keyboardType: TextInputType.number,
+                        //         controller: _miles,
+                        //         validator: (value) {
+                        //           if (addCarCubit.carExist) {
+                        //             if (value!.isEmpty || value == null) {
+                        //               return 'Miles is required';
+                        //             }
+                        //           }
+                        //         },
+                        //       ),
+                        //       CustomTextField(
+                        //         label: "Average Miles per month",
+                        //         controller: _avgMilesPerMonth,
+                        //         keyboardType: TextInputType.number,
+                        //         validator: (value) {
+                        //           if (addCarCubit.carExist) {
+                        //             if (value!.isEmpty || value == null) {
+                        //               return 'Average Miles per Month is required';
+                        //             }
+                        //           }
+                        //         },
+                        //       ),
+                        //       Text("Remind You Before?",
+                        //           style: AppTextStyle.darkGreyStyle(size: 14)),
+                        //       const SizedBox(
+                        //         height: 10,
+                        //       ),
+                        //       SizedBox(
+                        //         height: 20,
+                        //         child: BlocConsumer<ReminderCubit, ReminderState>(
+                        //             listener: (context, snapshot) {},
+                        //             builder: (context, snapshot) {
+                        //               return Row(
+                        //                 children: [
+                        //                   Radio<int>(
+                        //                       value: 1,
+                        //                       activeColor: mainColor,
+                        //                       groupValue: reminderCubit.reminder,
+                        //                       onChanged: (val) {
+                        //                         (val != null)
+                        //                             ? reminderCubit.choseTime(1)
+                        //                             : reminderCubit.choseTime(-1);
+                        //                       }),
+                        //                   const Text("Week"),
+                        //                   const Expanded(child: SizedBox()),
+                        //                   Radio<int>(
+                        //                       activeColor: mainColor,
+                        //                       value: 2,
+                        //                       groupValue: reminderCubit.reminder,
+                        //                       onChanged: (val) {
+                        //                         (val != null)
+                        //                             ? reminderCubit.choseTime(2)
+                        //                             : reminderCubit.choseTime(-1);
+                        //                       }),
+                        //                   const Text("2 Weeks"),
+                        //                   const Expanded(child: SizedBox()),
+                        //                   Radio<int>(
+                        //                       activeColor: mainColor,
+                        //                       value: 3,
+                        //                       groupValue: reminderCubit.reminder,
+                        //                       onChanged: (val) {
+                        //                         (val != null)
+                        //                             ? reminderCubit.choseTime(3)
+                        //                             : reminderCubit.choseTime(-1);
+                        //                       }),
+                        //                   const Text("Month"),
+                        //                 ],
+                        //               );
+                        //             }),
+                        //       ),
+                        //     ],
+                        //   );
                       }
                     },
                   ),

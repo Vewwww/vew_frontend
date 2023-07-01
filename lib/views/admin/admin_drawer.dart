@@ -7,14 +7,18 @@ import 'package:vewww/views/driver/sign_in_screen.dart';
 import '../../model/admin.dart';
 import '../../model/person.dart';
 
-Admin admin=Admin(   name: 'Ali', email: 'ali@gmail.com', password: 'ali123',phoneNumber: '01111548');
+Admin admin = Admin(
+    name: 'Ali',
+    email: 'ali@gmail.com',
+    password: 'ali123',
+    phoneNumber: '01111548');
 
 class AdminDrawer extends StatelessWidget {
   const AdminDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    AuthCubit authCubit= AuthCubit.get(context);
+    AuthCubit authCubit = AuthCubit.get(context);
     return Drawer(
       child: Column(
         children: [
@@ -36,16 +40,14 @@ class AdminDrawer extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(10),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: (){
-                      Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>  AdminProfile(admin: admin,)));
-                    },
-                  child: Container( 
+            child: InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AdminProfile()));
+              },
+              child: Row(
+                children: [
+                  Container(
                     height: 50,
                     width: 50,
                     decoration: const BoxDecoration(
@@ -59,15 +61,15 @@ class AdminDrawer extends StatelessWidget {
                     ),
                     alignment: Alignment.center,
                   ),
-                ),
-                const SizedBox(
-                  width: 15,
-                ),
-                Text(
-                  'Profile',
-                  style: TextStyle(fontSize: 20, color: Colors.grey[600]),
-                ),
-              ],
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  Text(
+                    'Profile',
+                    style: TextStyle(fontSize: 20, color: Colors.grey[600]),
+                  ),
+                ],
+              ),
             ),
           ),
           Padding(
@@ -75,13 +77,12 @@ class AdminDrawer extends StatelessWidget {
             child: Row(
               children: [
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     authCubit.logout();
                     Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) =>
-                                     SignInScreen())));
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => SignInScreen())));
                   },
                   child: Container(
                     height: 50,
@@ -104,7 +105,6 @@ class AdminDrawer extends StatelessWidget {
                 Text(
                   'Sign Out',
                   style: TextStyle(fontSize: 20, color: Colors.grey[600]),
-                  
                 )
               ],
             ),

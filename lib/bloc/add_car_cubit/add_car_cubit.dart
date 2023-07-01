@@ -11,16 +11,35 @@ class AddCarCubit extends Cubit<AddCarState> {
   AddCarCubit() : super(AddCarInitial());
   static AddCarCubit get(context) => BlocProvider.of(context);
 
-  bool carExist = false;
+  //bool carExist = false;
+  List<Car> cars = [];
 
-  void add() {
-    carExist = true;
+  void add(Car car) {
+    //carExist = true;
+    cars.add(car);
     emit(CarAddedState());
   }
 
-  void remove() {
-    carExist = false;
-    emit(CarRemovedState());
+  bool checkCarExists(Car comingCar) {
+    for (Car car in cars) {
+      if (car.sId == comingCar.sId) return true;
+    }
+    return false;
   }
 
+  bool isEdited(Car comingCar) {
+    if (checkCarExists(comingCar)) {
+      bool contains = cars.contains(comingCar);
+      if (!contains) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  void remove(index) {
+    //carExist = false;
+    cars.removeAt(index);
+    emit(CarRemovedState());
+  }
 }

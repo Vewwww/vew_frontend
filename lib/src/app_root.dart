@@ -15,6 +15,7 @@ import '../bloc/get_all_cubit/get_all_cubit.dart';
 import '../bloc/loaction_cubit/loaction_cubit.dart';
 import '../bloc/nearest_repairer_cubit/nearest_repairer_cubit.dart';
 import '../bloc/notification_cubit/notification_cubit.dart';
+import '../bloc/profile_cubit/profile_cubit.dart';
 import '../bloc/search_cubit/seaech_cubit.dart';
 import '../bloc/selected page index/cubit/selected_page_index_cubit.dart';
 import '../bloc/service_cubit/services_cubit.dart';
@@ -60,6 +61,7 @@ class AppRoot extends StatelessWidget {
           BlocProvider(create: (context) => AddImageCubit()),
           BlocProvider(create: (context) => VerificationCubit()),
           BlocProvider(create: (context) => WarningSignCubit()),
+          BlocProvider(create: (context) => ProfileCubit()),
           BlocProvider(create: (context) => ServicesCubit()),
           BlocProvider(create: (context) => CarCubit()),
           BlocProvider(create: (context) => NotificationCubit()),

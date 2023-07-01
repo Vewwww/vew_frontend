@@ -1,46 +1,52 @@
-import 'package:vewww/model/person.dart';
+import 'car.dart';
 
-class adminResponse {
-  List<Admin>? admins;
+class ProfileResponse {
+  ProfileData? data;
 
-  adminResponse({this.admins});
+  ProfileResponse({this.data});
 
-  adminResponse.fromJson(Map<String, dynamic> json) {
-    if (json['admins'] != null) {
-      admins = <Admin>[];
-      json['admins'].forEach((v) {
-        admins!.add(new Admin.fromJson(v));
+  ProfileResponse.fromJson(Map<String, dynamic> json) {
+    data = json['data'] != null ? new ProfileData.fromJson(json['data']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
+  }
+}
+
+class ProfileData {
+  User? user;
+  List<Car>? cars;
+
+  ProfileData({this.user, this.cars});
+
+  ProfileData.fromJson(Map<String, dynamic> json) {
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    if (json['cars'] != null) {
+      cars = <Car>[];
+      json['cars'].forEach((v) {
+        cars!.add(new Car.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.admins != null) {
-      data['admins'] = this.admins!.map((v) => v.toJson()).toList();
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
     }
-    return data;
-  }
-}
-class AdminProfileResponse {
-  Admin? admin;
-
-  AdminProfileResponse({this.admin});
-
-  AdminProfileResponse.fromJson(Map<String, dynamic> json) {
-    admin = json['data'] != null ? new Admin.fromJson(json['data']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.admin != null) {
-      data['data'] = this.admin!.toJson();
+    if (this.cars != null) {
+      data['cars'] = this.cars!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class Admin {
+class User {
   Report? report;
   String? sId;
   String? name;
@@ -49,15 +55,14 @@ class Admin {
   String? phoneNumber;
   String? gender;
   String? role;
-  String? driverLisenceRenewalDate;
+  String? lisenceRenewalDate;
   bool? isSuspended;
   bool? emailConfirm;
   bool? logedIn;
-  bool? passwordReset;
   int? iV;
-  String? driverLisenceRenewalNotification;
+  bool? passwordReset;
 
-  Admin(
+  User(
       {this.report,
       this.sId,
       this.name,
@@ -66,15 +71,14 @@ class Admin {
       this.phoneNumber,
       this.gender,
       this.role,
-      this.driverLisenceRenewalDate,
+      this.lisenceRenewalDate,
       this.isSuspended,
       this.emailConfirm,
       this.logedIn,
-      this.passwordReset,
       this.iV,
-      this.driverLisenceRenewalNotification});
+      this.passwordReset});
 
-  Admin.fromJson(Map<String, dynamic> json) {
+  User.fromJson(Map<String, dynamic> json) {
     report =
         json['report'] != null ? new Report.fromJson(json['report']) : null;
     sId = json['_id'];
@@ -84,13 +88,12 @@ class Admin {
     phoneNumber = json['phoneNumber'];
     gender = json['gender'];
     role = json['role'];
-    driverLisenceRenewalDate = json['driverLisenceRenewalDate'];
+    lisenceRenewalDate = json['lisenceRenewalDate'];
     isSuspended = json['isSuspended'];
     emailConfirm = json['emailConfirm'];
     logedIn = json['logedIn'];
-    passwordReset = json['passwordReset'];
     iV = json['__v'];
-    driverLisenceRenewalNotification = json['driverLisenceRenewalNotification'];
+    passwordReset = json['passwordReset'];
   }
 
   Map<String, dynamic> toJson() {
@@ -105,33 +108,31 @@ class Admin {
     data['phoneNumber'] = this.phoneNumber;
     data['gender'] = this.gender;
     data['role'] = this.role;
-    data['driverLisenceRenewalDate'] = this.driverLisenceRenewalDate;
+    data['lisenceRenewalDate'] = this.lisenceRenewalDate;
     data['isSuspended'] = this.isSuspended;
     data['emailConfirm'] = this.emailConfirm;
     data['logedIn'] = this.logedIn;
-    data['passwordReset'] = this.passwordReset;
     data['__v'] = this.iV;
-    data['driverLisenceRenewalNotification'] =
-        this.driverLisenceRenewalNotification;
+    data['passwordReset'] = this.passwordReset;
     return data;
   }
 }
 
 class Report {
-  int? reportsNumber;
   String? dateReport;
+  int? reportsNumber;
 
-  Report({this.reportsNumber, this.dateReport});
+  Report({this.dateReport, this.reportsNumber});
 
   Report.fromJson(Map<String, dynamic> json) {
-    reportsNumber = json['reportsNumber'];
     dateReport = json['dateReport'];
+    reportsNumber = json['reportsNumber'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['reportsNumber'] = this.reportsNumber;
     data['dateReport'] = this.dateReport;
+    data['reportsNumber'] = this.reportsNumber;
     return data;
   }
 }

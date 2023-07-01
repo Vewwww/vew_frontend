@@ -129,7 +129,8 @@ class WinchSignUpScreen extends StatelessWidget {
                     controller: _carPlateNum,
                     label: "رقم السيارة",
                     validator: (value) {
-                      if (addCarCubit.carExist) {
+                      //Todo::test after edits
+                      if (addCarCubit.cars.length > 0) {
                         if (value!.length < 1 || value == null) {
                           return 'برجاء ادخال رقم السيارة';
                         }

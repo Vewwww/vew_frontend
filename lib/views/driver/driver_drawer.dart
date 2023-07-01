@@ -37,7 +37,6 @@ class DriverDrawer extends StatelessWidget {
               NavigationUtils.navigateAndClearStack(
                   context: context,
                   destinationScreen: DriverProfile(
-                    driver: driver,
                   ));
             },
             child: CircularIcon(
