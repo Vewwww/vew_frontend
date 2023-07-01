@@ -99,7 +99,7 @@ class _AdminProfileState extends State<AdminProfile> {
                               if(profileCubit.state is GettingProfileSuccessState)
                               NavigationUtils.navigateTo(
                                   context: context,
-                                  destinationScreen: AdminEditProfile( profileCubit.adminProfileResponse.admin ));
+                                  destinationScreen: AdminEditProfile(/* profileCubit.adminProfileResponse.admin*/ ));
                             },
                           )),
                       BlocBuilder<ProfileCubit, ProfileState>(

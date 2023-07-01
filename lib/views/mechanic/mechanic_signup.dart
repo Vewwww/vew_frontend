@@ -266,7 +266,7 @@ class MechanicSignup extends StatelessWidget {
                                               ar: locationCubit.address,
                                               en: locationCubit.address),
                                         ),
-                                        service: servicesIds);
+                                        service: services);
                                     authCubit.mechanicSignUp(mechanicShop);
                                     if (state is SignUpSuccessState) {
                                       if (state.message != null) {
@@ -297,26 +297,6 @@ class MechanicSignup extends StatelessWidget {
                                       .showSnackBar(snackBar);
                                 }
 
-                                // WinchDriver winch = WinchDriver(
-                                //       name: _name.text,
-                                //       email: _email.text,
-                                //       password: _password.text,
-                                //       phoneNumber: _phoneNumber.text,
-                                //       plateNumber: _carPlateNum.text,
-                                //       location: Location(
-                                //           latitude: locationCubit.lat,
-                                //           longitude: locationCubit.long));
-                                //   await authCubit.winchSignUp(winch);
-                                //   if (state is SignUpSuccessState) {
-                                //     NavigationUtils.navigateAndClearStack(
-                                //         context: context,
-                                //         destinationScreen: SignInScreen());
-                                //   } else if (state is SignUpErrorState) {
-                                //     var snackBar =
-                                //         SnackBar(content: Text(state.errMessage));
-                                //     ScaffoldMessenger.of(context)
-                                //         .showSnackBar(snackBar);
-                                //   }
                               }
                             },
                             child: BlocConsumer<AuthCubit, AuthState>(
