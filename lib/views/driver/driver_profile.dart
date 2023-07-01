@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vewww/bloc/profile_cubit/profile_cubit.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
@@ -8,19 +10,35 @@ import 'package:vewww/model/driver.dart';
 import 'package:vewww/views/driver/edit_driver_profile.dart';
 import '../../core/components/custom_text_field.dart';
 
-class DriverProfile extends StatelessWidget {
-  Driver driver;
+class DriverProfile extends StatefulWidget {
+  // Driver driver;
+
+  DriverProfile({Key? key}) : super(key: key);
+
+  @override
+  State<DriverProfile> createState() => _DriverProfileState();
+}
+
+class _DriverProfileState extends State<DriverProfile> {
   final TextEditingController _email = TextEditingController();
+
   final TextEditingController _phone = TextEditingController();
+
   final TextEditingController _licenseRenewalDate = TextEditingController();
-  DriverProfile({required this.driver, Key? key}) : super(key: key) {
-    _email.text = driver.person!.email!;
-    _phone.text = driver.phoneNumber!;
-    _licenseRenewalDate.text = driver.lisenceRenewalDate!;
+
+  @override
+  void initState() {
+    super.initState();
+    var profileCubit = context.read<ProfileCubit>();
+    profileCubit.getDriverProfile();
+    // _email.text = driver.person!.email!;
+    // _phone.text = driver.phoneNumber!;
+    // _licenseRenewalDate.text = driver.lisenceRenewalDate!;
   }
 
   @override
   Widget build(BuildContext context) {
+    ProfileCubit profileCubit = ProfileCubit.get(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -52,9 +70,24 @@ class DriverProfile extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Text(
-                  "Sameh Mohamed",
-                  style: AppTextStyle.whiteTextStyle(20),
+                BlocConsumer<ProfileCubit, ProfileState>(
+                  listener: (context, state) {},
+                  builder: (context, state) {
+                    return (state is GettingProfileSuccessState)
+                        ? Text(
+                            profileCubit.profileResponse!.data!.user!.name!,
+                            style: AppTextStyle.whiteTextStyle(20),
+                          )
+                        : Center(
+                            child: Column(
+                            children: [
+                              SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height / 3),
+                              CircularProgressIndicator(),
+                            ],
+                          ));
+                  },
                 ),
                 const SizedBox(height: 20),
               ],
@@ -71,60 +104,84 @@ class DriverProfile extends StatelessWidget {
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(15))),
                 child: SingleChildScrollView(
-                  child: Stack(
-                    children: [
-                      Positioned(
-                          right: 5,
-                          top: -10,
-                          child: IconButton(
-                            icon: const Icon(Icons.edit),
-                            onPressed: () {
-                              NavigationUtils.navigateTo(
-                                  context: context,
-                                  destinationScreen:
-                                      EditDriverProfile(driver: driver));
-                            },
-                          )),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 20),
-                          CustomTextField(
-                            readOnly: true,
-                            label: "Email",
-                            controller: _email,
-                            validator: (value) {},
-                          ),
-                          CustomTextField(
-                            readOnly: true,
-                            controller: _phone,
-                            label: "Phone",
-                            validator: (value) {},
-                          ),
-                          CustomTextField(
-                            readOnly: true,
-                            label: "Driving license renewal date",
-                            controller: _licenseRenewalDate,
-                            validator: (value) {},
-                          ),
-                          const SizedBox(height: 20),
-                          (driver.cars != null)
-                              ? ListView.builder(
-                                  shrinkWrap: true,
-                                  primary: false,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  padding: EdgeInsets.zero,
-                                  itemCount: driver.cars!.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return buildCarDetails(
-                                        driver.cars![index], index + 1);
+                  child: BlocBuilder<ProfileCubit, ProfileState>(
+                    builder: (context, state) {
+                      if (state is GettingProfileSuccessState)
+                        return Stack(
+                          children: [
+                            Positioned(
+                                right: 5,
+                                top: -10,
+                                child: IconButton(
+                                  icon: const Icon(Icons.edit),
+                                  onPressed: () {
+                                    NavigationUtils.navigateTo(
+                                        context: context,
+                                        destinationScreen: EditDriverProfile(
+                                          driver: profileCubit
+                                              .profileResponse!.data!,
+                                        ));
                                   },
-                                )
-                              : Container(),
-                        ],
-                      ),
-                    ],
+                                )),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 20),
+                                CustomTextField(
+                                  readOnly: true,
+                                  label: "Email",
+                                  hint: profileCubit
+                                      .profileResponse!.data!.user!.email,
+                                  controller: _email,
+                                  validator: (value) {},
+                                ),
+                                CustomTextField(
+                                  readOnly: true,
+                                  hint: profileCubit
+                                      .profileResponse!.data!.user!.phoneNumber,
+                                  label: "Phone",
+                                  validator: (value) {},
+                                ),
+                                CustomTextField(
+                                  readOnly: true,
+                                  label: "Driving license renewal date",
+                                  controller: _licenseRenewalDate,
+                                  hint: profileCubit.profileResponse!.data!
+                                      .user!.lisenceRenewalDate,
+                                  validator: (value) {},
+                                ),
+                                const SizedBox(height: 20),
+                                // (widget.driver.cars != null)
+                                //     ? ListView.builder(
+                                //         shrinkWrap: true,
+                                //         primary: false,
+                                //         physics:
+                                //             const NeverScrollableScrollPhysics(),
+                                //         padding: EdgeInsets.zero,
+                                //         itemCount: 0,//widget.driver.cars!.length,
+                                //         itemBuilder:
+                                //             (BuildContext context, int index) {
+                                //           return buildCarDetails(
+                                //               widget.driver.cars![index],
+                                //               index + 1);
+                                //         },
+                                //       )
+                                //:
+                                Container(),
+                              ],
+                            ),
+                          ],
+                        );
+                      else
+                        return Center(
+                            child: Column(
+                          children: [
+                            SizedBox(
+                                height: MediaQuery.of(context).size.height / 3),
+                            CircularProgressIndicator(),
+                          ],
+                        ));
+                    },
                   ),
                 ),
               )),

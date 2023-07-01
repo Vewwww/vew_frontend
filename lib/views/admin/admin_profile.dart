@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vewww/bloc/profile_cubit/profile_cubit.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/views/admin/admin_edit_profile.dart';
 import '../../core/components/custom_text_field.dart';
@@ -7,17 +9,32 @@ import '../../core/style/app_colors.dart';
 import '../../core/utils/navigation.dart';
 import '../../model/admin.dart';
 
-class AdminProfile extends StatelessWidget {
-  Admin admin;
-  final TextEditingController _name = TextEditingController();
-  final TextEditingController _email = TextEditingController();
-  final TextEditingController _phone = TextEditingController();
-  AdminProfile({required this.admin, Key? key}) : super(key: key) {
-    _name.text = admin .name!;
-    _email.text = admin.email!;
-    _phone.text = admin.phoneNumber!;
+class AdminProfile extends StatefulWidget {
+  AdminProfile({Key? key}) : super(key: key) {
+    // _name.text = admin .name!;
+    // _email.text = admin.email!;
+    // _phone.text = admin.phoneNumber!;
   }
- Widget build(BuildContext context) {
+
+  @override
+  State<AdminProfile> createState() => _AdminProfileState();
+}
+
+class _AdminProfileState extends State<AdminProfile> {
+  final TextEditingController _name = TextEditingController();
+
+  final TextEditingController _email = TextEditingController();
+
+  final TextEditingController _phone = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    var profileCubit = context.read<ProfileCubit>();
+    profileCubit.getAdminProfile();
+  }
+
+  Widget build(BuildContext context) {
+    ProfileCubit profileCubit = ProfileCubit.get(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -38,7 +55,10 @@ class AdminProfile extends StatelessWidget {
             ),
             child: Column(
               children: [
-                CustomAppBar(haveBackArrow: true, iconColor: Colors.white,),
+                CustomAppBar(
+                  haveBackArrow: true,
+                  iconColor: Colors.white,
+                ),
                 CircleAvatar(
                   radius: 50,
                   backgroundColor: Colors.white,
@@ -76,34 +96,56 @@ class AdminProfile extends StatelessWidget {
                           child: IconButton(
                             icon: const Icon(Icons.edit),
                             onPressed: () {
+                              if(profileCubit.state is GettingProfileSuccessState)
                               NavigationUtils.navigateTo(
                                   context: context,
-                                  destinationScreen:
-                                      AdminEditProfile());
+                                  destinationScreen: AdminEditProfile( profileCubit.adminProfileResponse.admin ));
                             },
                           )),
-                      Column(
-              children: [
-                CustomTextField(
-                  readOnly: true,
-                  label: "Name",
-                  controller: _name,
-                  validator: (value) {},
-                ),
-                CustomTextField(
-                  readOnly: true,
-                  label: "Email",
-                  controller: _email,
-                  validator: (value) {},
-                ),
-                CustomTextField(
-                  readOnly: true,
-                  label: "Phone Number",
-                  controller: _phone,
-                  validator: (value) {},
-                ),
-              ],
-            ),
+                      BlocBuilder<ProfileCubit, ProfileState>(
+                        builder: (context, state) {
+                          if (state is GettingProfileSuccessState) {
+                            return Column(
+                              children: [
+                                CustomTextField(
+                                  readOnly: true,
+                                  label: "Name",
+                                  //controller: _name,
+                                  hint: profileCubit
+                                      .adminProfileResponse!.admin!.name,
+                                  validator: (value) {},
+                                ),
+                                CustomTextField(
+                                  readOnly: true,
+                                  label: "Email",
+                                  //controller: _email,
+                                  hint: profileCubit
+                                      .adminProfileResponse!.admin!.email,
+                                  validator: (value) {},
+                                ),
+                                CustomTextField(
+                                  readOnly: true,
+                                  label: "Phone Number",
+                                  hint: profileCubit
+                                      .adminProfileResponse!.admin!.phoneNumber,
+//controller: _phone,
+                                  validator: (value) {},
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Center(
+                                child: Column(
+                              children: [
+                                SizedBox(
+                                    height:
+                                        MediaQuery.of(context).size.height / 3),
+                                CircularProgressIndicator(),
+                              ],
+                            ));
+                          }
+                        },
+                      ),
                     ],
                   ),
                 ),

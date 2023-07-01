@@ -67,7 +67,7 @@ class SignInScreen extends StatelessWidget {
                       }
                     },
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
@@ -86,7 +86,7 @@ class SignInScreen extends StatelessWidget {
                                   .showSnackBar(snackBar);
                               Widget screen;
                               if (role == "user")
-                                screen = DriverHomeScreen();
+                                screen = const DriverHomeScreen();
                               else if (role == "winch")
                                 screen = WinchHomePage();
                               else if (role == "admin")
@@ -106,8 +106,8 @@ class SignInScreen extends StatelessWidget {
                           }
                         },
                         child: (authCubit.state is SignInLoadingState)
-                            ? CircularProgressIndicator()
-                            : Text("Login"),
+                            ? const CircularProgressIndicator()
+                            : const Text("Login"),
                       )),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -123,7 +123,7 @@ class SignInScreen extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ChooseRoleScreen()),
+                                builder: (context) => const ChooseRoleScreen()),
                           );
                         },
                       ),
@@ -148,7 +148,7 @@ class SignInScreen extends StatelessWidget {
                         thickness: 1,
                       )),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 6),
+                        padding: const EdgeInsets.symmetric(horizontal: 6),
                         child: Text(
                           "or continue with",
                           style: AppTextStyle.greyStyle(size: 12),
