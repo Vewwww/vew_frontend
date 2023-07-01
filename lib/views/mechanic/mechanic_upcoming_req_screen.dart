@@ -17,7 +17,7 @@ class MechanicUpComingReqScreen extends StatelessWidget {
         function: () {
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => const MechanicProfile()),
+              MaterialPageRoute(builder: (context) => MechanicProfile()),
               (route) => true);
         },
       ),

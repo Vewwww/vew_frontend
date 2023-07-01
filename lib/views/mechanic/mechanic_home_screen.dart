@@ -47,7 +47,7 @@ class _MechanicHomeScreenState extends State<MechanicHomeScreen> {
       endDrawer:  Sidebar(function: (){
          Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => const MechanicProfile()),
+              MaterialPageRoute(builder: (context) => MechanicProfile()),
               (route) => true);
       },),
       body: SafeArea(

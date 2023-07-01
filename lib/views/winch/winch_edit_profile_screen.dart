@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:vewww/bloc/profile_cubit/profile_cubit.dart';
 import 'package:vewww/core/components/logo.dart';
 import 'package:vewww/core/style/app_colors.dart';
+import 'package:vewww/model/winch_driver.dart';
+import 'package:vewww/views/winch/winch_home_page.dart';
 
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/custom_text_field.dart';
@@ -9,22 +12,24 @@ import '../../core/utils/navigation.dart';
 import '../common/select_color_screen.dart';
 
 class WinchEditProfileScreen extends StatelessWidget {
+  WinchDriver winch;
+
+  WinchEditProfileScreen(this.winch, {Key? key}) : super(key: key) {
+    _email.text = winch.email!;
+    _name.text = winch.name!;
+    _phone.text = winch.phoneNumber!;
+    _plateNumber.text = winch.plateNumber!;
+  }
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final TextEditingController _email = TextEditingController();
-  final TextEditingController _password = TextEditingController();
+
+  final TextEditingController _plateNumber = TextEditingController();
+
   final TextEditingController _name = TextEditingController();
+
   final TextEditingController _phone = TextEditingController();
-  final List<String> items = [
-    'Item1',
-    'Item2',
-    'Item3',
-    'Item4',
-    'Item5',
-    'Item6',
-    'Item7',
-    'Item8',
-  ];
-  WinchEditProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +99,7 @@ class WinchEditProfileScreen extends StatelessWidget {
                   ],
                 ),
                 CustomTextField(
-                    controller: _password,
+                    controller: _plateNumber,
                     label: "رقم السيارة",
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -102,57 +107,31 @@ class WinchEditProfileScreen extends StatelessWidget {
                       }
                       return null;
                     }),
-                CustomTextField(
-                  label: "نوع السيارة",
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'برجاء ادخال نوع السيارة';
-                    }
-                    return null;
-                  },
-                ),
-                CustomTextField(
-                  label: "موديل السيارة",
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'برجاء ادخال موديل السيارة';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            NavigationUtils.navigateTo(
-                                context: context,
-                                destinationScreen: SelectColorScreen());
-                          },
-                          icon: Icon(
-                            Icons.keyboard_arrow_down_outlined,
-                            color: mainColor,
-                          )),
-                      Expanded(child: Container()),
-                      Text(
-                        "لون السيارة",
-                        style: AppTextStyle.greyStyle(size: 14),
-                      ),
-                    ],
-                  ),
-                ),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        /*  Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
-                        ); */
+                        WinchDriver winchDriver = WinchDriver(
+                            name: _name.text,
+                            phoneNumber: _phone.text,
+                            email: _email.text,
+                            plateNumber: _plateNumber.text);
+                        await ProfileCubit.get(context)
+                            .updateWinchProfile(winchDriver);
+                        if (ProfileCubit.get(context).state
+                            is EdittingProfileSuccessState) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => WinchHomePage()));
+                        } else {
+                          const snackBar = SnackBar(
+                              content:
+                                  Text("Something went wrong try again !"));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
                       }
                       debugPrint("email : ${_email.text}");
                     },

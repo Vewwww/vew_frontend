@@ -1,3 +1,5 @@
+import 'package:vewww/model/services.dart';
+
 import 'location.dart';
 import 'report.dart';
 
@@ -27,21 +29,31 @@ class MechnaicShopResponse {
   }
 }
 
-// {
-//     "hasDelivery": true,
-//     "location": {
-//         "description": {
-//             "ar": "مجمع الفردوس بجوار نادي السكه خلف ورشة",
-//             "en": " Al-Firdous Complex, next to Al-Sekka Club, behind Taqah workshop "
-//         },
-//         "latitude": 30.0496509,
-//         "longitude": 31.27362904
-//     },
-//     "service": [
-//         "64837b8cd4a3c95f4207e9e2",
-//         "64837b87d4a3c95f4207e9df"
-//     ]
-// }
+class MechanicProfileResponse {
+  String? status;
+  int? results;
+  MechanicShop? mechanicShop;
+
+  MechanicProfileResponse({this.status, this.results, this.mechanicShop});
+
+  MechanicProfileResponse.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    results = json['results'];
+    if (json['data'] != null)
+      mechanicShop = (MechanicShop.fromJson(json['data']));
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['results'] = results;
+    if (mechanicShop != null) {
+      data['data'] = mechanicShop!.toJson();
+    }
+    return data;
+  }
+}
+
 class MechanicShop {
   Report? report;
   Location? location;
@@ -53,7 +65,7 @@ class MechanicShop {
   String? name;
   String? phoneNumber;
   bool? hasDelivery;
-  List<String>? service;
+  List<Service>? service;
   double? rate;
   int? numOfRates;
   bool? isSuspended;
@@ -94,7 +106,12 @@ class MechanicShop {
     name = json['name'];
     phoneNumber = json['phoneNumber'];
     hasDelivery = json['hasDelivery'];
-    service = json['service'].cast<String>();
+    if (json['service'] != null) {
+      service = <Service>[];
+      json['service'].forEach((v) {
+        service!.add(new Service.fromJson(v));
+      });
+    }
     rate = json['rate'] * 1.0;
     numOfRates = json['numOfRates'];
     isSuspended = json['isSuspended'];
@@ -120,7 +137,9 @@ class MechanicShop {
     if (name != null) data['name'] = name;
     if (phoneNumber != null) data['phoneNumber'] = phoneNumber;
     if (hasDelivery != null) data['hasDelivery'] = hasDelivery;
-    if (service != null) data['service'] = service;
+    if (this.service != null) {
+      data['service'] = this.service!.map((v) => v.toJson()).toList();
+    }
     if (rate != null) data['rate'] = rate;
     if (numOfRates != null) data['numOfRates'] = numOfRates;
     if (isSuspended != null) data['isSuspended'] = isSuspended;

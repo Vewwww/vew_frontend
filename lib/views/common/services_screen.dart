@@ -5,6 +5,7 @@ import 'package:vewww/bloc/service_cubit/services_cubit.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/components/service_card.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
+import 'package:vewww/views/mechanic/mechanic_edit_profile_screen.dart';
 import 'package:vewww/views/mechanic/mechanic_signup.dart';
 
 import '../../core/utils/navigation.dart';
@@ -24,15 +25,15 @@ class ServicesScreen extends StatefulWidget {
 }
 
 class _ServicesScreenState extends State<ServicesScreen> {
-  List<Service> services = [];
+  //List<Service> services = [];
   @override
   void initState() {
     super.initState();
-    services = [];
     final servicesCubit = context.read<ServicesCubit>();
     servicesCubit.getAllServices();
     print("selected services from init : ${servicesCubit.selectedServices}");
-    servicesCubit.selectedServices = [];
+    servicesCubit.selectedServices =
+        (widget.mechanicShop != null) ? widget.mechanicShop!.service ?? [] : [];
   }
 
   @override
@@ -58,21 +59,32 @@ class _ServicesScreenState extends State<ServicesScreen> {
                   itemBuilder: (context, index) {
                     String title = servicesCubit.services![index].name!.en ??
                         servicesCubit.services![index].name!.ar!;
+                    bool isSelected = false;
+                    for (Service s in servicesCubit.selectedServices) {
+                      if (s.sId == servicesCubit.services![index].sId) {
+                        isSelected = true;
+                        print(
+                            "1-${s.toJson()} ,\n2- ${servicesCubit.services![index].toJson()}");
+                      }
+                    }
                     return serviceCard(
-                        isSelected: (servicesCubit.selectedServices
-                            .contains(servicesCubit.services![index])),
+                        isSelected: isSelected,
                         function: () async {
                           servicesCubit
                               .addService(servicesCubit.services![index]);
+                          print(
+                              "now selected services is :${servicesCubit.selectedServices.length}");
+
                           String serviceId =
                               servicesCubit.services![index].sId!;
-                          if (!widget.multiSelect)
+                          if (!widget.multiSelect) {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: ((context) => SearchResultScreen(
                                         filter: "Mechanist",
                                         serviceId: serviceId))));
+                          }
                         },
                         title: title);
                   },
@@ -97,9 +109,13 @@ class _ServicesScreenState extends State<ServicesScreen> {
               onPressed: () {
                 NavigationUtils.navigateTo(
                     context: context,
-                    destinationScreen: MechanicSignup(
-                        mechanicShop: widget.mechanicShop,
-                        services: ServicesCubit.get(context).selectedServices));
+                    destinationScreen: (widget.mechanicShop != null &&
+                            widget.mechanicShop!.sId != null)
+                        ? MechanicEditProfile(widget.mechanicShop!)
+                        : MechanicSignup(
+                            mechanicShop: widget.mechanicShop,
+                            services:
+                                ServicesCubit.get(context).selectedServices));
               },
               child: const Text("تم"),
             ))
