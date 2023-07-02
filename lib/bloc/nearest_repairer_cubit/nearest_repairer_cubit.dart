@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
 import 'package:vewww/model/nearest_MC_response.dart';
+import 'package:vewww/model/nearest_winch.dart';
 import 'package:vewww/services/dio_helper.dart';
 
 import '../../core/utils/sp_helper/cache_helper.dart';
@@ -98,6 +99,27 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
       emit(GettingNearestMechanicSuccessState(
           mechanics: nearesetMechanicResponse!.mechanic!));
     }
+  }
+
+  Future getNearestWinch() async{
+    String url = "/driver/getNearestWinch";
+    Map<String, dynamic> query = await getCurrentLocation();
+    emit(GettingNearestWinchLoadingState());
+    await DioHelper.getWithBody(
+      url: url,
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
+      query: query, 
+    ).then((value) {
+      print("neareat winch response : ${value.data}");
+      NearestWinchResponse nearestWinchResponse=NearestWinchResponse.fromJson(value.data);
+      emit(GettingNearestWinchSuccessState(nearestWinch: nearestWinchResponse.nearestWinch!));
+    }).catchError((error){
+      if(error is DioError){
+        print(error.response);
+      }
+      print(error);
+      emit(GettingNearestWinchErrorState());
+    });
   }
 
   Future getNearest() async {

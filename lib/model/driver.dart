@@ -44,7 +44,6 @@ class Driver {
     var password = json['password'];
     var role = json['role'];
     var gender=json['gender'];
-    print("Before");
     person = Person(name: name, email: email, password: password, role: role,gender: gender );
     lisenceRenewalDate = json['lisenceRenewalDate'];
     phoneNumber = json['phoneNumber'];
@@ -57,7 +56,7 @@ class Driver {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = person!.name;
     data['email'] = person!.email;
     data['password'] = person!.password;

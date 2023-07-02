@@ -48,22 +48,20 @@ Widget userItem({
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: AppTextStyle.darkGreyStyle(size: 20),
+                Flexible(
+                  child: Text(
+                    title,
+                    style: AppTextStyle.darkGreyStyle(size: 20),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-                //SizedBox(height: 7,),
-                Text(
-                  subtitle,
-                  style: AppTextStyle.greyStyle(),
-                ),
-                //SizedBox(height: 7,),
-                // Text(
-                //   "4 reports",
-                //   style:  AppTextStyle.greyStyle(),
-                // ),
-                //Text("rating: 3.5",style:  AppTextStyle.greyStyle(),),
-                
+                Flexible(
+                  child: Text(
+                    subtitle,
+                    style: AppTextStyle.greyStyle(),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),                
               ],
             ),
           ],

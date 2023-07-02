@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/model/nearest_gas_station_response.dart';
 import 'package:vewww/model/repairer.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
+import '../../model/admin.dart';
 import '../../model/driver.dart';
 import '../../model/mechanic_shop.dart';
 import '../../model/nearest_MC_response.dart';
@@ -17,6 +18,7 @@ class GetAllCubit extends Cubit<GetAllState> {
   MechnaicShopResponse? mechnaicShopResponse;
   NearesetGasStationResponse? nearesetGasStationResponse;
   NearesetMCResponse? nearesetMCResponse;
+
   Future getAllMechanicShop() async {
     String url = "/admin/mechanic/";
     emit(GetAllMechanicShopLoadingState());
@@ -74,11 +76,11 @@ class GetAllCubit extends Cubit<GetAllState> {
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
     ).then((value) {
       print("Get all Admins response : ${value.data}");
-      DriverResponse driverResponse = DriverResponse.fromJson(value.data);
-      print("Admin: ${driverResponse.driver![0].person!.name!}");
-      emit(GetAllAdminsSuccessState(driverResponse.driver!));
-    }).catchError((error) {
-      if (error is DioError) {
+
+      AdminResponse adminRespone = AdminResponse.fromJson(value.data);
+      emit(GetAllAdminsSuccessState(adminRespone.admins!));
+    }).catchError((error){
+      if(error is DioError){
         print(error.response);
       }
       print(error);
@@ -129,21 +131,27 @@ class GetAllCubit extends Cubit<GetAllState> {
     }
   }
 
+
+  WinchDriver? winchDriver;
+  Driver? driver;
+  MechanicShop? mechanicShop;
   Future<void> getUserWithId(String id, String role) async {
     emit(GetUserWithIdLoadingState());
     await DioHelper.getData(url: "/admin/${id}").then((value) {
       print("Get user with Id  response : ${value.data}");
       if (role == "mechanic") {
-        MechanicShop mechanicShop = MechanicShop.fromJson(value.data["data"]);
-        emit(GetMechanicWithIdSuccessState(mechanicShop));
-        print("Mechanic Name ${mechanicShop.name!}");
+         mechanicShop= MechanicShop.fromJson(value.data["data"]);
+        emit(GetMechanicWithIdSuccessState(mechanicShop!));
+        print("Mechanic Name ${mechanicShop!.name!}");
       } else if (role == "winch") {
-        WinchDriver winchDriver = WinchDriver.fromJson(value.data["data"]);
-        emit(GetWinchWithIdSuccessState(winchDriver));
-        print(winchDriver.name!);
+        print('Inside winch');
+        winchDriver = WinchDriver.fromJson(value.data["data"]);
+        print(winchDriver!.name!);
+        emit(GetWinchWithIdSuccessState(winchDriver!));
+        
       } else if (role == "user") {
         driver = Driver.fromJson(value.data["data"]);
-        emit(GetDriverWithIdSuccessState(driver));
+        emit(GetDriverWithIdSuccessState(driver!));
       }
     }).onError((error, stackTrace) {
       emit(GetUserWithIdErrorState());
