@@ -7,6 +7,7 @@ import 'package:vewww/core/utils/navigation.dart';
 //import 'package:vewww/views/change_password_screen.dart';
 import 'package:vewww/views/common/chats_screen.dart';
 import 'package:vewww/views/driver/notifications_screen.dart';
+import 'package:vewww/views/driver/prev_req_screen.dart';
 
 import '../../bloc/notification_cubit/notification_cubit.dart';
 import '../../core/components/logo.dart';
@@ -81,7 +82,7 @@ class DriverDrawer extends StatelessWidget {
                         NotificationCubit.get(context).haveNew)
                       return Stack(
                         children: [
-                          Icon(Icons.notifications),
+                          const Icon(Icons.notifications),
                           Positioned(
                             right: 0,
                             top: 1,
@@ -106,6 +107,16 @@ class DriverDrawer extends StatelessWidget {
                   context: context, destinationScreen: ChatsScreen());
             },
             child: CircularIcon(title: 'Chat', child: const Icon(Icons.chat)),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          GestureDetector(
+            onTap: () {
+              NavigationUtils.navigateAndClearStack(
+                  context: context, destinationScreen: PreviousReqScreen());
+            },
+            child: CircularIcon(title: 'Previous Requests', child: const Icon(Icons.skip_previous)),
           ),
           const SizedBox(
             height: 15,
