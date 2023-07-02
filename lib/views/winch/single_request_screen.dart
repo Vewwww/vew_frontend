@@ -177,6 +177,10 @@ class SingleRequestScreen extends StatelessWidget {
                                           await repairerRequestsCubit
                                               .mechanicCancelRequest(
                                                   acceptedRequestsData.sId!);
+                                          NavigationUtils.navigateAndClearStack(
+                                              context: context,
+                                              destinationScreen:
+                                                  MechanicHomeScreen());
                                         } else {
                                           NavigationUtils.navigateAndClearStack(
                                               context: context,
