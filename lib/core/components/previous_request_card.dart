@@ -11,6 +11,7 @@ Widget previousRequestCard({
    required Function() function
 }) {
   return InkWell(
+    onTap: function,
     child: Container(
       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       padding: const EdgeInsets.all(5),
@@ -52,19 +53,19 @@ Widget previousRequestCard({
               Row(
                 children: [
                   Text('Location: ', style: AppTextStyle.greyStyle(size: 15),),
-                  Text('Location description', style: AppTextStyle.darkGreyStyle(size: 15))
+                  Text(location, style: AppTextStyle.darkGreyStyle(size: 15))
                 ],
               ),
               Row(
                 children: [
                   Text('Date and Time: ', style: AppTextStyle.greyStyle(size: 15),),
-                  Text('2023-06-30T21:48:58.572Z', style: AppTextStyle.darkGreyStyle(size: 15))
+                  Text(dateTime, style: AppTextStyle.darkGreyStyle(size: 15))
                 ],
               ),
               Row(
                 children: [
                   Text('Accepted by: ', style: AppTextStyle.greyStyle(size: 15),),
-                  Text('Winch Name', style: AppTextStyle.darkGreyStyle(size: 15))
+                  Text(serviceProvider, style: AppTextStyle.darkGreyStyle(size: 15))
                 ],
               ),
             ],
@@ -72,6 +73,5 @@ Widget previousRequestCard({
         ],
       ),
     ),
-    onTap: function,
   );
 }

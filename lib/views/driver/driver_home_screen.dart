@@ -15,6 +15,7 @@ import '../../bloc/chat_cubit/chat_cubit.dart';
 import '../../bloc/notification_cubit/notification_cubit.dart';
 import '../../bloc/select_choice_cubit/select_choice_cubit.dart';
 import 'maintenance_center_preview.dart';
+import 'nearest_winch_screen.dart';
 import 'search_result_screen.dart';
 
 class DriverHomeScreen extends StatefulWidget {
@@ -143,7 +144,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                       function: () {
                         NavigationUtils.navigateTo(
                             context: context,
-                            destinationScreen: RequestWinchScreen());
+                            destinationScreen: NearestWinchScreen());
                       }),
                 ],
               ),

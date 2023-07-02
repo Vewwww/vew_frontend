@@ -56,7 +56,7 @@ class NearRepairerCard extends StatelessWidget {
               spreadRadius: 2,
               blurRadius: 3,
               offset: const Offset(5, 0),
-            ),
+            )
           ],
         ),
         padding: const EdgeInsets.all(10),

@@ -13,7 +13,6 @@ class RequestCubit extends Cubit<RequestState> {
 
   Future<void> getDriverPrevReq() async{
     emit(GetDriverPrevReqLoadingState());
-  if (PreviousRequestResponse != null) {
       DioHelper.getData(url: "/driver/request/previousRequests/").then((value) {
         print("get pervious req response : ${value.data}");
         prevReqResponse=PreviousRequestResponse.fromJson(value.data);
@@ -25,8 +24,10 @@ class RequestCubit extends Cubit<RequestState> {
       print(error);
       emit(GetDriverPrevReqErrorState());
     });
-    } else {
-      emit(GetDriverPrevReqSuccessState(prevReqResponse!.previousRequests!));
-    }
+    
   }
+
+  // Future<void> createWinchRequest(){
+
+  // }
 }

@@ -29,8 +29,16 @@ class GettingNearestMechanicSuccessState extends NearestRepairerState {
   final List<Mechanic> mechanics;
   GettingNearestMechanicSuccessState({required this.mechanics});
 }
-
 class GettingNearestMechanicErrorState extends NearestRepairerState {}
+
+class GettingNearestWinchLoadingState extends NearestRepairerState {}
+class GettingNearestWinchSuccessState extends NearestRepairerState {
+  final List<NearestWinch> nearestWinch;
+  GettingNearestWinchSuccessState({required this.nearestWinch});
+}
+
+class GettingNearestWinchErrorState extends NearestRepairerState {}
+
 
 class GettingNearestLoadingState extends NearestRepairerState {}
 

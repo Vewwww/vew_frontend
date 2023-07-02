@@ -8,53 +8,12 @@ import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
 import 'package:vewww/views/driver/loading_winch_screen.dart';
-
 import '../../core/components/backward_arrow.dart';
 import '../../core/utils/navigation.dart';
 import '../common/map.dart';
 
 class RequestWinchScreen extends StatelessWidget {
-  //const RequestWinchScreen({Key? key}) : super(key: key);
-  // bool isLoading = false;
-  // List<Placemark>? placemark;
-  // loc.LocationData? locationData;
-  // late double latitude;
-  // late double longitude;
 
-  // Future <void> getPermission() async {
-  //   if (await Permission.location.isGranted) {
-  //    await getLocation();
-  //     if (locationData != null) {
-  //       latitude = locationData!.latitude!;
-  //       longitude = locationData!.longitude!;
-  //     }
-  //   } else {
-  //     Permission.location.request();
-  //   }
-  // }
-
-  // Future <void> getLocation() async {
-  //   setState(() {
-  //     isLoading = true;
-  //   });
-  //   locationData = await loc.Location.instance.getLocation();
-  //   setState(() {
-  //     isLoading = false;
-  //   });
-  // }
-
-  // void getAddress() async {
-  //   setState(() {
-  //     isLoading = true;
-  //   });
-  //   if (locationData != null) {
-  //     placemark = await placemarkFromCoordinates(
-  //         locationData!.latitude!, locationData!.longitude!);
-  //   }
-  //   setState(() {
-  //     isLoading = false;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +95,7 @@ class RequestWinchScreen extends StatelessWidget {
                     listener: (context, state) {},
                     builder: (context, state) {
                       return defaultButton(
-                          text: 'Request',
+                          text: 'Next',
                           // width: 300,
                           function: () {
                             print(loactionCubit.address);
