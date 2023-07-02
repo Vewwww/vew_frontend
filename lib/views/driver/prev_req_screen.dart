@@ -57,12 +57,13 @@ class _PreviousReqScreenState extends State<PreviousReqScreen> {
               if (state is GetDriverPrevReqSuccessState) {
                 return Expanded(
                   child: ListView.separated(
+                    shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        if (state.previousRequests[index].isWinch!) {
+                        if (state.previousRequests[index].isWinch! == true) {
                           previousRequestCard(
                               isWinch: state.previousRequests[index].isWinch!,
-                              location: state.previousRequests[index].location!
-                                  .description!.en!,
+                              location:
+                                  state.previousRequests[index].location!.road!,
                               dateTime:
                                   state.previousRequests[index].createdAt!,
                               serviceProvider:
@@ -76,28 +77,45 @@ class _PreviousReqScreenState extends State<PreviousReqScreen> {
                                               location: state
                                                   .previousRequests[index]
                                                   .location!
-                                                  .description!
+                                                  .road!,
+                                              dateTime: state
+                                                  .previousRequests[index]
+                                                  .createdAt!,
+                                              carType: state
+                                                  .previousRequests[index]
+                                                  .car!
+                                                  .carType!
+                                                  .name!
                                                   .en!,
-                                              dateTime: state.previousRequests[index].createdAt!,
-                                              carType: state.previousRequests[index].car!.carType!.name!.en!,
-                                              serviceProviderName: state.previousRequests[index].winch!.name!,
-                                              rating: state.previousRequests[index].winch!.rate!,
-                                              thirdInfo: state.previousRequests[index].winch!.plateNumber!,
+                                              serviceProviderName: state
+                                                  .previousRequests[index]
+                                                  .winch!
+                                                  .name!,
+                                              rating: state
+                                                  .previousRequests[index]
+                                                  .winch!
+                                                  .rate!,
+                                              thirdInfo: state
+                                                  .previousRequests[index]
+                                                  .winch!
+                                                  .plateNumber!,
                                               isWinch: true,
-                                              id: state.previousRequests[index].winch!.sId!,
+                                              id: state.previousRequests[index]
+                                                  .winch!.sId!,
                                             ))));
                               });
-                        } else {
+                        } else if (state.previousRequests[index].isWinch! ==
+                            false) {
                           previousRequestCard(
                               isWinch: state.previousRequests[index].isWinch!,
-                              location: state.previousRequests[index].location!
-                                  .description!.en!,
+                              location:
+                                  state.previousRequests[index].location!.road!,
                               dateTime:
                                   state.previousRequests[index].createdAt!,
                               serviceProvider:
                                   state.previousRequests[index].mechanic!.name!,
                               function: () {
-                                 Navigator.pushReplacement(
+                                Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                         builder: ((context) =>
@@ -105,15 +123,31 @@ class _PreviousReqScreenState extends State<PreviousReqScreen> {
                                               location: state
                                                   .previousRequests[index]
                                                   .location!
-                                                  .description!
+                                                  .road!,
+                                              dateTime: state
+                                                  .previousRequests[index]
+                                                  .createdAt!,
+                                              carType: state
+                                                  .previousRequests[index]
+                                                  .car!
+                                                  .carType!
+                                                  .name!
                                                   .en!,
-                                              dateTime: state.previousRequests[index].createdAt!,
-                                              carType: state.previousRequests[index].car!.carType!.name!.en!,
-                                              serviceProviderName: state.previousRequests[index].mechanic!.name!,
-                                              rating: state.previousRequests[index].mechanic!.rate!,
-                                              thirdInfo: state.previousRequests[index].mechanic!.service!,
+                                              serviceProviderName: state
+                                                  .previousRequests[index]
+                                                  .mechanic!
+                                                  .name!,
+                                              rating: state
+                                                  .previousRequests[index]
+                                                  .mechanic!
+                                                  .rate!,
+                                              thirdInfo: state
+                                                  .previousRequests[index]
+                                                  .mechanic!
+                                                  .service!,
                                               isWinch: false,
-                                              id: state.previousRequests[index].mechanic!.sId!,
+                                              id: state.previousRequests[index]
+                                                  .mechanic!.sId!,
                                             ))));
                               });
                         }

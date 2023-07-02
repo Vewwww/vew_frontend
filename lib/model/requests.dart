@@ -1,5 +1,5 @@
 import 'package:vewww/model/car_type.dart';
-import 'package:vewww/model/location.dart';
+//import 'package:vewww/model/location.dart';
 import 'package:vewww/model/name.dart';
 
 class PreviousRequestResponse {
@@ -8,9 +8,9 @@ class PreviousRequestResponse {
   PreviousRequestResponse({this.previousRequests});
 
   PreviousRequestResponse.fromJson(Map<String, dynamic> json) {
-    if (json['previousRequests'] != null) {
+    if (json['data'] != null) {
       previousRequests = <PreviousRequest>[];
-      json['previousRequests'].forEach((v) {
+      json['data'].forEach((v) {
         previousRequests!.add(new PreviousRequest.fromJson(v));
       });
     }
@@ -19,7 +19,7 @@ class PreviousRequestResponse {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.previousRequests != null) {
-      data['previousRequests'] =
+      data['data'] =
           this.previousRequests!.map((v) => v.toJson()).toList();
     }
     return data;
@@ -86,27 +86,27 @@ class PreviousRequest {
   }
 }
 
-// class Location {
-//   String? road;
-//   double? latitude;
-//   double? longitude;
+class Location {
+  String? road;
+  double? latitude;
+  double? longitude;
 
-//   Location({this.road, this.latitude, this.longitude});
+  Location({this.road, this.latitude, this.longitude});
 
-//   Location.fromJson(Map<String, dynamic> json) {
-//     road = json['road'];
-//     latitude = json['latitude'];
-//     longitude = json['longitude'];
-//   }
+  Location.fromJson(Map<String, dynamic> json) {
+    road = json['road'];
+    latitude = json['latitude'];
+    longitude = json['longitude'];
+  }
 
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['road'] = this.road;
-//     data['latitude'] = this.latitude;
-//     data['longitude'] = this.longitude;
-//     return data;
-//   }
-// }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['road'] = this.road;
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
+    return data;
+  }
+}
 
 class Driver {
   String? sId;

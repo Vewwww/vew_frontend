@@ -23,23 +23,7 @@ class AddGasStationScreen extends StatelessWidget {
     AdminAddCubit adminAddCubit = AdminAddCubit.get(context);
     return Scaffold(
       backgroundColor: Colors.white,
-      /*appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: BackwardArrow(function: () {
-          Navigator.pop(context);
-        }),
-        title: const Center(
-          child: Text(
-            'Add Maintenance Center',
-            style: TextStyle(
-              color: Color.fromRGBO(2, 113, 106, 1),
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ),*/
+    
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
