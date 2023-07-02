@@ -33,125 +33,127 @@
 //     profileCubit.getAdminProfile();
 //   }
 
-//   Widget build(BuildContext context) {
-//     ProfileCubit profileCubit = ProfileCubit.get(context);
-//     return Scaffold(
-//       body: Stack(
-//         children: [
-//           Container(
-//             width: double.infinity,
-//             decoration: BoxDecoration(
-//               gradient: LinearGradient(
-//                   tileMode: TileMode.repeated,
-//                   begin: Alignment.topLeft,
-//                   end: Alignment.bottomRight,
-//                   colors: [
-//                     mainColor,
-//                     mainColor.withOpacity(0.8),
-//                     const Color.fromARGB(255, 4, 237, 222),
-//                     Colors.white,
-//                     Colors.white,
-//                   ]),
-//             ),
-//             child: Column(
-//               children: [
-//                 CustomAppBar(
-//                   haveBackArrow: true,
-//                   iconColor: Colors.white,
-//                 ),
-//                 CircleAvatar(
-//                   radius: 50,
-//                   backgroundColor: Colors.white,
-//                   child: Icon(
-//                     Icons.person,
-//                     size: 50,
-//                     color: mainColor,
-//                   ),
-//                 ),
-//                 const SizedBox(height: 20),
-//                 Text(
-//                   _name.text,
-//                   style: AppTextStyle.whiteTextStyle(20),
-//                 ),
-//                 const SizedBox(height: 20),
-//               ],
-//             ),
-//           ),
-//           Positioned(
-//               bottom: 0,
-//               width: MediaQuery.of(context).size.width,
-//               height: MediaQuery.of(context).size.height / 6 * 4,
-//               child: Container(
-//                 padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
-//                 decoration: const BoxDecoration(
-//                     color: Colors.white,
-//                     borderRadius:
-//                         BorderRadius.vertical(top: Radius.circular(15))),
-//                 child: SingleChildScrollView(
-//                   child: Stack(
-//                     children: [
-//                       Positioned(
-//                           right: 5,
-//                           top: -10,
-//                           child: IconButton(
-//                             icon: const Icon(Icons.edit),
-//                             onPressed: () {
-//                               if(profileCubit.state is GettingProfileSuccessState)
-//                               NavigationUtils.navigateTo(
-//                                   context: context,
-//                                   destinationScreen: AdminEditProfile( profileCubit.adminProfileResponse.admin ));
-//                             },
-//                           )),
-//                       BlocBuilder<ProfileCubit, ProfileState>(
-//                         builder: (context, state) {
-//                           if (state is GettingProfileSuccessState) {
-//                             return Column(
-//                               children: [
-//                                 CustomTextField(
-//                                   readOnly: true,
-//                                   label: "Name",
-//                                   //controller: _name,
-//                                   hint: profileCubit
-//                                       .adminProfileResponse!.admin!.name,
-//                                   validator: (value) {},
-//                                 ),
-//                                 CustomTextField(
-//                                   readOnly: true,
-//                                   label: "Email",
-//                                   //controller: _email,
-//                                   hint: profileCubit
-//                                       .adminProfileResponse!.admin!.email,
-//                                   validator: (value) {},
-//                                 ),
-//                                 CustomTextField(
-//                                   readOnly: true,
-//                                   label: "Phone Number",
-//                                   hint: profileCubit
-//                                       .adminProfileResponse!.admin!.phoneNumber,
-// //controller: _phone,
-//                                   validator: (value) {},
-//                                 ),
-//                               ],
-//                             );
-//                           } else {
-//                             return Center(
-//                                 child: Column(
-//                               children: [
-//                                 SizedBox(
-//                                     height:
-//                                         MediaQuery.of(context).size.height / 3),
-//                                 CircularProgressIndicator(),
-//                               ],
-//                             ));
-//                           }
-//                         },
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               )),
-//         ],
-//       ),
-//     );
-//   }
-// }
+
+  Widget build(BuildContext context) {
+    ProfileCubit profileCubit = ProfileCubit.get(context);
+    return Scaffold(
+      body: Stack(
+        children: [
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  tileMode: TileMode.repeated,
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    mainColor,
+                    mainColor.withOpacity(0.8),
+                    const Color.fromARGB(255, 4, 237, 222),
+                    Colors.white,
+                    Colors.white,
+                  ]),
+            ),
+            child: Column(
+              children: [
+                CustomAppBar(
+                  haveBackArrow: true,
+                  iconColor: Colors.white,
+                ),
+                CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Colors.white,
+                  child: Icon(
+                    Icons.person,
+                    size: 50,
+                    color: mainColor,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  _name.text,
+                  style: AppTextStyle.whiteTextStyle(20),
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
+          ),
+          Positioned(
+              bottom: 0,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height / 6 * 4,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(15))),
+                child: SingleChildScrollView(
+                  child: Stack(
+                    children: [
+                      Positioned(
+                          right: 5,
+                          top: -10,
+                          child: IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () {
+                              if(profileCubit.state is GettingProfileSuccessState)
+                              NavigationUtils.navigateTo(
+                                  context: context,
+                                  destinationScreen: AdminEditProfile(/* profileCubit.adminProfileResponse.admin*/ ));
+                            },
+                          )),
+                      BlocBuilder<ProfileCubit, ProfileState>(
+                        builder: (context, state) {
+                          if (state is GettingProfileSuccessState) {
+                            return Column(
+                              children: [
+                                CustomTextField(
+                                  readOnly: true,
+                                  label: "Name",
+                                  //controller: _name,
+                                  hint: profileCubit
+                                      .adminProfileResponse!.admin!.name,
+                                  validator: (value) {},
+                                ),
+                                CustomTextField(
+                                  readOnly: true,
+                                  label: "Email",
+                                  //controller: _email,
+                                  hint: profileCubit
+                                      .adminProfileResponse!.admin!.email,
+                                  validator: (value) {},
+                                ),
+                                CustomTextField(
+                                  readOnly: true,
+                                  label: "Phone Number",
+                                  hint: profileCubit
+                                      .adminProfileResponse!.admin!.phoneNumber,
+//controller: _phone,
+                                  validator: (value) {},
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Center(
+                                child: Column(
+                              children: [
+                                SizedBox(
+                                    height:
+                                        MediaQuery.of(context).size.height / 3),
+                                CircularProgressIndicator(),
+                              ],
+                            ));
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              )),
+        ],
+      ),
+    );
+  }
+}
+

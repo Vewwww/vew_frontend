@@ -28,6 +28,26 @@ class WinchDriverResponse {
     return data;
   }
 }
+class WinchProfileResponse {
+  String? status;
+  WinchDriver? winch;
+
+  WinchProfileResponse({this.status, this.winch});
+
+  WinchProfileResponse.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    winch = json['data'] != null ? new WinchDriver.fromJson(json['data']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status'] = this.status;
+    if (this.winch != null) {
+      data['data'] = this.winch!.toJson();
+    }
+    return data;
+  }
+}
 
 class WinchDriver {
   Location? location;
