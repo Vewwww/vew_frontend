@@ -42,8 +42,8 @@ class AdminDrawer extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: InkWell(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AdminProfile()));
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => AdminProfile()));
               },
               child: Row(
                 children: [

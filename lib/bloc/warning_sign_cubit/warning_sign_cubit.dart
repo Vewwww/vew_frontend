@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import '../../model/warning_sign.dart';
@@ -18,10 +19,12 @@ class WarningSignCubit extends Cubit<WarningSignState> {
         print("get all warning sign response : ${value.data}");
         signResponse = SignResponse.fromJson(value.data);
         emit(GetAllWarningSignSuccessState(signs: signResponse!.signs!));
-      }).onError((error, stackTrace) {
-        emit(GetAllWarningSignErrorState());
-        print("gat all warning sign error : ${error}");
-      });
+      }).catchError((error){
+      if(error is DioError){
+        print(error.response);
+      }
+      emit(GetAllWarningSignErrorState());
+    });
     } else {
       emit(GetAllWarningSignSuccessState(signs: signResponse!.signs!));
     }
