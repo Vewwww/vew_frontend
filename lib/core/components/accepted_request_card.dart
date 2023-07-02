@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:vewww/bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
+import 'package:vewww/controllers/controller.dart';
 import 'package:vewww/core/style/app_colors.dart';
+import 'package:vewww/model/accepted_requests_response.dart';
 import '../../views/common/chats_screen.dart';
 import '../../views/winch/single_request_screen.dart';
 import '../style/app_Text_Style/app_text_style.dart';
@@ -8,7 +11,8 @@ import '../utils/navigation.dart';
 import 'rating_bar.dart';
 
 class AcceptedRequestCard extends StatefulWidget {
-  const AcceptedRequestCard({Key? key}) : super(key: key);
+  MechanicRequestsData acceptedRequestData;
+  AcceptedRequestCard(this.acceptedRequestData, {Key? key}) : super(key: key);
 
   @override
   State<AcceptedRequestCard> createState() => _AcceptedRequestCardState();
@@ -20,7 +24,8 @@ class _AcceptedRequestCardState extends State<AcceptedRequestCard> {
     return InkWell(
       onTap: () {
         NavigationUtils.navigateTo(
-            context: context, destinationScreen: SingleRequestScreen());
+            context: context,
+            destinationScreen: SingleRequestScreen(widget.acceptedRequestData));
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -45,20 +50,20 @@ class _AcceptedRequestCardState extends State<AcceptedRequestCard> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  "احمد كمال",
+                  widget.acceptedRequestData.driver!.person!.name!,
                   style: AppTextStyle.titleTextStyle(20),
                 ),
                 RatingBar(4.4, size: 15),
                 Text(
-                  "Jeep : السيارة",
+                  "السيارة: ${widget.acceptedRequestData.car!.carType!.name!.ar}",
                   style: AppTextStyle.darkGreyStyle(size: 13),
                 ),
                 Row(
                   children: [
                     IconButton(
                         onPressed: () async {
-                          await FlutterPhoneDirectCaller.callNumber(
-                              "01155004375");
+                          await Controller.call(
+                              widget.acceptedRequestData.driver!.phoneNumber!);
                         },
                         icon: Icon(
                           Icons.call,
@@ -66,7 +71,10 @@ class _AcceptedRequestCardState extends State<AcceptedRequestCard> {
                           color: mainColor,
                         )),
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          await Controller.goToGoogleMaps(
+                              widget.acceptedRequestData.location!);
+                        },
                         icon: Icon(
                           Icons.location_on,
                           size: 17,
@@ -91,7 +99,12 @@ class _AcceptedRequestCardState extends State<AcceptedRequestCard> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: mainColor,
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        RepairerRequestsCubit repairerRequestsCubit =
+                            RepairerRequestsCubit.get(context);
+                        await repairerRequestsCubit.mechanicCompleteRequest(
+                            widget.acceptedRequestData.sId!);
+                      },
                       child: const Text(
                         "تم",
                         style: TextStyle(color: Colors.white),

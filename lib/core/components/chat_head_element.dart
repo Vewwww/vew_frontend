@@ -10,7 +10,9 @@ import '../utils/navigation.dart';
 
 class ChatHeadElement extends StatelessWidget {
   Chat chat;
-  ChatHeadElement({required this.chat, Key? key}) : super(key: key);
+  ChatHeadElement({required this.chat, Key? key}) : super(key: key) {
+    print(chat.toJson());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,17 +54,21 @@ class ChatHeadElement extends StatelessWidget {
                     chat.chatName!,
                     style: AppTextStyle.darkGreyStyle(size: 22),
                   ),
-                  Text(
-                    chat.messages![chat.messages!.length - 1].content!,
-                    style: AppTextStyle.darkGreyStyle(size: 17),
-                  ),
+                  (chat.messages != null && chat.messages!.length > 0)
+                      ? Text(
+                          chat.messages![chat.messages!.length - 1].content!,
+                          style: AppTextStyle.darkGreyStyle(size: 17),
+                        )
+                      : Container(),
                   SizedBox(
                     height: 15,
                   ),
-                  Text(
-                    chat.messages![chat.messages!.length - 1].time!,
-                    style: AppTextStyle.greyStyle(size: 12),
-                  ),
+                  (chat.messages != null && chat.messages!.length > 0)
+                      ? Text(
+                          chat.messages![chat.messages!.length - 1].time!,
+                          style: AppTextStyle.greyStyle(size: 12),
+                        )
+                      : Container(),
                 ],
               ),
             ),

@@ -7,8 +7,9 @@ class SidebarElement extends StatelessWidget {
   IconData? icon;
   Function? onpress;
   bool dot;
-  SidebarElement(this.title, this.icon, {this.onpress, this.dot=false , super.key}) {
-      onpress ??= () {};
+  SidebarElement(this.title, this.icon,
+      {this.onpress, this.dot = false, super.key}) {
+    onpress ??= () {};
   }
 
   @override
@@ -26,28 +27,33 @@ class SidebarElement extends StatelessWidget {
         children: [
           Text(
             title!,
-            style: AppTextStyle.darkGreyStyle(size:16),
+            style: AppTextStyle.darkGreyStyle(size: 16),
           ),
           const SizedBox(width: 10),
           CircleAvatar(
             radius: 15,
             backgroundColor: Colors.white.withOpacity(0),
-            child: (dot)?  Stack(
-                        children: [
-                          Icon(Icons.notifications),
-                          Positioned(
-                            right: 0,
-                            top: 1,
-                            child: CircleAvatar(
-                              radius: 5,
-                              backgroundColor: Colors.red.shade900,
-                            ),
-                          )
-                        ],
-                      ): Icon(
-              icon!,
-              color: mainColor,
-            ),
+            child: (dot)
+                ? Stack(
+                    children: [
+                      Icon(
+                        icon,
+                        color: mainColor,
+                      ),
+                      Positioned(
+                        right: 0,
+                        top: 1,
+                        child: CircleAvatar(
+                          radius: 5,
+                          backgroundColor: Colors.red.shade900,
+                        ),
+                      )
+                    ],
+                  )
+                : Icon(
+                    icon!,
+                    color: mainColor,
+                  ),
           ),
         ],
       ),

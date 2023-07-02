@@ -36,7 +36,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     });
   }
 
-  Future<void> EditDriverProfile(Map<String,dynamic> driver) async {
+  Future<void> EditDriverProfile(Map<String, dynamic> driver) async {
     emit(EdittingProfileLoadingState());
     await DioHelper.putData(
             url: "/driver/",

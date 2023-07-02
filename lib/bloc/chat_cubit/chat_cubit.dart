@@ -15,20 +15,25 @@ class ChatCubit extends Cubit<ChatState> {
   ChatResponse? chatResponse;
   Chat? chat;
 
-  void reciveMessage(Map<String, dynamic> json , Chat chat) {
+  void reciveMessage(Map<String, dynamic> json, Chat chat) {
     Messages message = Messages.fromJson(json);
     if (chat != null) {
       chat.messages!.add(message);
-      getChats();
+      if (SharedPreferencesHelper.getData(key: "vewRole") == "winch")
+        getWinchChats();
+      if (SharedPreferencesHelper.getData(key: "vewRole") == "driver")
+        getDriverChats();
+      if (SharedPreferencesHelper.getData(key: "vewRole") == "mechanic")
+        getMechanicChats();
       emit(MessageSentState());
     }
   }
-  void setchat(Chat chat){
+
+  void setchat(Chat chat) {
     this.chat = chat;
   }
 
-
-  Future<void> getChats() async {
+  Future<void> getWinchChats() async {
     emit(GettingChatsLoadingState());
     await DioHelper.getData(
       url: "/winch/chat/",
@@ -36,6 +41,41 @@ class ChatCubit extends Cubit<ChatState> {
     ).then((value) {
       print("chats response : ${value.data}");
       chatResponse = ChatResponse.fromJson(value.data);
+      emit(GettingChatsSuccessState(chatResponse!.chats!));
+    }).catchError((err) {
+      if (err is DioError) {
+        print("chat error : ${err.response}");
+      }
+      emit(GettingChatsErrorState());
+    });
+  }
+
+  Future<void> getDriverChats() async {
+    emit(GettingChatsLoadingState());
+    await DioHelper.getData(
+      url: "/driver/chat/",
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
+    ).then((value) {
+      print("chats response : ${value.data}");
+      chatResponse = ChatResponse.fromJson(value.data);
+      emit(GettingChatsSuccessState(chatResponse!.chats!));
+    }).catchError((err) {
+      if (err is DioError) {
+        print("chat error : ${err.response}");
+      }
+      emit(GettingChatsErrorState());
+    });
+  }
+
+  Future<void> getMechanicChats() async {
+    emit(GettingChatsLoadingState());
+    await DioHelper.getData(
+      url: "/mechanic/chat/",
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
+    ).then((value) {
+      print("chats response : ${value.data}");
+      chatResponse = ChatResponse.fromJson(value.data);
+      print("mechanic get chants done");
       emit(GettingChatsSuccessState(chatResponse!.chats!));
     }).catchError((err) {
       if (err is DioError) {

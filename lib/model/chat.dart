@@ -45,25 +45,21 @@ class Chat {
 
   Chat.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
+    print("object");
     room = json['room'];
+    print("object1");
     participants = json['participants'].cast<String>();
+    print("object2");
     if (json['messages'] != null) {
       messages = <Messages>[];
       json['messages'].forEach((v) {
         messages!.add(new Messages.fromJson(v));
       });
     }
+    print("object3");
     iV = json['__v'];
-    var x = json['chatName'];
-    final startIndex = x!.indexOf("'");
-    final endIndex = x!.lastIndexOf("'");
-    print("namee: ${x!.substring(startIndex + 1, endIndex)}");
-    print("x= $x");
-    x = x!.substring(startIndex + 1, endIndex);
-    chatName = x;
+    chatName = json['chatName'];
   }
-
-  
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

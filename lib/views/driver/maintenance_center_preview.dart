@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-import 'package:vewww/controllers/driver_controller.dart';
+import 'package:vewww/controllers/controller.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/default_button.dart';
 import '../../core/components/rating_bar.dart';
@@ -58,8 +58,7 @@ class MaintenanceCenterPreview extends StatelessWidget {
                       ),
                       onPressed: () async {
                         if (maintenanceCenter.phoneNumber != null)
-                          await DriverController.call(
-                              maintenanceCenter.phoneNumber!);
+                          await Controller.call(maintenanceCenter.phoneNumber!);
                       },
                     ),
                     const SizedBox(
@@ -72,8 +71,8 @@ class MaintenanceCenterPreview extends StatelessWidget {
                           size: 30,
                         ),
                         onPressed: () async {
-                          await DriverController.goToGoogleMaps(maintenanceCenter.location!);
-
+                          await Controller.goToGoogleMaps(
+                              maintenanceCenter.location!);
                         }),
                   ],
                 )

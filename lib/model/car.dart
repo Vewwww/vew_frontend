@@ -71,12 +71,14 @@ class Car {
       color = ColorData(sId: json['color']);
     else
       color = ColorData.fromJson(json['color']);
-    owner = json['owner'];
+    owner = json['owner'] ?? "";
     iV = json['__v'];
-    if (json['carModel'] is String)
-      carModel = CarModel(sId: json['carModel']);
-    else
-      carModel = CarModel.fromJson(json['carModel']);
+    if (json['carModel'] != null) {
+      if (json['carModel'] is String)
+        carModel = CarModel(sId: json['carModel']);
+      else
+        carModel = CarModel.fromJson(json['carModel']);
+    }
     year = json['year'];
     carLicenseRenewalDate =
         json['CarLicenseRenewalDate'] ?? json['carLicenseRenewalNotifition'];

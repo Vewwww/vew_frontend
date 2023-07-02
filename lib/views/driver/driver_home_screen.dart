@@ -31,7 +31,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
     var notificationCubit = context.read<NotificationCubit>();
     notificationCubit.getNotificatin();
     var chatCubit = context.read<ChatCubit>();
-    chatCubit.getChats();
+    chatCubit.getWinchChats();
   }
 
   @override

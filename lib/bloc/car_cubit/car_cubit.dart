@@ -43,7 +43,7 @@ class CarCubit extends Cubit<CarState> {
     print("updatingg car");
     emit(UpdateCarLoadingState());
     await DioHelper.putData(
-            url: "/car/${car.sId}",
+            url: "/driver/car/${car.sId}",
             data: car.toJson(),
             token: SharedPreferencesHelper.getData(key: "vewToken"))
         .then((value) {
@@ -52,6 +52,8 @@ class CarCubit extends Cubit<CarState> {
     }).catchError((
       error,
     ) {
+
+
       if (error is DioError) print("update car error : ${error.response}");
       emit(UpdateCarErrorState());
     });
@@ -67,8 +69,9 @@ class CarCubit extends Cubit<CarState> {
         .then((value) {
       print("remove car response : ${value}");
       emit(RemoveCarSuccessState());
-    }).onError((error, stackTrace) {
-      print("remove car error : $error");
+    }).catchError((error) {
+      if(error is DioError)
+      print("remove car error : ${error.response}");
       emit(RemoveCarErrorState());
     });
   }
@@ -85,7 +88,7 @@ class CarCubit extends Cubit<CarState> {
   bool carExistInEdited(Car commingCar) {
     if (editedCars != null) {
       for (Car car in editedCars!) {
-        if (car.sId == commingCar.sId) return true;
+        if (car.sId == commingCar.sId) { return true;}
       }
     }
     return false;

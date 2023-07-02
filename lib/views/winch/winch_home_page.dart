@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vewww/model/accepted_requests_response.dart';
 import 'package:vewww/views/winch/winch_profile.dart';
 import 'package:vewww/views/winch/winch_upcoming_requests_screen.dart';
 
@@ -24,8 +25,9 @@ class _WinchHomePageState extends State<WinchHomePage> {
   void initState() {
     super.initState();
     var chatCubit = context.read<ChatCubit>();
-    chatCubit.getChats();
+    chatCubit.getWinchChats();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,30 +65,31 @@ class _WinchHomePageState extends State<WinchHomePage> {
                 _globalKey.currentState!.openEndDrawer();
               }, icon: BlocBuilder<ChatCubit, ChatState>(
                 builder: (context, state) {
-                  if (state is GettingChatsSuccessState && ChatCubit.get(context).chatResponse!.newChats!)
-                  return Stack(
-                    children: [
-                      Icon(
-                        Icons.menu,
-                        size: 30,
-                        color: Colors.grey,
-                      ),
-                      Positioned(
-                            right: 0,
-                            top: 1,
-                            child: CircleAvatar(
-                              radius: 5,
-                              backgroundColor: Colors.red.shade900,
-                            ),
-                          )
-                    ],
-                  );
+                  if (state is GettingChatsSuccessState &&
+                      ChatCubit.get(context).chatResponse!.newChats!)
+                    return Stack(
+                      children: [
+                        Icon(
+                          Icons.menu,
+                          size: 30,
+                          color: Colors.grey,
+                        ),
+                        Positioned(
+                          right: 0,
+                          top: 1,
+                          child: CircleAvatar(
+                            radius: 5,
+                            backgroundColor: Colors.red.shade900,
+                          ),
+                        )
+                      ],
+                    );
                   else
-                  return Icon(
-                    Icons.menu,
-                    size: 30,
-                    color: Colors.grey,
-                  );
+                    return Icon(
+                      Icons.menu,
+                      size: 30,
+                      color: Colors.grey,
+                    );
                 },
               )),
               haveLogo: true,
@@ -103,7 +106,7 @@ class _WinchHomePageState extends State<WinchHomePage> {
                 child: ListView.builder(
                     itemCount: 10,
                     itemBuilder: (BuildContext context, int index) {
-                      return AcceptedRequestCard();
+                      return AcceptedRequestCard(MechanicRequestsData());
                     }))
           ],
         ),

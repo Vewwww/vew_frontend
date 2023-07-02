@@ -8,22 +8,22 @@ class EmptyRequests extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-          children: [
-            
-            Image.asset(
-              "assets/images/Empty.png",
-              width: 300,
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Text(
-              "لا يوجد لديك طلبات نقل الآن\n يمكنك الإنتظار لحين وصول طلب",
-              textDirection: TextDirection.rtl,
-              style: AppTextStyle.lightGrayTextStyle(25),
-            ),
-            Expanded(child: Container()),
-          ],
-        );
+      children: [
+        
+        Image.asset(
+          "assets/images/Empty.png",
+          width: 300,
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+        Text(
+          "لا يوجد لديك طلبات نقل الآن\n يمكنك الإنتظار لحين وصول طلب",
+          textDirection: TextDirection.rtl,
+          style: AppTextStyle.lightGrayTextStyle(25),
+        ),
+        Expanded(child: Container()),
+      ],
+    );
   }
 }
