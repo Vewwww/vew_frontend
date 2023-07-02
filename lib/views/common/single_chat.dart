@@ -51,9 +51,9 @@ class _SingleChatState extends State<SingleChat> {
       ChatCubit.get(context).reciveMessage(data, widget.chat);
 
       //TODO::scroll down or sound
-      FlutterRingtonePlayer.play(
-        android: AndroidSounds.notification,
-      );
+      // FlutterRingtonePlayer.play(
+      //   android: AndroidSounds.notification,
+      // );
     });
     socket!.onDisconnect((_) => print('Connection Disconnection'));
     socket!.onConnectError((err) => print(err));

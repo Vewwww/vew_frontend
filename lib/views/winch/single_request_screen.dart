@@ -2,14 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:vewww/core/components/backward_arrow.dart';
 import 'package:vewww/core/components/rating_bar.dart';
 import 'package:vewww/core/style/app_colors.dart';
+import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
+import 'package:vewww/views/mechanic/mechanic_home_screen.dart';
+import 'package:vewww/views/winch/winch_home_page.dart';
 
+import '../../bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
 import '../../core/components/data_element.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/navigation.dart';
+import '../../model/accepted_requests_response.dart';
 
 class SingleRequestScreen extends StatelessWidget {
   String type; // accepted or comming
-  SingleRequestScreen({this.type = "accepted", Key? key}) : super(key: key);
+  MechanicRequestsData acceptedRequestsData;
+  SingleRequestScreen(this.acceptedRequestsData,
+      {this.type = "accepted", Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +55,9 @@ class SingleRequestScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "أحمد ناصر",
+                    acceptedRequestsData.driver!.person!.name!,
                     style: AppTextStyle.whiteTextStyle(28),
                   ),
-                  RatingBar(4),
                 ]),
               ),
             ),
@@ -101,19 +108,53 @@ class SingleRequestScreen extends StatelessWidget {
                             children: [
                           Text("السيارة",
                               style: AppTextStyle.lightGrayTextStyle(14)),
-                          DataElement("رقم السيارة", "286 أ خ د"),
-                          DataElement("نوع السيارة", "KIA"),
-                          DataElement("موديل السيارة", "camry"),
+                          DataElement("رقم السيارة",
+                              acceptedRequestsData.car!.plateNumber!),
+                          DataElement("نوع السيارة",
+                              acceptedRequestsData.car!.carType!.name!.ar!),
+                          (acceptedRequestsData.car!.carModel != null)
+                              ? DataElement("موديل السيارة",
+                                  acceptedRequestsData.car!.carModel!.name!)
+                              : Container(),
                           DataElement("لون السيارة", "أحمر"),
-                          DataElement("مشكلة السيارة", "تغيير السيارة"),
-                          DataElement("الموقع", "أحمد مراد، جيزة، مصر"),
-                          const SizedBox(height: 10),
+                          DataElement("مشكلة السيارة",
+                              acceptedRequestsData.service!.name!.ar!),
+                          (acceptedRequestsData.location!.description!.ar !=
+                                  "no arabic location description available")
+                              ? DataElement(
+                                  "الموقع",
+                                  acceptedRequestsData
+                                      .location!.description!.ar!)
+                              : Container(),
+                          const SizedBox(height: 30),
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                                onPressed: () {
-                                  NavigationUtils.navigateBack(
-                                      context: context);
+                                onPressed: () async {
+                                  RepairerRequestsCubit repairerRequestsCubit =
+                                      RepairerRequestsCubit.get(context);
+                                  String role = SharedPreferencesHelper.getData(
+                                      key: "vewRole");
+                                  if (role == "winch") {
+                                    NavigationUtils.navigateTo(
+                                        context: context,
+                                        destinationScreen: WinchHomePage());
+                                  } else {
+                                    if (type == "accepted") {
+                                      await repairerRequestsCubit
+                                          .mechanicCompleteRequest(
+                                              acceptedRequestsData.sId!);
+                                    } else {
+                                      await repairerRequestsCubit
+                                          .mechanicAcceptRequest(
+                                              acceptedRequestsData.sId!);
+                                    }
+
+                                    NavigationUtils.navigateTo(
+                                        context: context,
+                                        destinationScreen:
+                                            MechanicHomeScreen());
+                                  }
                                 },
                                 child:
                                     Text((type == "accepted") ? "تم" : "قبول")),
@@ -125,9 +166,27 @@ class SingleRequestScreen extends StatelessWidget {
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: Color.fromARGB(
                                               255, 220, 220, 220)),
-                                      onPressed: () {
-                                        NavigationUtils.navigateBack(
-                                            context: context);
+                                      onPressed: () async {
+                                        RepairerRequestsCubit
+                                            repairerRequestsCubit =
+                                            RepairerRequestsCubit.get(context);
+                                        String role =
+                                            SharedPreferencesHelper.getData(
+                                                key: "vewRole");
+                                        if (role == "mechanic") {
+                                          await repairerRequestsCubit
+                                              .mechanicCancelRequest(
+                                                  acceptedRequestsData.sId!);
+                                          NavigationUtils.navigateAndClearStack(
+                                              context: context,
+                                              destinationScreen:
+                                                  MechanicHomeScreen());
+                                        } else {
+                                          NavigationUtils.navigateAndClearStack(
+                                              context: context,
+                                              destinationScreen:
+                                                  WinchHomePage());
+                                        }
                                       },
                                       child: Text(
                                         "رفض",

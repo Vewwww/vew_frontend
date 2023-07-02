@@ -22,8 +22,8 @@ class SelectChoiceCubit extends Cubit<SelectChoiceState> {
     emit(CarTypeChoiceSelected());
   }
 
-  void changeHasDelivey(){
-    hasDelivery  = !hasDelivery;
+  void changeHasDelivey() {
+    hasDelivery = !hasDelivery;
     emit(HasDeliveryChangedState());
   }
 

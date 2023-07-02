@@ -16,7 +16,7 @@ class AdminAnalysisCubit extends Cubit<AdminAnalysisState> {
     emit(GetUserAnalysisLoadingState());
     DioHelper.getData(
       url: url,
-      token:SharedPreferencesHelper.getData(key: 'vewToken'),
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
     ).then((value) {
       print("Get users analysis response : ${value.data}");
       UserAnalysisResponse userAnalysisResponse =
@@ -33,7 +33,7 @@ class AdminAnalysisCubit extends Cubit<AdminAnalysisState> {
     emit(GetGenderAnalysisLoadingState());
     DioHelper.getData(
       url: url,
-      token:SharedPreferencesHelper.getData(key: 'vewToken'),
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
     ).then((value) {
       print("Get gender analysis response : ${value.data}");
       GenderAnalysisResponse genderAnalysisResponse =
@@ -50,7 +50,7 @@ class AdminAnalysisCubit extends Cubit<AdminAnalysisState> {
     emit(GetSeasonAnalysisLoadingState());
     DioHelper.getData(
       url: url,
-      token:SharedPreferencesHelper.getData(key: 'vewToken'),
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
     ).then((value) {
       print("Get season analysis response : ${value.data}");
       SeasonAnalysisResponse seasonAnalysisResponse =
@@ -61,5 +61,4 @@ class AdminAnalysisCubit extends Cubit<AdminAnalysisState> {
       emit(GetSeasonAnalysisErrorState());
     });
   }
-
 }

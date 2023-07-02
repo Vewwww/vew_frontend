@@ -4,6 +4,7 @@ import 'package:vewww/bloc/car_cubit/car_cubit.dart';
 import 'package:vewww/bloc/select_choice_cubit/select_choice_cubit.dart';
 import 'package:vewww/bloc/select_color_cubit/select_color_cubit.dart';
 import 'package:vewww/core/style/app_colors.dart';
+import 'package:vewww/model/car_type.dart';
 import 'package:vewww/model/driver.dart';
 import 'package:vewww/views/common/select_color_screen.dart';
 import 'package:vewww/views/driver/select_car_model.dart';
@@ -462,16 +463,17 @@ class SignUpScreen extends StatelessWidget {
                               selectChoiceCubit.carTypeResponse != null) {
                             Car car = Car(
                               plateNumber: _carPlateNum.text,
-                              carType: selectChoiceCubit
-                                  .carTypeResponse!
-                                  .carType![SelectChoiceCubit.get(context)
-                                      .carTypeChoice]
-                                  .sId,
-                              color: SelectColorCubit.get(context)
+                              carType: CarType(
+                                  sId: selectChoiceCubit
+                                      .carTypeResponse!
+                                      .carType![SelectChoiceCubit.get(context)
+                                          .carTypeChoice]
+                                      .sId),
+                              color: ColorData(sId: SelectColorCubit.get(context)
                                   .carColorResponse!
                                   .carColor![
-                                      SelectColorCubit.get(context).color]
-                                  .sId,
+                                      SelectColorCubit.get(context).color].sId)
+                                  ,
                               carLicenseRenewalDate:
                                   _carlisenceRenewalDate.text,
                               miles: _miles.text,

@@ -16,6 +16,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   MechanicProfileResponse? mechanicProfileResponse;
   WinchProfileResponse? winchDriverResponse;
   ProfileCubit() : super(ProfileInitial());
+
   Future<void> getDriverProfile() async {
     emit(GettingProfileLoadingState());
     await DioHelper.getData(
@@ -29,7 +30,29 @@ class ProfileCubit extends Cubit<ProfileState> {
       if (err is DioError) {
         print(err.response);
       }
+      print(err);
+
       emit(GettingProfileErrorState());
+    });
+  }
+
+  Future<void> EditDriverProfile(Map<String, dynamic> driver) async {
+    emit(EdittingProfileLoadingState());
+    await DioHelper.putData(
+            url: "/driver/",
+            data: driver,
+            token: SharedPreferencesHelper.getData(key: 'vewToken'))
+        .then((value) {
+      print("edit driver profile response : ${value.data}");
+      //profileResponse = ProfileResponse.fromJson(value.data);
+      emit(EdittingProfileSuccessState());
+    }).catchError((err) {
+      if (err is DioError) {
+        print(err.response);
+      }
+      print(err);
+
+      emit(EdittingProfileErrorState());
     });
   }
 

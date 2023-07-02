@@ -6,3 +6,16 @@ class CarInitial extends CarState {}
 class CreateCarLoadingState extends CarState {}
 class CreateCarSuccessState extends CarState {}
 class CreateCarErrorState extends CarState {}
+class UpdateCarLoadingState extends CarState {}
+class UpdateCarSuccessState extends CarState {}
+class UpdateCarErrorState extends CarState {}
+class RemoveCarLoadingState extends CarState {}
+class RemoveCarSuccessState extends CarState {}
+class RemoveCarErrorState extends CarState {}
+class AddCarLoadingState extends CarState {}
+class AddCarSuccessState extends CarState {}
+class AddCarErrorState extends CarState {}
+class CarHandeledState extends CarState {}
+class CarHandeleErrorState extends CarState {}
+class CarRemoved extends CarState {}
+class CarAdded extends CarState {}

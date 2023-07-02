@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vewww/bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
 import 'package:vewww/core/components/rating_bar.dart';
 import 'package:vewww/core/style/app_colors.dart';
+import 'package:vewww/model/accepted_requests_response.dart';
+import 'package:vewww/views/mechanic/mechanic_home_screen.dart';
 import '../../views/winch/single_request_screen.dart';
 import '../style/app_text_style/app_text_style.dart';
 import '../utils/navigation.dart';
 
 class ComingRequestCard extends StatelessWidget {
-  const ComingRequestCard({Key? key}) : super(key: key);
+  ComingRequestCard({this.mechanicRequestsData, Key? key}) : super(key: key);
+  MechanicRequestsData? mechanicRequestsData;
 
   @override
   Widget build(BuildContext context) {
+    RepairerRequestsCubit requestsCubit = RepairerRequestsCubit.get(context);
     return InkWell(
         onTap: () {
           NavigationUtils.navigateTo(
               context: context,
               destinationScreen: SingleRequestScreen(
+                mechanicRequestsData!,
                 type: "comming",
               ));
         },
@@ -42,14 +49,16 @@ class ComingRequestCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      "احمد كمال",
+                      (mechanicRequestsData != null)
+                          ? mechanicRequestsData!.driver!.person!.name!
+                          : "winchRequestsData!.driver!.person!.name!",
                       style: AppTextStyle.titleTextStyle(20),
                     ),
-                    RatingBar(3.5, size: 15),
                     Text(
-                      "Jeep : السيارة",
+                      " السيارة : ${(mechanicRequestsData != null) ? mechanicRequestsData!.car!.carType!.name!.ar! : 'winchRequestsData!.car!.carType!.name!.ar!'}",
                       style: AppTextStyle.darkGreyStyle(size: 13),
                     ),
+                    SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -57,20 +66,40 @@ class ComingRequestCard extends StatelessWidget {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.grey,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              if (mechanicRequestsData != null) {
+                                requestsCubit.mechanicCancelRequest(
+                                    mechanicRequestsData!.sId!);
+                              }
+                            },
                             child: const Text(
                               "رفض",
                               style: TextStyle(color: Colors.white),
                             )),
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: mainColor,
-                            ),
-                            onPressed: () {},
-                            child: const Text(
-                              "قبول",
-                              style: TextStyle(color: Colors.white),
-                            )),
+                        BlocBuilder<RepairerRequestsCubit,
+                            RepairerRequestsState>(
+                          builder: (context, state) {
+                            return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: mainColor,
+                                ),
+                                onPressed: () async {
+                                  if (mechanicRequestsData != null) {
+                                    await requestsCubit.mechanicAcceptRequest(
+                                        mechanicRequestsData!.sId!);
+                                    if (state is AcceptingRequestSuccessState)
+                                      NavigationUtils.navigateAndClearStack(
+                                          context: context,
+                                          destinationScreen:
+                                              MechanicHomeScreen());
+                                  }
+                                },
+                                child: const Text(
+                                  "قبول",
+                                  style: TextStyle(color: Colors.white),
+                                ));
+                          },
+                        ),
                       ],
                     ),
                   ],

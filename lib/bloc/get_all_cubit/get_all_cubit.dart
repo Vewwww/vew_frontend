@@ -76,6 +76,7 @@ class GetAllCubit extends Cubit<GetAllState> {
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
     ).then((value) {
       print("Get all Admins response : ${value.data}");
+
       AdminResponse adminRespone = AdminResponse.fromJson(value.data);
       emit(GetAllAdminsSuccessState(adminRespone.admins!));
     }).catchError((error){
@@ -110,7 +111,7 @@ class GetAllCubit extends Cubit<GetAllState> {
     }
   }
 
-   Future getAllMaintenanceCenter() async {
+  Future getAllMaintenanceCenter() async {
     String url = "/admin/maintenanceCenter/";
     emit(GetAllMCLoadingState());
     if (nearesetMCResponse == null) {
@@ -119,19 +120,17 @@ class GetAllCubit extends Cubit<GetAllState> {
         token: SharedPreferencesHelper.getData(key: 'vewToken'),
       ).then((value) {
         print("Get all MC response : ${value.data}");
-        nearesetMCResponse =
-            NearesetMCResponse.fromJson(value.data);
-        emit(GetAllMCSuccessState(
-            nearesetMCResponse!.maintenanceCenter!));
+        nearesetMCResponse = NearesetMCResponse.fromJson(value.data);
+        emit(GetAllMCSuccessState(nearesetMCResponse!.maintenanceCenter!));
       }).onError((error, stackTrace) {
         print("Get all MC error : $error");
         emit(GetAllMCErrorState());
       });
     } else {
-      emit(GetAllMCSuccessState(
-          nearesetMCResponse!.maintenanceCenter!));
+      emit(GetAllMCSuccessState(nearesetMCResponse!.maintenanceCenter!));
     }
   }
+
 
   WinchDriver? winchDriver;
   Driver? driver;

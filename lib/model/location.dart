@@ -8,8 +8,15 @@ class Location {
   Location({this.description, this.latitude, this.longitude});
 
   Location.fromJson(Map<String, dynamic> json) {
-    description =
-        json['description'] != null ? Name.fromJson(json['description']) : null;
+    description = json['description'] != null
+        ? json['description'] is String
+            ? Name(ar: json['description'], en: json['description'])
+            : Name.fromJson(json['description'])
+        : description = json['road'] != null
+            ? json['road'] is String
+                ? Name(ar: json['road'], en: json['road'])
+                : Name.fromJson(json['road'])
+            : null;
     latitude = json['latitude'];
     longitude = json['longitude'];
   }

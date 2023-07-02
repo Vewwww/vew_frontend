@@ -4,7 +4,7 @@ import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
 
-import '../../controllers/driver_controller.dart';
+import '../../controllers/controller.dart';
 import '../../core/components/rating_bar.dart';
 import '../../model/repairer.dart';
 
@@ -61,7 +61,7 @@ class MechanicPreviewScreen extends StatelessWidget {
                       ),
                       onPressed: () async {
                         if (mechanic.phoneNumber != null)
-                          await DriverController.call(mechanic.phoneNumber!);
+                          await Controller.call(mechanic.phoneNumber!);
                       },
                     ),
                     const SizedBox(
@@ -74,8 +74,7 @@ class MechanicPreviewScreen extends StatelessWidget {
                           size: 30,
                         ),
                         onPressed: () async {
-                          await DriverController.goToGoogleMaps(
-                              mechanic.location!);
+                          await Controller.goToGoogleMaps(mechanic.location!);
                         }),
                   ],
                 )

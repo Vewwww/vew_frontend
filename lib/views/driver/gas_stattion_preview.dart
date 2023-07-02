@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vewww/controllers/driver_controller.dart';
+import 'package:vewww/controllers/controller.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/default_button.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
@@ -49,7 +49,7 @@ class GasStationPreview extends StatelessWidget {
                     size: 30,
                   ),
                   onPressed: () {
-                    DriverController.goToGoogleMaps(gasStation.location!);
+                    Controller.goToGoogleMaps(gasStation.location!);
                   },
                 ),
                 // Row(

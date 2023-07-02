@@ -25,8 +25,12 @@ class _ChatsScreenState extends State<ChatsScreen> {
   void initState() {
     super.initState();
     var chatCubit = context.read<ChatCubit>();
-
-    chatCubit.getChats();
+    String role = SharedPreferencesHelper.getData(key: "vewRole");
+    if (role == "winch")
+      chatCubit.getWinchChats();
+    else if (role == "driver")
+      chatCubit.getDriverChats();
+    else if (role == "mechanic") chatCubit.getMechanicChats();
   }
 
   @override
@@ -65,13 +69,17 @@ class _ChatsScreenState extends State<ChatsScreen> {
           ),
           BlocBuilder<ChatCubit, ChatState>(
             builder: (context, state) {
-              if (state is GettingChatsSuccessState)
+              if (state is GettingChatsSuccessState) {
+                print(state);
                 return Expanded(
                     child: ListView.builder(
-                        itemCount: state.chats.length,
-                        itemBuilder: (context, index) =>
-                            ChatHeadElement(chat: state.chats[index])));
-              else
+                        itemCount: state.chats.length - 1,
+                        itemBuilder: (context, index) {
+                          print(
+                              "$index , ${state.chats.length} ,${state.chats[index]}");
+                          return ChatHeadElement(chat: state.chats[index]);
+                        }));
+              } else
                 return Center(
                     child: Column(
                   children: [

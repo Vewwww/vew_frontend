@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vewww/bloc/car_cubit/car_cubit.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/model/car_type.dart';
@@ -10,12 +11,14 @@ import '../../core/style/app_text_style/app_text_style.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
 
 class SelectCarTypeScreen extends StatelessWidget {
-  SelectCarTypeScreen({this.destinationScreen, Key? key}) : super(key: key) {
+  SelectCarTypeScreen({this.destinationScreen, this.index, Key? key})
+      : super(key: key) {
     isArabic = (SharedPreferencesHelper.getData(key: "vewRole") == null ||
         SharedPreferencesHelper.getData(key: "vewRole") != "user");
   }
   Widget? destinationScreen;
   late bool isArabic;
+  int? index;
   @override
   Widget build(BuildContext context) {
     SelectChoiceCubit selectChoiceCubit = SelectChoiceCubit.get(context);
@@ -117,10 +120,14 @@ class SelectCarTypeScreen extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 11 / 12,
                     child: ElevatedButton(
                       onPressed: () async {
+                        if (this.index != null)
+                          CarCubit.get(context).editedCars![index!].carType =
+                              selectChoiceCubit.carTypeResponse!
+                                  .carType![selectChoiceCubit.carTypeChoice];
                         if (destinationScreen == null)
                           NavigationUtils.navigateBack(context: context);
                         else
-                          NavigationUtils.navigateTo(
+                          NavigationUtils.navigateAndClearStack(
                               context: context,
                               destinationScreen: destinationScreen!);
                       },

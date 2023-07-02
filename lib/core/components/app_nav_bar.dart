@@ -8,9 +8,10 @@ import '../../bloc/selected page index/cubit/selected_page_index_cubit.dart';
 import '../../views/winch/winch_upcoming_requests_screen.dart';
 import '../../views/winch/winch_home_page.dart';
 
-
 class AppNavigationBar extends StatelessWidget {
-  AppNavigationBar({required this.homeFunction,required this.upComingReqFunction,Key? key}) : super(key: key);
+  AppNavigationBar(
+      {required this.homeFunction, required this.upComingReqFunction, Key? key})
+      : super(key: key);
   Function homeFunction;
   Function upComingReqFunction;
   @override
@@ -45,6 +46,7 @@ class AppNavigationBar extends StatelessWidget {
             ),
           ],
           onTap: (index) {
+            print(index);
             selectedIndexCubit.changeIndex(index);
             actions[index]();
           },
