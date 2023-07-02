@@ -1,4 +1,5 @@
 import 'car.dart';
+import 'report.dart';
 
 class ProfileResponse {
   ProfileData? data;
@@ -26,6 +27,7 @@ class ProfileData {
 
   ProfileData.fromJson(Map<String, dynamic> json) {
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    print("user to json done");
     if (json['cars'] != null) {
       cars = <Car>[];
       json['cars'].forEach((v) {
@@ -51,32 +53,22 @@ class User {
   String? sId;
   String? name;
   String? email;
-  String? password;
   String? phoneNumber;
   String? gender;
   String? role;
-  String? lisenceRenewalDate;
-  bool? isSuspended;
-  bool? emailConfirm;
-  bool? logedIn;
   int? iV;
-  bool? passwordReset;
+  String? driverLisenceRenewalNotification;
 
   User(
       {this.report,
       this.sId,
       this.name,
       this.email,
-      this.password,
       this.phoneNumber,
       this.gender,
       this.role,
-      this.lisenceRenewalDate,
-      this.isSuspended,
-      this.emailConfirm,
-      this.logedIn,
       this.iV,
-      this.passwordReset});
+      this.driverLisenceRenewalNotification});
 
   User.fromJson(Map<String, dynamic> json) {
     report =
@@ -84,16 +76,11 @@ class User {
     sId = json['_id'];
     name = json['name'];
     email = json['email'];
-    password = json['password'];
     phoneNumber = json['phoneNumber'];
     gender = json['gender'];
     role = json['role'];
-    lisenceRenewalDate = json['lisenceRenewalDate'];
-    isSuspended = json['isSuspended'];
-    emailConfirm = json['emailConfirm'];
-    logedIn = json['logedIn'];
     iV = json['__v'];
-    passwordReset = json['passwordReset'];
+    driverLisenceRenewalNotification = json['driverLisenceRenewalNotification'];
   }
 
   Map<String, dynamic> toJson() {
@@ -104,35 +91,12 @@ class User {
     data['_id'] = this.sId;
     data['name'] = this.name;
     data['email'] = this.email;
-    data['password'] = this.password;
     data['phoneNumber'] = this.phoneNumber;
     data['gender'] = this.gender;
     data['role'] = this.role;
-    data['lisenceRenewalDate'] = this.lisenceRenewalDate;
-    data['isSuspended'] = this.isSuspended;
-    data['emailConfirm'] = this.emailConfirm;
-    data['logedIn'] = this.logedIn;
     data['__v'] = this.iV;
-    data['passwordReset'] = this.passwordReset;
-    return data;
-  }
-}
-
-class Report {
-  String? dateReport;
-  int? reportsNumber;
-
-  Report({this.dateReport, this.reportsNumber});
-
-  Report.fromJson(Map<String, dynamic> json) {
-    dateReport = json['dateReport'];
-    reportsNumber = json['reportsNumber'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['dateReport'] = this.dateReport;
-    data['reportsNumber'] = this.reportsNumber;
+    data['driverLisenceRenewalNotification'] =
+        this.driverLisenceRenewalNotification;
     return data;
   }
 }

@@ -64,4 +64,30 @@ class DioHelper {
       data: data,
     );
   }
+  static Future<Response> putData(
+      {required String url,
+      required Map<String, dynamic> data,
+      Map<String, dynamic>? query,
+      String? token}) async {
+    if (token != null) dio.options.headers["Authorization"] = "Bearer $token";
+    return await dio
+        .put(
+      url,
+      queryParameters: query,
+      data: data,
+    );
+  }
+  static Future<Response> deleteData(
+      {required String url,
+      required Map<String, dynamic> data,
+      Map<String, dynamic>? query,
+      String? token}) async {
+    if (token != null) dio.options.headers["Authorization"] = "Bearer $token";
+    return await dio
+        .delete(
+      url,
+      queryParameters: query,
+      data: data,
+    );
+  }
 }

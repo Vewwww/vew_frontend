@@ -7,7 +7,9 @@ import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/model/car.dart';
 import 'package:vewww/model/driver.dart';
+import 'package:vewww/views/driver/driver_home_screen.dart';
 import 'package:vewww/views/driver/edit_driver_profile.dart';
+import '../../core/components/build_car.dart';
 import '../../core/components/custom_text_field.dart';
 
 class DriverProfile extends StatefulWidget {
@@ -31,9 +33,6 @@ class _DriverProfileState extends State<DriverProfile> {
     super.initState();
     var profileCubit = context.read<ProfileCubit>();
     profileCubit.getDriverProfile();
-    // _email.text = driver.person!.email!;
-    // _phone.text = driver.phoneNumber!;
-    // _licenseRenewalDate.text = driver.lisenceRenewalDate!;
   }
 
   @override
@@ -94,6 +93,19 @@ class _DriverProfileState extends State<DriverProfile> {
             ),
           ),
           Positioned(
+              top: 20,
+              left: 20,
+              child: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  NavigationUtils.navigateAndClearStack(
+                      context: context, destinationScreen: DriverHomeScreen());
+                },
+              )),
+          Positioned(
               bottom: 0,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height / 6 * 4,
@@ -106,7 +118,7 @@ class _DriverProfileState extends State<DriverProfile> {
                 child: SingleChildScrollView(
                   child: BlocBuilder<ProfileCubit, ProfileState>(
                     builder: (context, state) {
-                      if (state is GettingProfileSuccessState)
+                      if (state is GettingProfileSuccessState) {
                         return Stack(
                           children: [
                             Positioned(
@@ -115,12 +127,14 @@ class _DriverProfileState extends State<DriverProfile> {
                                 child: IconButton(
                                   icon: const Icon(Icons.edit),
                                   onPressed: () {
-                                    NavigationUtils.navigateTo(
-                                        context: context,
-                                        destinationScreen: EditDriverProfile(
-                                          driver: profileCubit
-                                              .profileResponse!.data!,
-                                        ));
+                                    if (profileCubit.state
+                                        is GettingProfileSuccessState)
+                                      NavigationUtils.navigateTo(
+                                          context: context,
+                                          destinationScreen: EditDriverProfile(
+                                            driver: profileCubit
+                                                .profileResponse!.data!,
+                                          ));
                                   },
                                 )),
                             Column(
@@ -147,32 +161,34 @@ class _DriverProfileState extends State<DriverProfile> {
                                   label: "Driving license renewal date",
                                   controller: _licenseRenewalDate,
                                   hint: profileCubit.profileResponse!.data!
-                                      .user!.lisenceRenewalDate,
+                                      .user!.driverLisenceRenewalNotification,
                                   validator: (value) {},
                                 ),
                                 const SizedBox(height: 20),
-                                // (widget.driver.cars != null)
-                                //     ? ListView.builder(
-                                //         shrinkWrap: true,
-                                //         primary: false,
-                                //         physics:
-                                //             const NeverScrollableScrollPhysics(),
-                                //         padding: EdgeInsets.zero,
-                                //         itemCount: 0,//widget.driver.cars!.length,
-                                //         itemBuilder:
-                                //             (BuildContext context, int index) {
-                                //           return buildCarDetails(
-                                //               widget.driver.cars![index],
-                                //               index + 1);
-                                //         },
-                                //       )
-                                //:
-                                Container(),
+                                (profileCubit.profileResponse!.data!.cars !=
+                                        null)
+                                    ? ListView.builder(
+                                        shrinkWrap: true,
+                                        primary: false,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        padding: EdgeInsets.zero,
+                                        itemCount: profileCubit.profileResponse!
+                                            .data!.cars!.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return buildCarDetails(
+                                              profileCubit.profileResponse!
+                                                  .data!.cars![index],
+                                              index + 1);
+                                        },
+                                      )
+                                    : Container(),
                               ],
                             ),
                           ],
                         );
-                      else
+                      } else {
                         return Center(
                             child: Column(
                           children: [
@@ -181,77 +197,13 @@ class _DriverProfileState extends State<DriverProfile> {
                             CircularProgressIndicator(),
                           ],
                         ));
+                      }
                     },
                   ),
                 ),
               )),
         ],
       ),
-    );
-  }
-
-  Widget buildCarDetails(Car car, index) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Car $index",
-          style: AppTextStyle.mainStyle(size: 14),
-        ),
-        const Divider(
-          thickness: 1,
-        ),
-        Center(
-            child: CircleAvatar(
-                radius: 30,
-                backgroundColor: mainColor.withOpacity(0.3),
-                child: const Icon(Icons.drive_eta,
-                    size: 30, color: Colors.black //car.color,
-                    ))),
-        CustomTextField(
-          readOnly: true,
-          label: "Car Type",
-          controller: TextEditingController(text: car.carType),
-          validator: (value) {},
-        ),
-        CustomTextField(
-          readOnly: true,
-          label: "Car Model",
-          controller: TextEditingController(text: "car.carModel"),
-          validator: (value) {},
-        ),
-        CustomTextField(
-          readOnly: true,
-          label: "Last Periodic Maintenance Date",
-          controller:
-              TextEditingController(text: "car.lastPeriodicMaintenanceDate"),
-          validator: (value) {},
-        ),
-        CustomTextField(
-          readOnly: true,
-          label: "License renewal date",
-          controller: TextEditingController(text: "car.licenseRenewalDate"),
-          validator: (value) {},
-        ),
-        CustomTextField(
-          readOnly: true,
-          label: "Current Miles",
-          controller: TextEditingController(text: "car.currentMiles"),
-          validator: (value) {},
-        ),
-        CustomTextField(
-          readOnly: true,
-          label: "Average Mile per Week ",
-          controller: TextEditingController(text: "car.averageMileperWeek"),
-          validator: (value) {},
-        ),
-        CustomTextField(
-          readOnly: true,
-          label: "Remind you before",
-          controller: TextEditingController(text: "car.remindYouBefore"),
-          validator: (value) {},
-        ),
-      ],
     );
   }
 }

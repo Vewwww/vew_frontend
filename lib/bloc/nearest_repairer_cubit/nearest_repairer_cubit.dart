@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -22,7 +23,7 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
   NearesetGasStationResponse? nearesetGasStationResponse;
   //getNearestMaintainaceCenter
   Future getNearestMC({String? carTypeID, String? isVerified}) async {
-    String url = "/driver/maintenanceCenter/getNearestMaintenanceCenters";
+    String url = "/driver/getNearestMaintenanceCenters";
     Map<String, dynamic> query = await getCurrentLocation();
     query.addAll({"carType": carTypeID, "isVerified": isVerified});
     print("${query}");
@@ -49,11 +50,13 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
   }
 
   Future getNearestGasStation() async {
-    String url = "/gasStation/";
+    String url = "/driver/getNearestGasStations";
+    Map<String, dynamic> query = await getCurrentLocation();
     emit(GettingNearestGasStationLoadingState());
-    if (NearesetGasStationResponse == null) {
-      await DioHelper.getData(
+    if (nearesetGasStationResponse == null) {
+      await DioHelper.getWithBody(
         url: url,
+        query: query,
         token: SharedPreferencesHelper.getData(key: 'vewToken'),
       ).then((value) {
         print("neareat gas station response : ${value.data}");
@@ -61,34 +64,37 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
             NearesetGasStationResponse.fromJson(value.data);
         emit(GettingNearestGasStationSuccessState(
             nearesetGasStationResponse.gasStations!));
-      }).onError((error, stackTrace) {
-        print("neareat gas station error : $error");
+      }).catchError((error) {
+        if (error is DioError)
+          print("neareat gas station error : ${error.response}");
         emit(GettingNearestGasStationErrorState());
       });
     } else {
-       emit(GettingNearestGasStationSuccessState(
-            nearesetGasStationResponse!.gasStations!));
+      emit(GettingNearestGasStationSuccessState(
+          nearesetGasStationResponse!.gasStations!));
     }
   }
 
   Future getNearestMechanic(String serviceId) async {
-    String url = "/mechanic/getNearestMechanicWorkshop?service=${serviceId}";
+    String url = "/driver/getNearestMechanicWorkshop?service=${serviceId}";
+    Map<String, dynamic> query = await getCurrentLocation();
     emit(GettingNearestMechanicLoadingState());
-    if(nearesetMechanicResponse == null){
-    await DioHelper.getData(
-      url: url,
-      token: SharedPreferencesHelper.getData(key: 'vewToken'),
-    ).then((value) {
-      print("neareat mechanic response : ${value.data}");
-      NearestMechanicResponse nearesetMechanicResponse =
-          NearestMechanicResponse.fromJson(value.data);
-      emit(GettingNearestMechanicSuccessState(
-          mechanics: nearesetMechanicResponse.mechanic!));
-    }).onError((error, stackTrace) {
-      print("neareat mechanic error : ${error}");
-      emit(GettingNearestMechanicErrorState());
-    });
-    }else{
+    if (nearesetMechanicResponse == null) {
+      await DioHelper.getWithBody(
+        url: url,
+        query: query,
+        token: SharedPreferencesHelper.getData(key: 'vewToken'),
+      ).then((value) {
+        print("neareat mechanic response : ${value.data}");
+        NearestMechanicResponse nearesetMechanicResponse =
+            NearestMechanicResponse.fromJson(value.data);
+        emit(GettingNearestMechanicSuccessState(
+            mechanics: nearesetMechanicResponse.mechanic!));
+      }).onError((error, stackTrace) {
+        print("neareat mechanic error : ${error}");
+        emit(GettingNearestMechanicErrorState());
+      });
+    } else {
       emit(GettingNearestMechanicSuccessState(
           mechanics: nearesetMechanicResponse!.mechanic!));
     }
