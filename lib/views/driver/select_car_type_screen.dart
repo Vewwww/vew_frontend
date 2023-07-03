@@ -3,21 +3,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/car_cubit/car_cubit.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/core/utils/navigation.dart';
-import 'package:vewww/model/car_type.dart';
-import 'package:vewww/views/driver/select_car_model.dart';
 import '../../bloc/select_choice_cubit/select_choice_cubit.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/style/app_text_style/app_text_style.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
+import '../../model/profile_response.dart';
+import 'edit_driver_profile.dart';
 
 class SelectCarTypeScreen extends StatelessWidget {
-  SelectCarTypeScreen({this.destinationScreen, this.index, Key? key})
+  SelectCarTypeScreen(
+      {this.destinationScreen, this.driver, this.index, Key? key})
       : super(key: key) {
     isArabic = (SharedPreferencesHelper.getData(key: "vewRole") == null ||
         SharedPreferencesHelper.getData(key: "vewRole") != "user");
   }
   Widget? destinationScreen;
   late bool isArabic;
+  ProfileData? driver;
   int? index;
   @override
   Widget build(BuildContext context) {
@@ -126,10 +128,21 @@ class SelectCarTypeScreen extends StatelessWidget {
                                   .carType![selectChoiceCubit.carTypeChoice];
                         if (destinationScreen == null)
                           NavigationUtils.navigateBack(context: context);
-                        else
-                          NavigationUtils.navigateAndClearStack(
-                              context: context,
-                              destinationScreen: destinationScreen!);
+                        else {
+                          print("des : $destinationScreen");
+                          if (destinationScreen is EditDriverProfile) {
+                            print("going to edit");
+                            NavigationUtils.navigateAndClearStack(
+                                context: context,
+                                destinationScreen: EditDriverProfile(
+                                  driver: driver!,
+                                  inProgress: true,
+                                ));
+                          } else
+                            NavigationUtils.navigateAndClearStack(
+                                context: context,
+                                destinationScreen: destinationScreen!);
+                        }
                       },
                       child: Text((isArabic) ? "تم" : "Done"),
                     ),

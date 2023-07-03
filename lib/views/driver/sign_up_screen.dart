@@ -18,6 +18,7 @@ import '../../core/components/logo.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/navigation.dart';
 import '../../model/car.dart';
+import '../../model/car_color.dart';
 import '../../model/person.dart';
 import 'select_car_type_screen.dart';
 
@@ -469,15 +470,15 @@ class SignUpScreen extends StatelessWidget {
                                       .carType![SelectChoiceCubit.get(context)
                                           .carTypeChoice]
                                       .sId),
-                              color: ColorData(sId: SelectColorCubit.get(context)
+                              color: CarColor(sId: SelectColorCubit.get(context)
                                   .carColorResponse!
                                   .carColor![
                                       SelectColorCubit.get(context).color].sId)
                                   ,
                               carLicenseRenewalDate:
                                   _carlisenceRenewalDate.text,
-                              miles: _miles.text,
-                              averageMilesPerMonth: _avgMilesPerMonth.text,
+                              miles: double.parse(_miles.text),
+                              averageMilesPerMonth: double.parse(_avgMilesPerMonth.text),
                               lastPeriodicMaintenanceDate:
                                   _lastPeriodicMaintenanceDate.text,
                             );

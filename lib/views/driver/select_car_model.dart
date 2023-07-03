@@ -134,10 +134,12 @@ class _SelectCarModelScreenState extends State<SelectCarModelScreen> {
                                   .carModels![selectChoiceCubit.carModelChoice];
                         if (destinationScreen == null) {
                           NavigationUtils.navigateBack(context: context);
-                        } else
+                        } else {
+                          print("des : $destinationScreen");
                           NavigationUtils.navigateAndClearStack(
                               context: context,
                               destinationScreen: destinationScreen!);
+                        }
                       },
                       child: const Text("Done"),
                     ),

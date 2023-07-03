@@ -24,27 +24,28 @@ class CarCubit extends Cubit<CarState> {
   }
 
   Future<void> addCar(Car car) async {
-    print("adding car");
+    print("adding car : ${car.upadateToJson()}");
     emit(AddCarLoadingState());
     await DioHelper.postData(
-            url: "/driver/car/",
-            data: car.toJson(),
+            url: "/driver/car",
+            data: car.upadateToJson(),
             token: SharedPreferencesHelper.getData(key: "vewToken"))
         .then((value) {
       print("add car response : ${value}");
       emit(AddCarSuccessState());
-    }).onError((error, stackTrace) {
-      print("add car error : $error");
+    }).catchError((error) {
+      if (error is DioError) print("add car error : ${error.response}");
       emit(AddCarErrorState());
     });
   }
 
   Future<void> updateCar(Car car) async {
-    print("updatingg car");
+    print("updatingg car : ${car.upadateToJson()}");
+
     emit(UpdateCarLoadingState());
     await DioHelper.putData(
             url: "/driver/car/${car.sId}",
-            data: car.toJson(),
+            data: car.upadateToJson(),
             token: SharedPreferencesHelper.getData(key: "vewToken"))
         .then((value) {
       print("update car response : ${value}");
@@ -58,17 +59,17 @@ class CarCubit extends Cubit<CarState> {
   }
 
   Future<void> removeCar(Car car) async {
-    print("removing car");
+    print("removing car ${car.sId} , ");
     emit(RemoveCarLoadingState());
     await DioHelper.deleteData(
-            url: "/car/${car.sId}",
-            data: car.toJson(),
+            url: "/driver/car/${car.sId}",
+            //data: car.toJson(),
             token: SharedPreferencesHelper.getData(key: "vewToken"))
         .then((value) {
       print("remove car response : ${value}");
       emit(RemoveCarSuccessState());
     }).catchError((error) {
-      if (error is DioError) print("remove car error : ${error.response}");
+      if (error is DioError) print("remove car error : ${error}");
       emit(RemoveCarErrorState());
     });
   }
@@ -109,28 +110,31 @@ class CarCubit extends Cubit<CarState> {
   Future<void> handleCarEdit() async {
     bool exists;
     testcars();
-    // if (editedCars != null && currentCars != null) {
-    //   for (Car car in currentCars!) {
-    //     exists = carExistInEdited(car);
-    //     if (!exists) {
-    //       await removeCar(car);
-    //     }
-    //   }
-    //   for (Car car in editedCars!) {
-    //     exists = carExistInCurrent(car);
-    //     if (exists) {
-    //       await updateCar(car);
-    //     } else {
-    //       await addCar(car);
-    //     }
-    //   }
-    // }
-    // if (state is! UpdateCarErrorState &&
-    //     state is! AddCarErrorState &&
-    //     state is! RemoveCarErrorState)
-    //   emit(CarHandeledState());
-    // else
-    //   emit(CarHandeleErrorState());
+    if (updatedCars != null && driverCars != null) {
+      for (Car car in driverCars!) {
+        exists = carExistInEdited(car);
+        if (!exists) {
+          print("will remove");
+          await removeCar(car);
+        }
+      }
+      for (Car car in updatedCars!) {
+        exists = carExistInCurrent(car);
+        if (exists) {
+          print("will update");
+          await updateCar(car);
+        } else {
+          print("will add");
+          await addCar(car);
+        }
+      }
+    }
+    if (state is! UpdateCarErrorState &&
+        state is! AddCarErrorState &&
+        state is! RemoveCarErrorState)
+      emit(CarHandeledState());
+    else
+      emit(CarHandeleErrorState());
   }
 
   void remove(Car commingCar) {
@@ -145,9 +149,9 @@ class CarCubit extends Cubit<CarState> {
     }
   }
 
-  void add() {
+  void add(String id) {
     if (updatedCars != null) {
-      Car car = Car();
+      Car car = Car(owner: id);
       print("test before from add:");
       testcars();
       updatedCars!.add(car);

@@ -45,18 +45,14 @@ class Chat {
 
   Chat.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
-    print("object");
     room = json['room'];
-    print("object1");
     participants = json['participants'].cast<String>();
-    print("object2");
     if (json['messages'] != null) {
       messages = <Messages>[];
       json['messages'].forEach((v) {
         messages!.add(new Messages.fromJson(v));
       });
     }
-    print("object3");
     iV = json['__v'];
     chatName = json['chatName'];
   }

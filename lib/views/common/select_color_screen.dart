@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vewww/bloc/car_cubit/car_cubit.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/core/utils/navigation.dart';
 import '../../bloc/select_color_cubit/select_color_cubit.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/style/app_text_style/app_text_style.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
+import '../../model/profile_response.dart';
+import '../driver/edit_driver_profile.dart';
 
 class SelectColorScreen extends StatelessWidget {
-  SelectColorScreen({Key? key}) : super(key: key) {
+  Widget? destinationScreen;
+  ProfileData? driver;
+  int? index;
+  late bool isArabic;
+  SelectColorScreen({this.index, this.destinationScreen, this.driver, Key? key})
+      : super(key: key) {
     isArabic = (SharedPreferencesHelper.getData(key: "vewRole") != "user");
   }
-  late bool isArabic;
+
   @override
   Widget build(BuildContext context) {
     SelectColorCubit selectColorCubit = SelectColorCubit.get(context);
+    CarCubit carCubit = CarCubit.get(context);
     return Scaffold(
       //appBar:
       body: Stack(
@@ -25,7 +34,8 @@ class SelectColorScreen extends StatelessWidget {
             child: BlocConsumer<SelectColorCubit, SelectColorState>(
               listener: (context, state) {},
               builder: (context, state) {
-                if (state is GettingColorsSuccessState) {
+                print(state);
+                if (state is GettingColorsSuccessState|| state is ColorChoiceSelected) {
                   return ListView.builder(
                       itemCount:
                           selectColorCubit.carColorResponse!.carColor!.length,
@@ -103,7 +113,7 @@ class SelectColorScreen extends StatelessWidget {
               child: CustomAppBar(
                 haveBackArrow: true,
                 title: Text(
-                  "Car Color",
+                  (isArabic) ? "لون السيارة" : "Car Color",
                   style: AppTextStyle.mainStyle(),
                 ),
               ),
@@ -116,7 +126,27 @@ class SelectColorScreen extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 11 / 12,
               child: ElevatedButton(
                 onPressed: () {
-                  NavigationUtils.navigateBack(context: context);
+                  CarCubit carCubit = CarCubit.get(context);
+                  if (index != null)
+                    carCubit.updatedCars![index!].color = selectColorCubit
+                        .carColorResponse!.carColor![selectColorCubit.color];
+                  if (destinationScreen == null)
+                    NavigationUtils.navigateBack(context: context);
+                  else {
+                    print("des : $destinationScreen");
+                    if (destinationScreen is EditDriverProfile) {
+                      print("going to edit");
+                      NavigationUtils.navigateAndClearStack(
+                          context: context,
+                          destinationScreen: EditDriverProfile(
+                            driver: driver!,
+                            inProgress: true,
+                          ));
+                    } else
+                      NavigationUtils.navigateAndClearStack(
+                          context: context,
+                          destinationScreen: destinationScreen!);
+                  }
                 },
                 child: const Text("Done"),
               ),

@@ -1,3 +1,4 @@
+import 'car_color.dart';
 import 'car_model.dart';
 import 'car_type.dart';
 import 'name.dart';
@@ -20,9 +21,9 @@ class CarResponse {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['results'] = this.results;
-    if (this.car != null) {
-      data['data'] = this.car!.map((v) => v.toJson()).toList();
+    data['results'] = results;
+    if (car != null) {
+      data['data'] = car!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -34,15 +35,15 @@ class Car {
   String? sId;
   CarType? carType;
   String? plateNumber;
-  ColorData? color;
+  CarColor? color;
   String? owner;
   int? iV;
   CarModel? carModel;
   String? year;
   String? carLicenseRenewalDate;
-  String? miles;
+  double? miles;
   //TODO::cast to double
-  String? averageMilesPerMonth;
+  double? averageMilesPerMonth;
   String? lastPeriodicMaintenanceDate;
 
   Car(
@@ -61,74 +62,77 @@ class Car {
 
   Car.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
-    if (json['carType'] is String)
+    if (json['carType'] is String) {
       carType = CarType(sId: json['carType']);
-    else
+    } else {
       carType = CarType.fromJson(json['carType']);
+    }
 
     plateNumber = json['plateNumber'];
-    if (json['carType'] is String)
-      color = ColorData(sId: json['color']);
-    else
-      color = ColorData.fromJson(json['color']);
+    if (json['color'] != null) {
+      if (json['color'] is String) {
+        color = CarColor(sId: json['color']);
+      } else {
+        color = CarColor.fromJson(json['color']);
+      }
+    }
     owner = json['owner'] ?? "";
     iV = json['__v'];
     if (json['carModel'] != null) {
-      if (json['carModel'] is String)
+      if (json['carModel'] is String) {
         carModel = CarModel(sId: json['carModel']);
-      else
+      } else {
         carModel = CarModel.fromJson(json['carModel']);
+      }
     }
     year = json['year'];
     carLicenseRenewalDate =
         json['CarLicenseRenewalDate'] ?? json['carLicenseRenewalNotifition'];
-    miles = json['miles'];
-    averageMilesPerMonth = json['averageMilesPerMonth'].toString();
+    if (json['miles'] != null) miles = json['miles'] * 1.0;
+    if (json['averageMilesPerMonth'] != null) {
+      averageMilesPerMonth = json['averageMilesPerMonth'] * 1.0;
+    }
     lastPeriodicMaintenanceDate = json['lastPeriodicMaintenanceDate'] ??
         json['periodicMaintenanceNotification'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    if (this.carType != null) data['carType'] = this.carType!.toJson();
-    data['plateNumber'] = this.plateNumber;
-    if (this.color != null) data['color'] = this.color!.toJson();
-    data['owner'] = this.owner;
-    data['__v'] = this.iV;
-    if (this.carModel != null) data['carModel'] = this.carModel!.toJson();
-    data['year'] = this.year;
-    data['CarLicenseRenewalDate'] = this.carLicenseRenewalDate;
-    data['carLicenseRenewalNotifition'] = this.carLicenseRenewalDate;
-    data['miles'] = this.miles;
-    data['averageMilesPerMonth'] = this.averageMilesPerMonth;
-    data['lastPeriodicMaintenanceDate'] = this.lastPeriodicMaintenanceDate;
+    data['_id'] = sId;
+    if (carType != null) data['carType'] = carType!.toJson();
+    data['plateNumber'] = plateNumber;
+    if (color != null) data['color'] = color!.toJson();
+    data['owner'] = owner;
+    data['__v'] = iV;
+    if (carModel != null) data['carModel'] = carModel!.toJson();
+    data['year'] = year;
+    data['carLicenseRenewalDate'] = carLicenseRenewalDate;
+    data['carLicenseRenewalNotifition'] = carLicenseRenewalDate;
+    data['miles'] = miles;
+    data['averageMilesPerMonth'] = averageMilesPerMonth;
+    data['lastPeriodicMaintenanceDate'] = lastPeriodicMaintenanceDate;
     return data;
   }
-}
 
-class ColorData {
-  Name? name;
-  String? sId;
-  String? code;
-
-  ColorData({this.name, this.sId, this.code});
-
-  ColorData.fromJson(Map<String, dynamic> json) {
-    name = json['name'] != null ? new Name.fromJson(json['name']) : null;
-    sId = json['_id'];
-    code = json['code'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.name != null) {
-      data['name'] = this.name!.toJson();
+  Map<String, dynamic> upadateToJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (sId != null) data['_id'] = sId;
+    if (carType != null) data['carType'] = carType!.sId;
+    data['plateNumber'] = plateNumber;
+    data['year'] = year;
+    if (carModel != null) data['carModel'] = carModel!.sId;
+    if (color != null) data['color'] = color!.sId;
+    data['owner'] = owner;
+    if (iV != null) data['__v'] = iV;
+    if (carLicenseRenewalDate != null)
+      data['carLicenseRenewalDate'] = carLicenseRenewalDate.toString();
+    if (lastPeriodicMaintenanceDate != null) {
+      data['lastPeriodicMaintenanceDate'] =
+          lastPeriodicMaintenanceDate.toString();
     }
-    data['_id'] = this.sId;
-    data['code'] = this.code;
+    if (miles != null) data['milesLimit'] = miles;
+    if (averageMilesPerMonth != null)
+      data['averageMilesPerMonth'] = averageMilesPerMonth;
     return data;
   }
-
-  ColorData clone() => ColorData(code: this.code , name: this.name , sId: this.sId);
 }
