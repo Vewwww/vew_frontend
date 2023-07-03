@@ -129,4 +129,6 @@ class ColorData {
     data['code'] = this.code;
     return data;
   }
+
+  ColorData clone() => ColorData(code: this.code , name: this.name , sId: this.sId);
 }

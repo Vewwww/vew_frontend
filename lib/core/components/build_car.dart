@@ -81,12 +81,12 @@ Widget buildCarDetails(Car car, index,
             .text,
         isDroped: editable,
         onDrop: () {
-          if (carCubit.editedCars![index - 1].carType != null) {
+          if (carCubit.updatedCars![index - 1].carType != null) {
             NavigationUtils.navigateAndClearStack(
                 context: context!,
                 destinationScreen: SelectCarModelScreen(
                   index: index - 1,
-                  id: carCubit.editedCars![index - 1].carType!.sId!,
+                  id: carCubit.updatedCars![index - 1].carType!.sId!,
                   destinationScreen:
                       EditDriverProfile(driver: driver!, inProgress: true),
                 ));
@@ -127,7 +127,7 @@ Widget buildCarDetails(Car car, index,
                   TextEditingController(text: car.carLicenseRenewalDate ?? ""),
               validator: (value) {},
               onChanged: (value) {
-                carCubit.editedCars![index - 1].carLicenseRenewalDate = value;
+                carCubit.updatedCars![index - 1].carLicenseRenewalDate = value;
               },
             )
           : Container(),
@@ -137,7 +137,7 @@ Widget buildCarDetails(Car car, index,
               controller: TextEditingController(text: car.miles),
               validator: (value) {},
               onChanged: (value) {
-                carCubit.editedCars![index - 1].miles = value;
+                carCubit.updatedCars![index - 1].miles = value;
               },
             )
           : Container(),
@@ -148,7 +148,7 @@ Widget buildCarDetails(Car car, index,
                   TextEditingController(text: car.averageMilesPerMonth ?? " "),
               validator: (value) {},
               onChanged: (value) {
-                carCubit.editedCars![index - 1].averageMilesPerMonth = value;
+                carCubit.updatedCars![index - 1].averageMilesPerMonth = value;
               },
             )
           : Container(),

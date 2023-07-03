@@ -48,5 +48,9 @@ class CarType {
     data['__v'] = this.iV;
     return data;
   }
+
+  CarType clone() {
+    return CarType(iV: this.iV , name: this.name , sId: this.sId);
+  }
 }
 

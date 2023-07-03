@@ -129,13 +129,13 @@ class _SelectCarModelScreenState extends State<SelectCarModelScreen> {
                             selectChoiceCubit
                                     .carModelResponse!.carModels!.length >
                                 0)
-                          CarCubit.get(context).editedCars![index!].carModel =
+                          CarCubit.get(context).updatedCars![index!].carModel =
                               selectChoiceCubit.carModelResponse!
                                   .carModels![selectChoiceCubit.carModelChoice];
                         if (destinationScreen == null) {
                           NavigationUtils.navigateBack(context: context);
                         } else
-                          NavigationUtils.navigateTo(
+                          NavigationUtils.navigateAndClearStack(
                               context: context,
                               destinationScreen: destinationScreen!);
                       },

@@ -28,6 +28,9 @@ class CarModel {
   int? iV;
 
   CarModel({this.sId, this.name, this.brand, this.iV});
+  CarModel clone(){
+    return CarModel(brand: this.brand , name: this.name , iV: this.iV , sId: this.sId);
+  }
 
   CarModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];

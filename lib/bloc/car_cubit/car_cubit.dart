@@ -8,8 +8,8 @@ part 'car_state.dart';
 
 class CarCubit extends Cubit<CarState> {
   CarCubit() : super(CarInitial());
-  List<Car>? currentCars;
-  List<Car>? editedCars;
+  List<Car>? driverCars;
+  List<Car>? updatedCars;
   static CarCubit get(context) => BlocProvider.of(context);
 
   Future<void> createCar(Car car) async {
@@ -52,8 +52,6 @@ class CarCubit extends Cubit<CarState> {
     }).catchError((
       error,
     ) {
-
-
       if (error is DioError) print("update car error : ${error.response}");
       emit(UpdateCarErrorState());
     });
@@ -70,73 +68,95 @@ class CarCubit extends Cubit<CarState> {
       print("remove car response : ${value}");
       emit(RemoveCarSuccessState());
     }).catchError((error) {
-      if(error is DioError)
-      print("remove car error : ${error.response}");
+      if (error is DioError) print("remove car error : ${error.response}");
       emit(RemoveCarErrorState());
     });
   }
 
   bool carExistInCurrent(Car commingCar) {
-    if (currentCars != null) {
-      for (Car car in currentCars!) {
-        if (car.sId == commingCar.sId) return true;
+    if (driverCars != null) {
+      for (Car driverCar in driverCars!) {
+        if (driverCar.sId == commingCar.sId) return true;
       }
     }
     return false;
   }
 
   bool carExistInEdited(Car commingCar) {
-    if (editedCars != null) {
-      for (Car car in editedCars!) {
-        if (car.sId == commingCar.sId) { return true;}
+    if (updatedCars != null) {
+      for (Car updatedCar in updatedCars!) {
+        if (updatedCar.sId == commingCar.sId) {
+          return true;
+        }
       }
     }
     return false;
   }
 
+  void testcars() {
+    print("current cars :");
+    if (driverCars != null)
+      for (Car c in driverCars!) print(c.toJson());
+    else
+      print("curent cars null");
+    print("edit cars :");
+    if (updatedCars != null)
+      for (Car ca in updatedCars!) print(ca.toJson());
+    else
+      print("edits cars null");
+  }
+
   Future<void> handleCarEdit() async {
     bool exists;
-    if (editedCars != null && currentCars != null) {
-      for (Car car in currentCars!) {
-        exists = carExistInEdited(car);
-        if (!exists) {
-          await removeCar(car);
-        }
-      }
-      for (Car car in editedCars!) {
-        exists = carExistInCurrent(car);
-        if (exists) {
-          await updateCar(car);
-        } else {
-          await addCar(car);
-        }
-      }
-    }
-    if (state is! UpdateCarErrorState &&
-        state is! AddCarErrorState &&
-        state is! RemoveCarErrorState)
-      emit(CarHandeledState());
-    else
-      emit(CarHandeleErrorState());
+    testcars();
+    // if (editedCars != null && currentCars != null) {
+    //   for (Car car in currentCars!) {
+    //     exists = carExistInEdited(car);
+    //     if (!exists) {
+    //       await removeCar(car);
+    //     }
+    //   }
+    //   for (Car car in editedCars!) {
+    //     exists = carExistInCurrent(car);
+    //     if (exists) {
+    //       await updateCar(car);
+    //     } else {
+    //       await addCar(car);
+    //     }
+    //   }
+    // }
+    // if (state is! UpdateCarErrorState &&
+    //     state is! AddCarErrorState &&
+    //     state is! RemoveCarErrorState)
+    //   emit(CarHandeledState());
+    // else
+    //   emit(CarHandeleErrorState());
   }
 
   void remove(Car commingCar) {
     int index = 0;
-    if (editedCars != null && carExistInEdited(commingCar)) {
-      for (Car car in editedCars!) {
+    if (updatedCars != null && carExistInEdited(commingCar)) {
+      for (Car car in updatedCars!) {
         if (car.sId == commingCar.sId) break;
         index++;
       }
-      editedCars!.removeAt(index);
+      updatedCars!.removeAt(index);
       emit(CarRemoved());
     }
   }
 
   void add() {
-    if (editedCars != null) {
+    if (updatedCars != null) {
       Car car = Car();
-      editedCars!.add(car);
-      emit(CarRemoved());
+      print("test before from add:");
+      testcars();
+      updatedCars!.add(car);
+      print("test from add:");
+      testcars();
+      emit(CarAdded());
+    } else {
+      updatedCars = [];
+      updatedCars!.add(Car());
     }
   }
 }

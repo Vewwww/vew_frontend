@@ -121,7 +121,7 @@ class SelectCarTypeScreen extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () async {
                         if (this.index != null)
-                          CarCubit.get(context).editedCars![index!].carType =
+                          CarCubit.get(context).updatedCars![index!].carType =
                               selectChoiceCubit.carTypeResponse!
                                   .carType![selectChoiceCubit.carTypeChoice];
                         if (destinationScreen == null)
