@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vewww/model/car.dart';
 
 import 'name.dart';
 
@@ -47,7 +48,8 @@ class CarColor {
     if (hexColor.length == 8) {
       code = Color(int.parse("0x$hexColor"));
     }
-    iV = json['__v'];
+    print(code);
+    if (json['__v'] != null) iV = json['__v'];
   }
 
   Map<String, dynamic> toJson() {
@@ -60,5 +62,7 @@ class CarColor {
     data['__v'] = this.iV;
     return data;
   }
-}
 
+  CarColor clone() =>
+      CarColor(code: this.code, name: this.name, sId: this.sId, iV: this.iV);
+}

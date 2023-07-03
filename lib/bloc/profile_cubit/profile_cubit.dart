@@ -5,6 +5,7 @@ import 'package:vewww/services/dio_helper.dart';
 
 import '../../core/utils/sp_helper/cache_helper.dart';
 import '../../model/admin.dart';
+import '../../model/car.dart';
 import '../../model/profile_response.dart';
 import '../../model/winch_driver.dart';
 part 'profile_state.dart';
@@ -25,6 +26,13 @@ class ProfileCubit extends Cubit<ProfileState> {
         .then((value) {
       print("get driver profile response : ${value.data}");
       profileResponse = ProfileResponse.fromJson(value.data);
+      if (profileResponse != null &&
+          profileResponse!.data != null &&
+          profileResponse!.data!.cars != null) {
+        for (Car c in profileResponse!.data!.cars!) {
+          c.owner = profileResponse!.data!.user!.sId!;
+        }
+      }
       emit(GettingProfileSuccessState());
     }).catchError((err) {
       if (err is DioError) {

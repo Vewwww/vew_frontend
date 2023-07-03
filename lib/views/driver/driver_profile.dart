@@ -129,12 +129,15 @@ class _DriverProfileState extends State<DriverProfile> {
                                   onPressed: () {
                                     if (profileCubit.state
                                         is GettingProfileSuccessState)
-                                      NavigationUtils.navigateTo(
-                                          context: context,
-                                          destinationScreen: EditDriverProfile(
-                                            driver: profileCubit
-                                                .profileResponse!.data!,
-                                          ));
+                                      print(
+                                          "driver cars from profile : ${profileCubit.profileResponse!.data!.cars![0].toJson()}");
+                                    NavigationUtils.navigateTo(
+                                        context: context,
+                                        destinationScreen: EditDriverProfile(
+                                          inProgress: false,
+                                          driver: profileCubit
+                                              .profileResponse!.data!,
+                                        ));
                                   },
                                 )),
                             Column(
@@ -154,14 +157,6 @@ class _DriverProfileState extends State<DriverProfile> {
                                   hint: profileCubit
                                       .profileResponse!.data!.user!.phoneNumber,
                                   label: "Phone",
-                                  validator: (value) {},
-                                ),
-                                CustomTextField(
-                                  readOnly: true,
-                                  label: "Driving license renewal date",
-                                  controller: _licenseRenewalDate,
-                                  hint: profileCubit.profileResponse!.data!
-                                      .user!.driverLisenceRenewalNotification,
                                   validator: (value) {},
                                 ),
                                 const SizedBox(height: 20),

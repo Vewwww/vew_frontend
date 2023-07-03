@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/car_cubit/car_cubit.dart';
 import 'package:vewww/bloc/profile_cubit/profile_cubit.dart';
 import 'package:vewww/core/utils/navigation.dart';
+import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
 import 'package:vewww/views/driver/driver_profile.dart';
 import '../../bloc/add_car_cubit/add_car_cubit.dart';
@@ -16,6 +17,7 @@ import '../../core/components/logo.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/style/app_colors.dart';
 import '../../model/car.dart';
+import '../../model/car_color.dart';
 import '../../model/car_model.dart';
 import '../../model/car_type.dart';
 import '../../model/profile_response.dart';
@@ -26,13 +28,12 @@ class EditDriverProfile extends StatefulWidget {
   ProfileData driver;
 
   EditDriverProfile(
-      {required this.driver, this.inProgress = false, this.color, Key? key})
-      : super(key: key) {
-    print("from edit const ${driver.toJson()}");
-  }
+      {required this.driver, this.inProgress = true, this.color, Key? key})
+      : super(key: key) {}
 
   @override
-  State<EditDriverProfile> createState() => _EditDriverProfileState(driver);
+  State<EditDriverProfile> createState() =>
+      _EditDriverProfileState(driver, inProgress: inProgress);
 }
 
 class _EditDriverProfileState extends State<EditDriverProfile> {
@@ -42,13 +43,14 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
 
   List<Car> cloneCars() {
     List<Car> cars = [];
+    print("owner from cloneCare : ${driver.cars![0].toJson()}");
     for (Car c in driver.cars!) {
       Car car = Car(
           averageMilesPerMonth: c.averageMilesPerMonth,
           carLicenseRenewalDate: c.carLicenseRenewalDate,
           carModel: (c.carModel != null) ? c.carModel!.clone() : CarModel(),
           carType: (c.carType != null) ? c.carType!.clone() : CarType(),
-          color: (c.color != null) ? c.color!.clone() : ColorData(),
+          color: (c.color != null) ? c.color!.clone() : CarColor(),
           iV: c.iV,
           lastPeriodicMaintenanceDate: c.lastPeriodicMaintenanceDate,
           miles: c.miles,
@@ -61,9 +63,7 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
     return cars;
   }
 
-  _EditDriverProfileState(this.driver, {this.inProgress = false}) {
-    print("from state const ${driver.user.toString()}");
-    print("from state const ${driver.user.toString()}");
+  _EditDriverProfileState(this.driver, {this.inProgress = true}) {
     _email.text = driver.user!.email!;
     _name.text = driver.user!.name!;
     _phone.text = driver.user!.phoneNumber!;
@@ -84,7 +84,6 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
     int c = (widget.driver.user!.gender == "male") ? 1 : 0;
     genderCubit.choseGender(c);
     if (!inProgress) {
-      print("from init");
       var carCubit = context.read<CarCubit>();
       carCubit.driverCars = (driver.cars != null) ? cloneCars() : [];
       carCubit.updatedCars = (driver.cars != null) ? cloneCars() : [];
@@ -215,7 +214,7 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
                     children: [
                       TextButton(
                           onPressed: () {
-                            carCubit.add();
+                            carCubit.add(driver.user!.sId!);
                             print("test from screennnnnnnnn");
                             carCubit.testcars();
                           },
@@ -241,40 +240,64 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
                   const SizedBox(height: 20),
                   SizedBox(
                       width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          for (Car car in carCubit.updatedCars!)
-                            print(car.toJson());
-                          if (_formKey.currentState!.validate()) {
-                            ProfileData p = driver;
-                            p.user!.name = _name.text;
-                            p.user!.email = _email.text;
-                            p.user!.phoneNumber = _phone.text;
-                            p.user!.gender = genderCubit.genderInText;
-                            if (_licenseRenewalDate.text != null)
-                              p.user!.driverLisenceRenewalNotification =
-                                  _licenseRenewalDate.text;
-                            //p.cars = carCubit.updatedCars;
-                            print("p.toJson():${p.toJson()}");
-                            ProfileCubit profileCubit =
-                                ProfileCubit.get(context);
-                            await profileCubit.EditDriverProfile({
-                              "name": _name.text,
-                              "phoneNumber": _phone.text,
-                              "gender": genderCubit.genderInText,
-                              "driverLisenceRenewalDate":
-                                  ((_licenseRenewalDate.text != null))
-                                      ? "2023-09-1"
-                                      : null
-                            });
-                            await carCubit.handleCarEdit();
-                            // NavigationUtils.navigateAndClearStack(
-                            //     context: context,
-                            //     destinationScreen: const DriverHomeScreen());
-                          }
-                        },
-                        child: const Text("Update"),
-                      )),
+                      child: BlocBuilder<CarCubit, CarState>(
+                          builder: (context, s) {
+                        return BlocBuilder<ProfileCubit, ProfileState>(
+                            builder: (context, state) {
+                          return ElevatedButton(
+                            onPressed: () async {
+                              for (Car car in carCubit.updatedCars!)
+                                print(SharedPreferencesHelper.getData(
+                                    key: "vewToken"));
+                              if (_formKey.currentState!.validate()) {
+                                ProfileData p = driver;
+                                p.user!.name = _name.text;
+                                p.user!.email = _email.text;
+                                p.user!.phoneNumber = _phone.text;
+                                p.user!.gender = genderCubit.genderInText;
+                                if (_licenseRenewalDate.text != null)
+                                  p.user!.driverLisenceRenewalNotification =
+                                      _licenseRenewalDate.text;
+                                //p.cars = carCubit.updatedCars;
+                                print("p.toJson():${p.toJson()}");
+                                ProfileCubit profileCubit =
+                                    ProfileCubit.get(context);
+                                await profileCubit.EditDriverProfile({
+                                  "name": _name.text,
+                                  "phoneNumber": _phone.text,
+                                  "gender": genderCubit.genderInText,
+                                  "driverLisenceRenewalDate":
+                                      ((_licenseRenewalDate.text != null))
+                                          ? "2023-09-1"
+                                          : null
+                                });
+                                if (state is EdittingProfileSuccessState) {
+                                  await carCubit.handleCarEdit();
+                                  if (s is CarHandeledState)
+                                    NavigationUtils.navigateAndClearStack(
+                                        context: context,
+                                        destinationScreen: DriverProfile());
+                                  else {
+                                    print(s);
+                                    const snackBar = SnackBar(
+                                        content: Text(
+                                            "Something went wrong while editing cars try again!"));
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
+                                  }
+                                } else {
+                                  const snackBar = SnackBar(
+                                      content: Text(
+                                          "Something went wrong while editing profile try again !"));
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                }
+                              }
+                            },
+                            child: const Text("Update"),
+                          );
+                        });
+                      })),
                 ],
               )),
         ),

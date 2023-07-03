@@ -22,6 +22,7 @@ class SelectColorCubit extends Cubit<SelectColorState> {
       emit(GettingColorsLoadingState());
       print("colors response : ${value.data}");
       carColorResponse = CarColorResponse.fromJson(value.data);
+      print("done");
       emit(GettingColorsSuccessState());
       //print(carColorResponse!.carColor![5].code);
     }).onError((error, stackTrace) {
