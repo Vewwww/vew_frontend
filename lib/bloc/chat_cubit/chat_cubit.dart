@@ -21,7 +21,7 @@ class ChatCubit extends Cubit<ChatState> {
       chat.messages!.add(message);
       if (SharedPreferencesHelper.getData(key: "vewRole") == "winch")
         getWinchChats();
-      if (SharedPreferencesHelper.getData(key: "vewRole") == "driver")
+      if (SharedPreferencesHelper.getData(key: "vewRole") == "user")
         getDriverChats();
       if (SharedPreferencesHelper.getData(key: "vewRole") == "mechanic")
         getMechanicChats();

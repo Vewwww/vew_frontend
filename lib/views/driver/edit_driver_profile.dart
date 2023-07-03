@@ -2,26 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/car_cubit/car_cubit.dart';
 import 'package:vewww/bloc/profile_cubit/profile_cubit.dart';
-import 'package:vewww/views/driver/select_car_model.dart';
-import 'package:vewww/views/driver/select_car_type_screen.dart';
-
+import 'package:vewww/core/utils/navigation.dart';
+import 'package:vewww/views/driver/driver_home_screen.dart';
+import 'package:vewww/views/driver/driver_profile.dart';
 import '../../bloc/add_car_cubit/add_car_cubit.dart';
 import '../../bloc/gender_cubit/gender_cubit.dart';
 import '../../bloc/reminder_cubit/reminder_cubit.dart';
 import '../../bloc/select_choice_cubit/select_choice_cubit.dart';
-import '../../bloc/select_color_cubit/select_color_cubit.dart';
 import '../../core/components/build_car.dart';
+import '../../core/components/custom_app_bar.dart';
 import '../../core/components/custom_text_field.dart';
 import '../../core/components/logo.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/style/app_colors.dart';
-import '../../core/utils/navigation.dart';
 import '../../model/car.dart';
+import '../../model/car_model.dart';
 import '../../model/car_type.dart';
-import '../../model/driver.dart';
 import '../../model/profile_response.dart';
-import 'driver_home_screen.dart';
-import '../common/select_color_screen.dart';
 
 class EditDriverProfile extends StatefulWidget {
   String? color;
@@ -42,6 +39,27 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
   String? carType;
   ProfileData driver;
   bool inProgress;
+
+  List<Car> cloneCars() {
+    List<Car> cars = [];
+    for (Car c in driver.cars!) {
+      Car car = Car(
+          averageMilesPerMonth: c.averageMilesPerMonth,
+          carLicenseRenewalDate: c.carLicenseRenewalDate,
+          carModel: (c.carModel != null) ? c.carModel!.clone() : CarModel(),
+          carType: (c.carType != null) ? c.carType!.clone() : CarType(),
+          color: (c.color != null) ? c.color!.clone() : ColorData(),
+          iV: c.iV,
+          lastPeriodicMaintenanceDate: c.lastPeriodicMaintenanceDate,
+          miles: c.miles,
+          owner: c.owner,
+          plateNumber: c.plateNumber,
+          sId: c.sId,
+          year: c.year);
+      cars.add(car);
+    }
+    return cars;
+  }
 
   _EditDriverProfileState(this.driver, {this.inProgress = false}) {
     print("from state const ${driver.user.toString()}");
@@ -66,9 +84,10 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
     int c = (widget.driver.user!.gender == "male") ? 1 : 0;
     genderCubit.choseGender(c);
     if (!inProgress) {
+      print("from init");
       var carCubit = context.read<CarCubit>();
-      carCubit.currentCars = (driver.cars != null) ? driver.cars! : [];
-      carCubit.editedCars = (driver.cars != null) ? driver.cars! : [];
+      carCubit.driverCars = (driver.cars != null) ? cloneCars() : [];
+      carCubit.updatedCars = (driver.cars != null) ? cloneCars() : [];
     }
   }
 
@@ -83,7 +102,7 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           child: Form(
               key: _formKey,
               child: Column(
@@ -91,7 +110,22 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(height: constraintsHight / 30),
+                  CustomAppBar(
+                    haveLogo: false,
+                    haveBackArrow: false,
+                    leading: IconButton(
+                      icon: Icon(
+                        Icons.arrow_back_ios,
+                        color: mainColor,
+                      ),
+                      onPressed: () {
+                        NavigationUtils.navigateAndClearStack(
+                            context: context,
+                            destinationScreen: DriverProfile());
+                      },
+                    ),
+                  ),
+                  SizedBox(height: constraintsHight / 30 - 20),
                   Center(child: Logo(size: 170)),
                   SizedBox(height: constraintsHight / 60),
                   const Divider(
@@ -182,6 +216,8 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
                       TextButton(
                           onPressed: () {
                             carCubit.add();
+                            print("test from screennnnnnnnn");
+                            carCubit.testcars();
                           },
                           child: Text(
                             "Add car",
@@ -194,10 +230,10 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: carCubit.editedCars!.length,
+                      itemCount: carCubit.updatedCars!.length,
                       itemBuilder: (BuildContext context, int index) {
                         return buildCarDetails(
-                            carCubit.editedCars![index], index + 1,
+                            carCubit.updatedCars![index], index + 1,
                             editable: true, context: context, driver: driver);
                       },
                     );
@@ -207,7 +243,7 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () async {
-                          for (Car car in carCubit.editedCars!)
+                          for (Car car in carCubit.updatedCars!)
                             print(car.toJson());
                           if (_formKey.currentState!.validate()) {
                             ProfileData p = driver;
@@ -218,7 +254,7 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
                             if (_licenseRenewalDate.text != null)
                               p.user!.driverLisenceRenewalNotification =
                                   _licenseRenewalDate.text;
-                            p.cars = carCubit.editedCars;
+                            //p.cars = carCubit.updatedCars;
                             print("p.toJson():${p.toJson()}");
                             ProfileCubit profileCubit =
                                 ProfileCubit.get(context);
