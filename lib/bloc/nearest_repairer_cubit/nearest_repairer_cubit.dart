@@ -187,4 +187,6 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
         desiredAccuracy: LocationAccuracy.best);
     return {"latitude": location.latitude, "longitude": location.latitude};
   }
+
+  
 }

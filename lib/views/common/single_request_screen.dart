@@ -3,6 +3,7 @@ import 'package:vewww/core/components/backward_arrow.dart';
 import 'package:vewww/core/components/rating_bar.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
+import 'package:vewww/model/winch_accepted_requests_response.dart';
 import 'package:vewww/views/mechanic/mechanic_home_screen.dart';
 import 'package:vewww/views/winch/winch_home_page.dart';
 
@@ -14,8 +15,10 @@ import '../../model/accepted_requests_response.dart';
 
 class SingleRequestScreen extends StatelessWidget {
   String type; // accepted or comming
-  MechanicRequestsData acceptedRequestsData;
-  SingleRequestScreen(this.acceptedRequestsData,
+  MechanicRequestsData mechanicRequestData;
+  WinchRequestData winchRequestData;
+  SingleRequestScreen(this.mechanicRequestData,
+  this.winchRequestData,
       {this.type = "accepted", Key? key})
       : super(key: key);
 
@@ -55,7 +58,7 @@ class SingleRequestScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    acceptedRequestsData.driver!.person!.name!,
+                    (mechanicRequestData != null)?mechanicRequestData.driver!.person!.name! : winchRequestData.driver!.name!,
                     style: AppTextStyle.whiteTextStyle(28),
                   ),
                 ]),
@@ -109,22 +112,31 @@ class SingleRequestScreen extends StatelessWidget {
                           Text("السيارة",
                               style: AppTextStyle.lightGrayTextStyle(14)),
                           DataElement("رقم السيارة",
-                              acceptedRequestsData.car!.plateNumber!),
+                              (mechanicRequestData != null)? mechanicRequestData.car!.plateNumber!: winchRequestData.car!.plateNumber!),
                           DataElement("نوع السيارة",
-                              acceptedRequestsData.car!.carType!.name!.ar!),
-                          (acceptedRequestsData.car!.carModel != null)
+                          (mechanicRequestData != null)?
+                              mechanicRequestData.car!.carType!.name!.ar!
+                              : winchRequestData.car!.carType!.name!.ar!
+                              ),
+                          (mechanicRequestData.car!.carModel != null)
                               ? DataElement("موديل السيارة",
-                                  acceptedRequestsData.car!.carModel!.name!)
+                                (mechanicRequestData != null)?
+                                  mechanicRequestData.car!.carModel!.name!:
+                                  winchRequestData.car!.carModel!.name!
+                                  )
                               : Container(),
                           DataElement("لون السيارة", "أحمر"),
                           DataElement("مشكلة السيارة",
-                              acceptedRequestsData.service!.name!.ar!),
-                          (acceptedRequestsData.location!.description!.ar !=
+                              mechanicRequestData.service!.name!.ar!),
+                          (mechanicRequestData.location!.description!.ar !=
                                   "no arabic location description available")
                               ? DataElement(
                                   "الموقع",
-                                  acceptedRequestsData
-                                      .location!.description!.ar!)
+                                  (mechanicRequestData != null)?
+                                  mechanicRequestData
+                                      .location!.description!.ar!:
+                                      winchRequestData.location!.road!
+                                      )
                               : Container(),
                           const SizedBox(height: 30),
                           SizedBox(
@@ -143,11 +155,11 @@ class SingleRequestScreen extends StatelessWidget {
                                     if (type == "accepted") {
                                       await repairerRequestsCubit
                                           .mechanicCompleteRequest(
-                                              acceptedRequestsData.sId!);
+                                              mechanicRequestData.sId!);
                                     } else {
                                       await repairerRequestsCubit
                                           .mechanicAcceptRequest(
-                                              acceptedRequestsData.sId!);
+                                              mechanicRequestData.sId!);
                                     }
 
                                     NavigationUtils.navigateTo(
@@ -159,7 +171,7 @@ class SingleRequestScreen extends StatelessWidget {
                                 child:
                                     Text((type == "accepted") ? "تم" : "قبول")),
                           ),
-                          (type == "comming")
+                          (type == "coming")
                               ? SizedBox(
                                   width: double.infinity,
                                   child: ElevatedButton(
@@ -176,7 +188,7 @@ class SingleRequestScreen extends StatelessWidget {
                                         if (role == "mechanic") {
                                           await repairerRequestsCubit
                                               .mechanicCancelRequest(
-                                                  acceptedRequestsData.sId!);
+                                                  mechanicRequestData.sId!);
                                           NavigationUtils.navigateAndClearStack(
                                               context: context,
                                               destinationScreen:

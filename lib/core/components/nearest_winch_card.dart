@@ -75,7 +75,7 @@ Widget nearestWinchCard({
                   softWrap: false,
                 ),
                 Text(
-                  "$roundedDistance",
+                  "$roundedDistance km",
                 )
               ],
             ),

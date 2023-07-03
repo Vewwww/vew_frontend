@@ -32,3 +32,36 @@ class AcceptingRequestLoadingState extends RepairerRequestsState {}
 class AcceptingRequestSuccessState extends RepairerRequestsState {}
 
 class AcceptingRequestErrorState extends RepairerRequestsState {}
+
+class GettingWinchAcceptedRequestsLoadingState extends RepairerRequestsState {}
+
+class GettingWinchAcceptedRequestsSuccessState extends RepairerRequestsState {}
+
+class GettingWinchAcceptedRequestsErrorState extends RepairerRequestsState {}
+
+class GettingWinchUpComingRequestsLoadingState extends RepairerRequestsState {}
+
+class GettingWinchUpComingRequestsSuccessState extends RepairerRequestsState {
+  List<WinchRequestData> requestData;
+  GettingWinchUpComingRequestsSuccessState(this.requestData);
+}
+
+class GettingWinchUpComingRequestsErrorState extends RepairerRequestsState {}
+
+class WinchAcceptingRequestLoadingState extends RepairerRequestsState {}
+
+class WinchAcceptingRequestSuccessState extends RepairerRequestsState {}
+
+class WinchAcceptingRequestErrorState extends RepairerRequestsState {}
+
+class WinchCompletingRequestLoadingState extends RepairerRequestsState {}
+
+class WinchCompletingRequestSuccessState extends RepairerRequestsState {}
+
+class WinchCompletingRequestErrorState extends RepairerRequestsState {}
+
+class WinchCancelingRequestLoadingState extends RepairerRequestsState {}
+
+class WinchCancelingRequestSuccessState extends RepairerRequestsState {}
+
+class WinchCancelingRequestErrorState extends RepairerRequestsState {}
