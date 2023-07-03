@@ -6,14 +6,21 @@ import '../style/app_Text_Style/app_text_style.dart';
 import '../style/app_colors.dart';
 import 'default_button.dart';
 
+double roundDouble(double value, int places){ 
+   num mod = pow(10.0, places); 
+   return ((value * mod).round().toDouble() / mod); 
+}
+
 Widget requestCard({
   required bool isWinch,
   required String name,
   required double rate,
   required String thirdVal,
   required String requestState,
+  required double distance,
   required Function() function
 }){
+  double roundedDistance= roundDouble(distance, 1);
 return InkWell(
         child: Container(
       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -66,6 +73,19 @@ return InkWell(
             (rate!= null)
                     ? RatingBar(rate)
                     : Container(),
+             Row(
+              children: [
+                Text(
+                  'Far by: ',
+                  style: AppTextStyle.darkGreyStyle(size: 15),
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                ),
+                Text(
+                  "$roundedDistance km",
+                )
+              ],
+            ),
             Text(requestState, style: AppTextStyle.greyStyle(size:15),),
             defaultButton(text: 'Cancel', width: 110, function: function),
           ],

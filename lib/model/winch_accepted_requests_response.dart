@@ -1,64 +1,53 @@
-import 'package:vewww/model/car.dart';
-import 'package:vewww/model/location.dart';
-import 'package:vewww/model/repairer.dart';
-import 'package:vewww/model/services.dart';
+import 'package:vewww/model/requests.dart';
 
-import 'driver.dart';
+class  WinchAcceptedRequestsResponse{
+  List<WinchRequestData>? winchRequestData;
 
-class MechanicAcceptedRequestsResponse {
-  List<MechanicRequestsData>? data;
+  WinchAcceptedRequestsResponse({this.winchRequestData});
 
-  MechanicAcceptedRequestsResponse({this.data});
-
-  MechanicAcceptedRequestsResponse.fromJson(Map<String, dynamic> json) {
+  WinchAcceptedRequestsResponse.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = <MechanicRequestsData>[];
+      winchRequestData = <WinchRequestData>[];
       json['data'].forEach((v) {
-        data!.add(new MechanicRequestsData.fromJson(v));
+        winchRequestData!.add(new WinchRequestData.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    if (this.winchRequestData != null) {
+      data['data'] = this.winchRequestData!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class MechanicRequestsData {
+class WinchRequestData {
   Location? location;
   String? sId;
-  Service? service;
   Driver? driver;
   Car? car;
-  Mechanic? mechanic;
+  Winch? winch;
   String? createdAt;
 
-  MechanicRequestsData(
+  WinchRequestData(
       {this.location,
       this.sId,
-      this.service,
       this.driver,
       this.car,
-      this.mechanic,
+      this.winch,
       this.createdAt});
 
-  MechanicRequestsData.fromJson(Map<String, dynamic> json) {
+  WinchRequestData.fromJson(Map<String, dynamic> json) {
     location = json['location'] != null
         ? new Location.fromJson(json['location'])
         : null;
     sId = json['_id'];
-    service =
-        json['service'] != null ? new Service.fromJson(json['service']) : null;
     driver =
         json['driver'] != null ? new Driver.fromJson(json['driver']) : null;
     car = json['car'] != null ? new Car.fromJson(json['car']) : null;
-    mechanic = json['mechanic'] != null
-        ? new Mechanic.fromJson(json['mechanic'])
-        : null;
+    winch = json['winch'] != null ? new Winch.fromJson(json['winch']) : null;
     createdAt = json['created_at'];
   }
 
@@ -68,17 +57,14 @@ class MechanicRequestsData {
       data['location'] = this.location!.toJson();
     }
     data['_id'] = this.sId;
-    if (this.service != null) {
-      data['service'] = this.service!.toJson();
-    }
     if (this.driver != null) {
       data['driver'] = this.driver!.toJson();
     }
     if (this.car != null) {
       data['car'] = this.car!.toJson();
     }
-    if (this.mechanic != null) {
-      data['mechanic'] = this.mechanic!.toJson();
+    if (this.winch != null) {
+      data['winch'] = this.winch!.toJson();
     }
     data['created_at'] = this.createdAt;
     return data;

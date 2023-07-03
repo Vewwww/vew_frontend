@@ -5,13 +5,16 @@ import 'package:vewww/core/components/rating_bar.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/model/accepted_requests_response.dart';
 import 'package:vewww/views/mechanic/mechanic_home_screen.dart';
+import '../../model/winch_accepted_requests_response.dart';
 import '../../views/winch/single_request_screen.dart';
+import '../../views/winch/winch_home_page.dart';
 import '../style/app_text_style/app_text_style.dart';
 import '../utils/navigation.dart';
 
 class ComingRequestCard extends StatelessWidget {
-  ComingRequestCard({this.mechanicRequestsData, Key? key}) : super(key: key);
+  ComingRequestCard({this.mechanicRequestsData,this.winchRequestsData, Key? key}) : super(key: key);
   MechanicRequestsData? mechanicRequestsData;
+  WinchRequestData? winchRequestsData;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,7 @@ class ComingRequestCard extends StatelessWidget {
               context: context,
               destinationScreen: SingleRequestScreen(
                 mechanicRequestsData!,
-                type: "comming",
+                type: "coming",
               ));
         },
         child: Container(
@@ -51,11 +54,11 @@ class ComingRequestCard extends StatelessWidget {
                     Text(
                       (mechanicRequestsData != null)
                           ? mechanicRequestsData!.driver!.person!.name!
-                          : "winchRequestsData!.driver!.person!.name!",
+                          : winchRequestsData!.driver!.person!.name!,
                       style: AppTextStyle.titleTextStyle(20),
                     ),
                     Text(
-                      " السيارة : ${(mechanicRequestsData != null) ? mechanicRequestsData!.car!.carType!.name!.ar! : 'winchRequestsData!.car!.carType!.name!.ar!'}",
+                      " السيارة : ${(mechanicRequestsData != null) ? mechanicRequestsData!.car!.carType!.name!.ar! : winchRequestsData!.car!.carType!.name!.ar!}",
                       style: AppTextStyle.darkGreyStyle(size: 13),
                     ),
                     SizedBox(height: 10),
@@ -70,6 +73,8 @@ class ComingRequestCard extends StatelessWidget {
                               if (mechanicRequestsData != null) {
                                 requestsCubit.mechanicCancelRequest(
                                     mechanicRequestsData!.sId!);
+                              }else{
+                                requestsCubit.winchCancelRequest(winchRequestsData!.sId!);
                               }
                             },
                             child: const Text(
@@ -92,6 +97,15 @@ class ComingRequestCard extends StatelessWidget {
                                           context: context,
                                           destinationScreen:
                                               MechanicHomeScreen());
+                                  }else{
+                                    await requestsCubit.winchAcceptRequest(
+                                      winchRequestsData!.sId!
+                                    );
+                                    if(state is WinchAcceptingRequestSuccessState)
+                                     NavigationUtils.navigateAndClearStack(
+                                          context: context,
+                                          destinationScreen:
+                                              WinchHomePage());
                                   }
                                 },
                                 child: const Text(
@@ -112,11 +126,15 @@ class ComingRequestCard extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: mainColor,
                     borderRadius: const BorderRadius.all(Radius.circular(5))),
-                child: const Icon(
+                child: (mechanicRequestsData != null)? const Icon(
+                  Icons.handyman_outlined,
+                  size: 50,
+                  color: Colors.white,
+                ):const Icon(
                   Icons.car_repair,
                   size: 50,
                   color: Colors.white,
-                ),
+                )
               ),
             ],
           ),

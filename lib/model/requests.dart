@@ -1,17 +1,17 @@
+import 'package:vewww/model/car_model.dart';
 import 'package:vewww/model/car_type.dart';
-//import 'package:vewww/model/location.dart';
 import 'package:vewww/model/name.dart';
 
-class PreviousRequestResponse {
-  List<PreviousRequest>? previousRequests;
+class RequestResponse {
+  List<Request>? previousRequests;
 
-  PreviousRequestResponse({this.previousRequests});
+  RequestResponse({this.previousRequests});
 
-  PreviousRequestResponse.fromJson(Map<String, dynamic> json) {
+  RequestResponse.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      previousRequests = <PreviousRequest>[];
+      previousRequests = <Request>[];
       json['data'].forEach((v) {
-        previousRequests!.add(new PreviousRequest.fromJson(v));
+        previousRequests!.add(new Request.fromJson(v));
       });
     }
   }
@@ -26,7 +26,43 @@ class PreviousRequestResponse {
   }
 }
 
-class PreviousRequest {
+class CreateRequest {
+  String? driver;
+  String? car;
+  Location? location;
+  String? winch;
+  String? mechanic;
+  String? service;
+
+  CreateRequest({this.driver, this.car, this.location, this.winch, this.mechanic,this.service});
+
+  CreateRequest.fromJson(Map<String, dynamic> json) {
+    driver = json['driver'];
+    car = json['car'];
+    location = json['location'] != null
+        ? new Location.fromJson(json['location'])
+        : null;
+    winch = json['winch'];
+    mechanic = json['mechanic'];
+    service = json['service'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['driver'] = this.driver;
+    data['car'] = this.car;
+    if (this.location != null) {
+      data['location'] = this.location!.toJson();
+    }
+    data['winch'] = this.winch;
+    data['mechanic'] = this.mechanic;
+    data['service'] = this.service;
+    return data;
+  }
+}
+
+
+class Request {
   Location? location;
   String? sId;
   Driver? driver;
@@ -36,7 +72,7 @@ class PreviousRequest {
   bool? isWinch;
   Winch? winch;
 
-  PreviousRequest(
+  Request(
       {this.location,
       this.sId,
       this.driver,
@@ -46,7 +82,7 @@ class PreviousRequest {
       this.isWinch,
       this.winch});
 
-  PreviousRequest.fromJson(Map<String, dynamic> json) {
+  Request.fromJson(Map<String, dynamic> json) {
     location = json['location'] != null
         ? new Location.fromJson(json['location'])
         : null;
@@ -111,18 +147,23 @@ class Location {
 class Driver {
   String? sId;
   String? name;
+  String? phoneNumber;
 
-  Driver({this.sId, this.name});
+  Driver({this.sId, this.name, this.phoneNumber});
 
   Driver.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
+    phoneNumber = json['phoneNumber'];
   }
+
+  get person => null;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['name'] = this.name;
+    data['phoneNumber']= this.phoneNumber;
     return data;
   }
 }
@@ -130,16 +171,19 @@ class Driver {
 class Car {
   String? sId;
   CarType? carType;
+  CarModel? carModel;
   String? plateNumber;
   Color? color;
   int? iV;
 
-  Car({this.sId, this.carType, this.plateNumber, this.color, this.iV});
+  Car({this.sId, this.carType, this.plateNumber, this.color, this.iV, this.carModel});
 
   Car.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     carType =
         json['carType'] != null ? new CarType.fromJson(json['carType']) : null;
+    carModel =
+        json['carModel'] != null ? new CarModel.fromJson(json['carModel']) : null;
     plateNumber = json['plateNumber'];
     color = json['color'] != null ? new Color.fromJson(json['color']) : null;
     iV = json['__v'];
@@ -151,6 +195,7 @@ class Car {
     if (this.carType != null) {
       data['carType'] = this.carType!.toJson();
     }
+    data['carModel']= this.carModel;
     data['plateNumber'] = this.plateNumber;
     if (this.color != null) {
       data['color'] = this.color!.toJson();

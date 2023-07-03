@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:vewww/bloc/request_cubit/request_cubit.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
+import 'package:vewww/model/requests.dart';
+import 'package:vewww/views/driver/requests_screen.dart';
 
 import '../../controllers/controller.dart';
 import '../../core/components/rating_bar.dart';
-import '../../model/repairer.dart';
+import '../../core/utils/sp_helper/cache_helper.dart';
+import '../../model/repairer.dart' as repairer;
 
 class MechanicPreviewScreen extends StatelessWidget {
-  Mechanic mechanic;
+  repairer.Mechanic mechanic;
   MechanicPreviewScreen({required this.mechanic, super.key});
 
   @override
   Widget build(BuildContext context) {
+    RequestCubit requestCubit= RequestCubit.get(context);
     return Scaffold(
       backgroundColor: mainColor,
       body: Column(children: [
@@ -125,7 +130,28 @@ class MechanicPreviewScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 (mechanic.hasDelivery == true)
-                    ? defaultButton(text: 'Request Mechanic', width: 390)
+                    ? defaultButton(
+                        text: 'Request Mechanic',
+                        width: 390,
+                        function: () {
+                          CreateRequest createRequest=CreateRequest(
+                            driver: SharedPreferencesHelper.getData( key: 'vewId'),
+                          car: '6484789db6fc5a39cbe4e3d8',
+                          //location: await requestCubit.getLocation(),
+                          mechanic: mechanic.sId,
+                          //service:mechanic.service![index].name!.en, 
+                          );
+                          requestCubit.createMechanicRequest(createRequest);
+                          if(requestCubit is CreateMechanicRequestSuccessState){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) => RequestScreen(isWinch: false,))));
+                          }else{
+                            return CircularProgressIndicator();
+                          }
+                        },
+                      )
                     : defaultButton(text: 'Request Winch', width: 390),
               ],
             ),

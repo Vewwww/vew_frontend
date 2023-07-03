@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vewww/model/accepted_requests_response.dart';
+import 'package:vewww/model/winch_accepted_requests_response.dart';
+//import 'package:vewww/model/accepted_requests_response.dart';
 import 'package:vewww/views/winch/winch_profile.dart';
 import 'package:vewww/views/winch/winch_upcoming_requests_screen.dart';
 
 import '../../bloc/chat_cubit/chat_cubit.dart';
+import '../../bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
 import '../../core/components/accepted_request_card.dart';
 import '../../core/components/app_nav_bar.dart';
 import '../../core/components/coming_request_card.dart';
@@ -26,10 +28,14 @@ class _WinchHomePageState extends State<WinchHomePage> {
     super.initState();
     var chatCubit = context.read<ChatCubit>();
     chatCubit.getWinchChats();
+    var repairerRequestsCubit = context.read<RepairerRequestsCubit>();
+    repairerRequestsCubit.winchAcceptedRequests();
   }
 
   @override
   Widget build(BuildContext context) {
+    RepairerRequestsCubit repairerRequestsCubit =
+        RepairerRequestsCubit.get(context);
     return Scaffold(
       bottomNavigationBar: AppNavigationBar(
         homeFunction: () {
@@ -102,12 +108,32 @@ class _WinchHomePageState extends State<WinchHomePage> {
                 style: AppTextStyle.titleTextStyle(18),
               ),
             ),
-            Expanded(
-                child: ListView.builder(
-                    itemCount: 10,
-                    itemBuilder: (BuildContext context, int index) {
-                      return AcceptedRequestCard(MechanicRequestsData());
-                    }))
+            BlocBuilder<RepairerRequestsCubit, RepairerRequestsState>(
+              builder: (context, state) {
+                if (state is GettingWinchAcceptedRequestsSuccessState) {
+                  return Expanded(
+                      child: ListView.builder(
+                          itemCount: repairerRequestsCubit
+                              .winchacceptedRequestsResponse!
+                              .winchRequestData!
+                              .length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return AcceptedRequestCard(
+                                 repairerRequestsCubit
+                                    .winchacceptedRequestsResponse!
+                                    .winchRequestData![index]);
+                          }));
+                } else {
+                  return Center(
+                      child: Column(
+                    children: [
+                      SizedBox(height: MediaQuery.of(context).size.height / 3),
+                      CircularProgressIndicator(),
+                    ],
+                  ));
+                }
+              },
+            )
           ],
         ),
       ),

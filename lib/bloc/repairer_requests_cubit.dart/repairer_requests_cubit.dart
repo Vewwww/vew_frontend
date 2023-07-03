@@ -2,19 +2,22 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:vewww/model/winch_upcoming_request_response.dart';
 import 'package:vewww/services/dio_helper.dart';
 
 import '../../core/utils/sp_helper/cache_helper.dart';
 import '../../model/accepted_requests_response.dart';
 import '../../model/upcoming_requests_response.dart';
+import '../../model/winch_accepted_requests_response.dart';
 
 part 'repairer_requests_state.dart';
 
 class RepairerRequestsCubit extends Cubit<RepairerRequestsState> {
   RepairerRequestsCubit() : super(RepairerRequestsInitial());
   static RepairerRequestsCubit get(context) => BlocProvider.of(context);
-  AcceptedRequestsResponse? acceptedRequestsResponse;
+  MechanicAcceptedRequestsResponse? acceptedRequestsResponse;
   UpcomingRequestsResponse? upcomingRequestsResponse;
+  WinchAcceptedRequestsResponse? winchacceptedRequestsResponse;
 
   Future<void> mechanicAcceptedRequests() async {
     emit(GettingAcceptedRequestsLoadingState());
@@ -23,7 +26,8 @@ class RepairerRequestsCubit extends Cubit<RepairerRequestsState> {
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
     ).then((value) {
       print("geteMchanicAcceptedRequests response : ${value.data}");
-      acceptedRequestsResponse = AcceptedRequestsResponse.fromJson(value.data);
+      acceptedRequestsResponse =
+          MechanicAcceptedRequestsResponse.fromJson(value.data);
       emit(GettingAcceptedRequestsSuccessState());
     }).catchError((err) {
       if (err is DioError) print(err.response);
@@ -96,4 +100,86 @@ class RepairerRequestsCubit extends Cubit<RepairerRequestsState> {
       emit(CompletingRequestErrorState());
     });
   }
+
+  Future<void> winchAcceptedRequests() async {
+    emit(GettingWinchAcceptedRequestsLoadingState());
+    await DioHelper.getData(
+      url: "/winch/getWinchAcceptedRequests",
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
+    ).then((value) {
+      print("GettingWinchAcceptedRequests response : ${value.data}");
+      winchacceptedRequestsResponse =
+          WinchAcceptedRequestsResponse.fromJson(value.data);
+      emit(GettingWinchAcceptedRequestsSuccessState());
+    }).catchError((err) {
+      if (err is DioError) print(err.response);
+      print(err);
+      emit(GettingWinchAcceptedRequestsErrorState());
+    });
+  }
+
+   Future<void> winchUpComingRequests() async {
+    emit(GettingWinchUpComingRequestsLoadingState());
+    await DioHelper.getData(
+      url: "/winch/getWinchUpcomingRequests",
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
+    ).then((value) {
+      print("winchUpComingRequests response : ${value.data}");
+      WinchUpcomingRequestResponse winchUpcomingRequestResponse = WinchUpcomingRequestResponse.fromJson(value.data);
+      emit(GettingWinchUpComingRequestsSuccessState(winchUpcomingRequestResponse.data!));
+    }).catchError((err) {
+      if (err is DioError) print(err.response);
+      print(err);
+      emit(GettingWinchUpComingRequestsErrorState());
+    });
+  }
+
+  Future<void> winchCancelRequest(String id) async {
+    emit(WinchCancelingRequestLoadingState());
+    await DioHelper.deleteData(
+      url: "/winch/request/$id",
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
+    ).then((value) {
+      print("canceling winch requests response : ${value.data}");
+      winchUpComingRequests();
+      emit(WinchCancelingRequestSuccessState());
+    }).catchError((err) {
+      if (err is DioError) print(err.response);
+      print(err);
+      emit(WinchCancelingRequestErrorState());
+    });
+  }
+
+  Future<void> winchAcceptRequest(String id) async {
+    emit(WinchAcceptingRequestLoadingState());
+    await DioHelper.getData(
+      url: "/winch/acceptWinchRequest/$id",
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
+    ).then((value) {
+      print(" requests response : ${value.data}");
+      winchAcceptedRequests();
+      emit(WinchAcceptingRequestSuccessState());
+    }).catchError((err) {
+      if (err is DioError) print(err.response);
+      print(err);
+      emit(WinchAcceptingRequestErrorState());
+    });
+  }
+
+  Future<void> winchCompleteRequest(String id) async {
+    emit(WinchCompletingRequestLoadingState());
+    await DioHelper.getData(
+      url: "/winch/endRequest/$id",
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
+    ).then((value) {
+      print("completing winch requests response : ${value.data}");
+      winchAcceptedRequests();
+      emit(WinchCompletingRequestSuccessState());
+    }).catchError((err) {
+      if (err is DioError) print(err.response);
+      print(err);
+      emit(WinchCompletingRequestErrorState());
+    });
+  }
+
 }
