@@ -18,9 +18,9 @@ class GetDriverCurrentReqSuccessState extends RequestState {
 class GetDriverCurrentReqErrorState extends RequestState {}
 
 class GetDriverPendingReqLoadingState extends RequestState {}
-class GetDriverPendingReqSuccessState extends RequestState {
+class GetDriverReqSuccessState extends RequestState {
   final List<Request> previousRequests;
-  GetDriverPendingReqSuccessState(this.previousRequests);
+  GetDriverReqSuccessState(this.previousRequests);
 }
 class GetDriverPendingReqErrorState extends RequestState {}
 

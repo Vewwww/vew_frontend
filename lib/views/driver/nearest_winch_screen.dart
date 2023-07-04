@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:vewww/bloc/nearest_repairer_cubit/nearest_repairer_cubit.dart';
 import 'package:vewww/bloc/request_cubit/request_cubit.dart';
+import 'package:vewww/controllers/controller.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/model/requests.dart';
@@ -11,6 +13,7 @@ import 'package:vewww/views/driver/requests_screen.dart';
 import '../../core/components/nearest_winch_card.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
 import '../../model/location.dart';
+import '../../model/name.dart';
 
 class NearestWinchScreen extends StatefulWidget {
   const NearestWinchScreen({super.key});
@@ -37,14 +40,12 @@ class _NearestWinchScreenState extends State<NearestWinchScreen> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             iconSize: 25,
-            color: mainColor, 
-            onPressed: () {  
-
+            color: mainColor,
+            onPressed: () {
               Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DriverHomeScreen()),
-                            (route) => false);
+                  context,
+                  MaterialPageRoute(builder: (context) => DriverHomeScreen()),
+                  (route) => false);
             },
           ),
           haveLogo: true,
@@ -61,17 +62,22 @@ class _NearestWinchScreenState extends State<NearestWinchScreen> {
                       plateNumber: state.nearestWinch[index].plateNumber!,
                       rate: state.nearestWinch[index].rate!,
                       distance: state.nearestWinch[index].distance!,
-                      function: () {
-                        Location location/*=await requestCubit.getLocation()*/;
-                        CreateRequest createRequest=CreateRequest(
-                          driver: SharedPreferencesHelper.getData( key: 'vewId'),
+                      function: () async {
+                        Position position = await Controller.getLocation();
+                        String address = await Controller.getAddress(position);
+                        Location location = Location(
+                            latitude: position.latitude,
+                            description: Name(en: address, ar: address),
+                            longitude: position.longitude);
+                        CreateRequest createRequest = CreateRequest(
+                          driver: SharedPreferencesHelper.getData(key: 'vewId'),
                           car: '6484789db6fc5a39cbe4e3d8',
-                          //location:location ,
+                          location: location,
                           winch: state.nearestWinch[index].sId,
                         );
                         //TODO: call create winch req. here
                         requestCubit.createWinchRequest(createRequest);
-                        Navigator.pushReplacement(
+                        Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: ((context) => RequestScreen(

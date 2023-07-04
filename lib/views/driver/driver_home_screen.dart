@@ -101,7 +101,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
               ),
               defaultButton(
                   function: () {
-                    DiagnoseCubit.get(context).getAllQuestion();
+                    DiagnoseCubit.get(context).getAllCategories();
                     NavigationUtils.navigateTo(
                         context: context,
                         destinationScreen: ChoosePrblemCategoryScreen());
