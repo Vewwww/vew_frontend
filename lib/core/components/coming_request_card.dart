@@ -6,13 +6,15 @@ import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/model/accepted_requests_response.dart';
 import 'package:vewww/views/mechanic/mechanic_home_screen.dart';
 import '../../model/winch_accepted_requests_response.dart';
-import '../../views/winch/single_request_screen.dart';
+import '../../views/common/single_request_screen.dart';
 import '../../views/winch/winch_home_page.dart';
 import '../style/app_text_style/app_text_style.dart';
 import '../utils/navigation.dart';
 
 class ComingRequestCard extends StatelessWidget {
-  ComingRequestCard({this.mechanicRequestsData,this.winchRequestsData, Key? key}) : super(key: key);
+  ComingRequestCard(
+      {this.mechanicRequestsData, this.winchRequestsData, Key? key})
+      : super(key: key);
   MechanicRequestsData? mechanicRequestsData;
   WinchRequestData? winchRequestsData;
 
@@ -24,7 +26,7 @@ class ComingRequestCard extends StatelessWidget {
           NavigationUtils.navigateTo(
               context: context,
               destinationScreen: SingleRequestScreen(
-                mechanicRequestsData!,
+                mechanicRequestData: mechanicRequestsData!,
                 type: "coming",
               ));
         },
@@ -73,8 +75,9 @@ class ComingRequestCard extends StatelessWidget {
                               if (mechanicRequestsData != null) {
                                 requestsCubit.mechanicCancelRequest(
                                     mechanicRequestsData!.sId!);
-                              }else{
-                                requestsCubit.winchCancelRequest(winchRequestsData!.sId!);
+                              } else {
+                                requestsCubit.winchCancelRequest(
+                                    winchRequestsData!.sId!);
                               }
                             },
                             child: const Text(
@@ -97,15 +100,14 @@ class ComingRequestCard extends StatelessWidget {
                                           context: context,
                                           destinationScreen:
                                               MechanicHomeScreen());
-                                  }else{
+                                  } else {
                                     await requestsCubit.winchAcceptRequest(
-                                      winchRequestsData!.sId!
-                                    );
-                                    if(state is WinchAcceptingRequestSuccessState)
-                                     NavigationUtils.navigateAndClearStack(
+                                        winchRequestsData!.sId!);
+                                    if (state
+                                        is WinchAcceptingRequestSuccessState)
+                                      NavigationUtils.navigateAndClearStack(
                                           context: context,
-                                          destinationScreen:
-                                              WinchHomePage());
+                                          destinationScreen: WinchHomePage());
                                   }
                                 },
                                 child: const Text(
@@ -120,22 +122,23 @@ class ComingRequestCard extends StatelessWidget {
                 ),
               ),
               Container(
-                width: 140,
-                height: 140,
-                margin: const EdgeInsets.fromLTRB(16, 7, 0, 3),
-                decoration: BoxDecoration(
-                    color: mainColor,
-                    borderRadius: const BorderRadius.all(Radius.circular(5))),
-                child: (mechanicRequestsData != null)? const Icon(
-                  Icons.handyman_outlined,
-                  size: 50,
-                  color: Colors.white,
-                ):const Icon(
-                  Icons.car_repair,
-                  size: 50,
-                  color: Colors.white,
-                )
-              ),
+                  width: 140,
+                  height: 140,
+                  margin: const EdgeInsets.fromLTRB(16, 7, 0, 3),
+                  decoration: BoxDecoration(
+                      color: mainColor,
+                      borderRadius: const BorderRadius.all(Radius.circular(5))),
+                  child: (mechanicRequestsData != null)
+                      ? const Icon(
+                          Icons.handyman_outlined,
+                          size: 50,
+                          color: Colors.white,
+                        )
+                      : const Icon(
+                          Icons.car_repair,
+                          size: 50,
+                          color: Colors.white,
+                        )),
             ],
           ),
         ));

@@ -3,23 +3,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:vewww/model/requests.dart' as req;
 import '../../core/utils/sp_helper/cache_helper.dart';
+import '../../model/name.dart';
 import '../../model/requests.dart';
 import '../../services/dio_helper.dart';
-
+import '../../model/location.dart' as loc;
 part 'request_state.dart';
 
 class RequestCubit extends Cubit<RequestState> {
   RequestCubit() : super(RequestInitial());
   static RequestCubit get(context) => BlocProvider.of(context);
-  req.RequestResponse? reqResponse;
+  RequestResponse? reqResponse;
 
   Future<void> getDriverPrevReq() async {
     emit(GetDriverPrevReqLoadingState());
     DioHelper.getData(url: "/driver/request/previousRequests/").then((value) {
       print("get pervious req response : ${value.data}");
-      reqResponse = req.RequestResponse.fromJson(value.data);
+      reqResponse = RequestResponse.fromJson(value.data);
       emit(GetDriverPrevReqSuccessState(reqResponse!.previousRequests!));
     }).catchError((error) {
       if (error is DioError) {
@@ -35,7 +35,7 @@ class RequestCubit extends Cubit<RequestState> {
     DioHelper.getData(url: "/driver/request/getDriverCurrentRequests/")
         .then((value) {
       print("get Curr req response : ${value.data}");
-      req.RequestResponse currentReqResponse = req.RequestResponse.fromJson(value.data);
+      RequestResponse currentReqResponse = RequestResponse.fromJson(value.data);
       emit(GetDriverCurrentReqSuccessState(
           currentReqResponse.previousRequests!));
     }).catchError((error) {
@@ -52,7 +52,7 @@ class RequestCubit extends Cubit<RequestState> {
     DioHelper.getData(url: "/driver/request/getDriverPendingRequests/")
         .then((value) {
       print("get Pending req response : ${value.data}");
-      req.RequestResponse PendingReqResponse = req.RequestResponse.fromJson(value.data);
+      RequestResponse PendingReqResponse = RequestResponse.fromJson(value.data);
       emit(GetDriverPendingReqSuccessState(
           PendingReqResponse.previousRequests!));
     }).catchError((error) {
@@ -78,7 +78,7 @@ class RequestCubit extends Cubit<RequestState> {
     });
   }
 
-  void createWinchRequest(req.CreateRequest createRequest) async {
+  void createWinchRequest(CreateRequest createRequest) async {
     emit(CreateWinchRequestLoadingState());
     print(createRequest.toJson());
     await DioHelper.postData(
@@ -96,7 +96,7 @@ class RequestCubit extends Cubit<RequestState> {
     });
   }
 
-void createMechanicRequest(req.CreateRequest createRequest) async {
+void createMechanicRequest(CreateRequest createRequest) async {
     emit(CreateMechanicRequestLoadingState());
     print(createRequest.toJson());
     await DioHelper.postData(
@@ -115,7 +115,7 @@ void createMechanicRequest(req.CreateRequest createRequest) async {
   }
 
 
-  Future<req.Location> getLocation() async {
+  Future<loc.Location> getLocation() async {
     LocationPermission locationPermission;
     bool isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
     //check if user enable service for location permission
@@ -144,10 +144,11 @@ void createMechanicRequest(req.CreateRequest createRequest) async {
         currentLocation.latitude, currentLocation.longitude);
     Placemark address = placeMark[0];
     String? road = address.street;
-    req.Location location = req.Location(
+    loc.Location location = loc.Location(
         longitude: currentLocation.longitude,
         latitude: currentLocation.latitude,
-        road: road);
+
+        description: Name(en:road , ar:road));
 
     return  location;
   }

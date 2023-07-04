@@ -63,7 +63,7 @@ class _PreviousReqScreenState extends State<PreviousReqScreen> {
                           previousRequestCard(
                               isWinch: state.previousRequests[index].isWinch!,
                               location:
-                                  state.previousRequests[index].location!.road!,
+                                  state.previousRequests[index].location!.description!.en!,
                               dateTime:
                                   state.previousRequests[index].createdAt!,
                               serviceProvider:
@@ -77,7 +77,7 @@ class _PreviousReqScreenState extends State<PreviousReqScreen> {
                                               location: state
                                                   .previousRequests[index]
                                                   .location!
-                                                  .road!,
+                                                  .description!.en!,
                                               dateTime: state
                                                   .previousRequests[index]
                                                   .createdAt!,
@@ -109,7 +109,7 @@ class _PreviousReqScreenState extends State<PreviousReqScreen> {
                           previousRequestCard(
                               isWinch: state.previousRequests[index].isWinch!,
                               location:
-                                  state.previousRequests[index].location!.road!,
+                                  state.previousRequests[index].location!.description!.en!,
                               dateTime:
                                   state.previousRequests[index].createdAt!,
                               serviceProvider:
@@ -123,7 +123,7 @@ class _PreviousReqScreenState extends State<PreviousReqScreen> {
                                               location: state
                                                   .previousRequests[index]
                                                   .location!
-                                                  .road!,
+                                                  .description!.en!,
                                               dateTime: state
                                                   .previousRequests[index]
                                                   .createdAt!,

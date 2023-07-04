@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vewww/bloc/diagnose_cunit/diagnose_cubit.dart';
 import 'package:vewww/bloc/warning_sign_cubit/warning_sign_cubit.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/views/common/services_screen.dart';
 import 'package:vewww/views/common/warning_light_screen.dart';
+import 'package:vewww/views/driver/choose_problem_category_screen.dart';
 import 'package:vewww/views/driver/diagnose_screen.dart';
 import 'package:vewww/views/driver/driver_drawer.dart';
 import 'package:vewww/views/driver/request_winch_screen.dart';
@@ -99,8 +101,10 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
               ),
               defaultButton(
                   function: () {
+                    DiagnoseCubit.get(context).getAllQuestion();
                     NavigationUtils.navigateTo(
-                        context: context, destinationScreen: DiagnoseScreen());
+                        context: context,
+                        destinationScreen: ChoosePrblemCategoryScreen());
                   },
                   text: 'Do Not Know Car Problem',
                   width: 350,

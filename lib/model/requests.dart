@@ -1,5 +1,6 @@
 import 'package:vewww/model/car_model.dart';
 import 'package:vewww/model/car_type.dart';
+import 'package:vewww/model/location.dart';
 import 'package:vewww/model/name.dart';
 
 class RequestResponse {
@@ -122,27 +123,7 @@ class Request {
   }
 }
 
-class Location {
-  String? road;
-  double? latitude;
-  double? longitude;
 
-  Location({this.road, this.latitude, this.longitude});
-
-  Location.fromJson(Map<String, dynamic> json) {
-    road = json['road'];
-    latitude = json['latitude'];
-    longitude = json['longitude'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['road'] = this.road;
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    return data;
-  }
-}
 
 class Driver {
   String? sId;
