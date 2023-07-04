@@ -4,6 +4,7 @@ import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/components/horizontal_line.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
+import 'package:vewww/views/driver/driver_home_screen.dart';
 import 'package:vewww/views/driver/nearest_winch_screen.dart';
 import '../../bloc/request_cubit/request_cubit.dart';
 import '../../core/components/request_card.dart';
@@ -37,7 +38,7 @@ class _RequestScreenState extends State<RequestScreen> {
             onPressed: () {
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => NearestWinchScreen()),
+                  MaterialPageRoute(builder: (context) => DriverHomeScreen()),
                   (route) => false);
             },
             iconSize: 40,

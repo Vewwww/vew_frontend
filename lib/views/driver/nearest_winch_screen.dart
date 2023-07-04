@@ -13,13 +13,16 @@ import '../../core/utils/sp_helper/cache_helper.dart';
 import '../../model/location.dart';
 
 class NearestWinchScreen extends StatefulWidget {
-  const NearestWinchScreen({super.key});
+  String carId;
+   NearestWinchScreen({super.key, required this.carId});
 
   @override
-  State<NearestWinchScreen> createState() => _NearestWinchScreenState();
+  State<NearestWinchScreen> createState() => _NearestWinchScreenState(carId);
 }
 
 class _NearestWinchScreenState extends State<NearestWinchScreen> {
+  String carId;
+  _NearestWinchScreenState(this.carId);
   @override
   void initState() {
     // TODO: implement initState
@@ -62,14 +65,13 @@ class _NearestWinchScreenState extends State<NearestWinchScreen> {
                       rate: state.nearestWinch[index].rate!,
                       distance: state.nearestWinch[index].distance!,
                       function: () {
-                        Location location/*=await requestCubit.getLocation()*/;
+                        Location location/*= await requestCubit.getLocation()*/;
                         CreateRequest createRequest=CreateRequest(
                           driver: SharedPreferencesHelper.getData( key: 'vewId'),
-                          car: '6484789db6fc5a39cbe4e3d8',
+                          car: carId,
                           //location:location ,
-                          winch: state.nearestWinch[index].sId,
+                         winch: state.nearestWinch[index].sId,
                         );
-                        //TODO: call create winch req. here
                         requestCubit.createWinchRequest(createRequest);
                         Navigator.pushReplacement(
                             context,
