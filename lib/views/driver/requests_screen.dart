@@ -10,15 +10,15 @@ import '../../bloc/request_cubit/request_cubit.dart';
 import '../../core/components/request_card.dart';
 
 class RequestScreen extends StatefulWidget {
-  bool isWinch ;
-   RequestScreen({super.key, required this.isWinch});
+  bool isWinch;
+  RequestScreen({super.key, required this.isWinch});
 
   @override
   State<RequestScreen> createState() => _RequestScreenState(isWinch);
 }
 
 class _RequestScreenState extends State<RequestScreen> {
-  bool isWinch ;
+  bool isWinch;
   _RequestScreenState(this.isWinch);
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _RequestScreenState extends State<RequestScreen> {
 
   @override
   Widget build(BuildContext context) {
-    RequestCubit requestCubit =RequestCubit.get(context);
+    RequestCubit requestCubit = RequestCubit.get(context);
     return Scaffold(
       body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         CustomAppBar(
@@ -59,36 +59,38 @@ class _RequestScreenState extends State<RequestScreen> {
         HorizontalLine(),
         BlocBuilder<RequestCubit, RequestState>(
           builder: (context, state) {
-            if (state is GetDriverPendingReqSuccessState) {
+            if (state is! GetDriverPendingReqErrorState &&
+                state is! GetDriverPendingReqLoadingState &&
+                state is GetDriverReqSuccessState) {
               return Expanded(
                 child: ListView.separated(
                   padding: const EdgeInsets.all(8),
                   itemCount: state.previousRequests.length,
                   itemBuilder: (BuildContext context, int index) {
-                    if(isWinch){
-                    return requestCard(
-                        function: () {
-                          requestCubit.cancelRequest(state.previousRequests[index].winch!.sId!);
-                        },
-                        isWinch: isWinch,
-                        name: state.previousRequests[index].winch!.name!,
-                        rate: state.previousRequests[index].winch!.rate!,
-                        thirdVal:
-                            state.previousRequests[index].winch!.plateNumber!,
-                        distance: 0.8,
-                        requestState: 'On his way');
-                    }else{
+                    if (isWinch) {
                       return requestCard(
-                        function: () {
-                          requestCubit.cancelRequest(state.previousRequests[index].mechanic!.sId!);
-                        },
-                        isWinch: isWinch,
-                        name: state.previousRequests[index].mechanic!.name!,
-                        rate: state.previousRequests[index].mechanic!.rate!,
-                        thirdVal:
-                            state.previousRequests[index].mechanic!.service!,
-                        distance: 0.8,
-                        requestState: 'On his way');
+                          function: () {
+                            requestCubit.cancelRequest(
+                                state.previousRequests[index].winch!.sId!);
+                          },
+                          isWinch: isWinch,
+                          name: state.previousRequests[index].winch!.name!,
+                          rate: state.previousRequests[index].winch!.rate!,
+                          thirdVal:
+                              state.previousRequests[index].winch!.plateNumber!,
+                          requestState: 'On his way');
+                    } else {
+                      return requestCard(
+                          function: () {
+                            requestCubit.cancelRequest(
+                                state.previousRequests[index].mechanic!.sId!);
+                          },
+                          isWinch: isWinch,
+                          name: state.previousRequests[index].mechanic!.name!,
+                          rate: state.previousRequests[index].mechanic!.rate!,
+                          thirdVal:
+                              state.previousRequests[index].mechanic!.service!,
+                          requestState: 'On his way');
                     }
                   },
                   separatorBuilder: (BuildContext context, int index) =>
@@ -112,36 +114,40 @@ class _RequestScreenState extends State<RequestScreen> {
         HorizontalLine(),
         BlocBuilder<RequestCubit, RequestState>(
           builder: (context, state) {
-            if (state is GetDriverCurrentReqSuccessState) {
+            print(state);
+            if (state is! GetDriverCurrentReqErrorState &&
+                state is! GetDriverCurrentReqLoadingState &&
+                state is GetDriverReqSuccessState) {
               return Expanded(
                 child: ListView.separated(
                   padding: const EdgeInsets.all(8),
                   itemCount: state.previousRequests.length,
                   itemBuilder: (context, index) {
-                    if(isWinch){
-                    return requestCard(
-                        function: () {
-                          requestCubit.cancelRequest(state.previousRequests[index].winch!.sId!);
-                        },
-                        isWinch: isWinch,
-                        name: state.previousRequests[index].winch!.name!,
-                        rate: state.previousRequests[index].winch!.rate!,
-                        thirdVal:
-                            state.previousRequests[index].winch!.plateNumber!,
-                        distance: 0.8,
-                        requestState: 'On his way');
-                    }else{
+                    if (isWinch) {
                       return requestCard(
-                        function: () {
-                          requestCubit.cancelRequest(state.previousRequests[index].mechanic!.sId!);
-                        },
-                        isWinch: isWinch,
-                        name: state.previousRequests[index].mechanic!.name!,
-                        rate: state.previousRequests[index].mechanic!.rate!,
-                        thirdVal:
-                            state.previousRequests[index].mechanic!.service!,
-                        distance: 0.8,
-                        requestState: 'On his way');
+                          function: () {
+                            requestCubit.cancelRequest(
+                                state.previousRequests[index].winch!.sId!);
+                          },
+                          isWinch: isWinch,
+                          name: state.previousRequests[index].winch!.name!,
+                          rate: state.previousRequests[index].winch!.rate!,
+                          thirdVal:
+                              state.previousRequests[index].winch!.plateNumber!,
+                          requestState: 'On his way');
+                    } else {
+                      return requestCard(
+                          function: () {
+                            requestCubit.cancelRequest(
+                                state.previousRequests[index].mechanic!.sId!);
+                          },
+                          isWinch: isWinch,
+                          name: state.previousRequests[index].mechanic!.name!,
+                          rate: state.previousRequests[index].mechanic!.rate!,
+                          thirdVal:
+                              state.previousRequests[index].mechanic!.service!,
+                          //TODO
+                          requestState: 'On his way');
                     }
                   },
                   separatorBuilder: (context, index) => const SizedBox(

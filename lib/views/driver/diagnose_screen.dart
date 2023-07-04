@@ -55,12 +55,20 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
                   Center(
                     child: BlocBuilder<DiagnoseCubit, DiagnoseState>(
                         builder: (context, state) {
-                      return Text(
-                        diagnoseCubit
-                            .categoryQuestions[diagnoseCubit.questionNumber]
-                            .subQuestion!,
-                        style: AppTextStyle.mainStyle(),
-                      );
+                      if (state is! GetQuestionsLoadingState &&
+                          state is! GetAllQuestionErrorState) {
+                        return Text(
+                          diagnoseCubit
+                                  .questionsResponse!
+                                  .data![0]
+                                  .questions![diagnoseCubit.questionNumber]
+                                  .subQuestion ??
+                              "null",
+                          style: AppTextStyle.mainStyle(),
+                        );
+                      } else {
+                        return const CircularProgressIndicator();
+                      }
                     }),
                   ),
                   const SizedBox(height: 16.0),
@@ -71,12 +79,18 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
                           value: 0,
                           groupValue: diagnoseCubit.selectedAnswer,
                           onChanged: (int? value) {
-                            diagnoseCubit.chooseAnswer(
-                                value,
-                                diagnoseCubit
-                                    .categoryQuestions[
-                                        diagnoseCubit.questionNumber]
-                                    .yesKeywords!);
+                            if (diagnoseCubit.state
+                                    is! GetQuestionsErrorState &&
+                                diagnoseCubit.state
+                                    is! GetQuestionsLoadingState) {
+                              diagnoseCubit.chooseAnswer(
+                                  value,
+                                  diagnoseCubit
+                                      .questionsResponse!
+                                      .data![0]
+                                      .questions![diagnoseCubit.questionNumber]
+                                      .yesKeywords!);
+                            }
                           },
                           activeColor: mainColor,
                         ),
@@ -90,12 +104,18 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
                           value: 1,
                           groupValue: diagnoseCubit.selectedAnswer,
                           onChanged: (int? value) {
-                            diagnoseCubit.chooseAnswer(
-                                value,
-                                diagnoseCubit
-                                    .categoryQuestions[
-                                        diagnoseCubit.questionNumber]
-                                    .noKeywords!);
+                            if (diagnoseCubit.state
+                                    is! GetQuestionsErrorState &&
+                                diagnoseCubit.state
+                                    is! GetQuestionsLoadingState) {
+                              diagnoseCubit.chooseAnswer(
+                                  value,
+                                  diagnoseCubit
+                                      .questionsResponse!
+                                      .data![0]
+                                      .questions![diagnoseCubit.questionNumber]
+                                      .noKeywords!);
+                            }
                           },
                           activeColor: mainColor,
                         ),
@@ -107,36 +127,51 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
                     ],
                   ),
                   const Expanded(child: SizedBox(height: 16.0)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      ElevatedButton(
-                        style: diagnoseCubit.previousButtonStyle,
-                        child: const Text('Back'),
-                        onPressed: () {
-                          diagnoseCubit.previousQuestion();
-                        },
-                      ),
-                      ElevatedButton(
-                        style: enabeledButton,
-                        child: Text(diagnoseCubit.nextButtonTitle),
-                        onPressed: () async {
-                          if (diagnoseCubit.questionNumber <
-                              diagnoseCubit.categoryQuestions.length - 1) {
-                            diagnoseCubit.nextQuestion();
-                          } else if (diagnoseCubit.questionNumber ==
-                                  diagnoseCubit.categoryQuestions.length - 1 &&
-                              diagnoseCubit.selectedAnswer != -1) {
-                            await diagnoseCubit.getResults();
-                            if (diagnoseCubit.state is GetSolutionSuccessState)
-                              NavigationUtils.navigateTo(
-                                  context: context,
-                                  destinationScreen: DiagnoseResultScreen());
-                          }
-                        },
-                      ),
-                    ],
-                  ),
+                  BlocBuilder<DiagnoseCubit, DiagnoseState>(
+                      builder: (context, state) {
+                    if (diagnoseCubit.state is! GetQuestionsErrorState &&
+                        diagnoseCubit.state is! GetQuestionsLoadingState) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          ElevatedButton(
+                            style: diagnoseCubit.previousButtonStyle,
+                            child: const Text('Back'),
+                            onPressed: () {
+                              diagnoseCubit.previousQuestion();
+                            },
+                          ),
+                          ElevatedButton(
+                            style: enabeledButton,
+                            child: Text(diagnoseCubit.nextButtonTitle),
+                            onPressed: () async {
+                              if (diagnoseCubit.questionNumber <
+                                  diagnoseCubit.questionsResponse!.data![0]
+                                          .questions!.length -
+                                      1) {
+                                diagnoseCubit.nextQuestion();
+                              } else if (diagnoseCubit.questionNumber ==
+                                      diagnoseCubit.questionsResponse!.data![0]
+                                              .questions!.length -
+                                          1 &&
+                                  diagnoseCubit.selectedAnswer != -1) {
+                                await diagnoseCubit.getResults();
+                                if (diagnoseCubit.state
+                                    is GetSolutionSuccessState) {
+                                  NavigationUtils.navigateTo(
+                                      context: context,
+                                      destinationScreen:
+                                          DiagnoseResultScreen());
+                                }
+                              }
+                            },
+                          ),
+                        ],
+                      );
+                    } else {
+                      return Container();
+                    }
+                  }),
                 ],
               );
             },

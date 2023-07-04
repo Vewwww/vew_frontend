@@ -30,4 +30,13 @@ class Location {
     if (longitude != null) data['longitude'] = longitude;
     return data;
   }
+  Map<String, dynamic> toJsonRequest() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (description != null) {
+      data['road'] = description!.en;
+    }
+    if (latitude != null) data['latitude'] = latitude;
+    if (longitude != null) data['longitude'] = longitude;
+    return data;
+  }
 }

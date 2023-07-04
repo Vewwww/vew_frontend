@@ -29,6 +29,18 @@ class GetSolutionSuccessState extends DiagnoseState {}
 
 class GetSolutionErrorState extends DiagnoseState {}
 
+class GetCategoriesLoadingState extends DiagnoseState {}
+
+class GetCategoriesSuccessState extends DiagnoseState {}
+
+class GetCategoriesErrorState extends DiagnoseState {}
+
+class GetQuestionsLoadingState extends DiagnoseState {}
+
+class GetQuestionsSuccessState extends DiagnoseState {}
+
+class GetQuestionsErrorState extends DiagnoseState {}
+
 class AddQuestionLoadingState extends DiagnoseState {}
 
 class AddQuestionSuccessState extends DiagnoseState {}

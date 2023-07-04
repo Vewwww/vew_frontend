@@ -36,8 +36,9 @@ class RequestCubit extends Cubit<RequestState> {
         .then((value) {
       print("get Curr req response : ${value.data}");
       RequestResponse currentReqResponse = RequestResponse.fromJson(value.data);
-      emit(GetDriverCurrentReqSuccessState(
-          currentReqResponse.previousRequests!));
+      print("get Curr req done");
+
+      emit(GetDriverReqSuccessState(currentReqResponse.previousRequests!));
     }).catchError((error) {
       if (error is DioError) {
         print(error.response);
@@ -53,8 +54,7 @@ class RequestCubit extends Cubit<RequestState> {
         .then((value) {
       print("get Pending req response : ${value.data}");
       RequestResponse PendingReqResponse = RequestResponse.fromJson(value.data);
-      emit(GetDriverPendingReqSuccessState(
-          PendingReqResponse.previousRequests!));
+      emit(GetDriverReqSuccessState(PendingReqResponse.previousRequests!));
     }).catchError((error) {
       if (error is DioError) {
         print(error.response);
@@ -80,23 +80,23 @@ class RequestCubit extends Cubit<RequestState> {
 
   void createWinchRequest(CreateRequest createRequest) async {
     emit(CreateWinchRequestLoadingState());
-    print(createRequest.toJson());
+    print(createRequest.toJsonRequest());
     await DioHelper.postData(
       url: "/driver/createWinchRequest/",
-      data: createRequest.toJson(),
+      data: createRequest.toJsonRequest(),
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
     ).then((value) {
       print("request winch response : ${value}");
       emit(CreateWinchRequestSuccessState());
     }).catchError((error) {
       if (error is DioError) {
-        print(error.response);
+        print("create winch request error  :${error.response}");
       }
       emit(CreateWinchRequestErrorState());
     });
   }
 
-void createMechanicRequest(CreateRequest createRequest) async {
+  void createMechanicRequest(CreateRequest createRequest) async {
     emit(CreateMechanicRequestLoadingState());
     print(createRequest.toJson());
     await DioHelper.postData(
@@ -114,42 +114,41 @@ void createMechanicRequest(CreateRequest createRequest) async {
     });
   }
 
+  // Future<loc.Location> getLocation() async {
+  //   LocationPermission locationPermission;
+  //   bool isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
+  //   //check if user enable service for location permission
+  //   if (!isLocationServiceEnabled) {
+  //     debugPrint("user don't enable location permission");
+  //   }
 
-  Future<loc.Location> getLocation() async {
-    LocationPermission locationPermission;
-    bool isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
-    //check if user enable service for location permission
-    if (!isLocationServiceEnabled) {
-      debugPrint("user don't enable location permission");
-    }
+  //   locationPermission = await Geolocator.checkPermission();
 
-    locationPermission = await Geolocator.checkPermission();
+  //   //check if user denied location and retry requesting for permission
+  //   if (locationPermission == LocationPermission.denied) {
+  //     locationPermission = await Geolocator.requestPermission();
+  //     if (locationPermission == LocationPermission.denied) {
+  //       debugPrint("user denied location permission");
+  //     }
+  //   }
 
-    //check if user denied location and retry requesting for permission
-    if (locationPermission == LocationPermission.denied) {
-      locationPermission = await Geolocator.requestPermission();
-      if (locationPermission == LocationPermission.denied) {
-        debugPrint("user denied location permission");
-      }
-    }
+  //   //check if user denied permission forever
+  //   if (locationPermission == LocationPermission.deniedForever) {
+  //     debugPrint("user denied permission forever");
+  //   }
 
-    //check if user denied permission forever
-    if (locationPermission == LocationPermission.deniedForever) {
-      debugPrint("user denied permission forever");
-    }
+  //   var currentLocation = await Geolocator.getCurrentPosition(
+  //       desiredAccuracy: LocationAccuracy.best);
+  //   List<Placemark> placeMark = await placemarkFromCoordinates(
+  //       currentLocation.latitude, currentLocation.longitude);
+  //   Placemark address = placeMark[0];
+  //   String? road = address.street;
+  //   loc.Location location = loc.Location(
+  //       longitude: currentLocation.longitude,
+  //       latitude: currentLocation.latitude,
 
-    var currentLocation = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best);
-    List<Placemark> placeMark = await placemarkFromCoordinates(
-        currentLocation.latitude, currentLocation.longitude);
-    Placemark address = placeMark[0];
-    String? road = address.street;
-    loc.Location location = loc.Location(
-        longitude: currentLocation.longitude,
-        latitude: currentLocation.latitude,
+  //       description: Name(en:road , ar:road));
 
-        description: Name(en:road , ar:road));
-
-    return  location;
-  }
+  //   return  location;
+  // }
 }

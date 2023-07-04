@@ -12,8 +12,8 @@ part 'diagnose_state.dart';
 
 class DiagnoseCubit extends Cubit<DiagnoseState> {
   DiagnoseCubit() : super(DiagnoseInitial());
-  QuestionsResponse? questionsRrsponse;
-  List<Questions> categoryQuestions = [];
+  QuestionsResponse? questionsResponse;
+  List<String> catigories = [];
   DiagnoseResult? diagnoseResult;
   List<List<String>> keywords = [];
   ProblemResponse? problemResponse;
@@ -26,7 +26,8 @@ class DiagnoseCubit extends Cubit<DiagnoseState> {
   void getButtonStyle({isNextButton = true}) {}
 
   void nextQuestion() {
-    if (questionNumber < categoryQuestions.length - 1 && selectedAnswer != -1) {
+    if (questionNumber < questionsResponse!.data![0].questions!.length - 1 &&
+        selectedAnswer != -1) {
       questionNumber++;
       selectedAnswer = -1;
     }
@@ -34,9 +35,11 @@ class DiagnoseCubit extends Cubit<DiagnoseState> {
     previousButtonStyle =
         (questionNumber == 0) ? disabeledButton : enabeledButton;
     print(
-        "qyestion number : $questionNumber , cat question length : ${categoryQuestions.length}");
+        "qyestion number : $questionNumber , cat question length : ${questionsResponse!.data![0].questions!.length}");
     nextButtonTitle =
-        (questionNumber == categoryQuestions.length - 1) ? "Finish" : "Next";
+        (questionNumber == questionsResponse!.data![0].questions!.length - 1)
+            ? "Finish"
+            : "Next";
     emit(GoNextState());
   }
 
@@ -49,24 +52,26 @@ class DiagnoseCubit extends Cubit<DiagnoseState> {
         (questionNumber == 0) ? disabeledButton : enabeledButton;
 
     nextButtonTitle =
-        (questionNumber == categoryQuestions.length - 1) ? "Finish" : "Next";
+        (questionNumber == questionsResponse!.data![0].questions!.length - 1)
+            ? "Finish"
+            : "Next";
 
     emit(BackState());
   }
 
-  Future<void> getAllQuestion() async {
-    emit(GetAllQuestionLoadingState());
-    await DioHelper.getData(url: "/question/").then((value) {
-      print("get all diagnose questions response : ${value.data}");
-      questionsRrsponse = QuestionsResponse.fromJson(value.data);
-      emit(GetAllQuestionSuccessState());
-    }).catchError((err) {
-      if (err is DioError)
-        print("get all diagnose questions error : ${err.response}");
-      print(err);
-      emit(GetAllQuestionErrorState());
-    });
-  }
+  // Future<void> getAllQuestion() async {
+  //   emit(GetAllQuestionLoadingState());
+  //   await DioHelper.getData(url: "/question/").then((value) {
+  //     print("get all diagnose questions response : ${value.data}");
+  //     questionsRrsponse = QuestionsResponse.fromJson(value.data);
+  //     emit(GetAllQuestionSuccessState());
+  //   }).catchError((err) {
+  //     if (err is DioError)
+  //       print("get all diagnose questions error : ${err.response}");
+  //     print(err);
+  //     emit(GetAllQuestionErrorState());
+  //   });
+  // }
 
   Future<void> getUnsolvedQuestion() async {
     print("hereeee");
@@ -81,6 +86,20 @@ class DiagnoseCubit extends Cubit<DiagnoseState> {
         print("get unsolved questions error : ${err.response}");
       print(err);
       emit(GetUnsolvedErrorState());
+    });
+  }
+
+  Future<void> getAllCategories() async {
+    emit(GetCategoriesLoadingState());
+    await DioHelper.getData(url: "/question/getAllCategories").then((value) {
+      print("get  all cat response : ${value.data}");
+      catigories = value.data['data'].cast<String>();
+      print("doneee");
+      emit(GetCategoriesSuccessState());
+    }).catchError((err) {
+      if (err is DioError) print("get Categories error : ${err.response}");
+      print(err);
+      emit(GetCategoriesErrorState());
     });
   }
 
@@ -121,12 +140,19 @@ class DiagnoseCubit extends Cubit<DiagnoseState> {
     });
   }
 
-  getQuestionsByCategory(String cat) {
-    if (questionsRrsponse != null && questionsRrsponse!.data != null) {
-      for (QuestionsResponseData q in questionsRrsponse!.data!) {
-        if (q.category == cat) categoryQuestions = q.questions ?? [];
-      }
-    }
+  Future<void> getQuestionsByCategory(String cat) async {
+    emit(GetQuestionsLoadingState());
+    await DioHelper.getData(url: "/question/category/$cat").then((value) {
+      print("get cat questions response : ${value.data}");
+      questionsResponse = QuestionsResponse.fromJson(value.data);
+      print("doneee:\n${questionsResponse!.toJson()}");
+      emit(GetQuestionsSuccessState());
+    }).catchError((err) {
+      if (err is DioError)
+        print("get Category  questions error : ${err.response}");
+      print(err);
+      emit(GetQuestionsErrorState());
+    });
   }
 
   void chooseAnswer(int? val, List<String> keywords) {
