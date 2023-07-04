@@ -1,6 +1,5 @@
 part of 'repairer_requests_cubit.dart';
 
-@immutable
 abstract class RepairerRequestsState {}
 
 class RepairerRequestsInitial extends RepairerRequestsState {}
