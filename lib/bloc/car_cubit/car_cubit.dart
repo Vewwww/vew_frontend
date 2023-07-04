@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
+import 'package:vewww/model/all_car.dart';
 import '../../model/car.dart';
 import '../../services/dio_helper.dart';
 
@@ -163,4 +164,21 @@ class CarCubit extends Cubit<CarState> {
       updatedCars!.add(Car());
     }
   }
+
+  Future getAllDriverCars(String id) async {
+    String url = "/driver/car/carOwner/${id}";
+    emit(GetAllDriverCarsLoadingState());
+    await DioHelper.getData(
+      url: url,
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
+    ).then((value) {
+      print("Get Driver Cars response : ${value.data}");
+      AllCarsResponse allCarsResponse=AllCarsResponse.fromJson(value.data);
+      emit(GetAllDriverCarsSuccessState(allCarsResponse.allCars!));
+    }).onError((error, stackTrace) {
+      print("Get Driver Cars error : $error");
+      emit(GetAllDriverCarsErrorState());
+    });
+  }
+
 }

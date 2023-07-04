@@ -19,7 +19,7 @@ class SingleRequestScreen extends StatelessWidget {
   WinchRequestData? winchRequestData;
   SingleRequestScreen(
       {this.mechanicRequestData,
-      this.winchRequestData,
+  this.winchRequestData,
       this.type = "accepted",
       Key? key})
       : super(key: key);
@@ -133,7 +133,7 @@ class SingleRequestScreen extends StatelessWidget {
                                       winchRequestData!.car!.carModel != null)
                                   ? DataElement("موديل السيارة",
                                       winchRequestData!.car!.carModel!.name!)
-                                  : Container(),
+                              : Container(),
                           DataElement("لون السيارة", "أحمر"),
                           (mechanicRequestData != null &&
                                   mechanicRequestData!.service != null)
