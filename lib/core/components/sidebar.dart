@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:vewww/bloc/auth_cubit/auth_cubit.dart';
 import 'package:vewww/bloc/chat_cubit/chat_cubit.dart';
 import 'package:vewww/core/components/sidebar_element.dart';
+import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import '../../views/common/chats_screen.dart';
 import '../../views/driver/sign_in_screen.dart';
+import '../../views/mechanic/select_problem_screen.dart';
 import 'logo.dart';
 
 class Sidebar extends StatelessWidget {
@@ -46,6 +48,19 @@ class Sidebar extends StatelessWidget {
                   (route) => true);
             },
           ),
+          (SharedPreferencesHelper.getData(key: "vewRole") == "mechanic")
+              ? SidebarElement(
+                  "حل مشكلات",
+                  Icons.engineering,
+                  onpress: () {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>  SelectProblemScreen()),
+                        (route) => true);
+                  },
+                )
+              : Container(),
           SidebarElement(
             "تسجيل الخروج",
             Icons.logout_rounded,

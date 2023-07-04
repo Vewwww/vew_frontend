@@ -119,7 +119,7 @@ class _MechanicHomeScreenState extends State<MechanicHomeScreen> {
                             itemCount: repairerRequestsCubit
                                 .acceptedRequestsResponse!.data!.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return AcceptedRequestCard(repairerRequestsCubit
+                              return AcceptedRequestCard( mechanicRequestsData: repairerRequestsCubit
                                   .acceptedRequestsResponse!.data![index]);
                             }));
                   else

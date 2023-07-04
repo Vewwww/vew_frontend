@@ -8,9 +8,27 @@ import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/views/driver/diagnose_result_screen.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/logo.dart';
-import '../../model/diagnose_question.dart';
 
-class DiagnoseScreen extends StatelessWidget {
+class DiagnoseScreen extends StatefulWidget {
+  String category;
+  DiagnoseScreen({required this.category});
+
+  @override
+  State<DiagnoseScreen> createState() => _DiagnoseScreenState();
+}
+
+class _DiagnoseScreenState extends State<DiagnoseScreen> {
+  @override
+  void initState() {
+    super.initState();
+    var diagnoseCubit = context.read<DiagnoseCubit>();
+    diagnoseCubit.questionNumber = 0;
+    diagnoseCubit.selectedAnswer = -1;
+    diagnoseCubit.keywords = [];
+    diagnoseCubit.nextButtonTitle = "Next";
+    diagnoseCubit.getQuestionsByCategory(widget.category);
+  }
+
   @override
   Widget build(BuildContext context) {
     DiagnoseCubit diagnoseCubit = DiagnoseCubit.get(context);
@@ -35,34 +53,57 @@ class DiagnoseScreen extends StatelessWidget {
                     child: Logo(),
                   ),
                   Center(
-                    child: Text(
-                      questions[diagnoseCubit.questionNumber].question,
-                      style: AppTextStyle.mainStyle(),
-                    ),
+                    child: BlocBuilder<DiagnoseCubit, DiagnoseState>(
+                        builder: (context, state) {
+                      return Text(
+                        diagnoseCubit
+                            .categoryQuestions[diagnoseCubit.questionNumber]
+                            .subQuestion!,
+                        style: AppTextStyle.mainStyle(),
+                      );
+                    }),
                   ),
                   const SizedBox(height: 16.0),
                   Column(
-                    children: <Widget>[
-                      for (int i = 0;
-                          i <
-                              questions[diagnoseCubit.questionNumber]
-                                  .answers
-                                  .length;
-                          i++)
-                        Row(children: [
-                          Radio(
-                            value: i,
-                            groupValue: diagnoseCubit.selectedAnswer,
-                            onChanged: (int? value) {
-                              diagnoseCubit.chooseAnswer(value);
-                            },
-                            activeColor: mainColor,
-                          ),
-                          Text(
-                            questions[diagnoseCubit.questionNumber].answers[i],
-                            style: AppTextStyle.darkGreyStyle(),
-                          ),
-                        ]),
+                    children: [
+                      Row(children: [
+                        Radio(
+                          value: 0,
+                          groupValue: diagnoseCubit.selectedAnswer,
+                          onChanged: (int? value) {
+                            diagnoseCubit.chooseAnswer(
+                                value,
+                                diagnoseCubit
+                                    .categoryQuestions[
+                                        diagnoseCubit.questionNumber]
+                                    .yesKeywords!);
+                          },
+                          activeColor: mainColor,
+                        ),
+                        Text(
+                          "Yes",
+                          style: AppTextStyle.darkGreyStyle(),
+                        ),
+                      ]),
+                      Row(children: [
+                        Radio(
+                          value: 1,
+                          groupValue: diagnoseCubit.selectedAnswer,
+                          onChanged: (int? value) {
+                            diagnoseCubit.chooseAnswer(
+                                value,
+                                diagnoseCubit
+                                    .categoryQuestions[
+                                        diagnoseCubit.questionNumber]
+                                    .noKeywords!);
+                          },
+                          activeColor: mainColor,
+                        ),
+                        Text(
+                          "No",
+                          style: AppTextStyle.darkGreyStyle(),
+                        ),
+                      ]),
                     ],
                   ),
                   const Expanded(child: SizedBox(height: 16.0)),
@@ -79,16 +120,18 @@ class DiagnoseScreen extends StatelessWidget {
                       ElevatedButton(
                         style: enabeledButton,
                         child: Text(diagnoseCubit.nextButtonTitle),
-                        onPressed: () {
+                        onPressed: () async {
                           if (diagnoseCubit.questionNumber <
-                              questions.length - 1) {
+                              diagnoseCubit.categoryQuestions.length - 1) {
                             diagnoseCubit.nextQuestion();
                           } else if (diagnoseCubit.questionNumber ==
-                                  questions.length - 1 &&
+                                  diagnoseCubit.categoryQuestions.length - 1 &&
                               diagnoseCubit.selectedAnswer != -1) {
-                            NavigationUtils.navigateTo(
-                                context: context,
-                                destinationScreen: DiagnoseResultScreen());
+                            await diagnoseCubit.getResults();
+                            if (diagnoseCubit.state is GetSolutionSuccessState)
+                              NavigationUtils.navigateTo(
+                                  context: context,
+                                  destinationScreen: DiagnoseResultScreen());
                           }
                         },
                       ),

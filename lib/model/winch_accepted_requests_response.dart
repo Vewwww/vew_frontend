@@ -1,3 +1,4 @@
+import 'package:vewww/model/location.dart';
 import 'package:vewww/model/requests.dart';
 
 class  WinchAcceptedRequestsResponse{

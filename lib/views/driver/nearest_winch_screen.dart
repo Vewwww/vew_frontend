@@ -10,6 +10,7 @@ import 'package:vewww/views/driver/requests_screen.dart';
 
 import '../../core/components/nearest_winch_card.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
+import '../../model/location.dart';
 
 class NearestWinchScreen extends StatefulWidget {
   const NearestWinchScreen({super.key});

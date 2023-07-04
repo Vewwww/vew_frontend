@@ -15,11 +15,13 @@ import '../../model/accepted_requests_response.dart';
 
 class SingleRequestScreen extends StatelessWidget {
   String type; // accepted or comming
-  MechanicRequestsData mechanicRequestData;
-  WinchRequestData winchRequestData;
-  SingleRequestScreen(this.mechanicRequestData,
-  this.winchRequestData,
-      {this.type = "accepted", Key? key})
+  MechanicRequestsData? mechanicRequestData;
+  WinchRequestData? winchRequestData;
+  SingleRequestScreen(
+      {this.mechanicRequestData,
+      this.winchRequestData,
+      this.type = "accepted",
+      Key? key})
       : super(key: key);
 
   @override
@@ -58,7 +60,9 @@ class SingleRequestScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    (mechanicRequestData != null)?mechanicRequestData.driver!.person!.name! : winchRequestData.driver!.name!,
+                    (mechanicRequestData != null)
+                        ? mechanicRequestData!.driver!.person!.name!
+                        : winchRequestData!.driver!.name!,
                     style: AppTextStyle.whiteTextStyle(28),
                   ),
                 ]),
@@ -111,33 +115,37 @@ class SingleRequestScreen extends StatelessWidget {
                             children: [
                           Text("السيارة",
                               style: AppTextStyle.lightGrayTextStyle(14)),
-                          DataElement("رقم السيارة",
-                              (mechanicRequestData != null)? mechanicRequestData.car!.plateNumber!: winchRequestData.car!.plateNumber!),
-                          DataElement("نوع السيارة",
-                          (mechanicRequestData != null)?
-                              mechanicRequestData.car!.carType!.name!.ar!
-                              : winchRequestData.car!.carType!.name!.ar!
-                              ),
-                          (mechanicRequestData.car!.carModel != null)
+                          DataElement(
+                              "رقم السيارة",
+                              (mechanicRequestData != null)
+                                  ? mechanicRequestData!.car!.plateNumber!
+                                  : winchRequestData!.car!.plateNumber!),
+                          DataElement(
+                              "نوع السيارة",
+                              (mechanicRequestData != null)
+                                  ? mechanicRequestData!.car!.carType!.name!.ar!
+                                  : winchRequestData!.car!.carType!.name!.ar!),
+                          (mechanicRequestData != null &&
+                                  mechanicRequestData!.car!.carModel != null)
                               ? DataElement("موديل السيارة",
-                                (mechanicRequestData != null)?
-                                  mechanicRequestData.car!.carModel!.name!:
-                                  winchRequestData.car!.carModel!.name!
-                                  )
-                              : Container(),
+                                  mechanicRequestData!.car!.carModel!.name!)
+                              : (winchRequestData != null &&
+                                      winchRequestData!.car!.carModel != null)
+                                  ? DataElement("موديل السيارة",
+                                      winchRequestData!.car!.carModel!.name!)
+                                  : Container(),
                           DataElement("لون السيارة", "أحمر"),
-                          DataElement("مشكلة السيارة",
-                              mechanicRequestData.service!.name!.ar!),
-                          (mechanicRequestData.location!.description!.ar !=
-                                  "no arabic location description available")
-                              ? DataElement(
-                                  "الموقع",
-                                  (mechanicRequestData != null)?
-                                  mechanicRequestData
-                                      .location!.description!.ar!:
-                                      winchRequestData.location!.road!
-                                      )
+                          (mechanicRequestData != null &&
+                                  mechanicRequestData!.service != null)
+                              ? DataElement("مشكلة السيارة",
+                                  mechanicRequestData!.service!.name!.ar!)
                               : Container(),
+                          DataElement(
+                              "الموقع",
+                              (mechanicRequestData != null)
+                                  ? mechanicRequestData!
+                                      .location!.description!.ar!
+                                  : winchRequestData!.location!.description!.ar!),
                           const SizedBox(height: 30),
                           SizedBox(
                             width: double.infinity,
@@ -153,13 +161,21 @@ class SingleRequestScreen extends StatelessWidget {
                                         destinationScreen: WinchHomePage());
                                   } else {
                                     if (type == "accepted") {
+                                      if(mechanicRequestData!=null)
                                       await repairerRequestsCubit
                                           .mechanicCompleteRequest(
-                                              mechanicRequestData.sId!);
+                                              mechanicRequestData!.sId!);
+                                      else await repairerRequestsCubit
+                                          .winchCompleteRequest(
+                                              winchRequestData!.sId!);
                                     } else {
+                                      if(mechanicRequestData!=null)
                                       await repairerRequestsCubit
                                           .mechanicAcceptRequest(
-                                              mechanicRequestData.sId!);
+                                              mechanicRequestData!.sId!);
+                                      else await repairerRequestsCubit
+                                          .winchAcceptRequest(
+                                              winchRequestData!.sId!);
                                     }
 
                                     NavigationUtils.navigateTo(
@@ -188,7 +204,7 @@ class SingleRequestScreen extends StatelessWidget {
                                         if (role == "mechanic") {
                                           await repairerRequestsCubit
                                               .mechanicCancelRequest(
-                                                  mechanicRequestData.sId!);
+                                                  mechanicRequestData!.sId!);
                                           NavigationUtils.navigateAndClearStack(
                                               context: context,
                                               destinationScreen:

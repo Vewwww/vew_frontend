@@ -119,7 +119,7 @@ class _WinchHomePageState extends State<WinchHomePage> {
                               .length,
                           itemBuilder: (BuildContext context, int index) {
                             return AcceptedRequestCard(
-                                 repairerRequestsCubit
+                                winchRequestData: repairerRequestsCubit
                                     .winchacceptedRequestsResponse!
                                     .winchRequestData![index]);
                           }));

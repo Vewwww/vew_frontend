@@ -67,13 +67,16 @@ class CustomTextField extends StatelessWidget {
                   controller: controller,
                   enabled: enabled,
                   readOnly: readOnly,
-                  //textDirection: TextDirection.rtl,
+                  textDirection:
+                      (isArabic) ? TextDirection.rtl : TextDirection.ltr,
                   //initialValue: hint,
                   style: (enabled) ? null : AppTextStyle.greyStyle(size: 14),
                   decoration: InputDecoration(
                     errorMaxLines: 5,
                     hintText: hint,
                     hintStyle: AppTextStyle.darkGreyStyle(size: 12),
+                    hintTextDirection:
+                        (isArabic) ? TextDirection.rtl : TextDirection.ltr,
                     isDense: true,
                     contentPadding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
                     border: const OutlineInputBorder(),
