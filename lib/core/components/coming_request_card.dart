@@ -23,12 +23,21 @@ class ComingRequestCard extends StatelessWidget {
     RepairerRequestsCubit requestsCubit = RepairerRequestsCubit.get(context);
     return InkWell(
         onTap: () {
+          if(mechanicRequestsData != null){
           NavigationUtils.navigateTo(
               context: context,
               destinationScreen: SingleRequestScreen(
                 mechanicRequestData: mechanicRequestsData!,
                 type: "coming",
               ));
+          }else{
+            NavigationUtils.navigateTo(
+              context: context,
+              destinationScreen: SingleRequestScreen(
+                winchRequestData: winchRequestsData!,
+                type: "coming",
+              ));
+          }
         },
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -56,7 +65,7 @@ class ComingRequestCard extends StatelessWidget {
                     Text(
                       (mechanicRequestsData != null)
                           ? mechanicRequestsData!.driver!.person!.name!
-                          : winchRequestsData!.driver!.person!.name!,
+                          : winchRequestsData!.driver!.name!,
                       style: AppTextStyle.titleTextStyle(20),
                     ),
                     Text(
@@ -105,7 +114,7 @@ class ComingRequestCard extends StatelessWidget {
                                         winchRequestsData!.sId!);
                                     if (state
                                         is WinchAcceptingRequestSuccessState)
-                                      NavigationUtils.navigateAndClearStack(
+                                     NavigationUtils.navigateAndClearStack(
                                           context: context,
                                           destinationScreen: WinchHomePage());
                                   }
@@ -122,22 +131,22 @@ class ComingRequestCard extends StatelessWidget {
                 ),
               ),
               Container(
-                  width: 140,
-                  height: 140,
-                  margin: const EdgeInsets.fromLTRB(16, 7, 0, 3),
-                  decoration: BoxDecoration(
-                      color: mainColor,
-                      borderRadius: const BorderRadius.all(Radius.circular(5))),
+                width: 140,
+                height: 140,
+                margin: const EdgeInsets.fromLTRB(16, 7, 0, 3),
+                decoration: BoxDecoration(
+                    color: mainColor,
+                    borderRadius: const BorderRadius.all(Radius.circular(5))),
                   child: (mechanicRequestsData != null)
                       ? const Icon(
-                          Icons.handyman_outlined,
-                          size: 50,
-                          color: Colors.white,
+                  Icons.handyman_outlined,
+                  size: 50,
+                  color: Colors.white,
                         )
                       : const Icon(
-                          Icons.car_repair,
-                          size: 50,
-                          color: Colors.white,
+                  Icons.car_repair,
+                  size: 50,
+                  color: Colors.white,
                         )),
             ],
           ),

@@ -13,9 +13,11 @@ import 'package:vewww/views/driver/driver_drawer.dart';
 import 'package:vewww/views/driver/request_winch_screen.dart';
 import 'package:vewww/views/driver/search_screen.dart';
 import 'package:vewww/views/driver/select_car_type_screen.dart';
+import 'package:vewww/views/driver/which_car_screen.dart';
 import '../../bloc/chat_cubit/chat_cubit.dart';
 import '../../bloc/notification_cubit/notification_cubit.dart';
 import '../../bloc/select_choice_cubit/select_choice_cubit.dart';
+import '../../core/utils/sp_helper/cache_helper.dart';
 import 'maintenance_center_preview.dart';
 import 'nearest_winch_screen.dart';
 import 'search_result_screen.dart';
@@ -146,9 +148,10 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                       height: 80,
                       width: 170,
                       function: () {
+                        String id=SharedPreferencesHelper.getData( key: 'vewId');
                         NavigationUtils.navigateTo(
                             context: context,
-                            destinationScreen: NearestWinchScreen());
+                            destinationScreen: WhichCarScreen(id: id,));
                       }),
                 ],
               ),

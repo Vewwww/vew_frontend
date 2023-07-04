@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:vewww/bloc/evaluate_service_provider_cubit/evaluate_service_provider_cubit.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/components/horizontal_line.dart';
@@ -29,6 +30,7 @@ class SinglePreviousRequest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    EvaluateServiceProviderCubit evaluateServiceProviderCubit = EvaluateServiceProviderCubit.get(context);
     return Scaffold(
       body: Column(
         children: [
@@ -144,7 +146,12 @@ class SinglePreviousRequest extends StatelessWidget {
                       text: 'Report',
                       width: 140,
                       function: () {
-                        //TODO:: report winch and mechanic
+                        if(isWinch){
+                          evaluateServiceProviderCubit.reportWinch(id);
+                        }
+                        else{
+                          evaluateServiceProviderCubit.reportMechanic(id);
+                        }
                       },
                     ),
                   ],
