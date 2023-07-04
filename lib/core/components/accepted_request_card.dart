@@ -24,12 +24,12 @@ class AcceptedRequestCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         if (mechanicRequestsData != null) {
-          NavigationUtils.navigateTo(
-              context: context,
+        NavigationUtils.navigateTo(
+            context: context,
               destinationScreen: SingleRequestScreen(mechanicRequestData: mechanicRequestsData,));
         } else {
-          NavigationUtils.navigateTo(
-              context: context,
+        NavigationUtils.navigateTo(
+            context: context,
               destinationScreen: SingleRequestScreen(winchRequestData: winchRequestData,));
         }
       },
@@ -58,7 +58,7 @@ class AcceptedRequestCard extends StatelessWidget {
                 Text(
                   (mechanicRequestsData != null)
                       ? mechanicRequestsData!.driver!.person!.name!
-                      : winchRequestData!.driver!.person!.name!,
+                      : winchRequestData!.driver!.name!,
                   style: AppTextStyle.titleTextStyle(20),
                 ),
                 RatingBar(4.4, size: 15),
@@ -115,12 +115,12 @@ class AcceptedRequestCard extends StatelessWidget {
                         RepairerRequestsCubit repairerRequestsCubit =
                             RepairerRequestsCubit.get(context);
                         if (mechanicRequestsData != null) {
-                          await repairerRequestsCubit.mechanicCompleteRequest(
+                        await repairerRequestsCubit.mechanicCompleteRequest(
                               mechanicRequestsData!.sId!);
                         } else {
                           await repairerRequestsCubit
                               .winchCompleteRequest(winchRequestData!.sId!);
-                        }
+                            }
                       },
                       child: const Text(
                         "تم",
@@ -138,15 +138,15 @@ class AcceptedRequestCard extends StatelessWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(5))),
               child: (mechanicRequestsData == null)
                   ? const Icon(
-                      Icons.car_repair,
-                      size: 50,
-                      color: Colors.white,
+                Icons.car_repair,
+                size: 50,
+                color: Colors.white,
                     )
                   : const Icon(
-                      Icons.handyman_outlined,
-                      size: 50,
-                      color: Colors.white,
-                    ),
+                Icons.handyman_outlined,
+                size: 50,
+                color: Colors.white,
+              ), 
             )
           ],
         ),

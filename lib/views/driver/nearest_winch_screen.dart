@@ -16,13 +16,16 @@ import '../../model/location.dart';
 import '../../model/name.dart';
 
 class NearestWinchScreen extends StatefulWidget {
-  const NearestWinchScreen({super.key});
+  String carId;
+   NearestWinchScreen({super.key, required this.carId});
 
   @override
-  State<NearestWinchScreen> createState() => _NearestWinchScreenState();
+  State<NearestWinchScreen> createState() => _NearestWinchScreenState(carId);
 }
 
 class _NearestWinchScreenState extends State<NearestWinchScreen> {
+  String carId;
+  _NearestWinchScreenState(this.carId);
   @override
   void initState() {
     // TODO: implement initState
@@ -74,8 +77,8 @@ class _NearestWinchScreenState extends State<NearestWinchScreen> {
                           car: '6484789db6fc5a39cbe4e3d8',
                           location: location,
                           winch: state.nearestWinch[index].sId,
+
                         );
-                        //TODO: call create winch req. here
                         requestCubit.createWinchRequest(createRequest);
                         Navigator.push(
                             context,

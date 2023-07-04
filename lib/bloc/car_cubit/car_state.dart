@@ -19,3 +19,10 @@ class CarHandeledState extends CarState {}
 class CarHandeleErrorState extends CarState {}
 class CarRemoved extends CarState {}
 class CarAdded extends CarState {}
+
+class GetAllDriverCarsLoadingState extends CarState {}
+class GetAllDriverCarsSuccessState extends CarState {
+  final List<AllCars> allCars;
+  GetAllDriverCarsSuccessState(this.allCars);
+}
+class GetAllDriverCarsErrorState extends CarState {}
