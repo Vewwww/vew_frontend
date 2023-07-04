@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:location/location.dart' as loc;
-import 'package:permission_handler/permission_handler.dart';
 import 'package:vewww/bloc/loaction_cubit/loaction_cubit.dart';
 import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
@@ -49,11 +46,11 @@ class RequestWinchScreen extends StatelessWidget {
                     'Please enter your current location here: ',
                     style: AppTextStyle.darkGreyStyle(size: 18),
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   Flexible(
                     child: Container(
                       width: double.infinity,
-                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 7),
+                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 7),
                       //height: 50,
                       decoration: BoxDecoration(
                           color: Colors.grey.shade200,
@@ -90,7 +87,7 @@ class RequestWinchScreen extends StatelessWidget {
                   //       await loactionCubit.getPermission();
                   //       loactionCubit.getAddress();
                   //     }),
-                  SizedBox(height: 15,),
+                  const SizedBox(height: 15,),
                   BlocConsumer<LocationCubit, LocationState>(
                     listener: (context, state) {},
                     builder: (context, state) {
@@ -98,9 +95,6 @@ class RequestWinchScreen extends StatelessWidget {
                           text: 'Next',
                           // width: 300,
                           function: () {
-                            print(loactionCubit.address);
-                            print(
-                                ("lat = ${loactionCubit.lat.toString()} , \nlon = ${loactionCubit.longitude.toString()}"));
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/auth_cubit/auth_cubit.dart';
 import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import 'package:vewww/model/person.dart';
@@ -8,17 +9,53 @@ import 'package:vewww/views/common/forgot_password_screen.dart';
 import 'package:vewww/views/mechanic/mechanic_home_screen.dart';
 import 'package:vewww/views/winch/winch_home_page.dart';
 import '../../bloc/add_car_cubit/add_car_cubit.dart';
+import '../../bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
 import '../../core/components/custom_text_field.dart';
 import '../../core/components/logo.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/navigation.dart';
 import 'driver_home_screen.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-class SignInScreen extends StatelessWidget {
-  final GlobalKey<FormState> _formKey = GlobalKey();
-  final TextEditingController _email = TextEditingController();
-  final TextEditingController _password = TextEditingController();
+class SignInScreen extends StatefulWidget {
   SignInScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
+
+  final TextEditingController _email = TextEditingController();
+
+  final TextEditingController _password = TextEditingController();
+
+  IO.Socket? socket;
+
+  initSocket(String id) {
+    socket = IO.io("https://vewwwapi.onrender.com/", <String, dynamic>{
+      'autoConnect': false,
+      'transports': ['websocket'],
+    });
+    socket!.connect();
+    socket!.onConnect((_) {
+      print('Connection established');
+      socket!.emit('join-room', {'room': id});
+      print('joined room');
+    });
+    socket!.on("new-request", (data) {
+      print("new request created");
+      var requestCubit = context.read<RepairerRequestsCubit>();
+      String role = SharedPreferencesHelper.getData(key: "vewRole");
+      if (role == "mechanic")
+        requestCubit.mechanicUpComingRequests();
+      else if (role == "winch") requestCubit.winchUpComingRequests();
+    });
+    socket!.onDisconnect((_) => print('Connection Disconnection'));
+    socket!.onConnectError((err) => print(err));
+    socket!.onError((err) => print(err));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +116,8 @@ class SignInScreen extends StatelessWidget {
                             if (authCubit.state is SignInSuccessState) {
                               String role = SharedPreferencesHelper.getData(
                                   key: "vewRole");
+                              String id =
+                                  SharedPreferencesHelper.getData(key: "vewId");
                               print("role is $role");
                               const snackBar = SnackBar(
                                   content: Text("Loged in successfully !"));
@@ -87,11 +126,13 @@ class SignInScreen extends StatelessWidget {
                               Widget screen;
                               if (role == "user")
                                 screen = const DriverHomeScreen();
-                              else if (role == "winch")
+                              else if (role == "winch") {
+                                initSocket(id);
                                 screen = WinchHomePage();
-                              else if (role == "admin")
+                              } else if (role == "admin")
                                 screen = AdminHomeScreen();
                               else {
+                                initSocket(id);
                                 screen = MechanicHomeScreen();
                               }
                               NavigationUtils.navigateAndClearStack(
