@@ -20,18 +20,21 @@ import '../../model/repairer.dart' as repairer;
 
 class MechanicPreviewScreen extends StatefulWidget {
   repairer.Mechanic mechanic;
-  MechanicPreviewScreen({required this.mechanic, super.key}) {
+  String carId;
+  MechanicPreviewScreen({required this.mechanic, super.key, required this.carId}) {
     print("current mechanic : ${mechanic.toJson()}");
   }
 
   @override
-  State<MechanicPreviewScreen> createState() => _MechanicPreviewScreenState();
+  State<MechanicPreviewScreen> createState() => _MechanicPreviewScreenState(carId);
 }
 
 // 649ee904e9d7a001ee231275
 // 649ee904e9d7a001ee231275
 class _MechanicPreviewScreenState extends State<MechanicPreviewScreen> {
+  _MechanicPreviewScreenState(this.carId);
   IO.Socket? socket;
+  String carId;
   initSocket(String id) {
     socket = IO.io("https://vewwwapi.onrender.com/", <String, dynamic>{
       'autoConnect': false,
@@ -191,7 +194,7 @@ class _MechanicPreviewScreenState extends State<MechanicPreviewScreen> {
                               driver:
                                   SharedPreferencesHelper.getData(key: 'vewId'),
                               //Todo:: add car id
-                              car: '6484789db6fc5a39cbe4e3d8',
+                              car: carId,
                               location: location,
                               mechanic: widget.mechanic.sId,
                               service: (servicesCubit.selectedServices !=

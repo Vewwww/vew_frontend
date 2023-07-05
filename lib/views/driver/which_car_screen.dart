@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
+import 'package:vewww/model/repairer.dart';
+import 'package:vewww/views/driver/mechanic_preview_screen.dart';
 
 import '../../bloc/car_cubit/car_cubit.dart';
 import '../../core/components/which_car_card.dart';
@@ -10,15 +12,18 @@ import 'nearest_winch_screen.dart';
 
 class WhichCarScreen extends StatefulWidget {
   String id;
-  WhichCarScreen({super.key, required this.id});
+  Repairer? repairer;
+  bool isWinch;
+  WhichCarScreen({super.key, required this.id, this.repairer, required this.isWinch});
 
   @override
-  State<WhichCarScreen> createState() => _WhichCarScreenState(id);
+  State<WhichCarScreen> createState() => _WhichCarScreenState(id, isWinch);
 }
 
 class _WhichCarScreenState extends State<WhichCarScreen> {
   String id;
-  _WhichCarScreenState(this.id);
+  bool isWinch;
+  _WhichCarScreenState(this.id, this.isWinch);
   @override
   void initState() {
     // TODO: implement initState
@@ -57,10 +62,19 @@ class _WhichCarScreenState extends State<WhichCarScreen> {
                         itemBuilder: (context, index) {
                           return whichCarCard(
                             function: () {
+                              if(isWinch){
                               NavigationUtils.navigateTo(
                                   context: context,
                                   destinationScreen: NearestWinchScreen(
                                       carId: state.allCars[index].sId!));
+                              }else{
+                                NavigationUtils.navigateTo(
+                                  context: context,
+                                  destinationScreen: MechanicPreviewScreen(
+                                      carId: state.allCars[index].sId!,
+                                      mechanic:widget.repairer as Mechanic,
+                                      ));
+                              }
                             },
                             carModel: state.allCars[index].carModel!.name!,
                             carType: state.allCars[index].carType!.name!.en!,

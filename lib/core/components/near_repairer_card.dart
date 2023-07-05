@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:vewww/core/components/rating_bar.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
+import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import 'package:vewww/views/admin/view_gas_stations_screen.dart';
 import 'package:vewww/views/driver/gas_stattion_preview.dart';
 import 'package:vewww/views/driver/mechanic_preview_screen.dart';
+import 'package:vewww/views/driver/which_car_screen.dart';
 import '../../model/repairer.dart';
 import '../../views/driver/maintenance_center_preview.dart';
 import '../utils/navigation.dart';
@@ -33,11 +35,10 @@ class NearRepairerCard extends StatelessWidget {
                 gasStation: repairer as GasStation,
               ));
         } else if (repairer is Mechanic) {
+          String id=SharedPreferencesHelper.getData( key: 'vewId');
           NavigationUtils.navigateTo(
               context: context,
-              destinationScreen: MechanicPreviewScreen(
-                mechanic: repairer as Mechanic,
-              ));
+              destinationScreen: WhichCarScreen(id: id, isWinch: false,repairer:repairer as Mechanic ));
         }
       },
       child: Container(
