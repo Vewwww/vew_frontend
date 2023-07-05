@@ -1,6 +1,5 @@
 part of 'repairer_requests_cubit.dart';
 
-@immutable
 abstract class RepairerRequestsState {}
 
 class RepairerRequestsInitial extends RepairerRequestsState {}
@@ -65,3 +64,4 @@ class WinchCancelingRequestLoadingState extends RepairerRequestsState {}
 class WinchCancelingRequestSuccessState extends RepairerRequestsState {}
 
 class WinchCancelingRequestErrorState extends RepairerRequestsState {}
+

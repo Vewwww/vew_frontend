@@ -5,7 +5,6 @@ import 'package:vewww/core/components/horizontal_line.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
-import 'package:vewww/views/driver/nearest_winch_screen.dart';
 import '../../bloc/request_cubit/request_cubit.dart';
 import '../../core/components/request_card.dart';
 
@@ -62,11 +61,13 @@ class _RequestScreenState extends State<RequestScreen> {
             if (state is! GetDriverPendingReqErrorState &&
                 state is! GetDriverPendingReqLoadingState &&
                 state is GetDriverReqSuccessState) {
+              print("here");
               return Expanded(
                 child: ListView.separated(
                   padding: const EdgeInsets.all(8),
                   itemCount: state.previousRequests.length,
                   itemBuilder: (BuildContext context, int index) {
+                    print(state);
                     if (isWinch) {
                       return requestCard(
                           function: () {
@@ -100,6 +101,8 @@ class _RequestScreenState extends State<RequestScreen> {
                 ),
               );
             } else {
+              print("not here");
+
               return const CircularProgressIndicator();
             }
           },

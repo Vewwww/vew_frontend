@@ -49,6 +49,7 @@ class _WhichCarScreenState extends State<WhichCarScreen> {
               if (state is GetAllDriverCarsSuccessState) {
                 return Expanded(
                     child: ListView.separated(
+                        padding: EdgeInsets.zero,
                         itemCount: state.allCars.length,
                         separatorBuilder: (context, index) => SizedBox(
                               height: 15,
@@ -58,10 +59,11 @@ class _WhichCarScreenState extends State<WhichCarScreen> {
                             function: () {
                               NavigationUtils.navigateTo(
                                   context: context,
-                                  destinationScreen: NearestWinchScreen(carId:state.allCars[index].sId!));
+                                  destinationScreen: NearestWinchScreen(
+                                      carId: state.allCars[index].sId!));
                             },
-                            carModel: state.allCars[index].carModel!,
-                            carType: state.allCars[index].carType!,
+                            carModel: state.allCars[index].carModel!.name!,
+                            carType: state.allCars[index].carType!.name!.en!,
                           );
                         }));
               } else {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/auth_cubit/auth_cubit.dart';
 import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import 'package:vewww/model/person.dart';
@@ -8,17 +9,25 @@ import 'package:vewww/views/common/forgot_password_screen.dart';
 import 'package:vewww/views/mechanic/mechanic_home_screen.dart';
 import 'package:vewww/views/winch/winch_home_page.dart';
 import '../../bloc/add_car_cubit/add_car_cubit.dart';
+import '../../bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
 import '../../core/components/custom_text_field.dart';
 import '../../core/components/logo.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/navigation.dart';
 import 'driver_home_screen.dart';
 
+
 class SignInScreen extends StatelessWidget {
-  final GlobalKey<FormState> _formKey = GlobalKey();
-  final TextEditingController _email = TextEditingController();
-  final TextEditingController _password = TextEditingController();
   SignInScreen({Key? key}) : super(key: key);
+
+  final GlobalKey<FormState> _formKey = GlobalKey();
+
+  final TextEditingController _email = TextEditingController();
+
+  final TextEditingController _password = TextEditingController();
+
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +88,8 @@ class SignInScreen extends StatelessWidget {
                             if (authCubit.state is SignInSuccessState) {
                               String role = SharedPreferencesHelper.getData(
                                   key: "vewRole");
+                              String id =
+                                  SharedPreferencesHelper.getData(key: "vewId");
                               print("role is $role");
                               const snackBar = SnackBar(
                                   content: Text("Loged in successfully !"));
@@ -87,9 +98,9 @@ class SignInScreen extends StatelessWidget {
                               Widget screen;
                               if (role == "user")
                                 screen = const DriverHomeScreen();
-                              else if (role == "winch")
+                              else if (role == "winch") {
                                 screen = WinchHomePage();
-                              else if (role == "admin")
+                              } else if (role == "admin")
                                 screen = AdminHomeScreen();
                               else {
                                 screen = MechanicHomeScreen();

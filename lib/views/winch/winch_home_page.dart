@@ -4,8 +4,9 @@ import 'package:vewww/model/winch_accepted_requests_response.dart';
 //import 'package:vewww/model/accepted_requests_response.dart';
 import 'package:vewww/views/winch/winch_profile.dart';
 import 'package:vewww/views/winch/winch_upcoming_requests_screen.dart';
-
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../../bloc/chat_cubit/chat_cubit.dart';
+import '../../bloc/new_request_cubit/new_request_cubit.dart';
 import '../../bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
 import '../../core/components/accepted_request_card.dart';
 import '../../core/components/app_nav_bar.dart';
@@ -13,6 +14,7 @@ import '../../core/components/coming_request_card.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/sidebar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
+import '../../core/utils/sp_helper/cache_helper.dart';
 
 class WinchHomePage extends StatefulWidget {
   WinchHomePage({Key? key}) : super(key: key);
@@ -26,10 +28,33 @@ class _WinchHomePageState extends State<WinchHomePage> {
   @override
   void initState() {
     super.initState();
+    initSocket();
     var chatCubit = context.read<ChatCubit>();
     chatCubit.getWinchChats();
     var repairerRequestsCubit = context.read<RepairerRequestsCubit>();
     repairerRequestsCubit.winchAcceptedRequests();
+  }
+  IO.Socket? socket;
+  initSocket() {
+    String id = SharedPreferencesHelper.getData(key: "vewId");
+    socket = IO.io("https://vewwwapi.onrender.com/", <String, dynamic>{
+      'autoConnect': false,
+      'transports': ['websocket'],
+    });
+    socket!.connect();
+    socket!.onConnect((_) {
+      print('Connection established');
+      socket!.emit('join-room', {'room': id});
+      print('joined room');
+    });
+    socket!.on("new-request", (data) {
+      print("new request created");
+      var requestCubit = context.read<NewRequestCubit>();
+      requestCubit.setHaveNew(true);
+    });
+    socket!.onDisconnect((_) => print('Connection Disconnection'));
+    socket!.onConnectError((err) => print(err));
+    socket!.onError((err) => print(err));
   }
 
   @override

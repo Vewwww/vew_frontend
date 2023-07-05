@@ -15,6 +15,7 @@ import '../bloc/car_cubit/car_cubit.dart';
 import '../bloc/get_all_cubit/get_all_cubit.dart';
 import '../bloc/loaction_cubit/loaction_cubit.dart';
 import '../bloc/nearest_repairer_cubit/nearest_repairer_cubit.dart';
+import '../bloc/new_request_cubit/new_request_cubit.dart';
 import '../bloc/notification_cubit/notification_cubit.dart';
 import '../bloc/profile_cubit/profile_cubit.dart';
 import '../bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
@@ -33,7 +34,6 @@ import '../bloc/select_color_cubit/select_color_cubit.dart';
 import '../bloc/warning_sign_cubit/warning_sign_cubit.dart';
 import '../views/common/sign_in_screen.dart';
 import '../views/driver/single_previous_request.dart';
-
 
 class AppRoot extends StatelessWidget {
   const AppRoot({Key? key}) : super(key: key);
@@ -69,6 +69,7 @@ class AppRoot extends StatelessWidget {
           BlocProvider(create: (context) => ProfileCubit()),
           BlocProvider(create: (context) => ServicesCubit()),
           BlocProvider(create: (context) => CarCubit()),
+          BlocProvider(create: (context) => NewRequestCubit()),
           BlocProvider(create: (context) => RepairerRequestsCubit()),
           BlocProvider(create: (context) => NotificationCubit()),
           BlocProvider(create: (context) => GetAllCubit()),
@@ -91,7 +92,6 @@ class AppRoot extends StatelessWidget {
               primaryColor: const Color.fromARGB(255, 2, 113, 106)),
           debugShowCheckedModeBanner: false,
           home: SplashScreen(),
-
         ));
   }
 }

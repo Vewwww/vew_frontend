@@ -22,7 +22,7 @@ class CarAdded extends CarState {}
 
 class GetAllDriverCarsLoadingState extends CarState {}
 class GetAllDriverCarsSuccessState extends CarState {
-  final List<AllCars> allCars;
+  final List<Car> allCars;
   GetAllDriverCarsSuccessState(this.allCars);
 }
 class GetAllDriverCarsErrorState extends CarState {}

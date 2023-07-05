@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/style/app_colors.dart';
 
+import '../../bloc/new_request_cubit/new_request_cubit.dart';
 import '../../bloc/selected page index/cubit/selected_page_index_cubit.dart';
 import '../../views/winch/winch_upcoming_requests_screen.dart';
 import '../../views/winch/winch_home_page.dart';
@@ -38,11 +39,31 @@ class AppNavigationBar extends StatelessWidget {
                   ? Colors.white
                   : Colors.grey,
             ),
-            Icon(
-              Icons.satellite_alt_outlined,
-              color: (selectedIndexCubit.selectedIndex == 1)
-                  ? Colors.white
-                  : Colors.grey,
+            BlocBuilder<NewRequestCubit, NewRequestState>(
+              builder: (context, state) {
+                if (state is HasNewState)
+                  return Stack(
+                    children: [
+                      Icon(
+                        Icons.satellite_alt_outlined,
+                        color: (selectedIndexCubit.selectedIndex == 1)
+                            ? Colors.white
+                            : Colors.grey,
+                      ),
+                      CircleAvatar(
+                        radius: 3,
+                        backgroundColor: Colors.red,
+                      )
+                    ],
+                  );
+                else
+                  return Icon(
+                    Icons.satellite_alt_outlined,
+                    color: (selectedIndexCubit.selectedIndex == 1)
+                        ? Colors.white
+                        : Colors.grey,
+                  );
+              },
             ),
           ],
           onTap: (index) {

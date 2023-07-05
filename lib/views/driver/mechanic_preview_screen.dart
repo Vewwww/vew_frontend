@@ -1,24 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:vewww/bloc/request_cubit/request_cubit.dart';
+import 'package:vewww/bloc/service_cubit/services_cubit.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
+import 'package:vewww/model/location.dart';
 import 'package:vewww/model/requests.dart';
 import 'package:vewww/views/driver/requests_screen.dart';
-
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+import '../../bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
 import '../../controllers/controller.dart';
 import '../../core/components/rating_bar.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
+import '../../model/name.dart';
 import '../../model/repairer.dart' as repairer;
 
-class MechanicPreviewScreen extends StatelessWidget {
+class MechanicPreviewScreen extends StatefulWidget {
   repairer.Mechanic mechanic;
-  MechanicPreviewScreen({required this.mechanic, super.key});
+  MechanicPreviewScreen({required this.mechanic, super.key}) {
+    print("current mechanic : ${mechanic.toJson()}");
+  }
+
+  @override
+  State<MechanicPreviewScreen> createState() => _MechanicPreviewScreenState();
+}
+
+// 649ee904e9d7a001ee231275
+// 649ee904e9d7a001ee231275
+class _MechanicPreviewScreenState extends State<MechanicPreviewScreen> {
+  IO.Socket? socket;
+  initSocket(String id) {
+    socket = IO.io("https://vewwwapi.onrender.com/", <String, dynamic>{
+      'autoConnect': false,
+      'transports': ['websocket'],
+    });
+    socket!.connect();
+    socket!.onConnect((_) {
+      print('Connection established');
+      socket!.emit('join-room', {'room': id});
+      print('joined room');
+    });
+    socket!.on("request-accepted-or-rejected", (data) {
+      print("request-accepted-or-rejected  :$data");
+      var requestCubit = context.read<RequestCubit>();
+      requestCubit.getDriverCurrentReq();
+      requestCubit.getDriverPendingReq();
+    });
+
+    socket!.onDisconnect((_) => print('Connection Disconnection'));
+    socket!.onConnectError((err) => print(err));
+    socket!.onError((err) => print(err));
+  }
 
   @override
   Widget build(BuildContext context) {
-    RequestCubit requestCubit= RequestCubit.get(context);
+    RequestCubit requestCubit = RequestCubit.get(context);
     return Scaffold(
       backgroundColor: mainColor,
       body: Column(children: [
@@ -41,20 +80,20 @@ class MechanicPreviewScreen extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  mechanic.name!.en ?? mechanic.name!.ar!,
+                  widget.mechanic.name!.en ?? widget.mechanic.name!.ar!,
                   style: AppTextStyle.whiteTextStyle(20),
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 Text(
-                  "Owner : ${mechanic.ownerName!}",
+                  "Owner : ${widget.mechanic.ownerName!}",
                   style: AppTextStyle.greyStyle(size: 15),
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                RatingBar(mechanic.rate!),
+                RatingBar(widget.mechanic.rate!),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -65,8 +104,8 @@ class MechanicPreviewScreen extends StatelessWidget {
                         size: 30,
                       ),
                       onPressed: () async {
-                        if (mechanic.phoneNumber != null)
-                          await Controller.call(mechanic.phoneNumber!);
+                        if (widget.mechanic.phoneNumber != null)
+                          await Controller.call(widget.mechanic.phoneNumber!);
                       },
                     ),
                     const SizedBox(
@@ -79,7 +118,8 @@ class MechanicPreviewScreen extends StatelessWidget {
                           size: 30,
                         ),
                         onPressed: () async {
-                          await Controller.goToGoogleMaps(mechanic.location!);
+                          await Controller.goToGoogleMaps(
+                              widget.mechanic.location!);
                         }),
                   ],
                 )
@@ -114,13 +154,13 @@ class MechanicPreviewScreen extends StatelessWidget {
                       height: MediaQuery.of(context).size.height / 3,
                       child: ListView.separated(
                         padding: EdgeInsets.zero,
-                        itemCount: mechanic.service!.length,
+                        itemCount: widget.mechanic.service!.length,
                         separatorBuilder: (context, int index) =>
                             const SizedBox(height: 3),
                         itemBuilder: (BuildContext context, int index) {
                           return Text(
-                            mechanic.service![index].name!.en ??
-                                mechanic.service![index].name!.ar!,
+                            widget.mechanic.service![index].name!.en ??
+                                widget.mechanic.service![index].name!.ar!,
                             style: AppTextStyle.darkGreyStyle(),
                           );
                         },
@@ -129,29 +169,54 @@ class MechanicPreviewScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 3),
-                (mechanic.hasDelivery == true)
-                    ? defaultButton(
-                        text: 'Request Mechanic',
-                        width: 390,
-                        function: () {
-                          CreateRequest createRequest=CreateRequest(
-                            driver: SharedPreferencesHelper.getData( key: 'vewId'),
-                          car: '6484789db6fc5a39cbe4e3d8',
-                          //location: await requestCubit.getLocation(),
-                          mechanic: mechanic.sId,
-                          //service:mechanic.service![index].name!.en, 
-                          );
-                          requestCubit.createMechanicRequest(createRequest);
-                          if(requestCubit is CreateMechanicRequestSuccessState){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) => RequestScreen(isWinch: false,))));
-                          }else{
-                            return CircularProgressIndicator();
-                          }
-                        },
-                      )
+                (widget.mechanic.hasDelivery == true)
+                    ? BlocBuilder<RequestCubit, RequestState>(
+                        builder: (context, state) {
+                        return defaultButton(
+                          text: 'Request Mechanic',
+                          width: 390,
+                          function: () async {
+                            print(
+                                "in mechanic preview screen ${SharedPreferencesHelper.getData(key: "vewToken")}");
+                            ServicesCubit servicesCubit =
+                                ServicesCubit.get(context);
+                            Position position = await Controller.getLocation();
+                            String address =
+                                await Controller.getAddress(position);
+                            Location location = Location(
+                                latitude: position.latitude,
+                                longitude: position.longitude,
+                                description: Name(ar: address, en: address));
+                            CreateRequest createRequest = CreateRequest(
+                              driver:
+                                  SharedPreferencesHelper.getData(key: 'vewId'),
+                              //Todo:: add car id
+                              car: '6484789db6fc5a39cbe4e3d8',
+                              location: location,
+                              mechanic: widget.mechanic.sId,
+                              service: (servicesCubit.selectedServices !=
+                                          null &&
+                                      servicesCubit.selectedServices[0].sId !=
+                                          null)
+                                  ? servicesCubit.selectedServices[0].sId
+                                  : "",
+                            );
+                            await requestCubit
+                                .createMechanicRequest(createRequest);
+                            if (requestCubit
+                                is CreateMechanicRequestSuccessState) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: ((context) => RequestScreen(
+                                            isWinch: false,
+                                          ))));
+                            } else {
+                              return CircularProgressIndicator();
+                            }
+                          },
+                        );
+                      })
                     : defaultButton(text: 'Request Winch', width: 390),
               ],
             ),
