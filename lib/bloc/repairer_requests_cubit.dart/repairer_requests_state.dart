@@ -64,3 +64,4 @@ class WinchCancelingRequestLoadingState extends RepairerRequestsState {}
 class WinchCancelingRequestSuccessState extends RepairerRequestsState {}
 
 class WinchCancelingRequestErrorState extends RepairerRequestsState {}
+

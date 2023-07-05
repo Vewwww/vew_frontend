@@ -15,47 +15,19 @@ import '../../core/components/logo.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/navigation.dart';
 import 'driver_home_screen.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-class SignInScreen extends StatefulWidget {
+
+class SignInScreen extends StatelessWidget {
   SignInScreen({Key? key}) : super(key: key);
 
-  @override
-  State<SignInScreen> createState() => _SignInScreenState();
-}
-
-class _SignInScreenState extends State<SignInScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   final TextEditingController _email = TextEditingController();
 
   final TextEditingController _password = TextEditingController();
 
-  IO.Socket? socket;
 
-  initSocket(String id) {
-    socket = IO.io("https://vewwwapi.onrender.com/", <String, dynamic>{
-      'autoConnect': false,
-      'transports': ['websocket'],
-    });
-    socket!.connect();
-    socket!.onConnect((_) {
-      print('Connection established');
-      socket!.emit('join-room', {'room': id});
-      print('joined room');
-    });
-    socket!.on("new-request", (data) {
-      print("new request created");
-      var requestCubit = context.read<RepairerRequestsCubit>();
-      String role = SharedPreferencesHelper.getData(key: "vewRole");
-      if (role == "mechanic")
-        requestCubit.mechanicUpComingRequests();
-      else if (role == "winch") requestCubit.winchUpComingRequests();
-    });
-    socket!.onDisconnect((_) => print('Connection Disconnection'));
-    socket!.onConnectError((err) => print(err));
-    socket!.onError((err) => print(err));
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -127,12 +99,10 @@ class _SignInScreenState extends State<SignInScreen> {
                               if (role == "user")
                                 screen = const DriverHomeScreen();
                               else if (role == "winch") {
-                                initSocket(id);
                                 screen = WinchHomePage();
                               } else if (role == "admin")
                                 screen = AdminHomeScreen();
                               else {
-                                initSocket(id);
                                 screen = MechanicHomeScreen();
                               }
                               NavigationUtils.navigateAndClearStack(

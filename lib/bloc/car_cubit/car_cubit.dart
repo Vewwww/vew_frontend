@@ -167,18 +167,20 @@ class CarCubit extends Cubit<CarState> {
 
   Future getAllDriverCars(String id) async {
     String url = "/driver/car/carOwner/${id}";
+    print(url);
     emit(GetAllDriverCarsLoadingState());
     await DioHelper.getData(
       url: url,
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
     ).then((value) {
       print("Get Driver Cars response : ${value.data}");
-      AllCarsResponse allCarsResponse=AllCarsResponse.fromJson(value.data);
-      emit(GetAllDriverCarsSuccessState(allCarsResponse.allCars!));
+      //AllCarsResponse allCarsResponse = AllCarsResponse.fromJson(value.data);
+      List<Car> allCars = [];
+      for (var x in value.data) allCars.add(Car.fromJson(x));
+      emit(GetAllDriverCarsSuccessState(allCars));
     }).onError((error, stackTrace) {
       print("Get Driver Cars error : $error");
       emit(GetAllDriverCarsErrorState());
     });
   }
-
 }

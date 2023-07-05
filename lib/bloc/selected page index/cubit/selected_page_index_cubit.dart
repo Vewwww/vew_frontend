@@ -6,6 +6,7 @@ part 'selected_page_index_state.dart';
 
 class SelectedPageIndexCubit extends Cubit<SelectedPageIndexState> {
   int? selectedIndex = 0;
+  
 
   SelectedPageIndexCubit({this.selectedIndex = 0})
       : super(SelectedPageIndexInitial());

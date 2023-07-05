@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/components/empty_requests.dart';
-import 'package:vewww/model/accepted_requests_response.dart';
 import 'package:vewww/views/winch/winch_home_page.dart';
 import 'package:vewww/views/winch/winch_profile.dart';
-
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+import '../../bloc/chat_cubit/chat_cubit.dart';
+import '../../bloc/new_request_cubit/new_request_cubit.dart';
 import '../../bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
-import '../../core/components/accepted_request_card.dart';
 import '../../core/components/app_nav_bar.dart';
 import '../../core/components/coming_request_card.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/sidebar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
+import '../../core/utils/sp_helper/cache_helper.dart';
 
 class WinchUpcomingRequestsScreen extends StatefulWidget {
   WinchUpcomingRequestsScreen({Key? key}) : super(key: key);
@@ -26,10 +27,40 @@ class _WinchUpcomingRequestsScreenState
   GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    initSocket();
+    var chatCubit = context.read<ChatCubit>();
+    chatCubit.getWinchChats();
+    var newRequestCubit = context.read<NewRequestCubit>();
+    newRequestCubit.setHaveNew(false);
     var repairerRequestsCubit = context.read<RepairerRequestsCubit>();
     repairerRequestsCubit.winchUpComingRequests();
+  }
+
+  IO.Socket? socket;
+  initSocket() {
+    String id = SharedPreferencesHelper.getData(key: "vewId");
+    socket = IO.io("https://vewwwapi.onrender.com/", <String, dynamic>{
+      'autoConnect': false,
+      'transports': ['websocket'],
+    });
+    socket!.connect();
+    socket!.onConnect((_) {
+      print('Connection established');
+      socket!.emit('join-room', {'room': id});
+      print('joined room');
+    });
+    socket!.on("new-request", (data) {
+      print("new request created");
+      var requestCubit = context.read<RepairerRequestsCubit>();
+      var newRequestCubit = context.read<NewRequestCubit>();
+      newRequestCubit.setHaveNew(false);
+      requestCubit.winchUpComingRequests();
+    });
+
+    socket!.onDisconnect((_) => print('Connection Disconnection'));
+    socket!.onConnectError((err) => print(err));
+    socket!.onError((err) => print(err));
   }
 
   @override
@@ -67,15 +98,37 @@ class _WinchUpcomingRequestsScreenState
         children: [
           const SizedBox(height: 20),
           CustomAppBar(
-            leading: IconButton(
-                onPressed: () {
-                  _globalKey.currentState!.openEndDrawer();
-                },
-                icon: const Icon(
-                  Icons.menu,
-                  size: 30,
-                  color: Colors.grey,
-                )),
+            leading: IconButton(onPressed: () {
+              _globalKey.currentState!.openEndDrawer();
+            }, icon: BlocBuilder<ChatCubit, ChatState>(
+              builder: (context, state) {
+                if (state is GettingChatsSuccessState &&
+                    ChatCubit.get(context).chatResponse!.newChats!)
+                  return Stack(
+                    children: [
+                      Icon(
+                        Icons.menu,
+                        size: 30,
+                        color: Colors.grey,
+                      ),
+                      Positioned(
+                        right: 0,
+                        top: 1,
+                        child: CircleAvatar(
+                          radius: 5,
+                          backgroundColor: Colors.red.shade900,
+                        ),
+                      )
+                    ],
+                  );
+                else
+                  return Icon(
+                    Icons.menu,
+                    size: 30,
+                    color: Colors.grey,
+                  );
+              },
+            )),
             haveLogo: true,
           ),
           Expanded(child: Container()),

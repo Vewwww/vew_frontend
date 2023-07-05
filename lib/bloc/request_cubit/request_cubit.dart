@@ -1,13 +1,9 @@
+import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
-import '../../model/name.dart';
 import '../../model/requests.dart';
 import '../../services/dio_helper.dart';
-import '../../model/location.dart' as loc;
 part 'request_state.dart';
 
 class RequestCubit extends Cubit<RequestState> {
@@ -78,7 +74,7 @@ class RequestCubit extends Cubit<RequestState> {
     });
   }
 
-  void createWinchRequest(CreateRequest createRequest) async {
+  Future<void> createWinchRequest(CreateRequest createRequest) async {
     emit(CreateWinchRequestLoadingState());
     print(createRequest.toJsonRequest());
     await DioHelper.postData(
@@ -87,7 +83,7 @@ class RequestCubit extends Cubit<RequestState> {
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
     ).then((value) {
       print("request winch response : ${value}");
-      emit(CreateWinchRequestSuccessState());
+      emit(CreateWinchRequestSuccessState(value.data["data"]['_id']));
     }).catchError((error) {
       if (error is DioError) {
         print("create winch request error  :${error.response}");
@@ -96,15 +92,16 @@ class RequestCubit extends Cubit<RequestState> {
     });
   }
 
-  void createMechanicRequest(CreateRequest createRequest) async {
+  Future<void> createMechanicRequest(CreateRequest createRequest) async {
     emit(CreateMechanicRequestLoadingState());
-    print(createRequest.toJson());
+    print(createRequest.toJsonRequest());
     await DioHelper.postData(
       url: "/driver/createMechanicRequest/",
-      data: createRequest.toJson(),
+      data: createRequest.toJsonRequest(),
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
     ).then((value) {
       print("Request mechanic response : ${value}");
+
       emit(CreateMechanicRequestSuccessState());
     }).catchError((error) {
       if (error is DioError) {
@@ -114,41 +111,4 @@ class RequestCubit extends Cubit<RequestState> {
     });
   }
 
-  // Future<loc.Location> getLocation() async {
-  //   LocationPermission locationPermission;
-  //   bool isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
-  //   //check if user enable service for location permission
-  //   if (!isLocationServiceEnabled) {
-  //     debugPrint("user don't enable location permission");
-  //   }
-
-  //   locationPermission = await Geolocator.checkPermission();
-
-  //   //check if user denied location and retry requesting for permission
-  //   if (locationPermission == LocationPermission.denied) {
-  //     locationPermission = await Geolocator.requestPermission();
-  //     if (locationPermission == LocationPermission.denied) {
-  //       debugPrint("user denied location permission");
-  //     }
-  //   }
-
-  //   //check if user denied permission forever
-  //   if (locationPermission == LocationPermission.deniedForever) {
-  //     debugPrint("user denied permission forever");
-  //   }
-
-  //   var currentLocation = await Geolocator.getCurrentPosition(
-  //       desiredAccuracy: LocationAccuracy.best);
-  //   List<Placemark> placeMark = await placemarkFromCoordinates(
-  //       currentLocation.latitude, currentLocation.longitude);
-  //   Placemark address = placeMark[0];
-  //   String? road = address.street;
-  //   loc.Location location = loc.Location(
-  //       longitude: currentLocation.longitude,
-  //       latitude: currentLocation.latitude,
-
-  //       description: Name(en:road , ar:road));
-
-  //   return  location;
-  // }
 }

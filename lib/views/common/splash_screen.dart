@@ -1,17 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vewww/bloc/request_cubit/request_cubit.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
 import 'package:vewww/views/common/on_boarding_screen.dart';
 import 'package:vewww/views/driver/sign_in_screen.dart';
 import 'package:vewww/views/mechanic/mechanic_home_screen.dart';
-import '../../bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
 import '../../core/components/logo.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
 import '../admin/admin_home_screen.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../winch/winch_home_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -22,35 +19,10 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  IO.Socket? socket;
   @override
   void initState() {
     super.initState();
     startTime();
-  }
-
-  initSocket(String id) {
-    socket = IO.io("https://vewwwapi.onrender.com/", <String, dynamic>{
-      'autoConnect': false,
-      'transports': ['websocket'],
-    });
-    socket!.connect();
-    socket!.onConnect((_) {
-      print('Connection established');
-      socket!.emit('join-room', {'room': id});
-      print('joined room');
-    });
-    socket!.on("new-request", (data) {
-      print("new request created");
-      var requestCubit = context.read<RepairerRequestsCubit>();
-      String role = SharedPreferencesHelper.getData(key: "vewRole");
-      if (role == "mechanic")
-        requestCubit.mechanicUpComingRequests();
-      else if (role == "winch") requestCubit.winchUpComingRequests();
-    });
-    socket!.onDisconnect((_) => print('Connection Disconnection'));
-    socket!.onConnectError((err) => print(err));
-    socket!.onError((err) => print(err));
   }
 
   @override
@@ -104,10 +76,8 @@ class _SplashScreenState extends State<SplashScreen> {
         else if (SharedPreferencesHelper.getData(key: "vewRole") == "user")
           return DriverHomeScreen();
         else if (SharedPreferencesHelper.getData(key: "vewRole") == "winch") {
-          initSocket(id);
           return WinchHomePage();
         } else {
-          initSocket(id);
           return MechanicHomeScreen();
         }
       }

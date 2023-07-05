@@ -72,7 +72,7 @@ class CreateRequest {
     if (location != null) {
       data['location'] = location!.toJsonRequest();
     }
-    data['winch'] = winch;
+    if (winch != null) data['winch'] = winch;
     if (mechanic != null) data['mechanic'] = mechanic;
     if (service != null) data['service'] = service;
     return data;
@@ -88,7 +88,6 @@ class Request {
   String? createdAt;
   bool? isWinch;
   Winch? winch;
-
   Request(
       {this.location,
       this.sId,
@@ -278,7 +277,7 @@ class Mechanic {
   Mechanic.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
-    rate = json['rate'];
+    rate = json['rate'] * 1.0;
     service = json['service'];
   }
 

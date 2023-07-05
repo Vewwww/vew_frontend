@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vewww/bloc/new_request_cubit/new_request_cubit.dart';
 import 'package:vewww/views/mechanic/mechanic_home_screen.dart';
 import 'package:vewww/views/mechanic/mechanic_profile.dart';
+import '../../bloc/chat_cubit/chat_cubit.dart';
 import '../../bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
 import '../../core/components/app_nav_bar.dart';
 import '../../core/components/coming_request_card.dart';
@@ -9,6 +11,8 @@ import '../../core/components/custom_app_bar.dart';
 import '../../core/components/empty_requests.dart';
 import '../../core/components/sidebar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
+import '../../core/utils/sp_helper/cache_helper.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class MechanicUpComingReqScreen extends StatefulWidget {
   MechanicUpComingReqScreen({super.key});
@@ -23,8 +27,38 @@ class _MechanicUpComingReqScreenState extends State<MechanicUpComingReqScreen> {
   @override
   void initState() {
     super.initState();
+    initSocket();
+    var chatCubit = context.read<ChatCubit>();
+    chatCubit.getMechanicChats();
+    var newRequestCubit = context.read<NewRequestCubit>();
+    newRequestCubit.setHaveNew(false);
     var repairerRequestsCubit = context.read<RepairerRequestsCubit>();
     repairerRequestsCubit.mechanicUpComingRequests();
+  }
+
+  IO.Socket? socket;
+  initSocket() {
+    String id = SharedPreferencesHelper.getData(key: "vewId");
+    socket = IO.io("https://vewwwapi.onrender.com/", <String, dynamic>{
+      'autoConnect': false,
+      'transports': ['websocket'],
+    });
+    socket!.connect();
+    socket!.onConnect((_) {
+      print('Connection established');
+      socket!.emit('join-room', {'room': id});
+      print('joined room');
+    });
+    socket!.on("new-request", (data) {
+      print("new request created");
+      var requestCubit = context.read<RepairerRequestsCubit>();
+      var newRequestCubit = context.read<NewRequestCubit>();
+      newRequestCubit.setHaveNew(false);
+        requestCubit.mechanicUpComingRequests();
+    });
+    socket!.onDisconnect((_) => print('Connection Disconnection'));
+    socket!.onConnectError((err) => print(err));
+    socket!.onError((err) => print(err));
   }
 
   @override
@@ -62,15 +96,38 @@ class _MechanicUpComingReqScreenState extends State<MechanicUpComingReqScreen> {
         children: [
           const SizedBox(height: 20),
           CustomAppBar(
-            leading: IconButton(
-                onPressed: () {
-                  _globalKey.currentState!.openEndDrawer();
-                },
-                icon: const Icon(
-                  Icons.menu,
-                  size: 30,
-                  color: Colors.grey,
-                )),
+            leading: BlocBuilder<ChatCubit, ChatState>(
+              builder: (context, state) {
+                return InkWell(
+                    onTap: () {
+                      _globalKey.currentState!.openEndDrawer();
+                    },
+                    child: ((state is GettingChatsSuccessState &&
+                            ChatCubit.get(context).chatResponse!.newChats!))
+                        ? Stack(
+                            children: [
+                              Icon(
+                                Icons.menu,
+                                size: 30,
+                                color: Colors.grey,
+                              ),
+                              Positioned(
+                                left: 0,
+                                top: 1,
+                                child: CircleAvatar(
+                                  radius: 7,
+                                  backgroundColor: Colors.red.shade900,
+                                ),
+                              )
+                            ],
+                          )
+                        : Icon(
+                            Icons.menu,
+                            size: 30,
+                            color: Colors.grey,
+                          ));
+              },
+            ),
             haveLogo: true,
           ),
           Expanded(child: Container()),
@@ -117,5 +174,17 @@ class _MechanicUpComingReqScreenState extends State<MechanicUpComingReqScreen> {
         ],
       )),
     );
+  }
+
+  void disconnect() {
+    socket!.disconnect();
+    socket!.dispose();
+  }
+
+  @override
+  void dispose() {
+    socket!.disconnect();
+    socket!.dispose();
+    super.dispose();
   }
 }

@@ -24,13 +24,17 @@ class AcceptedRequestCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         if (mechanicRequestsData != null) {
-        NavigationUtils.navigateTo(
-            context: context,
-              destinationScreen: SingleRequestScreen(mechanicRequestData: mechanicRequestsData,));
+          NavigationUtils.navigateTo(
+              context: context,
+              destinationScreen: SingleRequestScreen(
+                mechanicRequestData: mechanicRequestsData,
+              ));
         } else {
-        NavigationUtils.navigateTo(
-            context: context,
-              destinationScreen: SingleRequestScreen(winchRequestData: winchRequestData,));
+          NavigationUtils.navigateTo(
+              context: context,
+              destinationScreen: SingleRequestScreen(
+                winchRequestData: winchRequestData,
+              ));
         }
       },
       child: Container(
@@ -57,7 +61,9 @@ class AcceptedRequestCard extends StatelessWidget {
               children: [
                 Text(
                   (mechanicRequestsData != null)
-                      ? mechanicRequestsData!.driver!.person!.name!
+                      ? (mechanicRequestsData!.driver != null)
+                          ? mechanicRequestsData!.driver!.person!.name!
+                          : ""
                       : winchRequestData!.driver!.name!,
                   style: AppTextStyle.titleTextStyle(20),
                 ),
@@ -82,10 +88,9 @@ class AcceptedRequestCard extends StatelessWidget {
                     IconButton(
                         onPressed: () async {
                           Location location = (mechanicRequestsData == null)
-                                  ? winchRequestData!.location!
-                                  : mechanicRequestsData!.location!;
-                          await Controller.goToGoogleMaps(
-                              location);
+                              ? winchRequestData!.location!
+                              : mechanicRequestsData!.location!;
+                          await Controller.goToGoogleMaps(location);
                         },
                         icon: Icon(
                           Icons.location_on,
@@ -115,12 +120,12 @@ class AcceptedRequestCard extends StatelessWidget {
                         RepairerRequestsCubit repairerRequestsCubit =
                             RepairerRequestsCubit.get(context);
                         if (mechanicRequestsData != null) {
-                        await repairerRequestsCubit.mechanicCompleteRequest(
+                          await repairerRequestsCubit.mechanicCompleteRequest(
                               mechanicRequestsData!.sId!);
                         } else {
                           await repairerRequestsCubit
                               .winchCompleteRequest(winchRequestData!.sId!);
-                            }
+                        }
                       },
                       child: const Text(
                         "تم",
@@ -130,7 +135,7 @@ class AcceptedRequestCard extends StatelessWidget {
               ],
             ),
             Container(
-              width: 140,
+              width: 100,
               height: 140,
               margin: const EdgeInsets.fromLTRB(3, 7, 0, 3),
               decoration: BoxDecoration(
@@ -138,15 +143,15 @@ class AcceptedRequestCard extends StatelessWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(5))),
               child: (mechanicRequestsData == null)
                   ? const Icon(
-                Icons.car_repair,
-                size: 50,
-                color: Colors.white,
+                      Icons.car_repair,
+                      size: 50,
+                      color: Colors.white,
                     )
                   : const Icon(
-                Icons.handyman_outlined,
-                size: 50,
-                color: Colors.white,
-              ), 
+                      Icons.handyman_outlined,
+                      size: 50,
+                      color: Colors.white,
+                    ),
             )
           ],
         ),

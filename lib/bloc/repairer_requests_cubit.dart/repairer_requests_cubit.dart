@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vewww/bloc/new_request_cubit/new_request_cubit.dart';
 import 'package:vewww/model/winch_upcoming_request_response.dart';
 import 'package:vewww/services/dio_helper.dart';
 
@@ -42,7 +43,6 @@ class RepairerRequestsCubit extends Cubit<RepairerRequestsState> {
     ).then((value) {
       print("getMechanicUpcomingRequests response : ${value.data}");
       upcomingRequestsResponse = UpcomingRequestsResponse.fromJson(value.data);
-
       emit(GettingUpComingRequestsSuccessState());
     }).catchError((err) {
       if (err is DioError) print(err.response);
@@ -116,15 +116,17 @@ class RepairerRequestsCubit extends Cubit<RepairerRequestsState> {
     });
   }
 
-   Future<void> winchUpComingRequests() async {
+  Future<void> winchUpComingRequests() async {
     emit(GettingWinchUpComingRequestsLoadingState());
     await DioHelper.getData(
       url: "/winch/getWinchUpcomingRequests",
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
     ).then((value) {
       print("winchUpComingRequests response : ${value.data}");
-      WinchUpcomingRequestResponse winchUpcomingRequestResponse = WinchUpcomingRequestResponse.fromJson(value.data);
-      emit(GettingWinchUpComingRequestsSuccessState(winchUpcomingRequestResponse.data!));
+      WinchUpcomingRequestResponse winchUpcomingRequestResponse =
+          WinchUpcomingRequestResponse.fromJson(value.data);
+      emit(GettingWinchUpComingRequestsSuccessState(
+          winchUpcomingRequestResponse.data!));
     }).catchError((err) {
       if (err is DioError) print(err.response);
       print(err);
@@ -179,5 +181,4 @@ class RepairerRequestsCubit extends Cubit<RepairerRequestsState> {
       emit(WinchCompletingRequestErrorState());
     });
   }
-
 }

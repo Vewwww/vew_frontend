@@ -14,7 +14,7 @@ class Sidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      width: MediaQuery.of(context).size.width * 3 / 5,
+      width: MediaQuery.of(context).size.width * 2 / 3,
       child: ListView(
         children: [
           const SizedBox(
@@ -56,7 +56,7 @@ class Sidebar extends StatelessWidget {
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>  SelectProblemScreen()),
+                            builder: (context) => SelectProblemScreen()),
                         (route) => true);
                   },
                 )

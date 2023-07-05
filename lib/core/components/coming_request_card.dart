@@ -23,20 +23,20 @@ class ComingRequestCard extends StatelessWidget {
     RepairerRequestsCubit requestsCubit = RepairerRequestsCubit.get(context);
     return InkWell(
         onTap: () {
-          if(mechanicRequestsData != null){
-          NavigationUtils.navigateTo(
-              context: context,
-              destinationScreen: SingleRequestScreen(
-                mechanicRequestData: mechanicRequestsData!,
-                type: "coming",
-              ));
-          }else{
+          if (mechanicRequestsData != null) {
             NavigationUtils.navigateTo(
-              context: context,
-              destinationScreen: SingleRequestScreen(
-                winchRequestData: winchRequestsData!,
-                type: "coming",
-              ));
+                context: context,
+                destinationScreen: SingleRequestScreen(
+                  mechanicRequestData: mechanicRequestsData!,
+                  type: "coming",
+                ));
+          } else {
+            NavigationUtils.navigateTo(
+                context: context,
+                destinationScreen: SingleRequestScreen(
+                  winchRequestData: winchRequestsData!,
+                  type: "coming",
+                ));
           }
         },
         child: Container(
@@ -80,13 +80,15 @@ class ComingRequestCard extends StatelessWidget {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.grey,
                             ),
-                            onPressed: () {
+                            onPressed: () async {
                               if (mechanicRequestsData != null) {
-                                requestsCubit.mechanicCancelRequest(
+                                await requestsCubit.mechanicCancelRequest(
                                     mechanicRequestsData!.sId!);
+                                await requestsCubit.mechanicUpComingRequests();
                               } else {
-                                requestsCubit.winchCancelRequest(
+                                await requestsCubit.winchCancelRequest(
                                     winchRequestsData!.sId!);
+                                await requestsCubit.winchUpComingRequests();
                               }
                             },
                             child: const Text(
@@ -104,6 +106,8 @@ class ComingRequestCard extends StatelessWidget {
                                   if (mechanicRequestsData != null) {
                                     await requestsCubit.mechanicAcceptRequest(
                                         mechanicRequestsData!.sId!);
+                                    await requestsCubit
+                                        .mechanicUpComingRequests();
                                     if (state is AcceptingRequestSuccessState)
                                       NavigationUtils.navigateAndClearStack(
                                           context: context,
@@ -112,9 +116,10 @@ class ComingRequestCard extends StatelessWidget {
                                   } else {
                                     await requestsCubit.winchAcceptRequest(
                                         winchRequestsData!.sId!);
+                                    await requestsCubit.winchUpComingRequests();
                                     if (state
                                         is WinchAcceptingRequestSuccessState)
-                                     NavigationUtils.navigateAndClearStack(
+                                      NavigationUtils.navigateAndClearStack(
                                           context: context,
                                           destinationScreen: WinchHomePage());
                                   }
@@ -131,22 +136,22 @@ class ComingRequestCard extends StatelessWidget {
                 ),
               ),
               Container(
-                width: 140,
-                height: 140,
-                margin: const EdgeInsets.fromLTRB(16, 7, 0, 3),
-                decoration: BoxDecoration(
-                    color: mainColor,
-                    borderRadius: const BorderRadius.all(Radius.circular(5))),
+                  width: 140,
+                  height: 140,
+                  margin: const EdgeInsets.fromLTRB(16, 7, 0, 3),
+                  decoration: BoxDecoration(
+                      color: mainColor,
+                      borderRadius: const BorderRadius.all(Radius.circular(5))),
                   child: (mechanicRequestsData != null)
                       ? const Icon(
-                  Icons.handyman_outlined,
-                  size: 50,
-                  color: Colors.white,
+                          Icons.handyman_outlined,
+                          size: 50,
+                          color: Colors.white,
                         )
                       : const Icon(
-                  Icons.car_repair,
-                  size: 50,
-                  color: Colors.white,
+                          Icons.car_repair,
+                          size: 50,
+                          color: Colors.white,
                         )),
             ],
           ),

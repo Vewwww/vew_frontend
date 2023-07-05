@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vewww/bloc/new_request_cubit/new_request_cubit.dart';
+import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import 'package:vewww/views/mechanic/mechanic_profile.dart';
 import '../../bloc/chat_cubit/chat_cubit.dart';
 import '../../bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
@@ -9,6 +11,7 @@ import '../../core/components/custom_app_bar.dart';
 import '../../core/components/sidebar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import 'mechanic_upcoming_req_screen.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class MechanicHomeScreen extends StatefulWidget {
   MechanicHomeScreen({super.key});
@@ -22,10 +25,37 @@ class _MechanicHomeScreenState extends State<MechanicHomeScreen> {
   @override
   void initState() {
     super.initState();
+    initSocket();
     var chatCubit = context.read<ChatCubit>();
     chatCubit.getMechanicChats();
     var repairerRequestsCubit = context.read<RepairerRequestsCubit>();
     repairerRequestsCubit.mechanicAcceptedRequests();
+  }
+
+  IO.Socket? soc;
+  initSocket() {
+    String id = SharedPreferencesHelper.getData(key: "vewId");
+    soc = IO.io("https://vewwwapi.onrender.com/", <String, dynamic>{
+      'autoConnect': false,
+      'transports': ['websocket'],
+    });
+    soc!.connect();
+    soc!.onConnect((_) {
+      print('Connection established');
+      soc!.emit('join-room', {'room': id});
+      print('joined room');
+    });
+    soc!.on("new-request", (data) {
+      print("new request created");
+      var requestCubit = context.read<NewRequestCubit>();
+      String role = SharedPreferencesHelper.getData(key: "vewRole");
+      if (role == "mechanic")
+        requestCubit.setHaveNew(true);
+      else if (role == "winch") requestCubit.setHaveNew(true);
+    });
+    soc!.onDisconnect((_) => print('Connection Disconnection'));
+    soc!.onConnectError((err) => print(err));
+    soc!.onError((err) => print(err));
   }
 
   @override
@@ -119,8 +149,9 @@ class _MechanicHomeScreenState extends State<MechanicHomeScreen> {
                             itemCount: repairerRequestsCubit
                                 .acceptedRequestsResponse!.data!.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return AcceptedRequestCard( mechanicRequestsData: repairerRequestsCubit
-                                  .acceptedRequestsResponse!.data![index]);
+                              return AcceptedRequestCard(
+                                  mechanicRequestsData: repairerRequestsCubit
+                                      .acceptedRequestsResponse!.data![index]);
                             }));
                   else
                     return Column(
@@ -152,5 +183,17 @@ class _MechanicHomeScreenState extends State<MechanicHomeScreen> {
         ),
       ),
     );
+  }
+
+  void disconnect() {
+    soc!.disconnect();
+    soc!.dispose();
+  }
+
+  @override
+  void dispose() {
+    soc!.disconnect();
+    soc!.dispose();
+    super.dispose();
   }
 }
