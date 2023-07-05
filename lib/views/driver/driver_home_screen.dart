@@ -151,7 +151,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                         String id=SharedPreferencesHelper.getData( key: 'vewId');
                         NavigationUtils.navigateTo(
                             context: context,
-                            destinationScreen: WhichCarScreen(id: id,));
+                            destinationScreen: WhichCarScreen(id: id,isWinch: true,));
                       }),
                 ],
               ),

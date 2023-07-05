@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/controllers/controller.dart';
+import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
+import 'package:vewww/views/driver/which_car_screen.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/default_button.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/style/app_colors.dart';
+import '../../core/utils/navigation.dart';
 import '../../model/repairer.dart';
 
 class GasStationPreview extends StatelessWidget {
@@ -97,7 +100,14 @@ class GasStationPreview extends StatelessWidget {
                   height: 20,
                 ),
                 const SizedBox(height: 15),
-                defaultButton(text: 'Request Winch', width: 390),
+                defaultButton(text: 'Request Winch', width: 390,
+                function: (){
+                  String id=SharedPreferencesHelper.getData( key: 'vewId');
+                        NavigationUtils.navigateTo(
+                            context: context,
+                            destinationScreen: WhichCarScreen(id: id,isWinch: true,));
+                }
+                ),
               ],
             ),
           ),
