@@ -110,7 +110,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(SignInSuccessState());
     }).catchError((err) {
       if (err is DioError) {
-        print("sign in error message : ${err.response!}");
+        print("sign in error message : ${err}");
         if ((err.response != null)) {
           ErrorResponse errorResponse =
               ErrorResponse.fromJson(err.response!.data);

@@ -15,16 +15,16 @@ class WarningSignCubit extends Cubit<WarningSignState> {
   Future<void> getAllSigns() async {
     emit(GetAllWarningSignLoadingState());
     if (signResponse == null) {
-      DioHelper.getData(url: "/sign/").then((value) {
+      DioHelper.getData(url: "/driver/sign/").then((value) {
         print("get all warning sign response : ${value.data}");
         signResponse = SignResponse.fromJson(value.data);
         emit(GetAllWarningSignSuccessState(signs: signResponse!.signs!));
-      }).catchError((error){
-      if(error is DioError){
-        print(error.response);
-      }
-      emit(GetAllWarningSignErrorState());
-    });
+      }).catchError((error) {
+        if (error is DioError) {
+          print(error.response);
+        }
+        emit(GetAllWarningSignErrorState());
+      });
     } else {
       emit(GetAllWarningSignSuccessState(signs: signResponse!.signs!));
     }
@@ -32,7 +32,7 @@ class WarningSignCubit extends Cubit<WarningSignState> {
 
   Future<void> getSignWithId(String id) async {
     emit(GetSingleWarningSignLoadingState());
-    await DioHelper.getData(url: "/sign/${id}").then((value) {
+    await DioHelper.getData(url: "/driver/sign/${id}").then((value) {
       print("get all warning sign response : ${value.data}");
       sign = Sign.fromJson(value.data["data"]);
       print("get all warning sign names : ${sign!.name!.en}");

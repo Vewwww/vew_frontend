@@ -117,11 +117,13 @@ class ComingRequestCard extends StatelessWidget {
                                     await requestsCubit.winchAcceptRequest(
                                         winchRequestsData!.sId!);
                                     await requestsCubit.winchUpComingRequests();
-                                    if (state
-                                        is WinchAcceptingRequestSuccessState)
-                                      NavigationUtils.navigateAndClearStack(
-                                          context: context,
-                                          destinationScreen: WinchHomePage());
+                                    print(state);
+                                    // if (state
+                                    //     is WinchAcceptingRequestSuccessState)
+                                    //   //ToDo:handle bottom nav qubit
+                                    //   NavigationUtils.navigateAndClearStack(
+                                    //       context: context,
+                                    //       destinationScreen: WinchHomePage());
                                   }
                                 },
                                 child: const Text(

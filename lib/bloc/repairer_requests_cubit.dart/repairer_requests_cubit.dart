@@ -156,8 +156,8 @@ class RepairerRequestsCubit extends Cubit<RepairerRequestsState> {
       url: "/winch/acceptWinchRequest/$id",
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
     ).then((value) {
-      print(" requests response : ${value.data}");
-      winchAcceptedRequests();
+      print("winch accept requests response : ${value.data}");
+      //winchAcceptedRequests();
       emit(WinchAcceptingRequestSuccessState());
     }).catchError((err) {
       if (err is DioError) print(err.response);
@@ -168,6 +168,7 @@ class RepairerRequestsCubit extends Cubit<RepairerRequestsState> {
 
   Future<void> winchCompleteRequest(String id) async {
     emit(WinchCompletingRequestLoadingState());
+    print("winch id from complete $id");
     await DioHelper.getData(
       url: "/winch/endRequest/$id",
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
