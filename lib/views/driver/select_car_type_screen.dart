@@ -14,7 +14,7 @@ class SelectCarTypeScreen extends StatelessWidget {
   SelectCarTypeScreen(
       {this.destinationScreen, this.driver, this.index, Key? key})
       : super(key: key) {
-    isArabic = (SharedPreferencesHelper.getData(key: "vewRole") == null ||
+    isArabic = (SharedPreferencesHelper.getData(key: "vewRole") != null &&
         SharedPreferencesHelper.getData(key: "vewRole") != "user");
   }
   Widget? destinationScreen;

@@ -89,6 +89,13 @@ class NearRepairerCard extends StatelessWidget {
                     ? RatingBar(repairer.rate!)
                     : Container(),
                 const SizedBox(height: 15),
+                (repairer.distance != null)
+                    ? Text("${repairer.distance} Km away",
+                        style: AppTextStyle.greyStyle(size: 15))
+                    : Container(),
+                (repairer.distance != null)
+                    ? const SizedBox(height: 5)
+                    : Container(),
                 Text(
                     (repairer is MaintenanceCenter)
                         ? "Maintenance Center"
@@ -98,6 +105,18 @@ class NearRepairerCard extends StatelessWidget {
                                 ? "Mechanic"
                                 : "Repairer",
                     style: AppTextStyle.greyStyle(size: 15)),
+                const SizedBox(height: 5),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - 150,
+                  child: Text(
+                      (repairer is GasStation &&
+                              repairer.location != null &&
+                              repairer.location!.description != null)
+                          ? "${repairer.location!.description!.en ?? ''}"
+                          : "",
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyle.greyStyle(size: 15)),
+                ),
                 const SizedBox(height: 5),
               ],
             ),
