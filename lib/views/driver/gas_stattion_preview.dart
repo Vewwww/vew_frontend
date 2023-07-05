@@ -87,7 +87,7 @@ class GasStationPreview extends StatelessWidget {
                         height: 15,
                       ),
                       Text(
-                        ' Al Manial، 37 El-Rawda Square, Al Manyal Al Gharbi, Old Cairo, Cairo Governorate',
+                        gasStation.location!.description!.en!,
                         style: AppTextStyle.darkGreyStyle(size: 17),
                       ),
                     ],

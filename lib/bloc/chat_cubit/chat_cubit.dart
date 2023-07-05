@@ -61,7 +61,7 @@ class ChatCubit extends Cubit<ChatState> {
       emit(GettingChatsSuccessState(chatResponse!.chats!));
     }).catchError((err) {
       if (err is DioError) {
-        print("chat error : ${err.response}");
+        print("driver chat error : ${err.response}");
       }
       emit(GettingChatsErrorState());
     });

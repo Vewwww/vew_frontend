@@ -123,6 +123,7 @@ class AcceptedRequestCard extends StatelessWidget {
                           await repairerRequestsCubit.mechanicCompleteRequest(
                               mechanicRequestsData!.sId!);
                         } else {
+                          print("here");
                           await repairerRequestsCubit
                               .winchCompleteRequest(winchRequestData!.sId!);
                         }

@@ -19,7 +19,7 @@ class SingleRequestScreen extends StatelessWidget {
   WinchRequestData? winchRequestData;
   SingleRequestScreen(
       {this.mechanicRequestData,
-  this.winchRequestData,
+      this.winchRequestData,
       this.type = "accepted",
       Key? key})
       : super(key: key);
@@ -133,7 +133,7 @@ class SingleRequestScreen extends StatelessWidget {
                                       winchRequestData!.car!.carModel != null)
                                   ? DataElement("موديل السيارة",
                                       winchRequestData!.car!.carModel!.name!)
-                              : Container(),
+                                  : Container(),
                           DataElement("لون السيارة", "أحمر"),
                           (mechanicRequestData != null &&
                                   mechanicRequestData!.service != null)
@@ -145,7 +145,8 @@ class SingleRequestScreen extends StatelessWidget {
                               (mechanicRequestData != null)
                                   ? mechanicRequestData!
                                       .location!.description!.ar!
-                                  : winchRequestData!.location!.description!.ar!),
+                                  : winchRequestData!
+                                      .location!.description!.ar!),
                           const SizedBox(height: 30),
                           SizedBox(
                             width: double.infinity,
@@ -156,26 +157,31 @@ class SingleRequestScreen extends StatelessWidget {
                                   String role = SharedPreferencesHelper.getData(
                                       key: "vewRole");
                                   if (role == "winch") {
+                                    //TODO:: add comblete winch request code
                                     NavigationUtils.navigateTo(
                                         context: context,
                                         destinationScreen: WinchHomePage());
                                   } else {
                                     if (type == "accepted") {
-                                      if(mechanicRequestData!=null)
-                                      await repairerRequestsCubit
-                                          .mechanicCompleteRequest(
-                                              mechanicRequestData!.sId!);
-                                      else await repairerRequestsCubit
-                                          .winchCompleteRequest(
-                                              winchRequestData!.sId!);
+                                      print("here 1 ");
+                                      if (mechanicRequestData != null)
+                                        await repairerRequestsCubit
+                                            .mechanicCompleteRequest(
+                                                mechanicRequestData!.sId!);
+                                      else
+                                        await repairerRequestsCubit
+                                            .winchCompleteRequest(
+                                                winchRequestData!.sId!);
                                     } else {
-                                      if(mechanicRequestData!=null)
-                                      await repairerRequestsCubit
-                                          .mechanicAcceptRequest(
-                                              mechanicRequestData!.sId!);
-                                      else await repairerRequestsCubit
-                                          .winchAcceptRequest(
-                                              winchRequestData!.sId!);
+                                      print("here 2 ");
+                                      if (mechanicRequestData != null)
+                                        await repairerRequestsCubit
+                                            .mechanicAcceptRequest(
+                                                mechanicRequestData!.sId!);
+                                      else
+                                        await repairerRequestsCubit
+                                            .winchAcceptRequest(
+                                                winchRequestData!.sId!);
                                     }
 
                                     NavigationUtils.navigateTo(
