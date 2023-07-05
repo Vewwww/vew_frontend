@@ -135,4 +135,26 @@ class Car {
       data['averageMilesPerMonth'] = averageMilesPerMonth;
     return data;
   }
+
+  Map<String, dynamic> toSignupJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (sId != null) data['_id'] = sId;
+    if (carType != null) data['carType'] = carType!.sId;
+    data['plateNumber'] = plateNumber;
+    data['year'] = year;
+    if (carModel != null) data['carModel'] = carModel!.sId;
+    if (color != null) data['color'] = color!.sId;
+    data['owner'] = owner;
+    if (iV != null) data['__v'] = iV;
+    if (carLicenseRenewalDate != null)
+      data['carLicenseRenewalDate'] = carLicenseRenewalDate.toString();
+    if (lastPeriodicMaintenanceDate != null) {
+      data['lastPeriodicMaintenanceDate'] =
+          lastPeriodicMaintenanceDate.toString();
+    }
+    if (miles != null) data['miles'] = miles;
+    if (averageMilesPerMonth != null)
+      data['averageMilesPerMonth'] = averageMilesPerMonth;
+    return data;
+  }
 }

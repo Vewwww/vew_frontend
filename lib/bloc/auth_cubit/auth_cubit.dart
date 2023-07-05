@@ -1,16 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import 'package:vewww/model/error_response.dart';
 import 'package:vewww/services/dio_helper.dart';
-
 import '../../model/driver.dart';
 import '../../model/mechanic_shop.dart';
 import '../../model/person.dart';
-import '../../model/repairer.dart';
-import '../../model/winch.dart';
 import '../../model/winch_driver.dart';
 
 part 'auth_state.dart';
@@ -18,11 +14,12 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
   static AuthCubit get(context) => BlocProvider.of(context);
+  Driver driver = Driver();
 
-  void driverSignUp(Driver driver) async {
-    print("driver signup request : ${driver.toJson()}");
+  Future<void> driverSignUp(Driver driver) async {
+    print("driver signup request : ${driver.toSignupJson()}");
     emit(SignUpLoadingState());
-    await DioHelper.postData(url: "driver/signup/", data: driver.toJson())
+    await DioHelper.postData(url: "driver/signup/", data: driver.toSignupJson())
         .then((value) {
       print("driver signup response : ${value}");
       emit(SignUpSuccessState());
@@ -95,7 +92,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> signIn(Person person) async {
-    print("driver signin request : ${driver.toJson()}");
+    //print("driver signin request : ${driver.toJson()}");
     emit(SignInLoadingState());
     await DioHelper.postData(
             url: "/allusers/login/",

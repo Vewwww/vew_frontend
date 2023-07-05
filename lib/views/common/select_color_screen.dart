@@ -17,7 +17,8 @@ class SelectColorScreen extends StatelessWidget {
   late bool isArabic;
   SelectColorScreen({this.index, this.destinationScreen, this.driver, Key? key})
       : super(key: key) {
-    isArabic = (SharedPreferencesHelper.getData(key: "vewRole") != "user");
+    isArabic = (SharedPreferencesHelper.getData(key: "vewRole") != null &&
+        SharedPreferencesHelper.getData(key: "vewRole") != "user");
   }
 
   @override
@@ -35,7 +36,8 @@ class SelectColorScreen extends StatelessWidget {
               listener: (context, state) {},
               builder: (context, state) {
                 print(state);
-                if (state is GettingColorsSuccessState|| state is ColorChoiceSelected) {
+                if (state is GettingColorsSuccessState ||
+                    state is ColorChoiceSelected) {
                   return ListView.builder(
                       itemCount:
                           selectColorCubit.carColorResponse!.carColor!.length,

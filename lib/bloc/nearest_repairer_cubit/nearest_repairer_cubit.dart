@@ -24,7 +24,7 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
   NearesetGasStationResponse? nearesetGasStationResponse;
   //getNearestMaintainaceCenter
   Future getNearestMC({String? carTypeID, String? isVerified}) async {
-    String url = "/driver/getNearestMaintenanceCenters";
+    String url = "/driver/getNearestMaintenanceCenters/$carTypeID";
     Map<String, dynamic> query = await getCurrentLocation();
     query.addAll({"carType": carTypeID, "isVerified": isVerified});
     print("${query}");
@@ -101,20 +101,22 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
     }
   }
 
-  Future getNearestWinch() async{
+  Future getNearestWinch() async {
     String url = "/driver/getNearestWinch";
     Map<String, dynamic> query = await getCurrentLocation();
     emit(GettingNearestWinchLoadingState());
     await DioHelper.getWithBody(
       url: url,
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
-      query: query, 
+      query: query,
     ).then((value) {
       print("neareat winch response : ${value.data}");
-      NearestWinchResponse nearestWinchResponse=NearestWinchResponse.fromJson(value.data);
-      emit(GettingNearestWinchSuccessState(nearestWinch: nearestWinchResponse.nearestWinch!));
-    }).catchError((error){
-      if(error is DioError){
+      NearestWinchResponse nearestWinchResponse =
+          NearestWinchResponse.fromJson(value.data);
+      emit(GettingNearestWinchSuccessState(
+          nearestWinch: nearestWinchResponse.nearestWinch!));
+    }).catchError((error) {
+      if (error is DioError) {
         print(error.response);
       }
       print(error);
@@ -187,6 +189,4 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
         desiredAccuracy: LocationAccuracy.best);
     return {"latitude": location.latitude, "longitude": location.latitude};
   }
-
-  
 }

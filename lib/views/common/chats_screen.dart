@@ -28,7 +28,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
     String role = SharedPreferencesHelper.getData(key: "vewRole");
     if (role == "winch")
       chatCubit.getWinchChats();
-    else if (role == "driver")
+    else if (role == "user")
       chatCubit.getDriverChats();
     else if (role == "mechanic") chatCubit.getMechanicChats();
   }

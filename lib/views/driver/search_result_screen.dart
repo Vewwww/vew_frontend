@@ -186,7 +186,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                     searchKey != null &&
                     searchKey!.length > 0) {
                   if (state is SearchSuccessState) {
-                    if (state.places.length <= 0) {
+                    if (state.places.length > 0) {
                       return Expanded(
                         child: ListView.builder(
                           padding: const EdgeInsets.all(0),

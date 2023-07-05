@@ -11,6 +11,7 @@ abstract class Repairer {
   String? phoneNumber;
   double? rate;
   int? ratesNumber;
+  double? distance;
 
   Repairer.named({
     this.name,
@@ -19,6 +20,7 @@ abstract class Repairer {
     this.phoneNumber,
     this.rate,
     this.ratesNumber,
+    this.distance,
   });
   Repairer.fromJson(Map<String, dynamic> json, {bool isMechanic = false}) {
     if (isMechanic) {
@@ -29,6 +31,8 @@ abstract class Repairer {
     location =
         json['location'] != null ? Location.fromJson(json['location']) : null;
     sId = json['_id'];
+    if (json["distance"] != null)
+      distance = double.parse((json['distance']).toStringAsFixed(2));
     phoneNumber = json['phoneNumber'];
     //print("object 111 ${json['rate']}");
     if (json['rate'] != null) rate = json['rate'] * 1.0;
@@ -62,7 +66,7 @@ class MaintenanceCenter extends Repairer {
             rate: rate,
             ratesNumber: ratesNumber,
             sId: sId);
-            
+
   MaintenanceCenter.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
     name = json['name'] != null ? Name.fromJson(json['name']) : null;
     //print("here 14");
@@ -107,7 +111,6 @@ class MaintenanceCenter extends Repairer {
 }
 
 class Mechanic extends Repairer {
-  
   Report? report;
   String? ownerName;
   String? email;
@@ -226,6 +229,7 @@ class Place extends Repairer {
       this.carType,
       this.isVerified,
       rate,
+      distance,
       ratesNumber,
       this.iV})
       : super.named(
@@ -234,6 +238,7 @@ class Place extends Repairer {
             sId: sId,
             phoneNumber: phoneNumber,
             rate: rate,
+            distance: distance,
             ratesNumber: ratesNumber);
 
   Place.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
