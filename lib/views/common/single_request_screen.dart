@@ -157,7 +157,15 @@ class SingleRequestScreen extends StatelessWidget {
                                   String role = SharedPreferencesHelper.getData(
                                       key: "vewRole");
                                   if (role == "winch") {
-                                    //TODO:: add comblete winch request code
+                                    if (type == "accepted") {
+                                      await repairerRequestsCubit
+                                          .winchCompleteRequest(
+                                              winchRequestData!.sId!);
+                                    } else {
+                                      await repairerRequestsCubit
+                                          .winchAcceptRequest(
+                                              winchRequestData!.sId!);
+                                    }
                                     NavigationUtils.navigateTo(
                                         context: context,
                                         destinationScreen: WinchHomePage());

@@ -36,7 +36,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
     var notificationCubit = context.read<NotificationCubit>();
     notificationCubit.getNotificatin();
     var chatCubit = context.read<ChatCubit>();
-    chatCubit.getWinchChats();
+    chatCubit.getDriverChats();
   }
 
   @override
@@ -148,10 +148,14 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                       height: 80,
                       width: 170,
                       function: () {
-                        String id=SharedPreferencesHelper.getData( key: 'vewId');
+                        String id =
+                            SharedPreferencesHelper.getData(key: 'vewId');
                         NavigationUtils.navigateTo(
                             context: context,
-                            destinationScreen: WhichCarScreen(id: id,isWinch: true,));
+                            destinationScreen: WhichCarScreen(
+                              id: id,
+                              isWinch: true,
+                            ));
                       }),
                 ],
               ),

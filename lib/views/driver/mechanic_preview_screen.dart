@@ -9,24 +9,28 @@ import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/model/location.dart';
 import 'package:vewww/model/requests.dart';
-import 'package:vewww/views/driver/requests_screen.dart';
+import 'package:vewww/views/driver/current_requests_screen.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:vewww/views/driver/pendding_requests_screen.dart';
 import '../../bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
 import '../../controllers/controller.dart';
 import '../../core/components/rating_bar.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
 import '../../model/name.dart';
 import '../../model/repairer.dart' as repairer;
+import 'which_car_screen.dart';
 
 class MechanicPreviewScreen extends StatefulWidget {
   repairer.Mechanic mechanic;
   String carId;
-  MechanicPreviewScreen({required this.mechanic, super.key, required this.carId}) {
+  MechanicPreviewScreen(
+      {required this.mechanic, super.key, required this.carId}) {
     print("current mechanic : ${mechanic.toJson()}");
   }
 
   @override
-  State<MechanicPreviewScreen> createState() => _MechanicPreviewScreenState(carId);
+  State<MechanicPreviewScreen> createState() =>
+      _MechanicPreviewScreenState(carId);
 }
 
 // 649ee904e9d7a001ee231275
@@ -193,7 +197,6 @@ class _MechanicPreviewScreenState extends State<MechanicPreviewScreen> {
                             CreateRequest createRequest = CreateRequest(
                               driver:
                                   SharedPreferencesHelper.getData(key: 'vewId'),
-                              //Todo:: add car id
                               car: carId,
                               location: location,
                               mechanic: widget.mechanic.sId,
@@ -206,21 +209,30 @@ class _MechanicPreviewScreenState extends State<MechanicPreviewScreen> {
                             );
                             await requestCubit
                                 .createMechanicRequest(createRequest);
-                            if (requestCubit
+                            if (requestCubit.state
                                 is CreateMechanicRequestSuccessState) {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: ((context) => RequestScreen(
-                                            isWinch: false,
-                                          ))));
+                                      builder: ((context) =>
+                                          PenddingRequestsScreen())));
                             } else {
                               return CircularProgressIndicator();
                             }
                           },
                         );
                       })
-                    : defaultButton(text: 'Request Winch', width: 390),
+                    : defaultButton(
+                        text: 'Request Winch',
+                        width: 390,
+                        function: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) => WhichCarScreen(
+                                      id: SharedPreferencesHelper.getData(
+                                          key: "vewId"),
+                                      isWinch: true,
+                                    ))))),
               ],
             ),
           ),

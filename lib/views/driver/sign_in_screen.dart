@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/auth_cubit/auth_cubit.dart';
+import 'package:vewww/bloc/language_cubit/language_cubit.dart';
 import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import 'package:vewww/model/person.dart';
 import 'package:vewww/views/admin/admin_home_screen.dart';
@@ -16,7 +17,6 @@ import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/navigation.dart';
 import 'driver_home_screen.dart';
 
-
 class SignInScreen extends StatelessWidget {
   SignInScreen({Key? key}) : super(key: key);
 
@@ -26,13 +26,10 @@ class SignInScreen extends StatelessWidget {
 
   final TextEditingController _password = TextEditingController();
 
-
-  
-
   @override
   Widget build(BuildContext context) {
     double constraintsHight = MediaQuery.of(context).size.height;
-    AddCarCubit addCarCubit = AddCarCubit.get(context);
+    LanguageCubit languageCubit = LanguageCubit.get(context);
     AuthCubit authCubit = AuthCubit.get(context);
     return Scaffold(
       body: SingleChildScrollView(
@@ -43,12 +40,39 @@ class SignInScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(height: constraintsHight / 10),
+                  SizedBox(height: constraintsHight / 15),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        child: BlocConsumer<LanguageCubit, LanguageState>(
+                          listener: (context, state) {},
+                          builder: (context, state) {
+                            return Text(
+                              languageCubit.languageInText,
+                              style: AppTextStyle.mainStyle(),
+                            );
+                          },
+                        ),
+                        onPressed: () {
+                          languageCubit.changeLanguage();
+                        },
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
                   Center(child: Logo()),
                   SizedBox(height: constraintsHight / 60),
-                  Text(
-                    "Login",
-                    style: AppTextStyle.titleTextStyle(20),
+                  BlocConsumer<LanguageCubit, LanguageState>(
+                    listener: (context, state) {},
+                    builder: (context, state) {
+                      return Text(
+                        (languageCubit.currentLanguage == "en")
+                            ? "Login"
+                            : "تسجيل الدخول",
+                        style: AppTextStyle.titleTextStyle(20),
+                      );
+                    },
                   ),
                   const SizedBox(height: 10),
                   const Divider(
@@ -56,24 +80,40 @@ class SignInScreen extends StatelessWidget {
                     color: Colors.grey,
                   ),
                   const SizedBox(height: 10),
-                  CustomTextField(
-                    label: "Email",
-                    controller: _email,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Email is required';
-                      }
-                      return null;
+                  BlocConsumer<LanguageCubit, LanguageState>(
+                    listener: (context, state) {},
+                    builder: (context, state) {
+                      return CustomTextField(
+                        label: languageCubit.currentLanguage == "ar"
+                            ? "الايميل"
+                            : "Email",
+                        controller: _email,
+                        isArabic: languageCubit.currentLanguage == "ar",
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Email is required';
+                          }
+                          return null;
+                        },
+                      );
                     },
                   ),
-                  CustomTextField(
-                    controller: _password,
-                    label: "Password",
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Password is required';
-                      }
+                  BlocConsumer<LanguageCubit, LanguageState>(
+                    listener: (context, state) {},
+                    builder: (context, state) {
+                      return CustomTextField(
+                        controller: _password,
+                        isArabic: languageCubit.currentLanguage == "ar",
+                        label: languageCubit.currentLanguage == "ar"
+                            ? "كلمة السر"
+                            : "Password",
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Password is required';
+                          }
+                        },
+                      );
                     },
                   ),
                   const SizedBox(height: 10),
@@ -118,31 +158,58 @@ class SignInScreen extends StatelessWidget {
                         },
                         child: (authCubit.state is SignInLoadingState)
                             ? const CircularProgressIndicator()
-                            : const Text("Login"),
+                            : BlocConsumer<LanguageCubit, LanguageState>(
+                                listener: (context, state) {},
+                                builder: (context, state) {
+                                  return Text(
+                                      (languageCubit.currentLanguage == "en")
+                                          ? "Login"
+                                          : "تسجيل الدخول");
+                                },
+                              ),
                       )),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Don't have account?",
-                        style: AppTextStyle.greyStyle(size: 16),
-                      ),
-                      TextButton(
-                        child: Text("Sign Up",
-                            style: AppTextStyle.titleTextStyle(14)),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ChooseRoleScreen()),
-                          );
-                        },
-                      ),
-                    ],
+                  BlocConsumer<LanguageCubit, LanguageState>(
+                    listener: (context, state) {},
+                    builder: (context, state) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            (languageCubit.currentLanguage == "en")
+                                ? "Don't have account?"
+                                : "لا تمتلك حساب؟",
+                            style: AppTextStyle.greyStyle(size: 16),
+                          ),
+                          TextButton(
+                            child: Text(
+                                (languageCubit.currentLanguage == "en")
+                                    ? "Sign Up"
+                                    : "انشاء حساب",
+                                style: AppTextStyle.titleTextStyle(14)),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ChooseRoleScreen()),
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    },
                   ),
                   TextButton(
-                    child: Text("Forgot Password",
-                        style: AppTextStyle.titleTextStyle(14)),
+                    child: BlocConsumer<LanguageCubit, LanguageState>(
+                      listener: (context, state) {},
+                      builder: (context, state) {
+                        return Text(
+                            (languageCubit.currentLanguage == "en")
+                                ? "Forgot Password"
+                                : "هل نسيت كلمة المرور؟",
+                            style: AppTextStyle.titleTextStyle(14));
+                      },
+                    ),
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -151,39 +218,39 @@ class SignInScreen extends StatelessWidget {
                       );
                     },
                   ),
-                  Row(
-                    children: [
-                      const Expanded(
-                          child: Divider(
-                        color: Color.fromARGB(255, 151, 151, 151),
-                        thickness: 1,
-                      )),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 6),
-                        child: Text(
-                          "or continue with",
-                          style: AppTextStyle.greyStyle(size: 12),
-                        ),
-                      ),
-                      const Expanded(
-                          child: Divider(
-                        color: Color.fromARGB(255, 151, 151, 151),
-                        thickness: 1,
-                      )),
-                    ],
-                  ),
-                  const SizedBox(height: 18),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      InkWell(
-                          onTap: () {},
-                          child: Image.asset("assets/images/google.png")),
-                      InkWell(
-                          onTap: () async {},
-                          child: Image.asset("assets/images/Facebook.png")),
-                    ],
-                  ),
+                  // Row(
+                  //   children: [
+                  //     const Expanded(
+                  //         child: Divider(
+                  //       color: Color.fromARGB(255, 151, 151, 151),
+                  //       thickness: 1,
+                  //     )),
+                  //     Padding(
+                  //       padding: const EdgeInsets.symmetric(horizontal: 6),
+                  //       child: Text(
+                  //         "or continue with",
+                  //         style: AppTextStyle.greyStyle(size: 12),
+                  //       ),
+                  //     ),
+                  //     const Expanded(
+                  //         child: Divider(
+                  //       color: Color.fromARGB(255, 151, 151, 151),
+                  //       thickness: 1,
+                  //     )),
+                  //   ],
+                  // ),
+                  // const SizedBox(height: 18),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //   children: [
+                  //     InkWell(
+                  //         onTap: () {},
+                  //         child: Image.asset("assets/images/google.png")),
+                  //     InkWell(
+                  //         onTap: () async {},
+                  //         child: Image.asset("assets/images/Facebook.png")),
+                  //   ],
+                  // ),
                 ],
               )),
         ),

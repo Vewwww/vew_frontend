@@ -14,7 +14,7 @@ class Logo extends StatelessWidget {
     }
     if (color == null) {
       logo = Image.asset(
-        "assets/images/Logo.png",
+        "assets/images/Logo(1).png",
         width: size,
       );
       this.color = mainColor;

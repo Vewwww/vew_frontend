@@ -123,7 +123,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> logout() async {
-    print("driver logout request : ${driver.toJson()}");
+    //print("driver logout request : ${driver.toJson()}");
     emit(LogoutLoadingState());
     await DioHelper.getData(
       url: "/allusers/logout/",

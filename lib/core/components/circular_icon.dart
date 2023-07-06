@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 Widget CircularIcon({
   required title,
-  double radius = 25,
+  double radius = 20,
   required Widget child,
 }) {
   return Row(
@@ -13,12 +13,12 @@ Widget CircularIcon({
         child: child,
       ),
       const SizedBox(
-        width: 15,
+        width: 10,
       ),
       Text(
         title,
         style: TextStyle(
-          fontSize: 20,
+          fontSize: 15,
         ),
       )
     ],

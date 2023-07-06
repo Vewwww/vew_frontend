@@ -1,41 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:vewww/bloc/evaluate_service_provider_cubit/evaluate_service_provider_cubit.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/components/horizontal_line.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
+import 'package:vewww/core/utils/navigation.dart';
+import 'package:vewww/views/driver/driver_home_screen.dart';
 
 class SinglePreviousRequest extends StatelessWidget {
-  SinglePreviousRequest(
-      {super.key,
-      required this.location,
-      required this.dateTime,
-      required this.carType,
-      required this.serviceProviderName,
-      required this.rating,
-      required this.thirdInfo,
-      required this.isWinch,
-      required this.id,});
+  SinglePreviousRequest({
+    super.key,
+    required this.location,
+    required this.dateTime,
+    required this.carType,
+    required this.serviceProviderName,
+    required this.rating,
+    this.thirdInfo,
+    required this.isWinch,
+    required this.id,
+  });
   String location;
   String dateTime;
   String carType;
   String serviceProviderName;
   double rating;
-  String thirdInfo;
+  String? thirdInfo;
   bool isWinch;
   String id;
 
   @override
   Widget build(BuildContext context) {
-    EvaluateServiceProviderCubit evaluateServiceProviderCubit = EvaluateServiceProviderCubit.get(context);
+    EvaluateServiceProviderCubit evaluateServiceProviderCubit =
+        EvaluateServiceProviderCubit.get(context);
     return Scaffold(
       body: Column(
         children: [
           CustomAppBar(
-            haveBackArrow: true,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: mainColor,
+              ),
+              onPressed: () {
+                NavigationUtils.navigateAndClearStack(
+                    context: context, destinationScreen: const DriverHomeScreen());
+              },
+            ),
             title: Text(
               'Previous Request',
               style: AppTextStyle.mainStyle(size: 25),
@@ -46,7 +57,7 @@ class SinglePreviousRequest extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 Center(
@@ -66,7 +77,7 @@ class SinglePreviousRequest extends StatelessWidget {
                           ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 Text(
@@ -77,11 +88,11 @@ class SinglePreviousRequest extends StatelessWidget {
                   location,
                   style: AppTextStyle.darkGreyStyle(),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 HorizontalLine(),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 Text(
@@ -92,11 +103,11 @@ class SinglePreviousRequest extends StatelessWidget {
                   dateTime,
                   style: AppTextStyle.darkGreyStyle(),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 HorizontalLine(),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 Text(
@@ -107,11 +118,11 @@ class SinglePreviousRequest extends StatelessWidget {
                   carType,
                   style: AppTextStyle.darkGreyStyle(),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 HorizontalLine(),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 Text(
@@ -133,10 +144,10 @@ class SinglePreviousRequest extends StatelessWidget {
                         style: AppTextStyle.darkGreyStyle(),
                       )
                     : Text(
-                        'Service:  $thirdInfo',
+                        (thirdInfo == null) ? "" : 'Service:  $thirdInfo',
                         style: AppTextStyle.darkGreyStyle(),
                       ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Row(
@@ -146,10 +157,9 @@ class SinglePreviousRequest extends StatelessWidget {
                       text: 'Report',
                       width: 140,
                       function: () {
-                        if(isWinch){
+                        if (isWinch) {
                           evaluateServiceProviderCubit.reportWinch(id);
-                        }
-                        else{
+                        } else {
                           evaluateServiceProviderCubit.reportMechanic(id);
                         }
                       },

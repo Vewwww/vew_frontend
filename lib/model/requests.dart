@@ -2,6 +2,7 @@ import 'package:vewww/model/car_model.dart';
 import 'package:vewww/model/car_type.dart';
 import 'package:vewww/model/location.dart';
 import 'package:vewww/model/name.dart';
+import 'package:vewww/model/services.dart';
 
 class RequestResponse {
   List<Request>? previousRequests;
@@ -84,6 +85,7 @@ class Request {
   String? sId;
   Driver? driver;
   Car? car;
+  Service? service;
   Mechanic? mechanic;
   String? createdAt;
   bool? isWinch;
@@ -93,21 +95,30 @@ class Request {
       this.sId,
       this.driver,
       this.car,
+      this.service,
       this.mechanic,
       this.createdAt,
       this.isWinch,
       this.winch});
 
   Request.fromJson(Map<String, dynamic> json) {
+    print("object");
     location =
         json['location'] != null ? Location.fromJson(json['location']) : null;
+    print("object0");
     sId = json['_id'];
     driver = json['driver'] != null ? Driver.fromJson(json['driver']) : null;
+    print("object1");
+    print(json['service']);
+    service =
+        json['service'] != null ? Service.fromJson(json['service']) : null;
+    print("object2");
+    //print(service!.toJson());
     car = json['car'] != null ? Car.fromJson(json['car']) : null;
     mechanic =
         json['mechanic'] != null ? Mechanic.fromJson(json['mechanic']) : null;
     createdAt = json['created_at'];
-    isWinch = json['isWinch'];
+    isWinch = json['isWinch'] ?? false;
     winch = json['winch'] != null ? Winch.fromJson(json['winch']) : null;
   }
 

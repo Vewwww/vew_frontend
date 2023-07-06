@@ -50,6 +50,7 @@ class RequestCubit extends Cubit<RequestState> {
         .then((value) {
       print("get Pending req response : ${value.data}");
       RequestResponse PendingReqResponse = RequestResponse.fromJson(value.data);
+      print("done PendingReqResponse");
       emit(GetDriverReqSuccessState(PendingReqResponse.previousRequests!));
     }).catchError((error) {
       if (error is DioError) {
@@ -110,5 +111,4 @@ class RequestCubit extends Cubit<RequestState> {
       emit(CreateMechanicRequestErrorState());
     });
   }
-
 }

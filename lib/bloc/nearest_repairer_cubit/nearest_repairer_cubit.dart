@@ -24,7 +24,9 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
   NearesetGasStationResponse? nearesetGasStationResponse;
   //getNearestMaintainaceCenter
   Future getNearestMC({String? carTypeID, String? isVerified}) async {
-    String url = "/driver/getNearestMaintenanceCenters/$carTypeID";
+    String url = (carTypeID != null)
+        ? "/driver/getNearestMaintenanceCenters/?carType=$carTypeID"
+        : "/driver/getNearestMaintenanceCenters/";
     Map<String, dynamic> query = await getCurrentLocation();
     query.addAll({"carType": carTypeID, "isVerified": isVerified});
     print("${query}");
@@ -40,8 +42,8 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
         print("neareat MC response : ${nearesetMCResponse.results}");
         emit(GettingNearestMCSuccessState(
             nearesetMCResponse.maintenanceCenter!));
-      }).onError((error, stackTrace) {
-        print("neareat MC error : $error");
+      }).catchError((error) {
+        if (error is DioError) print("neareat MC error : ${error.response}");
         emit(GettingNearestMCErrorState());
       });
     } else {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/nearest_repairer_cubit/nearest_repairer_cubit.dart';
+import 'package:vewww/bloc/select_choice_cubit/select_choice_cubit.dart';
 import 'package:vewww/core/components/filter_card.dart';
 import 'package:vewww/views/common/services_screen.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
@@ -37,10 +38,17 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
     super.initState();
     print("saearch : $searchKey ,  $filter");
     final nearestRepairerCubit = context.read<NearestRepairerCubit>();
+    final cubit = context.read<SelectChoiceCubit>();
     if (filter == "Maintenance Centers") {
       {
         print("here getNearestMC");
-        nearestRepairerCubit.getNearestMC();
+        if (cubit.carTypeResponse != null &&
+            cubit.carTypeResponse!.carType != null)
+          nearestRepairerCubit.getNearestMC(
+              carTypeID:
+                  cubit.carTypeResponse!.carType![cubit.carTypeChoice].sId);
+        else
+          nearestRepairerCubit.getNearestMC();
       }
     } else if (filter == "Gas Station") {
       nearestRepairerCubit.getNearestGasStation();

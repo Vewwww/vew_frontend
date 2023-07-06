@@ -15,7 +15,7 @@ Widget requestCard(
     {required bool isWinch,
     required String name,
     required double rate,
-    required String thirdVal,
+    String? thirdVal,
     required String requestState,
     double? distance,
     required Function() function}) {
@@ -68,10 +68,15 @@ Widget requestCard(
             name,
             style: AppTextStyle.darkGreyStyle(size: 15),
           ),
-          Text(
-            thirdVal,
-            style: AppTextStyle.darkGreyStyle(size: 15),
-          ),
+          (thirdVal == null)
+              ? Text(
+                  isWinch ? "winch" : "mechanic",
+                  style: AppTextStyle.darkGreyStyle(size: 15),
+                )
+              : Text(
+                  thirdVal,
+                  style: AppTextStyle.darkGreyStyle(size: 15),
+                ),
           (rate != null)
               ? RatingBar(
                   rate,
