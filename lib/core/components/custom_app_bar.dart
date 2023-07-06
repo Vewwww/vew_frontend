@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/core/style/app_colors.dart';
-import 'package:vewww/core/utils/navigation.dart';
-
 import 'backward_arrow.dart';
 
 class CustomAppBar extends StatelessWidget {
@@ -34,12 +32,12 @@ class CustomAppBar extends StatelessWidget {
       centerTitle: true,
       title: (haveLogo!)
           ? SizedBox(
-              child: Image.asset("assets/images/Logo(1).png"),
               height: 50,
+              child: Image.asset("assets/images/Logo(1).png"),
             )
           : title,
       leading: (haveBackArrow!)
-          ? BackwardArrow(
+          ? backwardArrow(
               iconColor: iconColor ?? mainColor,
               function: () {
                 Navigator.pop(context);

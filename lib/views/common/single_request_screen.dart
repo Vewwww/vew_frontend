@@ -70,7 +70,7 @@ class SingleRequestScreen extends StatelessWidget {
             ),
             Positioned(
                 top: 20,
-                child: BackwardArrow(
+                child: backwardArrow(
                     function: () {
                       NavigationUtils.navigateBack(context: context);
                     },

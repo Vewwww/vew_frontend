@@ -1,5 +1,3 @@
-import 'package:vewww/model/person.dart';
-
 import 'location.dart';
 import 'report.dart';
 
@@ -36,14 +34,14 @@ class WinchProfileResponse {
 
   WinchProfileResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    winch = json['data'] != null ? new WinchDriver.fromJson(json['data']) : null;
+    winch = json['data'] != null ? WinchDriver.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.winch != null) {
-      data['data'] = this.winch!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (winch != null) {
+      data['data'] = winch!.toJson();
     }
     return data;
   }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:vewww/bloc/profile_cubit/profile_cubit.dart';
+import 'package:vewww/core/components/available_button.dart';
 import 'package:vewww/model/winch_accepted_requests_response.dart';
 //import 'package:vewww/model/accepted_requests_response.dart';
 import 'package:vewww/views/winch/winch_profile.dart';
@@ -8,6 +11,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../../bloc/chat_cubit/chat_cubit.dart';
 import '../../bloc/new_request_cubit/new_request_cubit.dart';
 import '../../bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
+import '../../controllers/controller.dart';
 import '../../core/components/accepted_request_card.dart';
 import '../../core/components/app_nav_bar.dart';
 import '../../core/components/coming_request_card.dart';
@@ -31,9 +35,13 @@ class _WinchHomePageState extends State<WinchHomePage> {
     initSocket();
     var chatCubit = context.read<ChatCubit>();
     chatCubit.getWinchChats();
+    var profileCubit = context.read<ProfileCubit>();
+    if (profileCubit.winchDriverResponse == null)
+      profileCubit.getWinchProfile();
     var repairerRequestsCubit = context.read<RepairerRequestsCubit>();
     repairerRequestsCubit.winchAcceptedRequests();
   }
+
   IO.Socket? socket;
   initSocket() {
     String id = SharedPreferencesHelper.getData(key: "vewId");
@@ -51,6 +59,16 @@ class _WinchHomePageState extends State<WinchHomePage> {
       print("new request created");
       var requestCubit = context.read<NewRequestCubit>();
       requestCubit.setHaveNew(true);
+    });
+    socket!.on("upload-winch-location", (data) async {
+      print("listend to upload winch location event");
+      Position location = await Controller.getLocation();
+      var data = {
+        "id": SharedPreferencesHelper.getData(key: "vewId"),
+        "latitude": location.latitude,
+        "longitude": location.longitude,
+      };
+      socket!.emit("update-winch-location", data);
     });
     socket!.onDisconnect((_) => print('Connection Disconnection'));
     socket!.onConnectError((err) => print(err));
@@ -124,6 +142,7 @@ class _WinchHomePageState extends State<WinchHomePage> {
                 },
               )),
               haveLogo: true,
+              actions: [AvailableButton()],
             ),
             Padding(
               padding:

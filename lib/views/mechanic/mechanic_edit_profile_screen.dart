@@ -7,6 +7,7 @@ import 'package:vewww/bloc/service_cubit/services_cubit.dart';
 import 'package:vewww/model/mechanic_shop.dart';
 import 'package:vewww/views/common/services_screen.dart';
 import 'package:vewww/views/mechanic/mechanic_home_screen.dart';
+import 'package:vewww/views/mechanic/mechanic_profile.dart';
 
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/custom_text_field.dart';
@@ -68,7 +69,18 @@ class _MechanicEditProfileState extends State<MechanicEditProfile> {
                 children: [
                   const SizedBox(height: 20),
                   CustomAppBar(
-                    haveBackArrow: true,
+                    //haveBackArrow: true,
+                    leading: IconButton(
+                      icon: Icon(
+                        Icons.arrow_back_ios,
+                        color: mainColor,
+                      ),
+                      onPressed: () {
+                        NavigationUtils.navigateAndClearStack(
+                            context: context,
+                            destinationScreen: MechanicProfile());
+                      },
+                    ),
                     haveLogo: true,
                   ),
                   const SizedBox(height: 40),

@@ -7,11 +7,11 @@ class ProfileResponse {
   ProfileResponse({this.data});
 
   ProfileResponse.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new ProfileData.fromJson(json['data']) : null;
+    data = json['data'] != null ? ProfileData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -26,18 +26,18 @@ class ProfileData {
   ProfileData({this.user, this.cars});
 
   ProfileData.fromJson(Map<String, dynamic> json) {
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
     print("user to json done");
     if (json['cars'] != null) {
       cars = <Car>[];
       json['cars'].forEach((v) {
-        cars!.add(new Car.fromJson(v));
+        cars!.add(Car.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.user != null) {
       data['user'] = this.user!.toJson();
     }
@@ -72,7 +72,7 @@ class User {
 
   User.fromJson(Map<String, dynamic> json) {
     report =
-        json['report'] != null ? new Report.fromJson(json['report']) : null;
+        json['report'] != null ? Report.fromJson(json['report']) : null;
     sId = json['_id'];
     name = json['name'];
     email = json['email'];
@@ -84,7 +84,7 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.report != null) {
       data['report'] = this.report!.toJson();
     }

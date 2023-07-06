@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
-
 import '../style/app_colors.dart';
 
 Widget previousRequestCard(
@@ -9,6 +8,8 @@ Widget previousRequestCard(
     required String dateTime,
     required String serviceProvider,
     required Function() function}) {
+  var date = DateTime.parse(dateTime);
+
   return InkWell(
     onTap: function,
     child: Container(
@@ -53,12 +54,7 @@ Widget previousRequestCard(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                width: 150,
-                child: Row(
-                  children: [],
-                ),
-              ),
+              const SizedBox(width: 150),
               Text(
                 'Location: ',
                 style: AppTextStyle.greyStyle(size: 15),
@@ -72,7 +68,8 @@ Widget previousRequestCard(
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              Text(dateTime, style: AppTextStyle.darkGreyStyle(size: 15)),
+              Text("${date.year}-${date.month}-${date.day}",
+                  style: AppTextStyle.darkGreyStyle(size: 15)),
               Row(
                 children: [
                   Text(

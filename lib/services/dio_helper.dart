@@ -14,9 +14,6 @@ class DioHelper {
 
   static Future<Response> getData(
       {required String url, Map<String, dynamic>? query, String? token}) async {
-    /*dio.options.headers = {
-      "Content-Type": "application/json",
-    };*/
     if (token != null) dio.options.headers["Authorization"] = "Bearer $token";
     return await dio.get(
       url,
@@ -26,9 +23,6 @@ class DioHelper {
 
   static Future<Response> getWithBody(
       {required String url, Map<String, dynamic>? query, String? token}) async {
-    // dio.options.headers = {
-    //   "Content-Type": "application/json",
-    // };
     if (token != null) dio.options.headers["Authorization"] = "Bearer $token";
     return await dio.request(url,
         data: query,

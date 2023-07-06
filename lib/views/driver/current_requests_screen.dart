@@ -12,8 +12,7 @@ class CurrentRequestsScreen extends StatefulWidget {
   CurrentRequestsScreen({super.key});
 
   @override
-  State<CurrentRequestsScreen> createState() =>
-      _CurrentRequestsScreenState();
+  State<CurrentRequestsScreen> createState() => _CurrentRequestsScreenState();
 }
 
 class _CurrentRequestsScreenState extends State<CurrentRequestsScreen> {
@@ -53,7 +52,7 @@ class _CurrentRequestsScreenState extends State<CurrentRequestsScreen> {
             style: AppTextStyle.darkGreyStyle(),
           ),
         ),
-        HorizontalLine(),
+        horizontalLine(),
         BlocBuilder<RequestCubit, RequestState>(
           builder: (context, state) {
             print(state);

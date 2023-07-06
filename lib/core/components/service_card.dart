@@ -10,7 +10,7 @@ Widget serviceCard({
   return GestureDetector(
     onTap: function,
     child: Container(
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       height: 70,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(10)),

@@ -6,7 +6,7 @@ class Logo extends StatelessWidget {
   Image? logo;
   Color? color;
   double? size;
-  Logo({String? color, double? size}) {
+  Logo({String? color, double? size , Key? key}):super(key: key) {
     if (size == null) {
       this.size = 10;
     } else {

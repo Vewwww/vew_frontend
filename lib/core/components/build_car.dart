@@ -5,7 +5,6 @@ import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/model/profile_response.dart';
 import 'package:vewww/views/driver/edit_driver_profile.dart';
 import 'package:vewww/views/driver/select_car_type_screen.dart';
-
 import '../../bloc/select_choice_cubit/select_choice_cubit.dart';
 import '../../bloc/select_color_cubit/select_color_cubit.dart';
 import '../../model/car.dart';
@@ -37,7 +36,7 @@ Widget buildCarDetails(Car car, index,
                 child: const Icon(Icons.drive_eta,
                     size: 30, color: Colors.black //car.color,
                     ))),
-        SizedBox(height: 5),
+        const SizedBox(height: 5),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -50,7 +49,7 @@ Widget buildCarDetails(Car car, index,
                     onPressed: () {
                       carCubit.remove(car);
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.delete_outline,
                       size: 18,
                       color: Colors.red,
@@ -80,8 +79,9 @@ Widget buildCarDetails(Car car, index,
                       : "")
               .text,
           validator: (value) {
-            if (SelectColorCubit.get(context).color == null)
+            if (SelectColorCubit.get(context).color == null) {
               return "Please choose car color";
+            }
           },
         ),
         CustomTextField(
@@ -105,8 +105,9 @@ Widget buildCarDetails(Car car, index,
                       (car.carType != null) ? car.carType!.name!.en ?? "" : "")
               .text,
           validator: (value) {
-            if (SelectChoiceCubit.get(context).carTypeChoice == null)
+            if (SelectChoiceCubit.get(context).carTypeChoice == null) {
               return "Please choose car type";
+            }
           },
         ),
         CustomTextField(
@@ -138,8 +139,9 @@ Widget buildCarDetails(Car car, index,
                 SelectChoiceCubit.get(context)
                         .carModelResponse!
                         .carModels!
-                        .length >
-                    0) return "Please choose car type";
+                        .isNotEmpty) {
+              return "Please choose car type";
+            }
           },
         ),
         CustomTextField(
@@ -197,8 +199,9 @@ Widget buildCarDetails(Car car, index,
                         ? car.averageMilesPerMonth.toString()
                         : ""),
                 validator: (value) {
-                  if (value == null)
+                  if (value == null) {
                     return ("Average Mile per Week is required");
+                  }
                 },
                 onChanged: (value) {
                   carCubit.updatedCars![index - 1].averageMilesPerMonth =
@@ -221,7 +224,7 @@ Widget buildDatePicker(String lable, Function(DateTime) onChange) {
           lable,
           style: AppTextStyle.darkGreyStyle(size: 14),
         ),
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
         SizedBox(
           width: double.infinity,
           height: 70,
@@ -230,8 +233,6 @@ Widget buildDatePicker(String lable, Function(DateTime) onChange) {
             initialDateTime: DateTime.now(),
             onDateTimeChanged: (DateTime newDateTime) {
               onChange(newDateTime);
-              // controller.text =
-              //     newDateTime.toString().replaceAll(" 00:00:00.000", "");
             },
           ),
         )

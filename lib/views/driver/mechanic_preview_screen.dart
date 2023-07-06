@@ -100,7 +100,7 @@ class _MechanicPreviewScreenState extends State<MechanicPreviewScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                RatingBar(widget.mechanic.rate!),
+                AppRatingBar(widget.mechanic.rate!),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -158,7 +158,7 @@ class _MechanicPreviewScreenState extends State<MechanicPreviewScreen> {
                     ),
                     const SizedBox(height: 15),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height / 3,
+                      height: MediaQuery.of(context).size.height / 3 - 80,
                       child: ListView.separated(
                         padding: EdgeInsets.zero,
                         itemCount: widget.mechanic.service!.length,

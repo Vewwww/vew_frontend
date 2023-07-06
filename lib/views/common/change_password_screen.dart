@@ -14,7 +14,6 @@ import '../driver/driver_home_screen.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  final TextEditingController _oldPassword = TextEditingController();
   final TextEditingController _newPassword = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,7 @@ class ChangePasswordScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: BackwardArrow(function: () {
+        leading: backwardArrow(function: () {
           NavigationUtils.navigateTo(
               context: context, destinationScreen: const DriverHomeScreen());
         }),
@@ -50,16 +49,6 @@ class ChangePasswordScreen extends StatelessWidget {
                   height: 250,
                   width: 250,
                 ),
-                // CustomTextField(
-                //   controller: _oldPassword,
-                //   validator: (value) {
-                //     if (value!.isEmpty || value == null) {
-                //       return 'Field cannot be empty';
-                //     }
-                //     return null;
-                //   },
-                //   label: 'Old Password',
-                // ),
                 const SizedBox(
                   height: 15,
                 ),
@@ -72,10 +61,7 @@ class ChangePasswordScreen extends StatelessWidget {
                       return 'Password is required';
                     }
                     if (!regex.hasMatch(value)) {
-                      return 'Password should Contain: \nAt least 8 chatacters\nAt least an uppercase latter  \nAt least a lowercase latter   \nAt least one number \nAt least one special character';
-                    }
-                    if (_oldPassword.text == value) {
-                      return 'New password cannot be the same as old password';
+                      return 'Password should Contain: \nAt least 8 chatacters\nAt least an uppercase latter \nAt least a lowercase latter \nAt least one number \nAt least one special character(!@#\$&*~)';
                     }
                     return null;
                   },

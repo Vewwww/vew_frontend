@@ -1,10 +1,6 @@
-import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
 
-import '../style/app_colors.dart';
-
-Widget BackwardArrow({
+Widget backwardArrow({
   required Function() function,
   Color iconColor = const Color.fromRGBO(2, 113, 106, 1),
 }) {
@@ -12,7 +8,7 @@ Widget BackwardArrow({
     onPressed: function,
     iconSize: 40,
     color: iconColor,
-    icon: Icon(
+    icon: const Icon(
       Icons.keyboard_arrow_left,
     ),
   );

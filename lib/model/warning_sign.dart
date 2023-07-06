@@ -17,10 +17,10 @@ class SignResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['results'] = this.results;
-    if (this.signs != null) {
-      data['data'] = this.signs!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['results'] = results;
+    if (signs != null) {
+      data['data'] = signs!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -56,18 +56,18 @@ class Sign {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    if (this.name != null) {
-      data['name'] = this.name!.toJson();
+    if (name != null) {
+      data['name'] = name!.toJson();
     }
-    if (this.description != null) {
-      data['description'] = this.description!.toJson();
+    if (description != null) {
+      data['description'] = description!.toJson();
     }
-    if (this.solution != null) {
-      data['solution'] = this.solution!.toJson();
+    if (solution != null) {
+      data['solution'] = solution!.toJson();
     }
-    data['_id'] = this.sId;
-    data['image'] = this.image;
-    data['__v'] = this.iV;
+    data['_id'] = sId;
+    data['image'] = image;
+    data['__v'] = iV;
     return data;
   }
 }

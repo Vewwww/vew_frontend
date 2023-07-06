@@ -11,17 +11,17 @@ class ChatResponse {
     if (json['data'] != null) {
       chats = <Chat>[];
       json['data'].forEach((v) {
-        chats!.add(new Chat.fromJson(v));
+        chats!.add(Chat.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['newChats'] = this.newChats;
-    data['result'] = this.result;
-    if (this.chats != null) {
-      data['data'] = this.chats!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['newChats'] = newChats;
+    data['result'] = result;
+    if (chats != null) {
+      data['data'] = chats!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -50,7 +50,7 @@ class Chat {
     if (json['messages'] != null) {
       messages = <Messages>[];
       json['messages'].forEach((v) {
-        messages!.add(new Messages.fromJson(v));
+        messages!.add(Messages.fromJson(v));
       });
     }
     iV = json['__v'];
@@ -58,15 +58,15 @@ class Chat {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['room'] = this.room;
-    data['participants'] = this.participants;
-    if (this.messages != null) {
-      data['messages'] = this.messages!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['room'] = room;
+    data['participants'] = participants;
+    if (messages != null) {
+      data['messages'] = messages!.map((v) => v.toJson()).toList();
     }
-    data['__v'] = this.iV;
-    data['chatName'] = this.chatName;
+    data['__v'] = iV;
+    data['chatName'] = chatName;
     return data;
   }
 }
@@ -89,12 +89,12 @@ class Messages {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['sender'] = this.sender;
-    data['content'] = this.content;
-    data['time'] = this.time;
-    data['seen'] = this.seen;
-    data['_id'] = this.sId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['sender'] = sender;
+    data['content'] = content;
+    data['time'] = time;
+    data['seen'] = seen;
+    data['_id'] = sId;
     return data;
   }
 }

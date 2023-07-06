@@ -20,7 +20,7 @@ class CreateNewPassScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: BackwardArrow(function: () {
+        leading: backwardArrow(function: () {
           Navigator.pop(context);
         }),
         title: const Center(

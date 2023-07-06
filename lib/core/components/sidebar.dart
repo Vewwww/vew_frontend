@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:vewww/bloc/auth_cubit/auth_cubit.dart';
 import 'package:vewww/bloc/chat_cubit/chat_cubit.dart';
@@ -56,7 +58,7 @@ class Sidebar extends StatelessWidget {
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => SelectProblemScreen()),
+                            builder: (context) => const SelectProblemScreen()),
                         (route) => true);
                   },
                 )
@@ -73,7 +75,7 @@ class Sidebar extends StatelessWidget {
                     (route) => true);
               } else {
                 var snackBar =
-                    SnackBar(content: Text("Something went wrong , try again"));
+                    const SnackBar(content: Text("Something went wrong , try again"));
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
             },

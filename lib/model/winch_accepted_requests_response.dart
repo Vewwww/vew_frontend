@@ -10,15 +10,15 @@ class  WinchAcceptedRequestsResponse{
     if (json['data'] != null) {
       winchRequestData = <WinchRequestData>[];
       json['data'].forEach((v) {
-        winchRequestData!.add(new WinchRequestData.fromJson(v));
+        winchRequestData!.add(WinchRequestData.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.winchRequestData != null) {
-      data['data'] = this.winchRequestData!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (winchRequestData != null) {
+      data['data'] = winchRequestData!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -42,32 +42,32 @@ class WinchRequestData {
 
   WinchRequestData.fromJson(Map<String, dynamic> json) {
     location = json['location'] != null
-        ? new Location.fromJson(json['location'])
+        ? Location.fromJson(json['location'])
         : null;
     sId = json['_id'];
     driver =
-        json['driver'] != null ? new Driver.fromJson(json['driver']) : null;
-    car = json['car'] != null ? new Car.fromJson(json['car']) : null;
-    winch = json['winch'] != null ? new Winch.fromJson(json['winch']) : null;
+        json['driver'] != null ? Driver.fromJson(json['driver']) : null;
+    car = json['car'] != null ? Car.fromJson(json['car']) : null;
+    winch = json['winch'] != null ? Winch.fromJson(json['winch']) : null;
     createdAt = json['created_at'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (location != null) {
+      data['location'] = location!.toJson();
     }
-    data['_id'] = this.sId;
-    if (this.driver != null) {
-      data['driver'] = this.driver!.toJson();
+    data['_id'] = sId;
+    if (driver != null) {
+      data['driver'] = driver!.toJson();
     }
-    if (this.car != null) {
-      data['car'] = this.car!.toJson();
+    if (car != null) {
+      data['car'] = car!.toJson();
     }
-    if (this.winch != null) {
-      data['winch'] = this.winch!.toJson();
+    if (winch != null) {
+      data['winch'] = winch!.toJson();
     }
-    data['created_at'] = this.createdAt;
+    data['created_at'] = createdAt;
     return data;
   }
 }

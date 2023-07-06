@@ -7,13 +7,13 @@ class QuestionsResponse {
     if (json['data'] != null) {
       data = <QuestionsResponseData>[];
       json['data'].forEach((v) {
-        data!.add(new QuestionsResponseData.fromJson(v));
+        data!.add(QuestionsResponseData.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -32,16 +32,16 @@ class QuestionsResponseData {
     if (json['questions'] != null) {
       questions = <Questions>[];
       json['questions'].forEach((v) {
-        questions!.add(new Questions.fromJson(v));
+        questions!.add(Questions.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    if (this.questions != null) {
-      data['questions'] = this.questions!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    if (questions != null) {
+      data['questions'] = questions!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -65,11 +65,11 @@ class Questions {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['subQuestion'] = this.subQuestion;
-    data['yesKeywords'] = this.yesKeywords;
-    data['noKeywords'] = this.noKeywords;
-    data['_id'] = this.sId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['subQuestion'] = subQuestion;
+    data['yesKeywords'] = yesKeywords;
+    data['noKeywords'] = noKeywords;
+    data['_id'] = sId;
     return data;
   }
 }

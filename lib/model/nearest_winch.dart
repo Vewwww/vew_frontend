@@ -9,16 +9,16 @@ class NearestWinchResponse {
     if (json['data'] != null) {
       nearestWinch = <NearestWinch>[];
       json['data'].forEach((v) {
-        nearestWinch!.add(new NearestWinch.fromJson(v));
+        nearestWinch!.add(NearestWinch.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['results'] = this.results;
-    if (this.nearestWinch != null) {
-      data['data'] = this.nearestWinch!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['results'] = results;
+    if (nearestWinch != null) {
+      data['data'] = nearestWinch!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -58,9 +58,9 @@ class NearestWinch {
 
   NearestWinch.fromJson(Map<String, dynamic> json) {
     report =
-        json['report'] != null ? new Report.fromJson(json['report']) : null;
+        json['report'] != null ? Report.fromJson(json['report']) : null;
     location = json['location'] != null
-        ? new Location.fromJson(json['location'])
+        ? Location.fromJson(json['location'])
         : null;
     sId = json['_id'];
     name = json['name'];
@@ -77,25 +77,25 @@ class NearestWinch {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.report != null) {
-      data['report'] = this.report!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (report != null) {
+      data['report'] = report!.toJson();
     }
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
+    if (location != null) {
+      data['location'] = location!.toJson();
     }
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['password'] = this.password;
-    data['phoneNumber'] = this.phoneNumber;
-    data['rate'] = this.rate;
-    data['numOfRates'] = this.numOfRates;
-    data['isSuspended'] = this.isSuspended;
-    data['role'] = this.role;
-    data['plateNumber'] = this.plateNumber;
-    data['available'] = this.available;
-    data['distance'] = this.distance;
+    data['_id'] = sId;
+    data['name'] = name;
+    data['email'] = email;
+    data['password'] = password;
+    data['phoneNumber'] = phoneNumber;
+    data['rate'] = rate;
+    data['numOfRates'] = numOfRates;
+    data['isSuspended'] = isSuspended;
+    data['role'] = role;
+    data['plateNumber'] = plateNumber;
+    data['available'] = available;
+    data['distance'] = distance;
     return data;
   }
 }
@@ -112,9 +112,9 @@ class Report {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['reportsNumber'] = this.reportsNumber;
-    data['dateReport'] = this.dateReport;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['reportsNumber'] = reportsNumber;
+    data['dateReport'] = dateReport;
     return data;
   }
 }
@@ -131,9 +131,9 @@ class Location {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
     return data;
   }
 }

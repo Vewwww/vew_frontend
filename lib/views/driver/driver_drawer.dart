@@ -33,14 +33,14 @@ class DriverDrawer extends StatelessWidget {
             size: 180,
           ),
           SizedBox(height: 30),
-          HorizontalLine(),
+          horizontalLine(),
           SizedBox(height: 10),
           GestureDetector(
             onTap: () {
               NavigationUtils.navigateAndClearStack(
                   context: context, destinationScreen: DriverProfile());
             },
-            child: CircularIcon(
+            child: circularIcon(
                 title: 'Profile',
                 child: const Icon(
                   Icons.person,
@@ -63,7 +63,7 @@ class DriverDrawer extends StatelessWidget {
               NavigationUtils.navigateAndClearStack(
                   context: context, destinationScreen: ChangePasswordScreen());
             },
-            child: CircularIcon(
+            child: circularIcon(
                 child: const Icon(Icons.lock, color: Colors.white),
                 title: 'Change Password'),
           ),
@@ -76,7 +76,7 @@ class DriverDrawer extends StatelessWidget {
                   context: context,
                   destinationScreen: const NotificationsScreen());
             },
-            child: CircularIcon(
+            child: circularIcon(
                 title: 'Notifications',
                 child: BlocBuilder<NotificationCubit, NotificationState>(
                   builder: (context, state) {
@@ -111,7 +111,7 @@ class DriverDrawer extends StatelessWidget {
               NavigationUtils.navigateAndClearStack(
                   context: context, destinationScreen: ChatsScreen());
             },
-            child: CircularIcon(
+            child: circularIcon(
                 title: 'Chat',
                 child: const Icon(Icons.chat, color: Colors.white)),
           ),
@@ -123,7 +123,7 @@ class DriverDrawer extends StatelessWidget {
               NavigationUtils.navigateAndClearStack(
                   context: context, destinationScreen: PreviousReqScreen());
             },
-            child: CircularIcon(
+            child: circularIcon(
                 title: 'Previous Requests',
                 child: const Icon(Icons.skip_previous, color: Colors.white)),
           ),
@@ -135,7 +135,7 @@ class DriverDrawer extends StatelessWidget {
               NavigationUtils.navigateAndClearStack(
                   context: context, destinationScreen: CurrentRequestsScreen());
             },
-            child: CircularIcon(
+            child: circularIcon(
                 title: 'Current Requests',
                 child: const Icon(Icons.event_available_outlined,
                     color: Colors.white)),
@@ -149,7 +149,7 @@ class DriverDrawer extends StatelessWidget {
                   context: context,
                   destinationScreen: PenddingRequestsScreen());
             },
-            child: CircularIcon(
+            child: circularIcon(
                 title: 'Pendding Requests',
                 child: const Icon(Icons.timer, color: Colors.white)),
           ),
@@ -168,7 +168,7 @@ class DriverDrawer extends StatelessWidget {
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
             },
-            child: CircularIcon(
+            child: circularIcon(
                 title: 'Logout',
                 child: const Icon(Icons.logout, color: Colors.white)),
           ),

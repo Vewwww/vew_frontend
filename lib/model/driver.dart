@@ -12,16 +12,16 @@ class DriverResponse {
     if (json['Users'] != null) {
       driver = <Driver>[];
       json['Users'].forEach((v) {
-        driver!.add(new Driver.fromJson(v));
+        driver!.add(Driver.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['results'] = this.results;
-    if (this.driver != null) {
-      data['Users'] = this.driver!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['results'] = results;
+    if (driver != null) {
+      data['Users'] = driver!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -62,8 +62,9 @@ class Driver {
     if (cars != null) data['name'] = person!.name;
     if (person!.email != null) data['email'] = person!.email;
     if (person!.password != null) data['password'] = person!.password;
-    if (lisenceRenewalDate != null)
+    if (lisenceRenewalDate != null) {
       data['lisenceRenewalDate'] = lisenceRenewalDate;
+    }
     if (person!.role != null) data['role'] = person!.role;
     if (cars != null) data['phoneNumber'] = phoneNumber;
     if (phoneNumber != null) data['gender'] = person!.gender;
@@ -89,23 +90,4 @@ class Driver {
   }
 }
 
-Driver driver = Driver(
-  person: Person(
-    email: "hello@email.com",
-    name: "wael mohamed",
-    gender: "male",
-  ),
-  phoneNumber: "0112111210",
-  lisenceRenewalDate: "05/09/2023",
-  // cars: [
-  //   Car(
-  //       carType: "Jeep",
-  //       carModel: "M12 2019",
-  //       color: Colors.black,
-  //       averageMileperWeek: "200",
-  //       currentMiles: "603",
-  //       remindYouBefore: "week",
-  //       licenseRenewalDate: "10/08/2023",
-  //       lastPeriodicMaintenanceDate: "09/03/2023"),
-  // ],
-);
+

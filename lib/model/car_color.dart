@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vewww/model/car.dart';
-
 import 'name.dart';
 
 class CarColorResponse {
@@ -20,10 +18,10 @@ class CarColorResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['results'] = this.results;
-    if (this.carColor != null) {
-      data['data'] = this.carColor!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['results'] = results;
+    if (carColor != null) {
+      data['data'] = carColor!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -48,21 +46,20 @@ class CarColor {
     if (hexColor.length == 8) {
       code = Color(int.parse("0x$hexColor"));
     }
-    print(code);
     if (json['__v'] != null) iV = json['__v'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    if (this.name != null) {
-      data['name'] = this.name!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (name != null) {
+      data['name'] = name!.toJson();
     }
-    data['_id'] = this.sId;
-    data['code'] = this.code;
-    data['__v'] = this.iV;
+    data['_id'] = sId;
+    data['code'] = code;
+    data['__v'] = iV;
     return data;
   }
 
   CarColor clone() =>
-      CarColor(code: this.code, name: this.name, sId: this.sId, iV: this.iV);
+      CarColor(code: code, name: name, sId: sId, iV: iV);
 }

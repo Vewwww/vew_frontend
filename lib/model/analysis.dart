@@ -18,11 +18,11 @@ class UserAnalysisResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['numOfAllUsers'] = this.numOfAllUsers;
-    data['numOfMechanists'] = this.numOfMechanists;
-    data['numOfWinches'] = this.numOfWinches;
-    data['numOfDrivers'] = this.numOfDrivers;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['numOfAllUsers'] = numOfAllUsers;
+    data['numOfMechanists'] = numOfMechanists;
+    data['numOfWinches'] = numOfWinches;
+    data['numOfDrivers'] = numOfDrivers;
     return data;
   }
 }
@@ -39,9 +39,9 @@ class GenderAnalysisResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['maleRatio'] = this.maleRatio;
-    data['femaleRatio'] = this.femaleRatio;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['maleRatio'] = maleRatio;
+    data['femaleRatio'] = femaleRatio;
     return data;
   }
 }
@@ -52,13 +52,13 @@ class SeasonAnalysisResponse {
   SeasonAnalysisResponse({this.season});
 
   SeasonAnalysisResponse.fromJson(Map<String, dynamic> json) {
-    season = json['data'] != null ? new Season.fromJson(json['data']) : null;
+    season = json['data'] != null ? Season.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.season != null) {
-      data['data'] = this.season!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (season != null) {
+      data['data'] = season!.toJson();
     }
     return data;
   }
@@ -80,11 +80,11 @@ class Season {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['summer'] = this.summer;
-    data['winter'] = this.winter;
-    data['autumn'] = this.autumn;
-    data['spring'] = this.spring;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['summer'] = summer;
+    data['winter'] = winter;
+    data['autumn'] = autumn;
+    data['spring'] = spring;
     return data;
   }
 }

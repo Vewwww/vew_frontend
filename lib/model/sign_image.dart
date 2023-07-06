@@ -1,28 +1,7 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
-
 import 'name.dart';
 
-// class SignImage{
-//   String? imagePath;
-//   File? imageFile;
 
-//   SignImage({this.imageFile,this.imagePath});
-
-//   SignImage.fromJson(Map<String, dynamic> json) {
-//     imagePath = json['imagePath'];
-//     imageFile = json['imageFile'];
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['imagePath'] = this.imagePath;
-//     data['imageFile'] = this.imageFile;
-//     return data;
-//   }
-
-// }
 class SignImage{
   Name? name;
   Name? description;
@@ -46,17 +25,17 @@ class SignImage{
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    if (this.name != null) {
-      data['name'] = this.name!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (name != null) {
+      data['name'] = name!.toJson();
     }
-    if (this.description != null) {
-      data['description'] = this.description!.toJson();
+    if (description != null) {
+      data['description'] = description!.toJson();
     }
-    if (this.solution != null) {
-      data['solution'] = this.solution!.toJson();
+    if (solution != null) {
+      data['solution'] = solution!.toJson();
     }
-    data['image'] = this.image;
+    data['image'] = image;
     return data;
   }
 }

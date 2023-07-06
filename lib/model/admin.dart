@@ -1,5 +1,3 @@
-import 'package:vewww/model/person.dart';
-
 class AdminResponse {
   List<Admin>? admins;
 
@@ -9,15 +7,15 @@ class AdminResponse {
     if (json['admins'] != null) {
       admins = <Admin>[];
       json['admins'].forEach((v) {
-        admins!.add(new Admin.fromJson(v));
+        admins!.add(Admin.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.admins != null) {
-      data['admins'] = this.admins!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (admins != null) {
+      data['admins'] = admins!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -28,13 +26,13 @@ class AdminProfileResponse {
   AdminProfileResponse({this.admin});
 
   AdminProfileResponse.fromJson(Map<String, dynamic> json) {
-    admin = json['data'] != null ? new Admin.fromJson(json['data']) : null;
+    admin = json['data'] != null ? Admin.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.admin != null) {
-      data['data'] = this.admin!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (admin != null) {
+      data['data'] = admin!.toJson();
     }
     return data;
   }
@@ -76,7 +74,7 @@ class Admin {
 
   Admin.fromJson(Map<String, dynamic> json) {
     report =
-        json['report'] != null ? new Report.fromJson(json['report']) : null;
+        json['report'] != null ? Report.fromJson(json['report']) : null;
     sId = json['_id'];
     name = json['name'];
     email = json['email'];
@@ -94,25 +92,25 @@ class Admin {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.report != null) {
-      data['report'] = this.report!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (report != null) {
+      data['report'] = report!.toJson();
     }
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['password'] = this.password;
-    data['phoneNumber'] = this.phoneNumber;
-    data['gender'] = this.gender;
-    data['role'] = this.role;
-    data['driverLisenceRenewalDate'] = this.driverLisenceRenewalDate;
-    data['isSuspended'] = this.isSuspended;
-    data['emailConfirm'] = this.emailConfirm;
-    data['logedIn'] = this.logedIn;
-    data['passwordReset'] = this.passwordReset;
-    data['__v'] = this.iV;
+    data['_id'] = sId;
+    data['name'] = name;
+    data['email'] = email;
+    data['password'] = password;
+    data['phoneNumber'] = phoneNumber;
+    data['gender'] = gender;
+    data['role'] = role;
+    data['driverLisenceRenewalDate'] = driverLisenceRenewalDate;
+    data['isSuspended'] = isSuspended;
+    data['emailConfirm'] = emailConfirm;
+    data['logedIn'] = logedIn;
+    data['passwordReset'] = passwordReset;
+    data['__v'] = iV;
     data['driverLisenceRenewalNotification'] =
-        this.driverLisenceRenewalNotification;
+        driverLisenceRenewalNotification;
     return data;
   }
 }
@@ -129,9 +127,9 @@ class Report {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['reportsNumber'] = this.reportsNumber;
-    data['dateReport'] = this.dateReport;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['reportsNumber'] = reportsNumber;
+    data['dateReport'] = dateReport;
     return data;
   }
 }

@@ -277,18 +277,18 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
                                   print("objectyyy");
                                   await carCubit.handleCarEdit();
                                   print(s);
-                                  if (s is CarHandeledState)
-                                    NavigationUtils.navigateAndClearStack(
-                                        context: context,
-                                        destinationScreen: DriverProfile());
-                                  else {
-                                    print(s);
-                                    const snackBar = SnackBar(
-                                        content: Text(
-                                            "Something went wrong while editing cars try again!"));
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
-                                  }
+                                  //if (s is CarHandeledState)
+                                  NavigationUtils.navigateAndClearStack(
+                                      context: context,
+                                      destinationScreen: DriverProfile());
+                                  // else {
+                                  //   print(s);
+                                  //   const snackBar = SnackBar(
+                                  //       content: Text(
+                                  //           "Something went wrong while editing cars try again!"));
+                                  //   ScaffoldMessenger.of(context)
+                                  //       .showSnackBar(snackBar);
+                                  // }
                                 } else {
                                   const snackBar = SnackBar(
                                       content: Text(

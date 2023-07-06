@@ -6,8 +6,7 @@ import 'package:vewww/core/style/app_colors.dart';
 
 import '../../bloc/new_request_cubit/new_request_cubit.dart';
 import '../../bloc/selected page index/cubit/selected_page_index_cubit.dart';
-import '../../views/winch/winch_upcoming_requests_screen.dart';
-import '../../views/winch/winch_home_page.dart';
+
 
 class AppNavigationBar extends StatelessWidget {
   AppNavigationBar(
@@ -29,9 +28,9 @@ class AppNavigationBar extends StatelessWidget {
         return CurvedNavigationBar(
           index: selectedIndexCubit.selectedIndex!,
           height: 60,
-          backgroundColor: Color.fromARGB(0, 209, 209, 209),
+          backgroundColor: const Color.fromARGB(0, 209, 209, 209),
           buttonBackgroundColor: mainColor,
-          color: Color.fromARGB(255, 243, 242, 242),
+          color: const Color.fromARGB(255, 243, 242, 242),
           items: [
             Icon(
               Icons.home_filled,
@@ -41,7 +40,7 @@ class AppNavigationBar extends StatelessWidget {
             ),
             BlocBuilder<NewRequestCubit, NewRequestState>(
               builder: (context, state) {
-                if (state is HasNewState)
+                if (state is HasNewState) {
                   return Stack(
                     children: [
                       Icon(
@@ -50,24 +49,24 @@ class AppNavigationBar extends StatelessWidget {
                             ? Colors.white
                             : Colors.grey,
                       ),
-                      CircleAvatar(
+                      const CircleAvatar(
                         radius: 3,
                         backgroundColor: Colors.red,
                       )
                     ],
                   );
-                else
+                } else {
                   return Icon(
                     Icons.satellite_alt_outlined,
                     color: (selectedIndexCubit.selectedIndex == 1)
                         ? Colors.white
                         : Colors.grey,
                   );
+                }
               },
             ),
           ],
           onTap: (index) {
-            print(index);
             selectedIndexCubit.changeIndex(index);
             actions[index]();
           },

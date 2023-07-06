@@ -16,6 +16,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   AdminProfileResponse? adminProfileResponse;
   MechanicProfileResponse? mechanicProfileResponse;
   WinchProfileResponse? winchDriverResponse;
+  bool isWinchAvailable = false;
   ProfileCubit() : super(ProfileInitial());
 
   Future<void> getDriverProfile() async {
@@ -64,6 +65,21 @@ class ProfileCubit extends Cubit<ProfileState> {
     });
   }
 
+  Future<void> updateWinchState(bool isAvailable) async {
+    emit(WinchAvailabityLoadingState());
+    await DioHelper.patchData(
+        url: "/winch/updateAvailableState",
+        token: SharedPreferencesHelper.getData(key: 'vewToken'),
+        data: {"available": isAvailable}).then((value) {
+      print("change available state response : ${value.data}");
+      isWinchAvailable = isAvailable;
+      emit(WinchAvailabitySuccessState());
+    }).onError((error, stackTrace) {
+      print("error in avilablity update: $error");
+      emit(WinchAvailabityErrorState());
+    });
+  }
+
   Future<void> getAdminProfile() async {
     emit(GettingProfileLoadingState());
     await DioHelper.getData(
@@ -108,6 +124,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         .then((value) {
       print("get winch profile response : ${value.data}");
       winchDriverResponse = WinchProfileResponse.fromJson(value.data);
+      isWinchAvailable = winchDriverResponse!.winch!.available ?? false;
       emit(GettingProfileSuccessState());
     }).catchError((err) {
       if (err is DioError) {
@@ -139,6 +156,7 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   Future<void> updateMechanicProfile(MechanicShop mechanicShop) async {
     emit(EdittingProfileLoadingState());
+    print(mechanicShop.toJson());
     await DioHelper.patchData(
             url: "/mechanic/updateMechanicProfile",
             data: mechanicShop.toJson(),

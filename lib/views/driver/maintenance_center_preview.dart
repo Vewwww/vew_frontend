@@ -46,7 +46,7 @@ class MaintenanceCenterPreview extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                RatingBar(
+                AppRatingBar(
                   maintenanceCenter.rate!,
                   size: 25,
                 ),
@@ -125,14 +125,17 @@ class MaintenanceCenterPreview extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 defaultButton(
-                  text: 'Request Winch', 
-                  width: 390, 
-                  function: (){
-                    String id=SharedPreferencesHelper.getData( key: 'vewId');
-                        NavigationUtils.navigateTo(
-                            context: context,
-                            destinationScreen: WhichCarScreen(id: id,isWinch: true,));
-                }),
+                    text: 'Request Winch',
+                    width: 390,
+                    function: () {
+                      String id = SharedPreferencesHelper.getData(key: 'vewId');
+                      NavigationUtils.navigateTo(
+                          context: context,
+                          destinationScreen: WhichCarScreen(
+                            id: id,
+                            isWinch: true,
+                          ));
+                    }),
               ],
             ),
           ),

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Widget adminItem({
@@ -36,8 +35,8 @@ Widget adminItem({
               shape: BoxShape.circle,
               color: Color.fromRGBO(2, 113, 106, 1),
             ),
-            child: icon,
             alignment: Alignment.center,
+            child: icon,
           ),
           const SizedBox(
             width: 15,

@@ -1,12 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/components/horizontal_line.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
+import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
 import '../../bloc/request_cubit/request_cubit.dart';
 import '../../core/components/request_card.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class PenddingRequestsScreen extends StatefulWidget {
   bool? isWinch;
@@ -26,6 +30,42 @@ class _PenddingRequestsScreenState extends State<PenddingRequestsScreen> {
     super.initState();
     final requestCubit = context.read<RequestCubit>();
     requestCubit.getDriverPendingReq();
+    startTime();
+  }
+
+  startTime() async {
+    var duration = const Duration(seconds: 3);
+    return Timer(duration, initSocket);
+  }
+
+  IO.Socket? socket;
+
+  initSocket() {
+    socket = IO.io("https://vewwwapi.onrender.com/", <String, dynamic>{
+      'autoConnect': false,
+      'transports': ['websocket'],
+    });
+    socket!.connect();
+    var cubit = context.read<RequestCubit>();
+    socket!.onConnect((_) {
+      print(SharedPreferencesHelper.getData(key: "vewToken"));
+      print('Connection established , ${cubit.reqResponse}');
+      if (cubit.reqResponse != null &&
+          cubit.reqResponse!.previousRequests != null) {
+        for (var req in cubit.reqResponse!.previousRequests!) {
+          socket!.emit('join-room', {'room': req.sId});
+          print('joined room  ${req.sId}');
+        }
+      }
+    });
+    socket!.on("request-accepted-or-rejected", (data) {
+      print("recieved message from test \ndata is :  $data");
+      cubit.reqResponse = null;
+      cubit.getDriverPendingReq();
+    });
+    socket!.onDisconnect((_) => print('Connection Disconnection'));
+    socket!.onConnectError((err) => print(err));
+    socket!.onError((err) => print(err));
   }
 
   @override
@@ -56,7 +96,7 @@ class _PenddingRequestsScreenState extends State<PenddingRequestsScreen> {
             style: AppTextStyle.darkGreyStyle(),
           ),
         ),
-        HorizontalLine(),
+        horizontalLine(),
         BlocBuilder<RequestCubit, RequestState>(
           builder: (context, state) {
             if (state is! GetDriverPendingReqErrorState &&
@@ -66,7 +106,7 @@ class _PenddingRequestsScreenState extends State<PenddingRequestsScreen> {
               return Expanded(
                 child: ListView.separated(
                   padding: const EdgeInsets.all(8),
-                  itemCount: 1, // state.previousRequests.length,
+                  itemCount: state.previousRequests.length,
                   itemBuilder: (BuildContext context, int index) {
                     bool isWinch = state.previousRequests[index].winch != null;
                     print(state);
@@ -110,5 +150,17 @@ class _PenddingRequestsScreenState extends State<PenddingRequestsScreen> {
         ),
       ]),
     );
+  }
+
+  void disconnect() {
+    socket!.disconnect();
+    socket!.dispose();
+  }
+
+  @override
+  void dispose() {
+    socket!.disconnect();
+    socket!.dispose();
+    super.dispose();
   }
 }

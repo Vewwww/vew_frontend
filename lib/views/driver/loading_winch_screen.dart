@@ -22,7 +22,7 @@ class LoadingWinchScreen extends StatelessWidget {
           height: 110,
           width: 110,
         )),
-        leading: BackwardArrow(function: () {
+        leading: backwardArrow(function: () {
           NavigationUtils.navigateTo(
               context: context, destinationScreen: RequestWinchScreen());
         }),
@@ -41,18 +41,22 @@ class LoadingWinchScreen extends StatelessWidget {
                 'Please Wait.... ',
                 style: AppTextStyle.darkGreyStyle(size: 20),
               ),
-              SizedBox(height: 15,),
+              SizedBox(
+                height: 15,
+              ),
               Text(
                 'Finding the nearest winch',
                 style: AppTextStyle.darkGreyStyle(size: 20),
               ),
             ],
           ),
-          defaultButton(text: 'Cancel', width: 300,
-             function: () {
-          NavigationUtils.navigateTo(
-              context: context, destinationScreen: RequestWinchScreen());
-           }),
+          defaultButton(
+              text: 'Cancel',
+              width: 300,
+              function: () {
+                NavigationUtils.navigateTo(
+                    context: context, destinationScreen: RequestWinchScreen());
+              }),
         ]),
       ),
     );

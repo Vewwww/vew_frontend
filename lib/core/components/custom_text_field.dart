@@ -21,7 +21,6 @@ class CustomTextField extends StatelessWidget {
   final bool? isDroped;
   final VoidCallback? onDrop;
   final bool isArabic;
-  //final bool isDate;
 
   CustomTextField({
     this.controller,
@@ -55,7 +54,7 @@ class CustomTextField extends StatelessWidget {
             (isArabic) ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Text(
-            "$label",
+            label,
             style: AppTextStyle.darkGreyStyle(size: 14),
             textDirection: (isArabic) ? TextDirection.rtl : TextDirection.ltr,
           ),
@@ -68,13 +67,13 @@ class CustomTextField extends StatelessWidget {
                   keyboardType: keyboardType,
                   controller: controller,
                   enabled: enabled,
+
                   readOnly: readOnly,
                   textDirection:
                       (isArabic) ? TextDirection.rtl : TextDirection.ltr,
-                  //initialValue: hint,
                   style: (enabled) ? null : AppTextStyle.greyStyle(size: 14),
                   decoration: InputDecoration(
-                    errorMaxLines: 5,
+                    errorMaxLines: 7,
                     hintText: hint,
                     hintStyle: AppTextStyle.darkGreyStyle(size: 12),
                     hintTextDirection:
@@ -87,9 +86,8 @@ class CustomTextField extends StatelessWidget {
                     return validator(value);
                   },
                 )
-              : //(!isDate)?
-              Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+              : Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(3)),
                       border: Border.all(color: Colors.grey)),
@@ -120,55 +118,8 @@ class CustomTextField extends StatelessWidget {
                           ],
                   ),
                 )
-          // : Container(
-          //     padding: EdgeInsets.symmetric(horizontal: 10),
-          //     decoration: BoxDecoration(
-          //         borderRadius:
-          //             const BorderRadius.all(Radius.circular(3)),
-          //         border: Border.all(color: Colors.grey)),
-          //     child: Row(
-          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //       children: (!isArabic)
-          //           ? [
-          //               (hint != null)
-          //                   ? Text(hint!,
-          //                       style: AppTextStyle.darkGreyStyle())
-          //                   : Container(),
-          //               IconButton(
-          //                   onPressed: () async {
-          //                     if (controller != null)
-          //                       await _selectDate(context);
-          //                   },
-          //                   icon: const Icon(Icons.calendar_month))
-          //             ]
-          //           : [
-          //               IconButton(
-          //                   onPressed: () async {
-          //                     if (controller != null)
-          //                       await _selectDate(context);
-          //                   },
-          //                   icon: const Icon(Icons.calendar_month)),
-          //               (hint != null)
-          //                   ? Text(hint!,
-          //                       style: AppTextStyle.darkGreyStyle())
-          //                   : Container(),
-          //             ],
-          //     ),
-          //   ),
         ],
       ),
     );
   }
-
-  // Future<void> _selectDate(BuildContext context) async {
-  //   final DateTime? picked = await showDatePicker(
-  //       context: context,
-  //       initialDate: DateTime.now(),
-  //       firstDate: DateTime(2015, 8),
-  //       lastDate: DateTime(2101));
-  //   if (picked != null) {
-  //     print(picked.toString().replaceAll(" 00:00:00.000", ""));
-  //     controller!.text = picked.toString();
-  //   }
-  // }
 }

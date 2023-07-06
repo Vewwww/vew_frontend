@@ -7,13 +7,13 @@ class ProblemResponse {
     if (json['data'] != null) {
       data = <ProblemData>[];
       json['data'].forEach((v) {
-        data!.add(new ProblemData.fromJson(v));
+        data!.add(ProblemData.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -39,12 +39,12 @@ class ProblemData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['problem'] = this.problem;
-    data['solution'] = this.solution;
-    data['isSolved'] = this.isSolved;
-    data['__v'] = this.iV;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['problem'] = problem;
+    data['solution'] = solution;
+    data['isSolved'] = isSolved;
+    data['__v'] = iV;
     return data;
   }
 }

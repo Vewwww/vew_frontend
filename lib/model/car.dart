@@ -1,7 +1,6 @@
 import 'car_color.dart';
 import 'car_model.dart';
 import 'car_type.dart';
-import 'name.dart';
 
 class CarResponse {
   int? results;
@@ -14,13 +13,13 @@ class CarResponse {
     if (json['data'] != null) {
       car = <Car>[];
       json['data'].forEach((v) {
-        car!.add(new Car.fromJson(v));
+        car!.add(Car.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['results'] = results;
     if (car != null) {
       data['data'] = car!.map((v) => v.toJson()).toList();
@@ -42,7 +41,6 @@ class Car {
   String? year;
   String? carLicenseRenewalDate;
   double? miles;
-  //TODO::cast to double
   double? averageMilesPerMonth;
   String? lastPeriodicMaintenanceDate;
 
@@ -97,7 +95,7 @@ class Car {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = sId;
     if (carType != null) data['carType'] = carType!.toJson();
     data['plateNumber'] = plateNumber;
@@ -124,15 +122,17 @@ class Car {
     if (color != null) data['color'] = color!.sId;
     data['owner'] = owner;
     if (iV != null) data['__v'] = iV;
-    if (carLicenseRenewalDate != null)
+    if (carLicenseRenewalDate != null) {
       data['carLicenseRenewalDate'] = carLicenseRenewalDate.toString();
+    }
     if (lastPeriodicMaintenanceDate != null) {
       data['lastPeriodicMaintenanceDate'] =
           lastPeriodicMaintenanceDate.toString();
     }
     if (miles != null) data['milesLimit'] = miles;
-    if (averageMilesPerMonth != null)
+    if (averageMilesPerMonth != null) {
       data['averageMilesPerMonth'] = averageMilesPerMonth;
+    }
     return data;
   }
 
@@ -146,15 +146,17 @@ class Car {
     if (color != null) data['color'] = color!.sId;
     data['owner'] = owner;
     if (iV != null) data['__v'] = iV;
-    if (carLicenseRenewalDate != null)
+    if (carLicenseRenewalDate != null) {
       data['carLicenseRenewalDate'] = carLicenseRenewalDate.toString();
+    }
     if (lastPeriodicMaintenanceDate != null) {
       data['lastPeriodicMaintenanceDate'] =
           lastPeriodicMaintenanceDate.toString();
     }
     if (miles != null) data['miles'] = miles;
-    if (averageMilesPerMonth != null)
+    if (averageMilesPerMonth != null) {
       data['averageMilesPerMonth'] = averageMilesPerMonth;
+    }
     return data;
   }
 }

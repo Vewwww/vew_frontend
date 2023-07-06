@@ -12,12 +12,13 @@ class EvaluateServiceProviderCubit extends Cubit<EvaluateServiceProviderState> {
     await DioHelper.patchData(
       url: "/driver/winch/report/${id}",
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
-      data:{},
+      data: {},
     ).then((value) {
+      print("Winch report response: ${value.data}");
       emit(ReportWinchSuccessState());
     }).onError((error, stackTrace) {
-      emit(ReportWinchErrorState());
       print("Winch report : ${error}");
+      emit(ReportWinchErrorState());
     });
   }
 
@@ -26,12 +27,13 @@ class EvaluateServiceProviderCubit extends Cubit<EvaluateServiceProviderState> {
     await DioHelper.patchData(
       url: "/driver/mechanic/report/${id}",
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
-      data:{},
+      data: {},
     ).then((value) {
+      print("Mechanic report : ${value.data}");
       emit(ReportMechanicSuccessState());
     }).onError((error, stackTrace) {
-      emit(ReportMechanicErrorState());
       print("Mechanic report : ${error}");
+      emit(ReportMechanicErrorState());
     });
   }
 
@@ -40,12 +42,13 @@ class EvaluateServiceProviderCubit extends Cubit<EvaluateServiceProviderState> {
     await DioHelper.patchData(
       url: "/driver/mechanic/rate/${id}",
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
-      data:{"rating":rate},
+      data: {"rating": rate},
     ).then((value) {
+      print("raiting mechanic response ${value.data}");
       emit(RateMechanicSuccessState());
     }).onError((error, stackTrace) {
-      emit(RateMechanicErrorState());
       print("Mechanic rate : ${error}");
+      emit(RateMechanicErrorState());
     });
   }
 
@@ -54,12 +57,13 @@ class EvaluateServiceProviderCubit extends Cubit<EvaluateServiceProviderState> {
     await DioHelper.patchData(
       url: "/driver/winch/rate/${id}",
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
-      data:{"rating":rate},
+      data: {"rating": rate},
     ).then((value) {
+      print("raiting winch response ${value.data}");
       emit(RateWinchSuccessState());
     }).onError((error, stackTrace) {
+      print("Winch rate : ${error}");
       emit(RateWinchErrorState());
-      print("Winch report : ${error}");
     });
   }
 }

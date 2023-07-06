@@ -7,10 +7,11 @@ class Message extends StatelessWidget {
   Color color = Colors.grey;
   Message({required this.isSent, required this.message, Key? key})
       : super(key: key) {
-    if (!isSent)
+    if (!isSent) {
       color = Colors.grey;
-    else
+    } else {
       color = mainColor;
+    }
   }
 
   @override

@@ -53,7 +53,7 @@ class _WinchProfileState extends State<WinchProfile> {
                   child: Column(children: [
                     const SizedBox(height: 20),
                     Row(children: [
-                      BackwardArrow(
+                      backwardArrow(
                           iconColor: Colors.white,
                           function: () {
                             NavigationUtils.navigateAndClearStack(
@@ -80,7 +80,7 @@ class _WinchProfileState extends State<WinchProfile> {
                               profileCubit.winchDriverResponse!.winch!.name!,
                               style: AppTextStyle.whiteTextStyle(28),
                             ),
-                            RatingBar(
+                            AppRatingBar(
                               profileCubit.winchDriverResponse!.winch!.rate!,
                               size: 20,
                             ),
@@ -135,7 +135,7 @@ class _WinchProfileState extends State<WinchProfile> {
                                     DataElement(
                                         "رقم السيارة",
                                         profileCubit.winchDriverResponse!.winch!
-                                                .plateNumber!),
+                                            .plateNumber!),
                                   ]);
                             else
                               return Center(
