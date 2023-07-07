@@ -32,20 +32,20 @@ class _ViewWinchScreenState extends State<ViewWinchScreen> {
             style: AppTextStyle.mainStyle(size: 25),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: TextFormField(
-            controller: searchController,
-            decoration: const InputDecoration(
-              labelText: 'Search',
-              prefixIcon: Icon(
-                Icons.search,
-              ),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(30))),
-            ),
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(horizontal: 15),
+        //   child: TextFormField(
+        //     controller: searchController,
+        //     decoration: const InputDecoration(
+        //       labelText: 'Search',
+        //       prefixIcon: Icon(
+        //         Icons.search,
+        //       ),
+        //       border: OutlineInputBorder(
+        //           borderRadius: BorderRadius.all(Radius.circular(30))),
+        //     ),
+        //   ),
+        // ),
         BlocBuilder<GetAllCubit, GetAllState>(
           builder: (context, state){
             if(state is GetAllWinchDriversSuccessState){

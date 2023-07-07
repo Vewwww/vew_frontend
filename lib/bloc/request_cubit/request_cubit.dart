@@ -62,13 +62,15 @@ class RequestCubit extends Cubit<RequestState> {
   }
 
   Future<void> cancelRequest(String id) async {
-    String url = "/driver/request/:$id";
+    String url = "/driver/request/$id";
     emit(CancelRequestLoadingState());
     DioHelper.deleteData(url: url).then((value) {
+      print("cancel request res :  ${value.data}");
+      
       emit(CancelRequestSuccessState());
     }).catchError((error) {
       if (error is DioError) {
-        print(error.response);
+        print("cancel request error :  ${error.response}");
       }
       print(error);
       emit(CancelRequestErrorState());

@@ -69,7 +69,8 @@ class _CurrentRequestsScreenState extends State<CurrentRequestsScreen> {
                       return requestCard(
                           function: () {
                             requestCubit.cancelRequest(
-                                state.previousRequests[index].winch!.sId!);
+                                state.previousRequests[index].sId!);
+                            requestCubit.getDriverCurrentReq();
                           },
                           isWinch: isWinch,
                           name: state.previousRequests[index].winch!.name!,
@@ -81,7 +82,8 @@ class _CurrentRequestsScreenState extends State<CurrentRequestsScreen> {
                       return requestCard(
                           function: () {
                             requestCubit.cancelRequest(
-                                state.previousRequests[index].mechanic!.sId!);
+                                state.previousRequests[index].sId!);
+                            requestCubit.getDriverCurrentReq();
                           },
                           isWinch: isWinch,
                           name: state.previousRequests[index].mechanic!.name!,

@@ -7,14 +7,9 @@ import '../../core/components/custom_text_field.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/style/app_colors.dart';
 import '../../core/utils/navigation.dart';
-import '../../model/admin.dart';
 
 class AdminProfile extends StatefulWidget {
-  AdminProfile({Key? key}) : super(key: key) {
-    // _name.text = admin .name!;
-    // _email.text = admin.email!;
-    // _phone.text = admin.phoneNumber!;
-  }
+  AdminProfile({Key? key}) : super(key: key) ;
 
   @override
   State<AdminProfile> createState() => _AdminProfileState();

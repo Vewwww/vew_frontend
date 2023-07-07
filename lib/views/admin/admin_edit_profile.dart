@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vewww/bloc/profile_cubit/profile_cubit.dart';
 import 'package:vewww/core/components/default_button.dart';
+import 'package:vewww/core/utils/navigation.dart';
+import 'package:vewww/views/admin/admin_home_screen.dart';
+import 'package:vewww/views/admin/admin_profile.dart';
 
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/custom_text_field.dart';
@@ -24,6 +29,7 @@ class AdminEditProfile extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    ProfileCubit profileCubit = ProfileCubit.get(context);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -32,7 +38,14 @@ class AdminEditProfile extends StatelessWidget {
           child: Column(
             children: [
               CustomAppBar(
-                haveBackArrow: true,
+                //haveBackArrow: true,
+                leading: IconButton(
+                  icon: Icon(Icons.arrow_back_ios),
+                  onPressed: () {
+                    NavigationUtils.navigateTo(
+                        context: context, destinationScreen: AdminProfile());
+                  },
+                ),
                 haveLogo: true,
               ),
               Text(
@@ -75,11 +88,26 @@ class AdminEditProfile extends StatelessWidget {
                     }
                     return null;
                   }),
-              defaultButton(text: 'Update', function: () {
-                if(_formKey.currentState!.validate()){
-                  
-                }
-              })
+              BlocBuilder<ProfileCubit, ProfileState>(
+                builder: (context, state) {
+                  return defaultButton(
+                      text: 'Update',
+                      function: () async {
+                        if (_formKey.currentState!.validate()) {
+                          Admin admin = Admin(
+                              name: _name.text,
+                              email: _email.text,
+                              phoneNumber: _phone.text);
+                          await profileCubit.updateAdminProfile(admin);
+                          if (state is EdittingProfileSuccessState) {
+                            NavigationUtils.navigateAndClearStack(
+                                context: context,
+                                destinationScreen: AdminHomeScreen());
+                          }
+                        }
+                      });
+                },
+              )
             ],
           ),
         ),

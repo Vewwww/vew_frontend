@@ -12,9 +12,9 @@ class UserAnalysisResponse {
 
   UserAnalysisResponse.fromJson(Map<String, dynamic> json) {
     numOfAllUsers = json['numOfAllUsers'];
-    numOfMechanists = json['numOfMechanists']*1.0;
-    numOfWinches = json['numOfWinches']*1.0;
-    numOfDrivers = json['numOfDrivers']*1.0;
+    numOfMechanists = json['numOfMechanists'] * 1.0;
+    numOfWinches = json['numOfWinches'] * 1.0;
+    numOfDrivers = json['numOfDrivers'] * 1.0;
   }
 
   Map<String, dynamic> toJson() {
@@ -34,8 +34,8 @@ class GenderAnalysisResponse {
   GenderAnalysisResponse({this.maleRatio, this.femaleRatio});
 
   GenderAnalysisResponse.fromJson(Map<String, dynamic> json) {
-    maleRatio = json['maleRatio']*1.0;
-    femaleRatio = json['femaleRatio']*1.0;
+    maleRatio = json['maleRatio'] * 1.0;
+    femaleRatio = json['femaleRatio'] * 1.0;
   }
 
   Map<String, dynamic> toJson() {
@@ -65,18 +65,18 @@ class SeasonAnalysisResponse {
 }
 
 class Season {
-  int? summer;
-  int? winter;
-  int? autumn;
-  int? spring;
+  double? summer;
+  double? winter;
+  double? autumn;
+  double? spring;
 
   Season({this.summer, this.winter, this.autumn, this.spring});
 
   Season.fromJson(Map<String, dynamic> json) {
-    summer = json['summer'];
-    winter = json['winter'];
-    autumn = json['autumn'];
-    spring = json['spring'];
+    if (json['summer'] != null) summer = json['summer'] * 1.0;
+    if (json['winter'] != null) winter = json['winter'] * 1.0;
+    if (json['autumn'] != null) autumn = json['autumn'] * 1.0;
+    if (json['spring'] != null) spring = json['spring'] * 1.0;
   }
 
   Map<String, dynamic> toJson() {

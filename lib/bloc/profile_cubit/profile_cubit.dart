@@ -97,6 +97,24 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(GettingProfileErrorState());
     });
   }
+  Future<void> updateAdminProfile(Admin admin) async {
+    emit(EdittingProfileLoadingState());
+    await DioHelper.patchData(
+            url: "/admin/updateProfile",
+            data: admin.toUpdateJson(),
+            token: SharedPreferencesHelper.getData(key: 'vewToken'))
+        .then((value) {
+      print("get admin profile response : ${value.data}");
+      adminProfileResponse = AdminProfileResponse.fromJson(value.data);
+      emit(EdittingProfileSuccessState());
+    }).catchError((err) {
+      if (err is DioError) {
+        print(err.response);
+      }
+      print("error");
+      emit(EdittingProfileSuccessState());
+    });
+  }
 
   Future<void> getMechanicProfile() async {
     emit(GettingProfileLoadingState());

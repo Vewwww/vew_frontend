@@ -32,7 +32,7 @@ abstract class Repairer {
         json['location'] != null ? Location.fromJson(json['location']) : null;
     sId = json['_id'];
     if (json["distance"] != null) {
-      distance = double.parse((json['distance']).toStringAsFixed(2));
+      distance = double.parse((json['distance'] * 1.0).toStringAsFixed(2));
     }
     phoneNumber = json['phoneNumber'];
     if (json['rate'] != null) rate = json['rate'] * 1.0;
@@ -76,7 +76,7 @@ class MaintenanceCenter extends Repairer {
     if (json['carType'] != null) {
       carType = <CarType>[];
       json['carType'].forEach((v) {
-        carType!.add(CarType.fromJson(v));
+        carType!.add((v is String) ? CarType(sId: v) : CarType.fromJson(v));
       });
     }
     isVerified = json['isVerified'];
@@ -102,6 +102,26 @@ class MaintenanceCenter extends Repairer {
     data['rate'] = rate;
     data['ratesNumber'] = ratesNumber;
     data['__v'] = iV;
+    return data;
+  }
+
+  Map<String, dynamic> toAddJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (name != null) {
+      data['name'] = name!.toJson();
+    }
+    if (location != null) {
+      data['location'] = location!.toJson();
+    }
+    if (sId != null) data['_id'] = sId;
+    if (phoneNumber != null) data['phoneNumber'] = phoneNumber;
+    if (carType != null) {
+      data['carType'] = carType!.map((v) => v.sId).toList();
+    }
+    data['isVerified'] = isVerified ?? true;
+    if (rate != null) data['rate'] = rate;
+    if (ratesNumber != null) data['ratesNumber'] = ratesNumber;
+    if (iV != null) data['__v'] = iV;
     return data;
   }
 }

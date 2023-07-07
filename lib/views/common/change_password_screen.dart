@@ -92,6 +92,7 @@ class ChangePasswordScreen extends StatelessWidget {
                           if (_formKey.currentState!.validate()) {
                             AuthCubit authCubit = AuthCubit.get(context);
                             await authCubit.changePassword(_newPassword.text);
+                            print(state);
                             if (state is ChangePasswordSuccessState) {
                               var snackBar = SnackBar(
                                   content:

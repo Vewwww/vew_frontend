@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:vewww/bloc/profile_cubit/profile_cubit.dart';
 import 'package:vewww/core/components/available_button.dart';
-import 'package:vewww/model/winch_accepted_requests_response.dart';
-//import 'package:vewww/model/accepted_requests_response.dart';
 import 'package:vewww/views/winch/winch_profile.dart';
 import 'package:vewww/views/winch/winch_upcoming_requests_screen.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -14,7 +12,6 @@ import '../../bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
 import '../../controllers/controller.dart';
 import '../../core/components/accepted_request_card.dart';
 import '../../core/components/app_nav_bar.dart';
-import '../../core/components/coming_request_card.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/sidebar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
@@ -43,9 +40,14 @@ class _WinchHomePageState extends State<WinchHomePage> {
   }
 
   IO.Socket? socket;
+  IO.Socket? soc;
   initSocket() {
     String id = SharedPreferencesHelper.getData(key: "vewId");
     socket = IO.io("https://vewwwapi.onrender.com/", <String, dynamic>{
+      'autoConnect': false,
+      'transports': ['websocket'],
+    });
+    soc = IO.io("https://vewwwapi.onrender.com/", <String, dynamic>{
       'autoConnect': false,
       'transports': ['websocket'],
     });
@@ -55,12 +57,14 @@ class _WinchHomePageState extends State<WinchHomePage> {
       socket!.emit('join-room', {'room': id});
       print('joined room');
     });
+    soc!.connect();
+    soc!.onConnect((_) {});
     socket!.on("new-request", (data) {
       print("new request created");
       var requestCubit = context.read<NewRequestCubit>();
       requestCubit.setHaveNew(true);
     });
-    socket!.on("upload-winch-location", (data) async {
+    soc!.on("upload-winch-location", (data) async {
       print("listend to upload winch location event");
       Position location = await Controller.getLocation();
       var data = {
@@ -68,7 +72,7 @@ class _WinchHomePageState extends State<WinchHomePage> {
         "latitude": location.latitude,
         "longitude": location.longitude,
       };
-      socket!.emit("update-winch-location", data);
+      soc!.emit("update-winch-location", data);
     });
     socket!.onDisconnect((_) => print('Connection Disconnection'));
     socket!.onConnectError((err) => print(err));

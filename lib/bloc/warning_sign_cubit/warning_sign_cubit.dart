@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import '../../model/warning_sign.dart';
 import '../../services/dio_helper.dart';
 part 'warning_sign_state.dart';
@@ -13,9 +14,13 @@ class WarningSignCubit extends Cubit<WarningSignState> {
   Sign? sign;
 
   Future<void> getAllSigns() async {
+    String role = SharedPreferencesHelper.getData(key: "vewRole");
     emit(GetAllWarningSignLoadingState());
     if (signResponse == null) {
-      DioHelper.getData(url: "/driver/sign/").then((value) {
+      DioHelper.getData(
+              url: (role == "user") ? "/driver/sign/" : "/admin/sign/",
+              token: SharedPreferencesHelper.getData(key: "vewToken"))
+          .then((value) {
         print("get all warning sign response : ${value.data}");
         signResponse = SignResponse.fromJson(value.data);
         emit(GetAllWarningSignSuccessState(signs: signResponse!.signs!));

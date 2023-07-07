@@ -54,6 +54,7 @@ dependencies:
   socket_io_client: ^2.0.2
   flutter_ringtone_player: ^3.2.0
   flutter_launcher_icons: ^0.13.1
+  http_parser: ^4.0.2
 
 flutter_icons:
   image_path: "assets/images/Logo(1).png"

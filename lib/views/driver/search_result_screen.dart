@@ -5,7 +5,6 @@ import 'package:vewww/bloc/select_choice_cubit/select_choice_cubit.dart';
 import 'package:vewww/core/components/filter_card.dart';
 import 'package:vewww/views/common/services_screen.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
-import 'package:vewww/views/driver/search_screen.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/near_repairer_card.dart';
 import '../../core/components/search_bar.dart';

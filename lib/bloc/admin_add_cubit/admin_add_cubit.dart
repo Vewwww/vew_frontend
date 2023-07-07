@@ -1,6 +1,8 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-
+import 'package:http_parser/http_parser.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/model/repairer.dart';
 import 'package:vewww/views/admin/add_maintenance_center_screen.dart';
@@ -26,23 +28,33 @@ class AdminAddCubit extends Cubit<AdminAddState> {
     ).then((value) {
       print("Add admin response : ${value}");
       emit(AddAdminSuccessState());
-    }).catchError((error){
-      if(error is DioError){
+    }).catchError((error) {
+      if (error is DioError) {
         print(error.response);
       }
       emit(AddAdminErrorState());
     });
-    
   }
 
-   void addSign(SignImage sign) async {
+  void addSign(SignImage sign) async {
+    FormData formData = FormData.fromMap(
+      {
+        "name.en": sign.name!.en!,
+        "description.en": sign.description!.en!,
+        "solution.en": sign.solution!.en!,
+        "image": await MultipartFile.fromFile(sign.path!,
+            filename: "image", contentType: MediaType("image", "jpeg")),
+      },
+    );
+    String token = SharedPreferencesHelper.getData(key: 'vewToken');
+    DioHelper.dio.options.headers["Authorization"] = "Bearer $token";
     emit(AddSignLoadingState());
-    print(sign.toJson());
-    await DioHelper.postData(
-      url: "/sign/",
-      data: sign.toJson(),
-      token: SharedPreferencesHelper.getData(key: 'vewToken'),
-    ).then((value) {
+    await DioHelper.dio
+        .post(
+      "/admin/sign/",
+      data: formData,
+    )
+        .then((value) {
       print("Add sign response : ${value}");
       emit(AddSignSuccessState());
     }).catchError((err) {
@@ -52,25 +64,24 @@ class AdminAddCubit extends Cubit<AdminAddState> {
       }
       print(err.toString());
     });
+  }
 
-   }
-   void AddMaintenanceCenter(MaintenanceCenter maintenanceCenter) async {
+  Future<void> AddMaintenanceCenter(MaintenanceCenter maintenanceCenter) async {
     emit(AddGasStationLoadingState());
-    print(maintenanceCenter.toJson());
+    print(maintenanceCenter.toAddJson());
     await DioHelper.postData(
-      url: "/maintenanceCenter/",
-      data: maintenanceCenter.toJson(),
+      url: "/admin/maintenanceCenter/",
+      data: maintenanceCenter.toAddJson(),
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
     ).then((value) {
       print("Add maintenanceCenter response : ${value}");
       emit(AddGasStationSuccessState());
-    }).catchError((error){
-      if(error is DioError){
+    }).catchError((error) {
+      if (error is DioError) {
         print(error.response);
       }
       emit(AddGasStationErrorState());
     });
-    
   }
 
   void AddGasStation(GasStation gasStation) async {
@@ -83,13 +94,11 @@ class AdminAddCubit extends Cubit<AdminAddState> {
     ).then((value) {
       print("Add gasStation response : ${value}");
       emit(AddGasStationSuccessState());
-    }).catchError((error){
-      if(error is DioError){
+    }).catchError((error) {
+      if (error is DioError) {
         print(error.response);
       }
       emit(AddGasStationErrorState());
     });
-    
   }
-   }
-
+}

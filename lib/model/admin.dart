@@ -20,6 +20,7 @@ class AdminResponse {
     return data;
   }
 }
+
 class AdminProfileResponse {
   Admin? admin;
 
@@ -73,8 +74,7 @@ class Admin {
       this.driverLisenceRenewalNotification});
 
   Admin.fromJson(Map<String, dynamic> json) {
-    report =
-        json['report'] != null ? Report.fromJson(json['report']) : null;
+    report = json['report'] != null ? Report.fromJson(json['report']) : null;
     sId = json['_id'];
     name = json['name'];
     email = json['email'];
@@ -109,8 +109,15 @@ class Admin {
     data['logedIn'] = logedIn;
     data['passwordReset'] = passwordReset;
     data['__v'] = iV;
-    data['driverLisenceRenewalNotification'] =
-        driverLisenceRenewalNotification;
+    data['driverLisenceRenewalNotification'] = driverLisenceRenewalNotification;
+    return data;
+  }
+
+  Map<String, dynamic> toUpdateJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['email'] = email;
+    data['phoneNumber'] = phoneNumber;
     return data;
   }
 }

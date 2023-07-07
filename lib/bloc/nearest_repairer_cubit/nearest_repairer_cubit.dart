@@ -94,6 +94,8 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
         emit(GettingNearestMechanicSuccessState(
             mechanics: nearesetMechanicResponse.mechanic!));
       }).onError((error, stackTrace) {
+        if (error is DioError)
+          print("nearest mechanic dio error${error.response}");
         print("neareat mechanic error : ${error}");
         emit(GettingNearestMechanicErrorState());
       });

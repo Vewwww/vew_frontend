@@ -114,7 +114,8 @@ class _PenddingRequestsScreenState extends State<PenddingRequestsScreen> {
                       return requestCard(
                           function: () {
                             requestCubit.cancelRequest(
-                                state.previousRequests[index].winch!.sId!);
+                                state.previousRequests[index].sId!);
+                            requestCubit.getDriverPendingReq();
                           },
                           isWinch: isWinch,
                           name: state.previousRequests[index].winch!.name!,
@@ -126,7 +127,8 @@ class _PenddingRequestsScreenState extends State<PenddingRequestsScreen> {
                       return requestCard(
                           function: () {
                             requestCubit.cancelRequest(
-                                state.previousRequests[index].mechanic!.sId!);
+                                state.previousRequests[index].sId!);
+                            requestCubit.getDriverPendingReq();
                           },
                           isWinch: isWinch,
                           name: state.previousRequests[index].mechanic!.name!,

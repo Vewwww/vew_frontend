@@ -5,11 +5,11 @@ Widget nameAddressCard({
   required String title,
   required String subtitle,
   required Function() function,
-}){
-return GestureDetector(
+}) {
+  return GestureDetector(
     onTap: function,
     child: Container(
-      height: 85,
+      height: 100,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         color: Colors.white,
@@ -34,13 +34,21 @@ return GestureDetector(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(title, style:AppTextStyle.darkGreyStyle(size: 20),maxLines: 1, overflow: TextOverflow.ellipsis, ),
-            Text(subtitle, style:AppTextStyle.greyStyle() , ),
+            Text(
+              title,
+              style: AppTextStyle.darkGreyStyle(size: 20),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              subtitle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyle.greyStyle(),
+            ),
           ],
         ),
       ),
-      ),
-    );
-  
-
+    ),
+  );
 }

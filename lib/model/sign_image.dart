@@ -6,11 +6,13 @@ class SignImage{
   Name? name;
   Name? description;
   Name? solution;
+  String? path;
   MultipartFile? image;
 
   SignImage(
       {this.name,
       this.description,
+      this.path,
       this.solution,
       this.image,});
 

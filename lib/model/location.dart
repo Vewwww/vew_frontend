@@ -18,8 +18,8 @@ class Location {
                 ? Name(ar: json['road'], en: json['road'])
                 : Name.fromJson(json['road'])
             : null;
-    latitude = json['latitude'];
-    longitude = json['longitude'];
+    if (json['latitude'] != null) latitude = json['latitude'] * 1.0;
+    if (json['longitude'] != null) longitude = json['longitude'] * 1.0;
   }
 
   Map<String, dynamic> toJson() {

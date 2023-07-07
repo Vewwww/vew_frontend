@@ -42,21 +42,6 @@ class MechanicSignup extends StatelessWidget {
   final TextEditingController _mechanicPhone = TextEditingController();
   final TextEditingController _name = TextEditingController();
   final TextEditingController _ownerName = TextEditingController();
-  // {
-  //   "hasDelivery": true,
-  //   "location": {
-  //       "description": {
-  //           "ar": "مجمع الفردوس بجوار نادي السكه خلف ورشة",
-  //           "en": " Al-Firdous Complex, next to Al-Sekka Club, behind Taqah workshop "
-  //       },
-  //       "latitude": 30.0496509,
-  //       "longitude": 31.27362904
-  //   },
-  //   "service": [
-  //       "64837b8cd4a3c95f4207e9e2",
-  //       "64837b87d4a3c95f4207e9df"
-  //   ]
-  // }
 
   @override
   Widget build(BuildContext context) {

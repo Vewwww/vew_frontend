@@ -13,6 +13,7 @@ class NearesetMCResponse {
       json['data'].forEach((v) {
         maintenanceCenter!.add(MaintenanceCenter.fromJson(v));
       });
+      print("doneenene");
     }
   }
 
