@@ -76,6 +76,7 @@ class _WhichCarScreenState extends State<WhichCarScreen> {
                                       ));
                               }
                             },
+                            carColor:state.allCars[index].color!.code!,
                             carModel: state.allCars[index].carModel!.name!,
                             carType: state.allCars[index].carType!.name!.en!,
                           );

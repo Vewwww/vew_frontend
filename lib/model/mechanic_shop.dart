@@ -1,5 +1,4 @@
 import 'package:vewww/model/services.dart';
-
 import 'location.dart';
 import 'report.dart';
 
@@ -39,8 +38,9 @@ class MechanicProfileResponse {
   MechanicProfileResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     results = json['results'];
-    if (json['data'] != null)
+    if (json['data'] != null) {
       mechanicShop = (MechanicShop.fromJson(json['data']));
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -95,36 +95,30 @@ class MechanicShop {
       this.iV});
 
   MechanicShop.fromJson(Map<String, dynamic> json) {
-    print("here");
     report = json['report'] != null ? Report.fromJson(json['report']) : null;
-    print("here0");
     location =
         json['location'] != null ? Location.fromJson(json['location']) : null;
-    print("here0");
     sId = json['_id'];
     ownerName = json['ownerName'];
     email = json['email'];
-    print("here1");
     password = json['password'];
     mechanicPhone = json['mechanicPhone'];
     name = json['name'];
     phoneNumber = json['phoneNumber'];
     hasDelivery = json['hasDelivery'];
-    print("here2");
     if (json['service'] != null) {
       service = <Service>[];
       json['service'].forEach((v) {
-        if (v is String)
-          service!.add(new Service(sId: v));
-        else
-          service!.add(new Service.fromJson(v));
+        if (v is String) {
+          service!.add(Service(sId: v));
+        } else {
+          service!.add(Service.fromJson(v));
+        }
       });
     }
-    print("here3");
     rate = json['rate'] * 1.0;
     numOfRates = json['numOfRates'];
     isSuspended = json['isSuspended'];
-    print("here4");
     emailConfirm = json['emailConfirm'];
     logedIn = json['logedIn'];
     role = json['role'];
@@ -147,8 +141,8 @@ class MechanicShop {
     if (name != null) data['name'] = name;
     if (phoneNumber != null) data['phoneNumber'] = phoneNumber;
     if (hasDelivery != null) data['hasDelivery'] = hasDelivery;
-    if (this.service != null) {
-      data['service'] = this.service!.map((v) => v.toJson()).toList();
+    if (service != null) {
+      data['service'] = service!.map((v) => v.toJson()).toList();
     }
     if (rate != null) data['rate'] = rate;
     if (numOfRates != null) data['numOfRates'] = numOfRates;

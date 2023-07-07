@@ -6,7 +6,7 @@ class Logo extends StatelessWidget {
   Image? logo;
   Color? color;
   double? size;
-  Logo({String? color, double? size}) {
+  Logo({String? color, double? size , Key? key}):super(key: key) {
     if (size == null) {
       this.size = 10;
     } else {
@@ -14,7 +14,7 @@ class Logo extends StatelessWidget {
     }
     if (color == null) {
       logo = Image.asset(
-        "assets/images/Logo.png",
+        "assets/images/Logo(1).png",
         width: size,
       );
       this.color = mainColor;

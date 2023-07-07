@@ -31,10 +31,10 @@ class RequestCubit extends Cubit<RequestState> {
     DioHelper.getData(url: "/driver/request/getDriverCurrentRequests/")
         .then((value) {
       print("get Curr req response : ${value.data}");
-      RequestResponse currentReqResponse = RequestResponse.fromJson(value.data);
+      RequestResponse reqResponse = RequestResponse.fromJson(value.data);
       print("get Curr req done");
 
-      emit(GetDriverReqSuccessState(currentReqResponse.previousRequests!));
+      emit(GetDriverReqSuccessState(reqResponse.previousRequests!));
     }).catchError((error) {
       if (error is DioError) {
         print(error.response);
@@ -49,8 +49,9 @@ class RequestCubit extends Cubit<RequestState> {
     DioHelper.getData(url: "/driver/request/getDriverPendingRequests/")
         .then((value) {
       print("get Pending req response : ${value.data}");
-      RequestResponse PendingReqResponse = RequestResponse.fromJson(value.data);
-      emit(GetDriverReqSuccessState(PendingReqResponse.previousRequests!));
+      this.reqResponse = RequestResponse.fromJson(value.data);
+      print("done PendingReqResponse ");
+      emit(GetDriverReqSuccessState(reqResponse!.previousRequests!));
     }).catchError((error) {
       if (error is DioError) {
         print(error.response);
@@ -61,13 +62,15 @@ class RequestCubit extends Cubit<RequestState> {
   }
 
   Future<void> cancelRequest(String id) async {
-    String url = "/driver/request/:$id";
+    String url = "/driver/request/$id";
     emit(CancelRequestLoadingState());
     DioHelper.deleteData(url: url).then((value) {
+      print("cancel request res :  ${value.data}");
+      
       emit(CancelRequestSuccessState());
     }).catchError((error) {
       if (error is DioError) {
-        print(error.response);
+        print("cancel request error :  ${error.response}");
       }
       print(error);
       emit(CancelRequestErrorState());
@@ -79,7 +82,7 @@ class RequestCubit extends Cubit<RequestState> {
     print(createRequest.toJsonRequest());
     await DioHelper.postData(
       url: "/driver/createWinchRequest/",
-      data: createRequest.toJsonRequest(),
+      data: await createRequest.toJsonRequest(),
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
     ).then((value) {
       print("request winch response : ${value}");
@@ -94,10 +97,10 @@ class RequestCubit extends Cubit<RequestState> {
 
   Future<void> createMechanicRequest(CreateRequest createRequest) async {
     emit(CreateMechanicRequestLoadingState());
-    print(createRequest.toJsonRequest());
+    print("in create mechanic request ${createRequest.toJsonRequest()}");
     await DioHelper.postData(
       url: "/driver/createMechanicRequest/",
-      data: createRequest.toJsonRequest(),
+      data: await createRequest.toJsonRequest(),
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
     ).then((value) {
       print("Request mechanic response : ${value}");
@@ -107,8 +110,9 @@ class RequestCubit extends Cubit<RequestState> {
       if (error is DioError) {
         print(error.response);
       }
+      print(error);
+
       emit(CreateMechanicRequestErrorState());
     });
   }
-
 }

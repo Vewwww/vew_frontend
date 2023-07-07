@@ -162,7 +162,6 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
                   ),
                   SizedBox(
                     height: 20,
-                    //TODO::Send gender as male or female
                     child: BlocConsumer<GenderCubit, GenderState>(
                         listener: (context, snapshot) {},
                         builder: (context, snapshot) {
@@ -268,23 +267,28 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
                                   "gender": genderCubit.genderInText,
                                   "driverLisenceRenewalDate":
                                       ((_licenseRenewalDate.text != null))
-                                          ? "2023-09-1"
+                                          ? _licenseRenewalDate.text
                                           : null
                                 });
-                                if (state is EdittingProfileSuccessState) {
+                                print(state);
+                                print("after edit porfile");
+                                if (state is EdittingProfileSuccessState ||
+                                    state is GettingProfileSuccessState) {
+                                  print("objectyyy");
                                   await carCubit.handleCarEdit();
-                                  if (s is CarHandeledState)
-                                    NavigationUtils.navigateAndClearStack(
-                                        context: context,
-                                        destinationScreen: DriverProfile());
-                                  else {
-                                    print(s);
-                                    const snackBar = SnackBar(
-                                        content: Text(
-                                            "Something went wrong while editing cars try again!"));
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
-                                  }
+                                  print(s);
+                                  //if (s is CarHandeledState)
+                                  NavigationUtils.navigateAndClearStack(
+                                      context: context,
+                                      destinationScreen: DriverProfile());
+                                  // else {
+                                  //   print(s);
+                                  //   const snackBar = SnackBar(
+                                  //       content: Text(
+                                  //           "Something went wrong while editing cars try again!"));
+                                  //   ScaffoldMessenger.of(context)
+                                  //       .showSnackBar(snackBar);
+                                  // }
                                 } else {
                                   const snackBar = SnackBar(
                                       content: Text(

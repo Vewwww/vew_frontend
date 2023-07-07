@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
-import 'package:vewww/core/components/rating_bar.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/model/accepted_requests_response.dart';
 import 'package:vewww/views/mechanic/mechanic_home_screen.dart';
 import '../../model/winch_accepted_requests_response.dart';
 import '../../views/common/single_request_screen.dart';
-import '../../views/winch/winch_home_page.dart';
 import '../style/app_text_style/app_text_style.dart';
 import '../utils/navigation.dart';
 
@@ -72,7 +70,7 @@ class ComingRequestCard extends StatelessWidget {
                       " السيارة : ${(mechanicRequestsData != null) ? mechanicRequestsData!.car!.carType!.name!.ar! : winchRequestsData!.car!.carType!.name!.ar!}",
                       style: AppTextStyle.darkGreyStyle(size: 13),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -108,22 +106,17 @@ class ComingRequestCard extends StatelessWidget {
                                         mechanicRequestsData!.sId!);
                                     await requestsCubit
                                         .mechanicUpComingRequests();
-                                    if (state is AcceptingRequestSuccessState)
+                                    if (state is AcceptingRequestSuccessState) {
                                       NavigationUtils.navigateAndClearStack(
                                           context: context,
                                           destinationScreen:
                                               MechanicHomeScreen());
+                                    }
                                   } else {
                                     await requestsCubit.winchAcceptRequest(
                                         winchRequestsData!.sId!);
                                     await requestsCubit.winchUpComingRequests();
-                                    print(state);
-                                    // if (state
-                                    //     is WinchAcceptingRequestSuccessState)
-                                    //   //ToDo:handle bottom nav qubit
-                                    //   NavigationUtils.navigateAndClearStack(
-                                    //       context: context,
-                                    //       destinationScreen: WinchHomePage());
+
                                   }
                                 },
                                 child: const Text(

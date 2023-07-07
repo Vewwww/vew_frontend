@@ -2,22 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:vewww/model/location.dart' as Loc;
+import 'package:vewww/model/location.dart' as loc;
 
 class Controller {
   static call(String phoneNumber) async {
     await FlutterPhoneDirectCaller.callNumber(phoneNumber);
   }
 
-  static goToGoogleMaps(Loc.Location location) async {
+  static goToGoogleMaps(loc.Location location) async {
     String googleUrl =
         'https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}';
     await launchUrl(Uri.parse(googleUrl));
   }
 
-  static Future getLocation() async {
+  static Future<Position> getLocation() async {
     LocationPermission locationPermission;
     bool isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
     //check if user enable service for location permission

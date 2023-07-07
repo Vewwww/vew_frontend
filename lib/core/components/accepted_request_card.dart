@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:vewww/bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
 import 'package:vewww/controllers/controller.dart';
 import 'package:vewww/core/style/app_colors.dart';
@@ -67,7 +66,7 @@ class AcceptedRequestCard extends StatelessWidget {
                       : winchRequestData!.driver!.name!,
                   style: AppTextStyle.titleTextStyle(20),
                 ),
-                RatingBar(4.4, size: 15),
+                AppRatingBar(4.4, size: 15),
                 Text(
                   " السيارة : ${(mechanicRequestsData != null) ? mechanicRequestsData!.car!.carType!.name!.ar! : winchRequestData!.car!.carType!.name!.ar!}",
                   style: AppTextStyle.darkGreyStyle(size: 13),
@@ -110,7 +109,7 @@ class AcceptedRequestCard extends StatelessWidget {
                         )),
                   ],
                 ),
-                Container(
+                SizedBox(
                   width: 180,
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(

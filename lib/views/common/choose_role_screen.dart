@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/views/driver/sign_up_screen.dart';
 import 'package:vewww/views/mechanic/mechanic_signup.dart';
 import 'package:vewww/views/winch/winch_sign_up_screen.dart';
 
+import '../../bloc/language_cubit/language_cubit.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 
 class ChooseRoleScreen extends StatelessWidget {
@@ -13,11 +15,32 @@ class ChooseRoleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var constraintsHight = MediaQuery.of(context).size.height;
+    LanguageCubit languageCubit = LanguageCubit.get(context);
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          SizedBox(height: constraintsHight / 10),
+          SizedBox(height: constraintsHight / 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                child: BlocConsumer<LanguageCubit, LanguageState>(
+                  listener: (context, state) {},
+                  builder: (context, state) {
+                    return Text(
+                      languageCubit.languageInText,
+                      style: AppTextStyle.mainStyle(),
+                    );
+                  },
+                ),
+                onPressed: () {
+                  languageCubit.changeLanguage();
+                },
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
           Center(child: Image.asset("assets/images/Logo(1).png")),
           SizedBox(height: constraintsHight / 60),
 
@@ -27,23 +50,58 @@ class ChooseRoleScreen extends StatelessWidget {
             color: Colors.grey,
           ),
           const SizedBox(height: 10),
-          Center(
-              child: Text(
-            "اهلا بك فى vewww",
-            textDirection: TextDirection.rtl,
-            style: AppTextStyle.mainStyle(size: 20),
-          )),
-          card("التسجيل كسائق", Icons.person, SignUpScreen(), context),
-          card("التسجيل كميكانيكى", Icons.handyman_rounded, MechanicSignup(services: []),
-              context),
-          card("التسجيل كمالك ونش", Icons.car_repair, WinchSignUpScreen(),
-              context),
+
+          BlocConsumer<LanguageCubit, LanguageState>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              return Column(
+                children: [
+                  Center(
+                    child: Text(
+                      (languageCubit.currentLanguage == "ar")
+                          ? "اهلا بك فى vewww"
+                          : "Welcome to Vewww",
+                      textDirection: (languageCubit.currentLanguage == "ar")
+                          ? TextDirection.rtl
+                          : TextDirection.ltr,
+                      style: AppTextStyle.mainStyle(size: 20),
+                    ),
+                  ),
+                  card(
+                      (languageCubit.currentLanguage == "ar")
+                          ? "التسجيل كسائق"
+                          : "Sign up as driver",
+                      Icons.person,
+                      SignUpScreen(),
+                      context,
+                      isArabic: (languageCubit.currentLanguage == "ar")),
+                  card(
+                      (languageCubit.currentLanguage == "ar")
+                          ? "التسجيل كميكانيكى"
+                          : "Sign up as mechanic",
+                      Icons.handyman_rounded,
+                      MechanicSignup(services: []),
+                      context,
+                      isArabic: (languageCubit.currentLanguage == "ar")),
+                  card(
+                      (languageCubit.currentLanguage == "ar")
+                          ? "التسجيل كمالك ونش"
+                          : "Sign up as winch",
+                      Icons.car_repair,
+                      WinchSignUpScreen(),
+                      context,
+                      isArabic: (languageCubit.currentLanguage == "ar")),
+                ],
+              );
+            },
+          ),
         ],
       ),
     );
   }
 
-  Widget card(String data, IconData icon, Widget screen, context) {
+  Widget card(String data, IconData icon, Widget screen, context,
+      {required bool isArabic}) {
     return GestureDetector(
       onTap: () {
         NavigationUtils.navigateTo(context: context, destinationScreen: screen);
@@ -72,19 +130,20 @@ class ChooseRoleScreen extends StatelessWidget {
           ],
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment:
+              isArabic ? MainAxisAlignment.end : MainAxisAlignment.start,
           children: [
             Text(
               data,
               style: AppTextStyle.mainStyle(),
-              textDirection: TextDirection.rtl,
+              textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
             ),
             SizedBox(width: 20),
             Icon(
               icon,
               color: mainColor,
             ),
-          ],
+          ].reversed.map((e) => e).toList(),
         ),
       ),
     );

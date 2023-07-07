@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/add_image_cubit/add_image_cubit.dart';
 import 'package:vewww/bloc/admin_add_cubit/admin_add_cubit.dart';
+import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/model/mechanic_shop.dart';
 import 'package:vewww/model/name.dart';
 import 'package:vewww/model/sign_image.dart';
+import 'package:vewww/views/admin/admin_home_screen.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/custom_text_field.dart';
 import '../../core/components/default_button.dart';
@@ -107,6 +109,7 @@ class _AddWarningSignScreenState extends State<AddWarningSignScreen> {
                               sign = SignImage(
                                   description: description,
                                   name: title,
+                                  path:imageFile!.path,
                                   solution: solution,
                                   image: await MultipartFile.fromFile(
                                       imageFile!.path)); //
@@ -116,6 +119,7 @@ class _AddWarningSignScreenState extends State<AddWarningSignScreen> {
                                     content: Text("Sign add successfully"));
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(snackBar);
+                                NavigationUtils.navigateAndClearStack(context: context, destinationScreen: AdminHomeScreen());
                               } else if (state is AddSignErrorState) {
                                 const snackBar = SnackBar(
                                     content: Text(

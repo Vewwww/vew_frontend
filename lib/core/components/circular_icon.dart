@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 
-Widget CircularIcon({
+Widget circularIcon({
   required title,
-  double radius = 25,
+  double radius = 20,
   required Widget child,
 }) {
   return Row(
     children: [
       CircleAvatar(
-        backgroundColor: Color.fromRGBO(2, 113, 106, 1),
+        backgroundColor: const Color.fromRGBO(2, 113, 106, 1),
         radius: radius,
         child: child,
       ),
       const SizedBox(
-        width: 15,
+        width: 10,
       ),
       Text(
         title,
-        style: TextStyle(
-          fontSize: 20,
+        style: const TextStyle(
+          fontSize: 15,
         ),
       )
     ],

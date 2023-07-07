@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 Widget defaultButton({
   double width = double.infinity,
   double? height,
-  double textSize = 20,
+  double textSize = 18,
   Color background = const Color.fromRGBO(2, 113, 106, 1),
   Function? function,
   required String text,
@@ -26,7 +26,11 @@ Widget defaultButton({
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (buttonIcon != null) Icon(buttonIcon, color:iconColor ,),
+            if (buttonIcon != null)
+              Icon(
+                buttonIcon,
+                color: iconColor,
+              ),
             Text(
               text,
               style: TextStyle(

@@ -7,15 +7,15 @@ class AllCarsResponse {
     if (json['data'] != null) {
       allCars = <AllCars>[];
       json['data'].forEach((v) {
-        allCars!.add(new AllCars.fromJson(v));
+        allCars!.add(AllCars.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.allCars != null) {
-      data['data'] = this.allCars!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (allCars != null) {
+      data['data'] = allCars!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -65,20 +65,20 @@ class AllCars {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['carType'] = this.carType;
-    data['carModel'] = this.carModel;
-    data['year'] = this.year;
-    data['plateNumber'] = this.plateNumber;
-    data['color'] = this.color;
-    data['averageMilesPerMonth'] = this.averageMilesPerMonth;
-    data['lastPeriodicMaintenanceDate'] = this.lastPeriodicMaintenanceDate;
-    data['owner'] = this.owner;
-    data['carLicenseRenewalNotifition'] = this.carLicenseRenewalNotifition;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['carType'] = carType;
+    data['carModel'] = carModel;
+    data['year'] = year;
+    data['plateNumber'] = plateNumber;
+    data['color'] = color;
+    data['averageMilesPerMonth'] = averageMilesPerMonth;
+    data['lastPeriodicMaintenanceDate'] = lastPeriodicMaintenanceDate;
+    data['owner'] = owner;
+    data['carLicenseRenewalNotifition'] = carLicenseRenewalNotifition;
     data['periodicMaintenanceNotification'] =
-        this.periodicMaintenanceNotification;
-    data['__v'] = this.iV;
+        periodicMaintenanceNotification;
+    data['__v'] = iV;
     return data;
   }
 }

@@ -1,5 +1,3 @@
-import 'location.dart';
-import 'name.dart';
 import 'repairer.dart';
 
 class NearesetPlaceResponse {
@@ -13,16 +11,16 @@ class NearesetPlaceResponse {
     if (json['data'] != null) {
       places = <Place>[];
       json['data'].forEach((v) {
-        places!.add(new Place.fromJson(v));
+        places!.add(Place.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['results'] = this.results;
-    if (this.places != null) {
-      data['data'] = this.places!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['results'] = results;
+    if (places != null) {
+      data['data'] = places!.map((v) => v.toJson()).toList();
     }
     return data;
   }

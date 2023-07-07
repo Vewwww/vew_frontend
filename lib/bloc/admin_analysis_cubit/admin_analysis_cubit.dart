@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -39,8 +40,9 @@ class AdminAnalysisCubit extends Cubit<AdminAnalysisState> {
       GenderAnalysisResponse genderAnalysisResponse =
           GenderAnalysisResponse.fromJson(value.data);
       emit(GetGenderrAnalysisSuccessState(genderAnalysisResponse));
-    }).onError((error, stackTrace) {
-      print("Get gender analysis error : $error");
+    }).catchError((error, stackTrace) {
+      if (error is DioError)
+        print("Get gender analysis error : ${error.response}");
       emit(GetGenderAnalysisErrorState());
     });
   }

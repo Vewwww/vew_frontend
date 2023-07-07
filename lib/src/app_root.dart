@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/bloc/chat_cubit/chat_cubit.dart';
 import 'package:vewww/bloc/diagnose_cunit/diagnose_cubit.dart';
-import 'package:vewww/model/driver.dart';
-import 'package:vewww/views/common/map.dart';
 import 'package:vewww/views/common/splash_screen.dart';
-import 'package:vewww/views/driver/driver_home_screen.dart';
-import 'package:vewww/views/driver/prev_req_screen.dart';
-import 'package:vewww/views/winch/winch_home_page.dart';
 import '../bloc/add_image_cubit/add_image_cubit.dart';
 import '../bloc/admin_add_cubit/admin_add_cubit.dart';
 import '../bloc/admin_analysis_cubit/admin_analysis_cubit.dart';
 import '../bloc/auth_cubit/auth_cubit.dart';
 import '../bloc/car_cubit/car_cubit.dart';
+import '../bloc/evaluate_service_provider_cubit/evaluate_service_provider_cubit.dart';
 import '../bloc/get_all_cubit/get_all_cubit.dart';
+import '../bloc/language_cubit/language_cubit.dart';
 import '../bloc/loaction_cubit/loaction_cubit.dart';
 import '../bloc/nearest_repairer_cubit/nearest_repairer_cubit.dart';
 import '../bloc/new_request_cubit/new_request_cubit.dart';
@@ -32,8 +29,6 @@ import '../bloc/reminder_cubit/reminder_cubit.dart';
 import '../bloc/select_choice_cubit/select_choice_cubit.dart';
 import '../bloc/select_color_cubit/select_color_cubit.dart';
 import '../bloc/warning_sign_cubit/warning_sign_cubit.dart';
-import '../views/common/sign_in_screen.dart';
-import '../views/driver/single_previous_request.dart';
 
 class AppRoot extends StatelessWidget {
   const AppRoot({Key? key}) : super(key: key);
@@ -68,7 +63,9 @@ class AppRoot extends StatelessWidget {
           BlocProvider(create: (context) => WarningSignCubit()),
           BlocProvider(create: (context) => ProfileCubit()),
           BlocProvider(create: (context) => ServicesCubit()),
+          BlocProvider(create: (context) => LanguageCubit()),
           BlocProvider(create: (context) => CarCubit()),
+          BlocProvider(create: (context) => EvaluateServiceProviderCubit()),
           BlocProvider(create: (context) => NewRequestCubit()),
           BlocProvider(create: (context) => RepairerRequestsCubit()),
           BlocProvider(create: (context) => NotificationCubit()),
@@ -91,7 +88,7 @@ class AppRoot extends StatelessWidget {
                       backgroundColor: const Color.fromARGB(255, 2, 113, 106))),
               primaryColor: const Color.fromARGB(255, 2, 113, 106)),
           debugShowCheckedModeBanner: false,
-          home: SplashScreen(),
+          home: const SplashScreen(),
         ));
   }
 }

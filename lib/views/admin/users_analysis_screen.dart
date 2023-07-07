@@ -5,7 +5,6 @@ import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 
-
 class UsersAnalysisScreen extends StatefulWidget {
   UsersAnalysisScreen({super.key});
 
@@ -20,7 +19,7 @@ class _UsersAnalysisScreenState extends State<UsersAnalysisScreen> {
     Color.fromARGB(255, 2, 87, 87)
   ];
 
-   void initState() {
+  void initState() {
     super.initState();
     final adminAnalysisCubit = context.read<AdminAnalysisCubit>();
     adminAnalysisCubit.getUserAnalysis();
@@ -30,67 +29,78 @@ class _UsersAnalysisScreenState extends State<UsersAnalysisScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<AdminAnalysisCubit, AdminAnalysisState>(
-        builder: (context, state) {  
+        builder: (context, state) {
           if (state is GetUserAnalysisSuccessState) {
-            return Column(children: [
-              CustomAppBar(
-                haveLogo: true,
-                haveBackArrow: true,
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              Text(
-                'This pie chart show the percentage of drivers, winch drivers and mechanics using Vewww.',
-                style: AppTextStyle.boldStyle(size: 20),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              PieChart(
-                dataMap: {
-                  "Driver": state.userAnalysisResponse.numOfDrivers!,
-                  "Winch": state.userAnalysisResponse.numOfWinches!,
-                  "Mechanic":
-                      state.userAnalysisResponse.numOfMechanists! ,
-                },
-                animationDuration: Duration(milliseconds: 800),
-                //chartLegendSpacing: 42,
-                chartRadius: MediaQuery.of(context).size.width / 2,
-                colorList: colors,
-                //initialAngleInDegree: 0,
-                chartType: ChartType.disc,
-                ringStrokeWidth: 32,
-                //centerText: "Users",
-                legendOptions: LegendOptions(
-                  showLegendsInRow: false,
-                  legendPosition: LegendPosition.right,
-                  showLegends: true,
-                  //legendShape: _BoxShape.circle,
-                  legendTextStyle: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                chartValuesOptions: ChartValuesOptions(
-                  showChartValueBackground: true,
-                  showChartValues: true,
-                  showChartValuesInPercentage: false,
-                  showChartValuesOutside: false,
-                  decimalPlaces: 1,
-                ),
-                // gradientList: ---To add gradient colors---
-                // emptyColorGradient: ---Empty Color gradient---
-              )
-            ]);
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CustomAppBar(
+                      haveLogo: true,
+                      haveBackArrow: true,
+                    ),
+                    Expanded(
+                      child: Container(),
+                    ),
+                    Text(
+                      'This pie chart show the percentage of drivers, winch drivers and \nmechanics using Vewww.',
+                      style: AppTextStyle.darkGreyStyle(size: 20),
+                    ),
+                    Expanded(
+                      child: Container(),
+                    ),
+                    PieChart(
+                      dataMap: {
+                        "Driver": state.userAnalysisResponse.numOfDrivers!,
+                        "Winch": state.userAnalysisResponse.numOfWinches!,
+                        "Mechanic": state.userAnalysisResponse.numOfMechanists!,
+                      },
+                      animationDuration: Duration(milliseconds: 800),
+                      //chartLegendSpacing: 42,
+                      chartRadius: MediaQuery.of(context).size.width / 2,
+                      colorList: colors,
+                      //initialAngleInDegree: 0,
+                      chartType: ChartType.disc,
+                      ringStrokeWidth: 32,
+                      //centerText: "Users",
+                      legendOptions: LegendOptions(
+                        showLegendsInRow: false,
+                        legendPosition: LegendPosition.right,
+                        showLegends: true,
+                        //legendShape: _BoxShape.circle,
+                        legendTextStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      chartValuesOptions: ChartValuesOptions(
+                        showChartValueBackground: true,
+                        showChartValues: true,
+                        showChartValuesInPercentage: false,
+                        showChartValuesOutside: false,
+                        decimalPlaces: 1,
+                      ),
+                      // gradientList: ---To add gradient colors---
+                      // emptyColorGradient: ---Empty Color gradient---
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Container(),
+                    ),
+                  ]),
+            );
           } else {
-            return Column(children: [
+            return Column(
+              children: [
                 CustomAppBar(
-                haveLogo: true,
-                haveBackArrow: true,
-              ),
-              Center(child: CircularProgressIndicator(),),
-            ],);
-            
+                  haveLogo: true,
+                  haveBackArrow: true,
+                ),
+                Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ],
+            );
           }
         },
       ),

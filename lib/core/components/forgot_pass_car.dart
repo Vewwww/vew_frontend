@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../style/app_Text_Style/app_text_style.dart';
 
 Widget forgotPassCard({
@@ -18,10 +17,10 @@ Widget forgotPassCard({
                   children: [
                     Icon(
                       icon,
-                      color: Color.fromRGBO(2, 113, 106, 1),
+                      color: const Color.fromRGBO(2, 113, 106, 1),
                       size: 40,
                     ),
-                    SizedBox(width: 15,),
+                    const SizedBox(width: 15,),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

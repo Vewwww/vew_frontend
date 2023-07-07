@@ -25,7 +25,7 @@ class DiagnoseResult {
     caseKeyWords = json['caseKeyWords'].cast<String>();
     solution = json['solution'];
     serviceId = json['serviceId'] != null
-        ? new Service.fromJson(json['serviceId'])
+        ? Service.fromJson(json['serviceId'])
         : null;
     iV = json['__v'];
     gasStation = json['gasStation'];
@@ -34,17 +34,17 @@ class DiagnoseResult {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['caseKeyWords'] = this.caseKeyWords;
-    data['solution'] = this.solution;
-    if (this.serviceId != null) {
-      data['serviceId'] = this.serviceId!.toJson();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['_id'] = sId;
+    data['caseKeyWords'] = caseKeyWords;
+    data['solution'] = solution;
+    if (serviceId != null) {
+      data['serviceId'] = serviceId!.toJson();
     }
-    data['__v'] = this.iV;
-    data['gasStation'] = this.gasStation;
-    data['maintenanceCenter'] = this.maintenanceCenter;
-    data['mechanic'] = this.mechanic;
+    data['__v'] = iV;
+    data['gasStation'] = gasStation;
+    data['maintenanceCenter'] = maintenanceCenter;
+    data['mechanic'] = mechanic;
     return data;
   }
 }

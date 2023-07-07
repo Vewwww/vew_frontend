@@ -11,16 +11,16 @@ class ServiceResponse {
     if (json['data'] != null) {
       service = <Service>[];
       json['data'].forEach((v) {
-        service!.add(new Service.fromJson(v));
+        service!.add(Service.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['results'] = this.results;
-    if (this.service != null) {
-      data['data'] = this.service!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['results'] = results;
+    if (service != null) {
+      data['data'] = service!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -34,18 +34,18 @@ class Service {
   Service({this.name, this.sId, this.iV});
 
   Service.fromJson(Map<String, dynamic> json) {
-    name = json['name'] != null ? new Name.fromJson(json['name']) : null;
+    name = json['name'] != null ? Name.fromJson(json['name']) : null;
     sId = json['_id'];
     iV = json['__v'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.name != null) {
-      data['name'] = this.name!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (name != null) {
+      data['name'] = name!.toJson();
     }
-    data['_id'] = this.sId;
-    data['__v'] = this.iV;
+    data['_id'] = sId;
+    data['__v'] = iV;
     return data;
   }
 }

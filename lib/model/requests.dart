@@ -2,6 +2,9 @@ import 'package:vewww/model/car_model.dart';
 import 'package:vewww/model/car_type.dart';
 import 'package:vewww/model/location.dart';
 import 'package:vewww/model/name.dart';
+import 'package:vewww/model/services.dart';
+
+import 'car_color.dart';
 
 class RequestResponse {
   List<Request>? previousRequests;
@@ -65,12 +68,12 @@ class CreateRequest {
     return data;
   }
 
-  Map<String, dynamic> toJsonRequest() {
+  Future<Map<String, dynamic>> toJsonRequest()  async{
     final Map<String, dynamic> data = <String, dynamic>{};
     data['driver'] = driver;
     data['car'] = car;
     if (location != null) {
-      data['location'] = location!.toJsonRequest();
+      data['location'] = await location!.toJsonRequest();
     }
     if (winch != null) data['winch'] = winch;
     if (mechanic != null) data['mechanic'] = mechanic;
@@ -84,6 +87,7 @@ class Request {
   String? sId;
   Driver? driver;
   Car? car;
+  Service? service;
   Mechanic? mechanic;
   String? createdAt;
   bool? isWinch;
@@ -93,6 +97,7 @@ class Request {
       this.sId,
       this.driver,
       this.car,
+      this.service,
       this.mechanic,
       this.createdAt,
       this.isWinch,
@@ -103,11 +108,13 @@ class Request {
         json['location'] != null ? Location.fromJson(json['location']) : null;
     sId = json['_id'];
     driver = json['driver'] != null ? Driver.fromJson(json['driver']) : null;
+    service =
+        json['service'] != null ? Service.fromJson(json['service']) : null;
     car = json['car'] != null ? Car.fromJson(json['car']) : null;
     mechanic =
         json['mechanic'] != null ? Mechanic.fromJson(json['mechanic']) : null;
     createdAt = json['created_at'];
-    isWinch = json['isWinch'];
+    isWinch = json['isWinch'] ?? false;
     winch = json['winch'] != null ? Winch.fromJson(json['winch']) : null;
   }
 
@@ -164,7 +171,7 @@ class Car {
   CarType? carType;
   CarModel? carModel;
   String? plateNumber;
-  Color? color;
+  CarColor? color;
   int? iV;
 
   Car(
@@ -182,7 +189,7 @@ class Car {
     carModel =
         json['carModel'] != null ? CarModel.fromJson(json['carModel']) : null;
     plateNumber = json['plateNumber'];
-    color = json['color'] != null ? Color.fromJson(json['color']) : null;
+    color = json['color'] != null ? CarColor.fromJson(json['color']) : null;
     iV = json['__v'];
   }
 
@@ -198,70 +205,6 @@ class Car {
       data['color'] = color!.toJson();
     }
     data['__v'] = iV;
-    return data;
-  }
-}
-
-// class CarType {
-//   Name? name;
-//   String? sId;
-
-//   CarType({this.name, this.sId});
-
-//   CarType.fromJson(Map<String, dynamic> json) {
-//     name = json['name'] != null ? new Name.fromJson(json['name']) : null;
-//     sId = json['_id'];
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     if (this.name != null) {
-//       data['name'] = this.name!.toJson();
-//     }
-//     data['_id'] = this.sId;
-//     return data;
-//   }
-// }
-
-// class Name {
-//   String? ar;
-//   String? en;
-
-//   Name({this.ar, this.en});
-
-//   Name.fromJson(Map<String, dynamic> json) {
-//     ar = json['ar'];
-//     en = json['en'];
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['ar'] = this.ar;
-//     data['en'] = this.en;
-//     return data;
-//   }
-// }
-
-class Color {
-  Name? name;
-  String? sId;
-  String? code;
-
-  Color({this.name, this.sId, this.code});
-
-  Color.fromJson(Map<String, dynamic> json) {
-    name = json['name'] != null ? Name.fromJson(json['name']) : null;
-    sId = json['_id'];
-    code = json['code'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (name != null) {
-      data['name'] = name!.toJson();
-    }
-    data['_id'] = sId;
-    data['code'] = code;
     return data;
   }
 }

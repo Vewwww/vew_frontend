@@ -33,7 +33,7 @@ Widget uaserCard({
         padding: const EdgeInsets.all(10.0),
         child: Row(children: [
           Icon(icon, color: mainColor, size: 25,),
-          SizedBox(width: 30,),
+          const SizedBox(width: 30,),
           Text(title, style: AppTextStyle.mainStyle(size: 20),),
         ],),
       ),

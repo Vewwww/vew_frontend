@@ -24,12 +24,12 @@ class SingleChat extends StatefulWidget {
 
 class _SingleChatState extends State<SingleChat> {
   final TextEditingController _message = TextEditingController();
-  IO.Socket? socket;
   @override
   void initState() {
     initSocket();
     super.initState();
   }
+  IO.Socket? socket;
 
   initSocket() {
     socket = IO.io("https://vewwwapi.onrender.com/", <String, dynamic>{

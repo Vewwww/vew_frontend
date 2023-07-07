@@ -12,17 +12,17 @@ class UserAnalysisResponse {
 
   UserAnalysisResponse.fromJson(Map<String, dynamic> json) {
     numOfAllUsers = json['numOfAllUsers'];
-    numOfMechanists = json['numOfMechanists']*1.0;
-    numOfWinches = json['numOfWinches']*1.0;
-    numOfDrivers = json['numOfDrivers']*1.0;
+    numOfMechanists = json['numOfMechanists'] * 1.0;
+    numOfWinches = json['numOfWinches'] * 1.0;
+    numOfDrivers = json['numOfDrivers'] * 1.0;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['numOfAllUsers'] = this.numOfAllUsers;
-    data['numOfMechanists'] = this.numOfMechanists;
-    data['numOfWinches'] = this.numOfWinches;
-    data['numOfDrivers'] = this.numOfDrivers;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['numOfAllUsers'] = numOfAllUsers;
+    data['numOfMechanists'] = numOfMechanists;
+    data['numOfWinches'] = numOfWinches;
+    data['numOfDrivers'] = numOfDrivers;
     return data;
   }
 }
@@ -34,14 +34,14 @@ class GenderAnalysisResponse {
   GenderAnalysisResponse({this.maleRatio, this.femaleRatio});
 
   GenderAnalysisResponse.fromJson(Map<String, dynamic> json) {
-    maleRatio = json['maleRatio']*1.0;
-    femaleRatio = json['femaleRatio']*1.0;
+    maleRatio = json['maleRatio'] * 1.0;
+    femaleRatio = json['femaleRatio'] * 1.0;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['maleRatio'] = this.maleRatio;
-    data['femaleRatio'] = this.femaleRatio;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['maleRatio'] = maleRatio;
+    data['femaleRatio'] = femaleRatio;
     return data;
   }
 }
@@ -52,39 +52,39 @@ class SeasonAnalysisResponse {
   SeasonAnalysisResponse({this.season});
 
   SeasonAnalysisResponse.fromJson(Map<String, dynamic> json) {
-    season = json['data'] != null ? new Season.fromJson(json['data']) : null;
+    season = json['data'] != null ? Season.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.season != null) {
-      data['data'] = this.season!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (season != null) {
+      data['data'] = season!.toJson();
     }
     return data;
   }
 }
 
 class Season {
-  int? summer;
-  int? winter;
-  int? autumn;
-  int? spring;
+  double? summer;
+  double? winter;
+  double? autumn;
+  double? spring;
 
   Season({this.summer, this.winter, this.autumn, this.spring});
 
   Season.fromJson(Map<String, dynamic> json) {
-    summer = json['summer'];
-    winter = json['winter'];
-    autumn = json['autumn'];
-    spring = json['spring'];
+    if (json['summer'] != null) summer = json['summer'] * 1.0;
+    if (json['winter'] != null) winter = json['winter'] * 1.0;
+    if (json['autumn'] != null) autumn = json['autumn'] * 1.0;
+    if (json['spring'] != null) spring = json['spring'] * 1.0;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['summer'] = this.summer;
-    data['winter'] = this.winter;
-    data['autumn'] = this.autumn;
-    data['spring'] = this.spring;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['summer'] = summer;
+    data['winter'] = winter;
+    data['autumn'] = autumn;
+    data['spring'] = spring;
     return data;
   }
 }

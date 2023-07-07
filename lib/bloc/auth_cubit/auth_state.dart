@@ -19,6 +19,8 @@ class LogoutSuccessState extends AuthState {}
 
 class LogoutErrorState extends AuthState {}
 
+
+
 class SignUpLoadingState extends AuthState {}
 
 class SignUpSuccessState extends AuthState {

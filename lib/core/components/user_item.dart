@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/style/app_colors.dart';
 
 import '../style/app_Text_Style/app_text_style.dart';
@@ -9,7 +8,6 @@ Widget userItem({
   required String subtitle,
   required Function() function,
   required IconData icon,
-  // required Function() suspendFunction,
 }) {
   return Container(
     height: 70,
@@ -42,7 +40,7 @@ Widget userItem({
               color: mainColor,
               size: 50,
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Column(

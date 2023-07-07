@@ -31,22 +31,22 @@ abstract class Repairer {
     location =
         json['location'] != null ? Location.fromJson(json['location']) : null;
     sId = json['_id'];
-    if (json["distance"] != null)
-      distance = double.parse((json['distance']).toStringAsFixed(2));
+    if (json["distance"] != null) {
+      distance = double.parse((json['distance'] * 1.0).toStringAsFixed(2));
+    }
     phoneNumber = json['phoneNumber'];
-    //print("object 111 ${json['rate']}");
     if (json['rate'] != null) rate = json['rate'] * 1.0;
-    if (isMechanic)
+    if (isMechanic) {
       ratesNumber = json['numOfRates'];
-    else
+    } else {
       ratesNumber = json['ratesNumber'];
+    }
   }
 }
 
 class MaintenanceCenter extends Repairer {
   List<CarType>? carType;
   bool? isVerified;
-  //TODO::ask back about  iv meaning
   int? iV;
 
   MaintenanceCenter(
@@ -69,21 +69,17 @@ class MaintenanceCenter extends Repairer {
 
   MaintenanceCenter.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
     name = json['name'] != null ? Name.fromJson(json['name']) : null;
-    //print("here 14");
     location =
         json['location'] != null ? Location.fromJson(json['location']) : null;
-    //print("here 13");
     sId = json['_id'];
-    //print("here 12");
     phoneNumber = json['phoneNumber'];
     if (json['carType'] != null) {
       carType = <CarType>[];
       json['carType'].forEach((v) {
-        carType!.add(CarType.fromJson(v));
+        carType!.add((v is String) ? CarType(sId: v) : CarType.fromJson(v));
       });
     }
     isVerified = json['isVerified'];
-    //print("here 11");
     rate = json['rate'] * 1.0;
     ratesNumber = json['ratesNumber'];
     iV = json['__v'];
@@ -106,6 +102,26 @@ class MaintenanceCenter extends Repairer {
     data['rate'] = rate;
     data['ratesNumber'] = ratesNumber;
     data['__v'] = iV;
+    return data;
+  }
+
+  Map<String, dynamic> toAddJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (name != null) {
+      data['name'] = name!.toJson();
+    }
+    if (location != null) {
+      data['location'] = location!.toJson();
+    }
+    if (sId != null) data['_id'] = sId;
+    if (phoneNumber != null) data['phoneNumber'] = phoneNumber;
+    if (carType != null) {
+      data['carType'] = carType!.map((v) => v.sId).toList();
+    }
+    data['isVerified'] = isVerified ?? true;
+    if (rate != null) data['rate'] = rate;
+    if (ratesNumber != null) data['ratesNumber'] = ratesNumber;
+    if (iV != null) data['__v'] = iV;
     return data;
   }
 }
@@ -203,15 +219,15 @@ class GasStation extends Repairer {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.name != null) {
-      data['name'] = this.name!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (name != null) {
+      data['name'] = name!.toJson();
     }
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
+    if (location != null) {
+      data['location'] = location!.toJson();
     }
-    data['_id'] = this.sId;
-    data['__v'] = this.iV;
+    data['_id'] = sId;
+    data['__v'] = iV;
     return data;
   }
 }
@@ -253,20 +269,20 @@ class Place extends Repairer {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.name != null) {
-      data['name'] = this.name!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (name != null) {
+      data['name'] = name!.toJson();
     }
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
+    if (location != null) {
+      data['location'] = location!.toJson();
     }
-    data['_id'] = this.sId;
-    data['phoneNumber'] = this.phoneNumber;
-    data['carType'] = this.carType;
-    data['isVerified'] = this.isVerified;
-    data['rate'] = this.rate;
-    data['ratesNumber'] = this.ratesNumber;
-    data['__v'] = this.iV;
+    data['_id'] = sId;
+    data['phoneNumber'] = phoneNumber;
+    data['carType'] = carType;
+    data['isVerified'] = isVerified;
+    data['rate'] = rate;
+    data['ratesNumber'] = ratesNumber;
+    data['__v'] = iV;
     return data;
   }
 }

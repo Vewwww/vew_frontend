@@ -7,15 +7,15 @@ class CarModelResponse {
     if (json['data'] != null) {
       carModels = <CarModel>[];
       json['data'].forEach((v) {
-        carModels!.add(new CarModel.fromJson(v));
+        carModels!.add(CarModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.carModels != null) {
-      data['data'] = this.carModels!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (carModels != null) {
+      data['data'] = carModels!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -29,7 +29,7 @@ class CarModel {
 
   CarModel({this.sId, this.name, this.brand, this.iV});
   CarModel clone(){
-    return CarModel(brand: this.brand , name: this.name , iV: this.iV , sId: this.sId);
+    return CarModel(brand: brand , name: name , iV: iV , sId: sId);
   }
 
   CarModel.fromJson(Map<String, dynamic> json) {
@@ -40,11 +40,11 @@ class CarModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['brand'] = this.brand;
-    data['__v'] = this.iV;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['name'] = name;
+    data['brand'] = brand;
+    data['__v'] = iV;
     return data;
   }
 }

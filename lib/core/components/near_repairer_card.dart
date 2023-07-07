@@ -3,42 +3,38 @@ import 'package:vewww/core/components/rating_bar.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
-import 'package:vewww/views/admin/view_gas_stations_screen.dart';
 import 'package:vewww/views/driver/gas_stattion_preview.dart';
-import 'package:vewww/views/driver/mechanic_preview_screen.dart';
 import 'package:vewww/views/driver/which_car_screen.dart';
 import '../../model/repairer.dart';
 import '../../views/driver/maintenance_center_preview.dart';
 import '../utils/navigation.dart';
 
 class NearRepairerCard extends StatelessWidget {
-  NearRepairerCard({required this.repairer, Key? key}) : super(key: key) {
-    print(repairer.name!.ar);
-  }
+  NearRepairerCard({required this.repairer, Key? key}) : super(key: key);
   Repairer repairer;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        //TODO::navigate to repairer profile
-        if (repairer is MaintenanceCenter)
+        if (repairer is MaintenanceCenter) {
           NavigationUtils.navigateTo(
               context: context,
               destinationScreen: MaintenanceCenterPreview(
                 maintenanceCenter: repairer as MaintenanceCenter,
               ));
-        else if (repairer is GasStation) {
+        } else if (repairer is GasStation) {
           NavigationUtils.navigateTo(
               context: context,
               destinationScreen: GasStationPreview(
                 gasStation: repairer as GasStation,
               ));
         } else if (repairer is Mechanic) {
-          String id=SharedPreferencesHelper.getData( key: 'vewId');
+          String id = SharedPreferencesHelper.getData(key: 'vewId');
           NavigationUtils.navigateTo(
               context: context,
-              destinationScreen: WhichCarScreen(id: id, isWinch: false,repairer:repairer as Mechanic ));
+              destinationScreen: WhichCarScreen(
+                  id: id, isWinch: false, repairer: repairer as Mechanic));
         }
       },
       child: Container(
@@ -86,7 +82,7 @@ class NearRepairerCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 5),
                 (repairer.rate != null)
-                    ? RatingBar(repairer.rate!)
+                    ? AppRatingBar(repairer.rate!)
                     : Container(),
                 const SizedBox(height: 15),
                 (repairer.distance != null)
@@ -112,7 +108,7 @@ class NearRepairerCard extends StatelessWidget {
                       (repairer is GasStation &&
                               repairer.location != null &&
                               repairer.location!.description != null)
-                          ? "${repairer.location!.description!.en ?? ''}"
+                          ? repairer.location!.description!.en ?? ''
                           : "",
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyle.greyStyle(size: 15)),

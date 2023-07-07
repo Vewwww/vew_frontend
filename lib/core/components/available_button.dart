@@ -1,41 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vewww/bloc/profile_cubit/profile_cubit.dart';
 import 'package:vewww/core/style/app_colors.dart';
 
-class AvailableButton extends StatefulWidget {
-  const AvailableButton({Key? key}) : super(key: key);
+class AvailableButton extends StatelessWidget {
+  AvailableButton({Key? key}) : super(key: key);
 
-  @override
-  State<AvailableButton> createState() => _AvailableButtonState();
-}
-class _AvailableButtonState extends State<AvailableButton> {
   bool value = false;
   String title = "Not Available";
   Color color = Colors.grey;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Switch(
-          
-            activeColor: mainColor,
-            value: value,
-            onChanged: (bool state) {
-              setState(() {
-                value = state;
-                if (state) {
-                  color = mainColor;
-                  title = "Available";
-                } else {
-                  color = Colors.grey;
-                  title = "Not Available";
-                }
-              });
-            }),
-        Text(
-          title,
-          style: TextStyle(color: color),
-        )
-      ],
+    var cubit = ProfileCubit.get(context);
+    return BlocConsumer<ProfileCubit, ProfileState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return Row(
+          children: [
+            Switch(
+                activeColor: mainColor,
+                value: cubit.isWinchAvailable,
+                onChanged: (bool state) {
+                  cubit.updateWinchState(state);
+                }),
+            Text(
+              cubit.isWinchAvailable ? "متاح" : "مشغول",
+              style: TextStyle(
+                  color: cubit.isWinchAvailable ? mainColor : Colors.grey,
+                  fontSize: 15),
+            ),
+            const SizedBox(width: 7),
+          ],
+        );
+      },
     );
   }
 }

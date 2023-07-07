@@ -52,7 +52,7 @@ class _MechanicProfileState extends State<MechanicProfile> {
                   child: Column(children: [
                     const SizedBox(height: 20),
                     Row(children: [
-                      BackwardArrow(
+                      backwardArrow(
                           iconColor: Colors.white,
                           function: () {
                             NavigationUtils.navigateAndClearStack(
@@ -80,7 +80,7 @@ class _MechanicProfileState extends State<MechanicProfile> {
                                   .mechanicProfileResponse!.mechanicShop!.name!,
                               style: AppTextStyle.whiteTextStyle(28),
                             ),
-                            RatingBar(
+                            AppRatingBar(
                                 profileCubit.mechanicProfileResponse!
                                     .mechanicShop!.rate!,
                                 size: 20),
@@ -188,11 +188,13 @@ class _MechanicProfileState extends State<MechanicProfile> {
                                 const BorderRadius.all(Radius.circular(30))),
                         child: IconButton(
                             onPressed: () {
-                               if (profileCubit.state
+                              if (profileCubit.state
                                   is GettingProfileSuccessState)
-                              NavigationUtils.navigateTo(
-                                  context: context,
-                                  destinationScreen: MechanicEditProfile(profileCubit.mechanicProfileResponse!.mechanicShop! ));
+                                NavigationUtils.navigateTo(
+                                    context: context,
+                                    destinationScreen: MechanicEditProfile(
+                                        profileCubit.mechanicProfileResponse!
+                                            .mechanicShop!));
                             },
                             icon: Icon(Icons.edit_outlined,
                                 color: mainColor, size: 15)),

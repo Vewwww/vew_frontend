@@ -30,52 +30,51 @@ class _ViewMechanicScreenState extends State<ViewMechanicScreen> {
             style: AppTextStyle.mainStyle(size: 25),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: TextFormField(
-            controller: searchController,
-            decoration: const InputDecoration(
-              labelText: 'Search',
-              prefixIcon: Icon(
-                Icons.search,
-              ),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(30))),
-            ),
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(horizontal: 15),
+        //   child: TextFormField(
+        //     controller: searchController,
+        //     decoration: const InputDecoration(
+        //       labelText: 'Search',
+        //       prefixIcon: Icon(
+        //         Icons.search,
+        //       ),
+        //       border: OutlineInputBorder(
+        //           borderRadius: BorderRadius.all(Radius.circular(30))),
+        //     ),
+        //   ),
+        // ),
         BlocBuilder<GetAllCubit, GetAllState>(
           builder: (context, state) {
             print(state);
-           if(state is GetAllMechanicShopSuccessState) {
-            return Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: ListView.separated(
-                  itemBuilder: (contrxt, index) => userItem(
-                    icon: Icons.handyman_outlined,
-                      title: state.mechanicShops[index].ownerName!,
-                      subtitle: state.mechanicShops[index].email!,
-                      function: (){
-                        String mechanicId = state.mechanicShops[index].sId!;
-                        String role = state.mechanicShops[index].role!;
-                        Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) =>
-                                        OtherUsersScreen(id: mechanicId,role:role))));
-                      }
-                      ),
-                  separatorBuilder: (context, index) => const SizedBox(
-                    height: 15,
+            if (state is GetAllMechanicShopSuccessState) {
+              return Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: ListView.separated(
+                    itemBuilder: (contrxt, index) => userItem(
+                        icon: Icons.handyman_outlined,
+                        title: state.mechanicShops[index].ownerName!,
+                        subtitle: state.mechanicShops[index].email!,
+                        function: () {
+                          String mechanicId = state.mechanicShops[index].sId!;
+                          String role = state.mechanicShops[index].role!;
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => OtherUsersScreen(
+                                      id: mechanicId, role: role))));
+                        }),
+                    separatorBuilder: (context, index) => const SizedBox(
+                      height: 15,
+                    ),
+                    itemCount: state.mechanicShops.length,
                   ),
-                  itemCount: state.mechanicShops.length,
                 ),
-              ),
-            );
-          } else{
-            return CircularProgressIndicator();
-          }
+              );
+            } else {
+              return CircularProgressIndicator();
+            }
           },
         ),
       ]),

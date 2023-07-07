@@ -27,6 +27,7 @@ class Person {
   String? name;
   String? token;
   String? email;
+  bool? available;
   String? password;
   String? phoneNumber;
   String? gender;
@@ -45,6 +46,7 @@ class Person {
       this.password,
       this.phoneNumber,
       this.gender,
+      this.available,
       this.role,
       this.token,
       this.lisenceRenewalDate,
@@ -62,6 +64,7 @@ class Person {
     phoneNumber = json['phoneNumber'];
     gender = json['gender'];
     role = json['role'];
+    available = json['available'];
     lisenceRenewalDate = json['lisenceRenewalDate'];
     isSuspended = json['isSuspended'];
     emailConfirm = json['emailConfirm'];

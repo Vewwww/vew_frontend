@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:vewww/controllers/controller.dart';
 import 'package:vewww/core/components/empty_requests.dart';
 import 'package:vewww/views/winch/winch_home_page.dart';
 import 'package:vewww/views/winch/winch_profile.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../../bloc/chat_cubit/chat_cubit.dart';
 import '../../bloc/new_request_cubit/new_request_cubit.dart';
+import '../../bloc/profile_cubit/profile_cubit.dart';
 import '../../bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
 import '../../core/components/app_nav_bar.dart';
+import '../../core/components/available_button.dart';
 import '../../core/components/coming_request_card.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/sidebar.dart';
@@ -33,6 +37,9 @@ class _WinchUpcomingRequestsScreenState
     chatCubit.getWinchChats();
     var newRequestCubit = context.read<NewRequestCubit>();
     newRequestCubit.setHaveNew(false);
+    var profileCubit = context.read<ProfileCubit>();
+    if (profileCubit.winchDriverResponse == null)
+      profileCubit.getWinchProfile();
     var repairerRequestsCubit = context.read<RepairerRequestsCubit>();
     repairerRequestsCubit.winchUpComingRequests();
   }
@@ -49,6 +56,16 @@ class _WinchUpcomingRequestsScreenState
       print('Connection established');
       socket!.emit('join-room', {'room': id});
       print('joined room');
+    });
+    socket!.on("upload-winch-location", (data) async {
+      print("listend to upload winch location event");
+      Position location = await Controller.getLocation();
+      var data = {
+        "id": SharedPreferencesHelper.getData(key: "vewId"),
+        "latitude": location.latitude,
+        "longitude": location.longitude,
+      };
+      socket!.emit("update-winch-location", data);
     });
     socket!.on("new-request", (data) {
       print("new request created");
@@ -129,6 +146,7 @@ class _WinchUpcomingRequestsScreenState
                   );
               },
             )),
+            actions: [AvailableButton()],
             haveLogo: true,
           ),
           Expanded(child: Container()),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/core/components/rating_bar.dart';
 import 'dart:math';
-
 import '../style/app_Text_Style/app_text_style.dart';
 import '../style/app_colors.dart';
 import 'default_button.dart';
@@ -15,7 +14,7 @@ Widget requestCard(
     {required bool isWinch,
     required String name,
     required double rate,
-    required String thirdVal,
+    String? thirdVal,
     required String requestState,
     double? distance,
     required Function() function}) {
@@ -58,7 +57,7 @@ Widget requestCard(
                 color: Colors.white,
               ),
       ),
-      SizedBox(
+      const SizedBox(
         width: 7,
       ),
       Column(
@@ -68,16 +67,19 @@ Widget requestCard(
             name,
             style: AppTextStyle.darkGreyStyle(size: 15),
           ),
-          Text(
-            thirdVal,
-            style: AppTextStyle.darkGreyStyle(size: 15),
-          ),
-          (rate != null)
-              ? RatingBar(
-                  rate,
-                  size: 12,
+          (thirdVal == null)
+              ? Text(
+                  isWinch ? "winch" : "mechanic",
+                  style: AppTextStyle.darkGreyStyle(size: 15),
                 )
-              : Container(),
+              : Text(
+                  thirdVal,
+                  style: AppTextStyle.darkGreyStyle(size: 15),
+                ),
+          AppRatingBar(
+            rate,
+            size: 12,
+          ),
           (distance != null)
               ? Row(
                   children: [
@@ -100,7 +102,10 @@ Widget requestCard(
           SizedBox(
               height: 30,
               child: defaultButton(
-                  text: 'Cancel', width: 100, function: function)),
+                  text: 'Cancel',
+                  width: 100,
+                  function: function,
+                  textSize: 13)),
         ],
       )
     ]),

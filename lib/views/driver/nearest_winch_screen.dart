@@ -8,8 +8,7 @@ import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/model/requests.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
-import 'package:vewww/views/driver/requests_screen.dart';
-
+import 'package:vewww/views/driver/pendding_requests_screen.dart';
 import '../../core/components/nearest_winch_card.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
 import '../../model/location.dart';
@@ -17,7 +16,7 @@ import '../../model/name.dart';
 
 class NearestWinchScreen extends StatefulWidget {
   String carId;
-   NearestWinchScreen({super.key, required this.carId});
+  NearestWinchScreen({super.key, required this.carId});
 
   @override
   State<NearestWinchScreen> createState() => _NearestWinchScreenState(carId);
@@ -76,16 +75,26 @@ class _NearestWinchScreenState extends State<NearestWinchScreen> {
                           car: widget.carId,
                           location: location,
                           winch: state.nearestWinch[index].sId,
-
                         );
-                        requestCubit.createWinchRequest(createRequest);
-                        Navigator.push(
+                        await requestCubit.createWinchRequest(createRequest);
+                        if (state is! CreateWinchRequestErrorState) {
+                          print("hererere");
+                          const snackBar = SnackBar(
+                              content: Text("Request Created successfully"));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                                builder: ((context) => RequestScreen(
-                                  
-                                      isWinch: true,
-                                    ))));
+                                builder: ((context) =>
+                                    PenddingRequestsScreen())),
+                            (route) => false,
+                          );
+                        } else {
+                          const snackBar = SnackBar(
+                              content:
+                                  Text("Something went wrong try again !"));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
                       }),
                   separatorBuilder: (context, index) => const SizedBox(
                     height: 15,

@@ -8,18 +8,17 @@ class UpcomingRequestsResponse {
 
   UpcomingRequestsResponse.fromJson(Map<String, dynamic> json) {
     newRequests = json['newRequests'];
-    print("obj 1");
     if (json['data'] != null) {
       data = <MechanicRequestsData>[];
       json['data'].forEach((v) {
-        data!.add(new MechanicRequestsData.fromJson(v));
+        data!.add(MechanicRequestsData.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['newRequests'] = this.newRequests;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['newRequests'] = newRequests;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }

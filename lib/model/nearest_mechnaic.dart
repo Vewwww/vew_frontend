@@ -1,5 +1,3 @@
-import 'package:vewww/model/location.dart';
-
 import 'repairer.dart';
 
 class NearestMechanicResponse{

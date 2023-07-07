@@ -104,6 +104,7 @@ class AuthCubit extends Cubit<AuthState> {
       SharedPreferencesHelper.saveData(key: 'vewToken', value: person.token);
       SharedPreferencesHelper.saveData(key: 'vewRole', value: person.role);
       SharedPreferencesHelper.saveData(key: 'vewId', value: person.sId);
+      
       emit(SignInSuccessState());
     }).catchError((err) {
       if (err is DioError) {
@@ -123,7 +124,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> logout() async {
-    print("driver logout request : ${driver.toJson()}");
+    //print("driver logout request : ${driver.toJson()}");
     emit(LogoutLoadingState());
     await DioHelper.getData(
       url: "/allusers/logout/",
@@ -139,6 +140,7 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
+  
   Future sendResetPasswordCode(String email) async {
     emit(SendingCodeLoadingState());
     await DioHelper.postData(

@@ -10,8 +10,6 @@ import '../../core/utils/navigation.dart';
 import '../common/map.dart';
 
 class RequestWinchScreen extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     LocationCubit loactionCubit = LocationCubit.get(context);
@@ -21,7 +19,7 @@ class RequestWinchScreen extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        leading: BackwardArrow(function: () {
+        leading: backwardArrow(function: () {
           NavigationUtils.navigateTo(
               context: context, destinationScreen: const DriverHomeScreen());
         }),
@@ -41,16 +39,24 @@ class RequestWinchScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(child: Image.asset('assets/images/Logo(1).png',height: 170,width:200 ,)),
+                  Center(
+                      child: Image.asset(
+                    'assets/images/Logo(1).png',
+                    height: 170,
+                    width: 200,
+                  )),
                   Text(
                     'Please enter your current location here: ',
                     style: AppTextStyle.darkGreyStyle(size: 18),
                   ),
-                  const SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Flexible(
                     child: Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 7),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 5, vertical: 7),
                       //height: 50,
                       decoration: BoxDecoration(
                           color: Colors.grey.shade200,
@@ -87,7 +93,9 @@ class RequestWinchScreen extends StatelessWidget {
                   //       await loactionCubit.getPermission();
                   //       loactionCubit.getAddress();
                   //     }),
-                  const SizedBox(height: 15,),
+                  const SizedBox(
+                    height: 15,
+                  ),
                   BlocConsumer<LocationCubit, LocationState>(
                     listener: (context, state) {},
                     builder: (context, state) {
