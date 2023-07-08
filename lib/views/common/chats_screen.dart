@@ -5,13 +5,11 @@ import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import 'package:vewww/views/mechanic/mechanic_home_screen.dart';
 import 'package:vewww/views/winch/winch_home_page.dart';
-
 import '../../bloc/chat_cubit/chat_cubit.dart';
 import '../../core/components/chat_head_element.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/style/app_colors.dart';
 import '../../core/utils/navigation.dart';
-import '../../model/chat.dart';
 import '../driver/driver_home_screen.dart';
 
 class ChatsScreen extends StatefulWidget {
@@ -27,11 +25,13 @@ class _ChatsScreenState extends State<ChatsScreen> {
     super.initState();
     var chatCubit = context.read<ChatCubit>();
     String role = SharedPreferencesHelper.getData(key: "vewRole");
-    if (role == "winch")
+    if (role == "winch") {
       chatCubit.getWinchChats();
-    else if (role == "user")
+    } else if (role == "user") {
       chatCubit.getDriverChats();
-    else if (role == "mechanic") chatCubit.getMechanicChats();
+    } else if (role == "mechanic") {
+      chatCubit.getMechanicChats();
+    }
   }
 
   @override
@@ -55,10 +55,9 @@ class _ChatsScreenState extends State<ChatsScreen> {
                 onPressed: () {
                   String role = SharedPreferencesHelper.getData(key: "vewRole");
                   NavigationUtils.navigateTo(
-                      //TODO::Check role
                       context: context,
                       destinationScreen: (role == "user")
-                          ? DriverHomeScreen()
+                          ? const DriverHomeScreen()
                           : (role == "winch")
                               ? WinchHomePage()
                               : MechanicHomeScreen());
@@ -71,31 +70,30 @@ class _ChatsScreenState extends State<ChatsScreen> {
           BlocBuilder<ChatCubit, ChatState>(
             builder: (context, state) {
               if (state is GettingChatsSuccessState) {
-                print(state);
-                if (state.chats.length > 0)
+                if (state.chats.isNotEmpty) {
                   return Expanded(
                       child: ListView.builder(
                           itemCount: state.chats.length,
                           itemBuilder: (context, index) {
-                            print(
-                                "$index , ${state.chats.length} ,${state.chats[index]}");
                             return ChatHeadElement(chat: state.chats[index]);
                           }));
-                else
+                } else {
                   return SizedBox(
                     height: 400,
                     child: EmptyRequests(
                       text: "No chats",
                     ),
                   );
-              } else
+                }
+              } else {
                 return Center(
                     child: Column(
                   children: [
                     SizedBox(height: MediaQuery.of(context).size.height / 3),
-                    CircularProgressIndicator(),
+                    const CircularProgressIndicator(),
                   ],
                 ));
+              }
             },
           )
         ],

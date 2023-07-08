@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/profile_cubit/profile_cubit.dart';
-import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/components/rating_bar.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/views/winch/winch_home_page.dart';

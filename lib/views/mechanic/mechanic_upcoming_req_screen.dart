@@ -15,7 +15,7 @@ import '../../core/utils/sp_helper/cache_helper.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class MechanicUpComingReqScreen extends StatefulWidget {
-  MechanicUpComingReqScreen({super.key});
+  const MechanicUpComingReqScreen({super.key});
 
   @override
   State<MechanicUpComingReqScreen> createState() =>
@@ -23,7 +23,7 @@ class MechanicUpComingReqScreen extends StatefulWidget {
 }
 
 class _MechanicUpComingReqScreenState extends State<MechanicUpComingReqScreen> {
-  GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
@@ -45,20 +45,18 @@ class _MechanicUpComingReqScreenState extends State<MechanicUpComingReqScreen> {
     });
     socket!.connect();
     socket!.onConnect((_) {
-      print('Connection established');
+      debugPrint('Connection established');
       socket!.emit('join-room', {'room': id});
-      print('joined room');
     });
     socket!.on("new-request", (data) {
-      print("new request created");
       var requestCubit = context.read<RepairerRequestsCubit>();
       var newRequestCubit = context.read<NewRequestCubit>();
       newRequestCubit.setHaveNew(false);
-        requestCubit.mechanicUpComingRequests();
+      requestCubit.mechanicUpComingRequests();
     });
-    socket!.onDisconnect((_) => print('Connection Disconnection'));
-    socket!.onConnectError((err) => print(err));
-    socket!.onError((err) => print(err));
+    socket!.onDisconnect((_) => debugPrint('Connection Disconnection'));
+    socket!.onConnectError((err) => debugPrint(err));
+    socket!.onError((err) => debugPrint(err));
   }
 
   @override
@@ -70,7 +68,7 @@ class _MechanicUpComingReqScreenState extends State<MechanicUpComingReqScreen> {
         function: () {
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => MechanicProfile()),
+              MaterialPageRoute(builder: (context) => const MechanicProfile()),
               (route) => true);
         },
       ),
@@ -78,14 +76,15 @@ class _MechanicUpComingReqScreenState extends State<MechanicUpComingReqScreen> {
         homeFunction: () {
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => MechanicHomeScreen()),
+              MaterialPageRoute(
+                  builder: (context) => const MechanicHomeScreen()),
               (route) => false);
         },
         upComingReqFunction: () {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => MechanicUpComingReqScreen(),
+                builder: (context) => const MechanicUpComingReqScreen(),
               ));
         },
       ),
@@ -106,7 +105,7 @@ class _MechanicUpComingReqScreenState extends State<MechanicUpComingReqScreen> {
                             ChatCubit.get(context).chatResponse!.newChats!))
                         ? Stack(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.menu,
                                 size: 30,
                                 color: Colors.grey,
@@ -121,7 +120,7 @@ class _MechanicUpComingReqScreenState extends State<MechanicUpComingReqScreen> {
                               )
                             ],
                           )
-                        : Icon(
+                        : const Icon(
                             Icons.menu,
                             size: 30,
                             color: Colors.grey,
@@ -131,8 +130,6 @@ class _MechanicUpComingReqScreenState extends State<MechanicUpComingReqScreen> {
             haveLogo: true,
           ),
           Expanded(child: Container()),
-          //TODO::uncomment
-          //(comingRequests.length > 0)?
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
             child: Text(
@@ -143,31 +140,31 @@ class _MechanicUpComingReqScreenState extends State<MechanicUpComingReqScreen> {
           Expanded(child: Container()),
           BlocBuilder<RepairerRequestsCubit, RepairerRequestsState>(
             builder: (context, state) {
-              print(state);
-              if (state
-                  is GettingUpComingRequestsSuccessState) if (repairerRequestsCubit
-                      .upcomingRequestsResponse!.data!.length >
-                  0)
-                return Expanded(
-                    flex: 70,
-                    child: ListView.builder(
-                        itemCount: repairerRequestsCubit
-                            .upcomingRequestsResponse!.data!.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return ComingRequestCard(
-                              mechanicRequestsData: repairerRequestsCubit
-                                  .upcomingRequestsResponse!.data![index]);
-                        }));
-              else
-                return SizedBox(height: 500, child: EmptyRequests());
-              else
+              if (state is GettingUpComingRequestsSuccessState) {
+                if (repairerRequestsCubit
+                    .upcomingRequestsResponse!.data!.isNotEmpty) {
+                  return Expanded(
+                      flex: 70,
+                      child: ListView.builder(
+                          itemCount: repairerRequestsCubit
+                              .upcomingRequestsResponse!.data!.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return ComingRequestCard(
+                                mechanicRequestsData: repairerRequestsCubit
+                                    .upcomingRequestsResponse!.data![index]);
+                          }));
+                } else {
+                  return SizedBox(height: 500, child: EmptyRequests());
+                }
+              } else {
                 return Center(
                     child: Column(
                   children: [
                     SizedBox(height: MediaQuery.of(context).size.height / 3),
-                    CircularProgressIndicator(),
+                    const CircularProgressIndicator(),
                   ],
                 ));
+              }
             },
           ),
           Expanded(child: Container()),

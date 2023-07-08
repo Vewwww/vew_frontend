@@ -22,17 +22,13 @@ class MechanicPreviewScreen extends StatefulWidget {
   repairer.Mechanic mechanic;
   String carId;
   MechanicPreviewScreen(
-      {required this.mechanic, super.key, required this.carId}) {
-    //print("current mechanic : ${mechanic.toJson()}");
-  }
+      {required this.mechanic, super.key, required this.carId});
 
   @override
   State<MechanicPreviewScreen> createState() =>
       _MechanicPreviewScreenState(carId);
 }
 
-// 649ee904e9d7a001ee231275
-// 649ee904e9d7a001ee231275
 class _MechanicPreviewScreenState extends State<MechanicPreviewScreen> {
   _MechanicPreviewScreenState(this.carId);
   IO.Socket? socket;
@@ -44,20 +40,17 @@ class _MechanicPreviewScreenState extends State<MechanicPreviewScreen> {
     });
     socket!.connect();
     socket!.onConnect((_) {
-      print('Connection established');
       socket!.emit('join-room', {'room': id});
-      print('joined room');
     });
     socket!.on("request-accepted-or-rejected", (data) {
-      print("request-accepted-or-rejected  :$data");
       var requestCubit = context.read<RequestCubit>();
       requestCubit.getDriverCurrentReq();
       requestCubit.getDriverPendingReq();
     });
 
-    socket!.onDisconnect((_) => print('Connection Disconnection'));
-    socket!.onConnectError((err) => print(err));
-    socket!.onError((err) => print(err));
+    socket!.onDisconnect((_) => debugPrint('Connection Disconnection'));
+    socket!.onConnectError((err) => debugPrint(err));
+    socket!.onError((err) => debugPrint(err));
   }
 
   @override
@@ -67,7 +60,7 @@ class _MechanicPreviewScreenState extends State<MechanicPreviewScreen> {
       backgroundColor: mainColor,
       body: Column(children: [
         Expanded(
-          child: Container(
+          child: SizedBox(
             width: double.infinity,
             child: Column(
               children: [
@@ -81,21 +74,21 @@ class _MechanicPreviewScreenState extends State<MechanicPreviewScreen> {
                   height: 100,
                   width: 100,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text(
                   widget.mechanic.name!.en ?? widget.mechanic.name!.ar!,
                   style: AppTextStyle.whiteTextStyle(20),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text(
                   "Owner : ${widget.mechanic.ownerName!}",
                   style: AppTextStyle.greyStyle(size: 15),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 AppRatingBar(widget.mechanic.rate!),
@@ -103,14 +96,15 @@ class _MechanicPreviewScreenState extends State<MechanicPreviewScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.phone,
                         color: Colors.white,
                         size: 30,
                       ),
                       onPressed: () async {
-                        if (widget.mechanic.phoneNumber != null)
+                        if (widget.mechanic.phoneNumber != null) {
                           await Controller.call(widget.mechanic.phoneNumber!);
+                        }
                       },
                     ),
                     const SizedBox(
@@ -183,8 +177,6 @@ class _MechanicPreviewScreenState extends State<MechanicPreviewScreen> {
                               : 'Request Mechanic',
                           width: 390,
                           function: () async {
-                            print(
-                                "in mechanic preview screen ${SharedPreferencesHelper.getData(key: "vewToken")}");
                             ServicesCubit servicesCubit =
                                 ServicesCubit.get(context);
                             Position position = await Controller.getLocation();

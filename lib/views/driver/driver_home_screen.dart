@@ -40,195 +40,206 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
     WarningSignCubit warningSignCubit = WarningSignCubit.get(context);
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              CustomAppBar(
-                haveLogo: true,
-                leading: Builder(
-                  builder: (BuildContext context) {
-                    return IconButton(
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                      //tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-                      icon: BlocBuilder<NotificationCubit, NotificationState>(
-                        builder: (context, state) {
-                          if (state is GettingNotificationSuccessState &&
-                              NotificationCubit.get(context).haveNew) {
-                            return Stack(
-                              children: [
-                                const Icon(Icons.menu),
-                                Positioned(
-                                  right: 0,
-                                  top: 1,
-                                  child: CircleAvatar(
-                                    radius: 7,
-                                    backgroundColor: Colors.red.shade900,
-                                  ),
-                                )
-                              ],
-                            );
-                          } else {
-                            return const Icon(Icons.menu);
-                          }
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                CustomAppBar(
+                  haveLogo: true,
+                  leading: Builder(
+                    builder: (BuildContext context) {
+                      return IconButton(
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
                         },
-                      ),
-                      iconSize: 35,
-                      color: const Color.fromRGBO(2, 113, 106, 1),
-                    );
-                  },
-                ),
-                actions: [
-                  IconButton(
-                      onPressed: () {
-                        NavigationUtils.navigateTo(
-                            context: context,
-                            destinationScreen: const SearchScreen());
-                      },
-                      icon: const Icon(
-                        Icons.search,
-                        color: Color.fromRGBO(2, 113, 106, 1),
-                        size: 30,
-                      )),
-                ],
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              homeButton(
-                  buttonIcon: Icons.live_help,
-                  function: () {
-                    DiagnoseCubit.get(context).getAllCategories();
-                    NavigationUtils.navigateTo(
-                        context: context,
-                        destinationScreen: const ChoosePrblemCategoryScreen());
-                  },
-                  text: 'Do Not Know Car Problem',
-                  width: 350,
-                  height: 80),
-              const SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 28),
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  child: const Text(
-                    'Request ',
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
+                        icon: BlocBuilder<ChatCubit, ChatState>(
+                            builder: (context, s) {
+                          return BlocBuilder<NotificationCubit,
+                              NotificationState>(
+                            builder: (context, state) {
+                              if ((state is GettingNotificationSuccessState &&
+                                      NotificationCubit.get(context).haveNew) ||
+                                  (s is GettingChatsSuccessState &&
+                                      ChatCubit.get(context)
+                                          .chatResponse!
+                                          .newChats!)) {
+                                return Stack(
+                                  children: [
+                                    const Icon(Icons.menu),
+                                    Positioned(
+                                      right: 0,
+                                      top: 1,
+                                      child: CircleAvatar(
+                                        radius: 7,
+                                        backgroundColor: Colors.red.shade900,
+                                      ),
+                                    )
+                                  ],
+                                );
+                              } else {
+                                return const Icon(Icons.menu);
+                              }
+                            },
+                          );
+                        }),
+                        iconSize: 35,
+                        color: const Color.fromRGBO(2, 113, 106, 1),
+                      );
+                    },
                   ),
+                  actions: [
+                    IconButton(
+                        onPressed: () {
+                          NavigationUtils.navigateTo(
+                              context: context,
+                              destinationScreen: const SearchScreen());
+                        },
+                        icon: const Icon(
+                          Icons.search,
+                          color: Color.fromRGBO(2, 113, 106, 1),
+                          size: 30,
+                        )),
+                  ],
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  homeButton(
-                      text: 'Mechanic',
-                      buttonIcon: Icons.engineering,
-                      height: 80,
-                      width: (MediaQuery.of(context).size.width - 50) / 2,
-                      function: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) => ServicesScreen())));
-                      }),
-                  homeButton(
-                      text: 'Winch',
-                      buttonIcon: Icons.car_repair,
-                      height: 80,
-                      width: (MediaQuery.of(context).size.width - 50) / 2,
-                      function: () {
-                        String id =
-                            SharedPreferencesHelper.getData(key: 'vewId');
-                        NavigationUtils.navigateTo(
-                            context: context,
-                            destinationScreen: WhichCarScreen(
-                              id: id,
-                              isWinch: true,
-                            ));
-                      }),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 28),
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  child: const Text(
-                    'Find Nearest',
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
+                const SizedBox(
+                  height: 50,
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  homeButton(
-                      text: 'Maintenance Center',
-                      textSize: 15,
-                      buttonIcon: Icons.build,
-                      height: 80,
-                      width: (MediaQuery.of(context).size.width - 50) / 2,
-                      function: () {
-                        SelectChoiceCubit.get(context).getAllCarTypes();
-                        NavigationUtils.navigateTo(
-                            context: context,
-                            destinationScreen: SelectCarTypeScreen(
-                              destinationScreen: SearchResultScreen(
-                                filter: "Maintenance Centers",
-                              ),
-                            ));
-                      }),
-                  homeButton(
-                      text: 'Gas Station',
-                      height: 80,
-                      width: (MediaQuery.of(context).size.width - 50) / 2,
-                      buttonIcon: Icons.gas_meter,
-                      iconColor: Colors.white,
-                      function: () {
-                        NavigationUtils.navigateTo(
+                homeButton(
+                    buttonIcon: Icons.live_help,
+                    function: () {
+                      DiagnoseCubit.get(context).getAllCategories();
+                      NavigationUtils.navigateTo(
                           context: context,
-                          destinationScreen: SearchResultScreen(
-                            filter: "Gas Station",
-                          ),
-                        );
-                      })
-                ],
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              homeButton(
-                text: 'Warning Light',
-                buttonIcon: Icons.warning_amber_rounded,
-                height: 80,
-                width: 350,
-                function: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) => const WarningLightScreen())));
-                },
-              ),
-            ],
+                          destinationScreen:
+                              const ChoosePrblemCategoryScreen());
+                    },
+                    text: 'Do Not Know Car Problem',
+                    width: 350,
+                    height: 80),
+                const SizedBox(
+                  height: 30,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 28),
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: const Text(
+                      'Request ',
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    homeButton(
+                        text: 'Mechanic',
+                        buttonIcon: Icons.engineering,
+                        height: 80,
+                        width: (MediaQuery.of(context).size.width - 50) / 2,
+                        function: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => ServicesScreen())));
+                        }),
+                    homeButton(
+                        text: 'Winch',
+                        buttonIcon: Icons.car_repair,
+                        height: 80,
+                        width: (MediaQuery.of(context).size.width - 50) / 2,
+                        function: () {
+                          String id =
+                              SharedPreferencesHelper.getData(key: 'vewId');
+                          NavigationUtils.navigateTo(
+                              context: context,
+                              destinationScreen: WhichCarScreen(
+                                id: id,
+                                isWinch: true,
+                              ));
+                        }),
+                  ],
+                ),
+                const SizedBox(
+                  height: 35,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 28),
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: const Text(
+                      'Find Nearest',
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    homeButton(
+                        text: 'Maintenance Center',
+                        textSize: 15,
+                        buttonIcon: Icons.build,
+                        height: 80,
+                        width: (MediaQuery.of(context).size.width - 50) / 2,
+                        function: () {
+                          SelectChoiceCubit.get(context).getAllCarTypes();
+                          NavigationUtils.navigateTo(
+                              context: context,
+                              destinationScreen: SelectCarTypeScreen(
+                                destinationScreen: SearchResultScreen(
+                                  filter: "Maintenance Centers",
+                                ),
+                              ));
+                        }),
+                    homeButton(
+                        text: 'Gas Station',
+                        height: 80,
+                        width: (MediaQuery.of(context).size.width - 50) / 2,
+                        buttonIcon: Icons.gas_meter,
+                        iconColor: Colors.white,
+                        function: () {
+                          NavigationUtils.navigateTo(
+                            context: context,
+                            destinationScreen: SearchResultScreen(
+                              filter: "Gas Station",
+                            ),
+                          );
+                        })
+                  ],
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                homeButton(
+                  text: 'Warning Light',
+                  buttonIcon: Icons.warning_amber_rounded,
+                  height: 80,
+                  width: 350,
+                  function: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) =>
+                                const WarningLightScreen())));
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -39,13 +39,13 @@ class _NearestWinchScreenState extends State<NearestWinchScreen> {
       body: Column(children: [
         CustomAppBar(
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
+            icon: const Icon(Icons.arrow_back_ios),
             iconSize: 25,
             color: mainColor,
             onPressed: () {
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => DriverHomeScreen()),
+                  MaterialPageRoute(builder: (context) => const DriverHomeScreen()),
                   (route) => false);
             },
           ),
@@ -78,7 +78,6 @@ class _NearestWinchScreenState extends State<NearestWinchScreen> {
                         );
                         await requestCubit.createWinchRequest(createRequest);
                         if (state is! CreateWinchRequestErrorState) {
-                          print("hererere");
                           const snackBar = SnackBar(
                               content: Text("Request Created successfully"));
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -102,7 +101,7 @@ class _NearestWinchScreenState extends State<NearestWinchScreen> {
                 ),
               );
             } else {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             }
           },
         ),

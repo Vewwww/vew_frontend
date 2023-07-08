@@ -34,7 +34,7 @@ class DiagnoseResult {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = sId;
     data['caseKeyWords'] = caseKeyWords;
     data['solution'] = solution;

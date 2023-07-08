@@ -27,7 +27,6 @@ class ProfileData {
 
   ProfileData.fromJson(Map<String, dynamic> json) {
     user = json['user'] != null ? User.fromJson(json['user']) : null;
-    print("user to json done");
     if (json['cars'] != null) {
       cars = <Car>[];
       json['cars'].forEach((v) {
@@ -38,11 +37,11 @@ class ProfileData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
-    if (this.cars != null) {
-      data['cars'] = this.cars!.map((v) => v.toJson()).toList();
+    if (cars != null) {
+      data['cars'] = cars!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -85,18 +84,18 @@ class User {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    if (this.report != null) {
-      data['report'] = this.report!.toJson();
+    if (report != null) {
+      data['report'] = report!.toJson();
     }
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['phoneNumber'] = this.phoneNumber;
-    data['gender'] = this.gender;
-    data['role'] = this.role;
-    data['__v'] = this.iV;
+    data['_id'] = sId;
+    data['name'] = name;
+    data['email'] = email;
+    data['phoneNumber'] = phoneNumber;
+    data['gender'] = gender;
+    data['role'] = role;
+    data['__v'] = iV;
     data['driverLisenceRenewalNotification'] =
-        this.driverLisenceRenewalNotification;
+        driverLisenceRenewalNotification;
     return data;
   }
 }

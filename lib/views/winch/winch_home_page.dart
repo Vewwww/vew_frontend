@@ -18,7 +18,7 @@ import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
 
 class WinchHomePage extends StatefulWidget {
-  WinchHomePage({Key? key}) : super(key: key);
+  const WinchHomePage({Key? key}) : super(key: key);
 
   @override
   State<WinchHomePage> createState() => _WinchHomePageState();
@@ -33,8 +33,9 @@ class _WinchHomePageState extends State<WinchHomePage> {
     var chatCubit = context.read<ChatCubit>();
     chatCubit.getWinchChats();
     var profileCubit = context.read<ProfileCubit>();
-    if (profileCubit.winchDriverResponse == null)
+    if (profileCubit.winchDriverResponse == null) {
       profileCubit.getWinchProfile();
+    }
     var repairerRequestsCubit = context.read<RepairerRequestsCubit>();
     repairerRequestsCubit.winchAcceptedRequests();
   }
@@ -53,19 +54,16 @@ class _WinchHomePageState extends State<WinchHomePage> {
     });
     socket!.connect();
     socket!.onConnect((_) {
-      print('Connection established');
+      debugPrint('Connection established');
       socket!.emit('join-room', {'room': id});
-      print('joined room');
     });
     soc!.connect();
     soc!.onConnect((_) {});
     socket!.on("new-request", (data) {
-      print("new request created");
       var requestCubit = context.read<NewRequestCubit>();
       requestCubit.setHaveNew(true);
     });
     soc!.on("upload-winch-location", (data) async {
-      print("listend to upload winch location event");
       Position location = await Controller.getLocation();
       var data = {
         "id": SharedPreferencesHelper.getData(key: "vewId"),
@@ -74,9 +72,9 @@ class _WinchHomePageState extends State<WinchHomePage> {
       };
       soc!.emit("update-winch-location", data);
     });
-    socket!.onDisconnect((_) => print('Connection Disconnection'));
-    socket!.onConnectError((err) => print(err));
-    socket!.onError((err) => print(err));
+    socket!.onDisconnect((_) => debugPrint('Connection Disconnection'));
+    socket!.onConnectError((err) => debugPrint(err));
+    socket!.onError((err) => debugPrint(err));
   }
 
   @override
@@ -88,7 +86,7 @@ class _WinchHomePageState extends State<WinchHomePage> {
         homeFunction: () {
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => WinchHomePage()),
+              MaterialPageRoute(builder: (context) => const WinchHomePage()),
               (route) => false);
         },
         upComingReqFunction: () {
@@ -112,17 +110,17 @@ class _WinchHomePageState extends State<WinchHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             CustomAppBar(
               leading: IconButton(onPressed: () {
                 _globalKey.currentState!.openEndDrawer();
               }, icon: BlocBuilder<ChatCubit, ChatState>(
                 builder: (context, state) {
                   if (state is GettingChatsSuccessState &&
-                      ChatCubit.get(context).chatResponse!.newChats!)
+                      ChatCubit.get(context).chatResponse!.newChats!) {
                     return Stack(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.menu,
                           size: 30,
                           color: Colors.grey,
@@ -137,12 +135,13 @@ class _WinchHomePageState extends State<WinchHomePage> {
                         )
                       ],
                     );
-                  else
-                    return Icon(
+                  } else {
+                    return const Icon(
                       Icons.menu,
                       size: 30,
                       color: Colors.grey,
                     );
+                  }
                 },
               )),
               haveLogo: true,
@@ -176,7 +175,7 @@ class _WinchHomePageState extends State<WinchHomePage> {
                       child: Column(
                     children: [
                       SizedBox(height: MediaQuery.of(context).size.height / 3),
-                      CircularProgressIndicator(),
+                      const CircularProgressIndicator(),
                     ],
                   ));
                 }
@@ -188,19 +187,3 @@ class _WinchHomePageState extends State<WinchHomePage> {
     );
   }
 }
-
-/*
-Expanded(child: Container()),
-            Image.asset(
-              "assets/images/Empty.png",
-              width: 300,
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Text(
-              "Requests will be here",
-              style: AppTextStyle.lightGrayTextStyle(25),
-            ),
-            Expanded(child: Container()),
-*/ 

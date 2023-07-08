@@ -16,7 +16,7 @@ class MapElement extends StatefulWidget {
 
 class _MapElementState extends State<MapElement> {
   _MapElementState(this.locationCubit);
-  Completer<GoogleMapController> _googleMapController = Completer();
+  final Completer<GoogleMapController> _googleMapController = Completer();
 
   CameraPosition? _cameraPosition;
   LocationCubit locationCubit;
@@ -34,7 +34,6 @@ class _MapElementState extends State<MapElement> {
 
   _init() {
     //set default latlng for camera position
-    print("in init");
     _defaultLatLng = const LatLng(11, 104);
     _draggedLatlng = _defaultLatLng;
 
@@ -81,7 +80,6 @@ class _MapElementState extends State<MapElement> {
       onCameraIdle: () {
         //this function will trigger when user stop dragging on map
         //every time user drag and stop it will display address
-        print("camera idle");
         _getAddress(_draggedLatlng);
       },
       onCameraMove: (cameraPosition) async {
@@ -92,7 +90,6 @@ class _MapElementState extends State<MapElement> {
         locationCubit.changeLatLon(_draggedLatlng, _draggedAddress);
         locationCubit.latitude = _defaultLatLng.latitude;
         locationCubit.longitude = _defaultLatLng.longitude;
-        print("moving to ${_draggedLatlng.latitude}");
       },
       onMapCreated: (GoogleMapController controller) {
         //this function will trigger when map is fully loaded
@@ -100,7 +97,6 @@ class _MapElementState extends State<MapElement> {
           //set controller to google map when it is fully loaded
           _googleMapController.complete(controller);
         }
-        print("done creating");
       },
     );
   }
@@ -113,12 +109,11 @@ class _MapElementState extends State<MapElement> {
     String addresStr =
         "${address.street}, ${address.locality}, ${address.administrativeArea}, ${address.country}";
     _draggedAddress = addresStr;
-    print("address ${_draggedAddress}");
   }
 
   Widget _getCustomPin() {
     return Center(
-      child: Container(
+      child: SizedBox(
         width: 150,
         child: Lottie.asset("assets/lottie/pin.json"),
       ),

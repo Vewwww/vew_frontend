@@ -66,16 +66,15 @@ class _SplashScreenState extends State<SplashScreen> {
   route() {
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
       if (SharedPreferencesHelper.getData(key: "vewIsFirst") != false) {
-        return OnBoardingScreen();
-      } else if (SharedPreferencesHelper.getData(key: "vewRole") == null)
+        return const OnBoardingScreen();
+      } else if (SharedPreferencesHelper.getData(key: "vewRole") == null) {
         return SignInScreen();
-      else {
-        String id = SharedPreferencesHelper.getData(key: "vewId");
-        if (SharedPreferencesHelper.getData(key: "vewRole") == "admin")
+      } else {
+        if (SharedPreferencesHelper.getData(key: "vewRole") == "admin") {
           return AdminHomeScreen();
-        else if (SharedPreferencesHelper.getData(key: "vewRole") == "user")
-          return DriverHomeScreen();
-        else if (SharedPreferencesHelper.getData(key: "vewRole") == "winch") {
+        } else if (SharedPreferencesHelper.getData(key: "vewRole") == "user") {
+          return const DriverHomeScreen();
+        } else if (SharedPreferencesHelper.getData(key: "vewRole") == "winch") {
           return WinchHomePage();
         } else {
           return MechanicHomeScreen();

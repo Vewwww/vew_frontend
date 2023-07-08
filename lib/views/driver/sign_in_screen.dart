@@ -9,8 +9,6 @@ import 'package:vewww/views/common/choose_role_screen.dart';
 import 'package:vewww/views/common/forgot_password_screen.dart';
 import 'package:vewww/views/mechanic/mechanic_home_screen.dart';
 import 'package:vewww/views/winch/winch_home_page.dart';
-import '../../bloc/add_car_cubit/add_car_cubit.dart';
-import '../../bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
 import '../../core/components/custom_text_field.dart';
 import '../../core/components/logo.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
@@ -60,7 +58,7 @@ class SignInScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Center(child: Logo()),
                   SizedBox(height: constraintsHight / 60),
                   BlocConsumer<LanguageCubit, LanguageState>(
@@ -130,21 +128,18 @@ class SignInScreen extends StatelessWidget {
                               if (state is SignInSuccessState) {
                                 String role = SharedPreferencesHelper.getData(
                                     key: "vewRole");
-                                String id = SharedPreferencesHelper.getData(
-                                    key: "vewId");
-                                print("role is $role");
                                 const snackBar = SnackBar(
                                     content: Text("Loged in successfully !"));
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(snackBar);
                                 Widget screen;
-                                if (role == "user")
+                                if (role == "user") {
                                   screen = const DriverHomeScreen();
-                                else if (role == "winch") {
+                                } else if (role == "winch") {
                                   screen = WinchHomePage();
-                                } else if (role == "admin")
+                                } else if (role == "admin") {
                                   screen = AdminHomeScreen();
-                                else {
+                                } else {
                                   screen = MechanicHomeScreen();
                                 }
                                 NavigationUtils.navigateAndClearStack(
@@ -223,39 +218,6 @@ class SignInScreen extends StatelessWidget {
                       );
                     },
                   ),
-                  // Row(
-                  //   children: [
-                  //     const Expanded(
-                  //         child: Divider(
-                  //       color: Color.fromARGB(255, 151, 151, 151),
-                  //       thickness: 1,
-                  //     )),
-                  //     Padding(
-                  //       padding: const EdgeInsets.symmetric(horizontal: 6),
-                  //       child: Text(
-                  //         "or continue with",
-                  //         style: AppTextStyle.greyStyle(size: 12),
-                  //       ),
-                  //     ),
-                  //     const Expanded(
-                  //         child: Divider(
-                  //       color: Color.fromARGB(255, 151, 151, 151),
-                  //       thickness: 1,
-                  //     )),
-                  //   ],
-                  // ),
-                  // const SizedBox(height: 18),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: [
-                  //     InkWell(
-                  //         onTap: () {},
-                  //         child: Image.asset("assets/images/google.png")),
-                  //     InkWell(
-                  //         onTap: () async {},
-                  //         child: Image.asset("assets/images/Facebook.png")),
-                  //   ],
-                  // ),
                 ],
               )),
         ),

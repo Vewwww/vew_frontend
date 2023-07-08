@@ -5,7 +5,6 @@ import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/views/driver/sign_up_screen.dart';
 import 'package:vewww/views/mechanic/mechanic_signup.dart';
 import 'package:vewww/views/winch/winch_sign_up_screen.dart';
-
 import '../../bloc/language_cubit/language_cubit.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 
@@ -40,7 +39,7 @@ class ChooseRoleScreen extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Center(child: Image.asset("assets/images/Logo(1).png")),
           SizedBox(height: constraintsHight / 60),
 
@@ -107,8 +106,8 @@ class ChooseRoleScreen extends StatelessWidget {
         NavigationUtils.navigateTo(context: context, destinationScreen: screen);
       },
       child: Container(
-        padding: EdgeInsets.all(8),
-        margin: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+        padding: const EdgeInsets.all(8),
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
         width: double.infinity,
         height: 50,
         decoration: BoxDecoration(
@@ -138,7 +137,7 @@ class ChooseRoleScreen extends StatelessWidget {
               style: AppTextStyle.mainStyle(),
               textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
             ),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             Icon(
               icon,
               color: mainColor,

@@ -21,6 +21,7 @@ class WarningLightScreen extends StatefulWidget {
 }
 
 class _WarningLightScreenState extends State<WarningLightScreen> {
+  @override
   void initState() {
     super.initState();
     final warningSignCubit = context.read<WarningSignCubit>();
@@ -51,10 +52,11 @@ class _WarningLightScreenState extends State<WarningLightScreen> {
                 onPressed: () {
                   Widget screen;
                   if (SharedPreferencesHelper.getData(key: "vewRole") ==
-                      "admin")
+                      "admin") {
                     screen = AdminHomeScreen();
-                  else
-                    screen = DriverHomeScreen();
+                  } else {
+                    screen = const DriverHomeScreen();
+                  }
                   NavigationUtils.navigateAndClearStack(
                       context: context, destinationScreen: screen);
                 },
@@ -65,7 +67,6 @@ class _WarningLightScreenState extends State<WarningLightScreen> {
           ),
           BlocBuilder<WarningSignCubit, WarningSignState>(
             builder: (context, state) {
-              print(state);
               if (state is GetAllWarningSignSuccessState) {
                 return Expanded(
                   child: Padding(
@@ -95,7 +96,7 @@ class _WarningLightScreenState extends State<WarningLightScreen> {
                     child: Column(
                   children: [
                     SizedBox(height: MediaQuery.of(context).size.height / 3),
-                    CircularProgressIndicator(),
+                    const CircularProgressIndicator(),
                   ],
                 ));
               }

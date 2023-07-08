@@ -14,7 +14,7 @@ import 'mechanic_upcoming_req_screen.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class MechanicHomeScreen extends StatefulWidget {
-  MechanicHomeScreen({super.key});
+  const MechanicHomeScreen({super.key});
 
   @override
   State<MechanicHomeScreen> createState() => _MechanicHomeScreenState();
@@ -41,21 +41,21 @@ class _MechanicHomeScreenState extends State<MechanicHomeScreen> {
     });
     soc!.connect();
     soc!.onConnect((_) {
-      print('Connection established');
+      debugPrint('Connection established');
       soc!.emit('join-room', {'room': id});
-      print('joined room');
     });
     soc!.on("new-request", (data) {
-      print("new request created");
       var requestCubit = context.read<NewRequestCubit>();
       String role = SharedPreferencesHelper.getData(key: "vewRole");
-      if (role == "mechanic")
+      if (role == "mechanic") {
         requestCubit.setHaveNew(true);
-      else if (role == "winch") requestCubit.setHaveNew(true);
+      } else if (role == "winch") {
+        requestCubit.setHaveNew(true);
+      }
     });
-    soc!.onDisconnect((_) => print('Connection Disconnection'));
-    soc!.onConnectError((err) => print(err));
-    soc!.onError((err) => print(err));
+    soc!.onDisconnect((_) => debugPrint('Connection Disconnection'));
+    soc!.onConnectError((err) => debugPrint(err));
+    soc!.onError((err) => debugPrint(err));
   }
 
   @override
@@ -65,7 +65,6 @@ class _MechanicHomeScreenState extends State<MechanicHomeScreen> {
     return Scaffold(
       bottomNavigationBar: AppNavigationBar(
         homeFunction: () {
-          print("here x");
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => MechanicHomeScreen()),
@@ -94,7 +93,7 @@ class _MechanicHomeScreenState extends State<MechanicHomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               CustomAppBar(
                 leading: BlocBuilder<ChatCubit, ChatState>(
                   builder: (context, state) {
@@ -106,7 +105,7 @@ class _MechanicHomeScreenState extends State<MechanicHomeScreen> {
                                 ChatCubit.get(context).chatResponse!.newChats!))
                             ? Stack(
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.menu,
                                     size: 30,
                                     color: Colors.grey,
@@ -121,7 +120,7 @@ class _MechanicHomeScreenState extends State<MechanicHomeScreen> {
                                   )
                                 ],
                               )
-                            : Icon(
+                            : const Icon(
                                 Icons.menu,
                                 size: 30,
                                 color: Colors.grey,
@@ -141,41 +140,44 @@ class _MechanicHomeScreenState extends State<MechanicHomeScreen> {
               BlocBuilder<RepairerRequestsCubit, RepairerRequestsState>(
                 builder: (context, state) {
                   if (state is GettingAcceptedRequestsSuccessState ||
-                      state is CancelingRequestSuccessState) if (repairerRequestsCubit
-                          .acceptedRequestsResponse!.data!.length >
-                      0)
-                    return Expanded(
-                        child: ListView.builder(
-                            itemCount: repairerRequestsCubit
-                                .acceptedRequestsResponse!.data!.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return AcceptedRequestCard(
-                                  mechanicRequestsData: repairerRequestsCubit
-                                      .acceptedRequestsResponse!.data![index]);
-                            }));
-                  else
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset("assets/images/Empty.png"),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "You have no requests right now",
-                          style: AppTextStyle.greyStyle(),
-                        ),
-                      ],
-                    );
-                  else
+                      state is CancelingRequestSuccessState) {
+                    if (repairerRequestsCubit
+                        .acceptedRequestsResponse!.data!.isNotEmpty) {
+                      return Expanded(
+                          child: ListView.builder(
+                              itemCount: repairerRequestsCubit
+                                  .acceptedRequestsResponse!.data!.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return AcceptedRequestCard(
+                                    mechanicRequestsData: repairerRequestsCubit
+                                        .acceptedRequestsResponse!
+                                        .data![index]);
+                              }));
+                    } else {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset("assets/images/Empty.png"),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "You have no requests right now",
+                            style: AppTextStyle.greyStyle(),
+                          ),
+                        ],
+                      );
+                    }
+                  } else {
                     return Center(
                         child: Column(
                       children: [
                         SizedBox(
                             height: MediaQuery.of(context).size.height / 3),
-                        CircularProgressIndicator(),
+                        const CircularProgressIndicator(),
                       ],
                     ));
+                  }
                 },
               )
             ],

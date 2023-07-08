@@ -20,15 +20,17 @@ class MechanicSignup extends StatelessWidget {
   MechanicSignup({required this.services, MechanicShop? mechanicShop, Key? key})
       : super(key: key) {
     if (mechanicShop != null) {
-      print(services.length);
       if (mechanicShop.email != null) _email.text = mechanicShop.email!;
       if (mechanicShop.email != null) _password.text = mechanicShop.password!;
-      if (mechanicShop.email != null)
+      if (mechanicShop.email != null) {
         _confirmPassword.text = mechanicShop.password!;
-      if (mechanicShop.email != null)
+      }
+      if (mechanicShop.email != null) {
         _phoneNumber.text = mechanicShop.phoneNumber!;
-      if (mechanicShop.email != null)
+      }
+      if (mechanicShop.email != null) {
         _mechanicPhone.text = mechanicShop.mechanicPhone!;
+      }
       if (mechanicShop.email != null) _name.text = mechanicShop.name!;
       if (mechanicShop.email != null) _ownerName.text = mechanicShop.ownerName!;
     }
@@ -46,7 +48,6 @@ class MechanicSignup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double constraintsHight = MediaQuery.of(context).size.height;
-    AuthCubit authCubit = AuthCubit.get(context);
     SelectChoiceCubit selectChoiceCubit = SelectChoiceCubit.get(context);
     LocationCubit locationCubit = LocationCubit.get(context);
     return Scaffold(
@@ -76,7 +77,7 @@ class MechanicSignup extends StatelessWidget {
                     label: "اسم الورشة",
                     isArabic: true,
                     validator: (value) {
-                      if (value!.length < 1 || value == null) {
+                      if (value!.isEmpty || value == null) {
                         return 'برجاء ادخال اسم الورشة"';
                       }
                     },
@@ -86,7 +87,7 @@ class MechanicSignup extends StatelessWidget {
                     label: "رقم الهاتف",
                     isArabic: true,
                     validator: (value) {
-                      if (value!.length < 1 || value == null) {
+                      if (value!.isEmpty || value == null) {
                         return 'برجاء ادخال رقم الهاتف';
                       }
                     },
@@ -96,7 +97,7 @@ class MechanicSignup extends StatelessWidget {
                     label: "اسم المالك",
                     isArabic: true,
                     validator: (value) {
-                      if (value!.length < 1 || value == null) {
+                      if (value!.isEmpty || value == null) {
                         return 'برجاء ادخال اسم المالك"';
                       }
                     },
@@ -106,7 +107,7 @@ class MechanicSignup extends StatelessWidget {
                     label: "رقم الهاتف المالك",
                     isArabic: true,
                     validator: (value) {
-                      if (value!.length < 1 || value == null) {
+                      if (value!.isEmpty || value == null) {
                         return 'برجاء ادخال رقم الهاتف المالك';
                       }
                     },
@@ -165,9 +166,9 @@ class MechanicSignup extends StatelessWidget {
                                   locationCubit: locationCubit,
                                 ));
                           },
-                          icon: Icon(Icons.location_on)),
+                          icon: const Icon(Icons.location_on)),
                       Expanded(child: Container()),
-                      Text("الموقع"),
+                      const Text("الموقع"),
                     ],
                   ),
                   BlocConsumer<SelectChoiceCubit, SelectChoiceState>(
@@ -183,7 +184,7 @@ class MechanicSignup extends StatelessWidget {
                               onChanged: (v) {
                                 selectChoiceCubit.changeHasDelivey();
                               }),
-                          Text("هل تقدم خدمات اصلاح خارج الورشة؟"),
+                          const Text("هل تقدم خدمات اصلاح خارج الورشة؟"),
                         ],
                       );
                     },
@@ -210,9 +211,9 @@ class MechanicSignup extends StatelessWidget {
                                   ));
                             }
                           },
-                          icon: Icon(Icons.arrow_back)),
+                          icon: const Icon(Icons.arrow_back)),
                       Expanded(child: Container()),
-                      Text("الخدمات المقدمة"),
+                      const Text("الخدمات المقدمة"),
                     ],
                   ),
                   const SizedBox(height: 10),
@@ -222,17 +223,13 @@ class MechanicSignup extends StatelessWidget {
                         builder: (context, state) {
                           return ElevatedButton(
                             onPressed: () async {
-                              // print(
-                              //     "lat:${locationCubit.lat} , address:${locationCubit.address}");
                               if (_formKey.currentState!.validate()) {
                                 if (locationCubit.lat != null) {
-                                  if (services.length > 0) {
+                                  if (services.isNotEmpty) {
                                     List<String> servicesIds = [];
                                     for (Service service in services) {
                                       servicesIds.add(service.sId!);
                                     }
-                                    print(servicesIds.length);
-                                    print(services.length);
                                     AuthCubit authCubit =
                                         AuthCubit.get(context);
                                     MechanicShop mechanicShop = MechanicShop(
@@ -270,27 +267,27 @@ class MechanicSignup extends StatelessWidget {
                                           .showSnackBar(snackBar);
                                     }
                                   } else {
-                                    var snackBar = SnackBar(
+                                    var snackBar = const SnackBar(
                                         content: Text("Select Service"));
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(snackBar);
                                   }
                                 } else {
-                                  var snackBar = SnackBar(
+                                  var snackBar = const SnackBar(
                                       content: Text("Select location"));
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(snackBar);
                                 }
-
                               }
                             },
                             child: BlocConsumer<AuthCubit, AuthState>(
                               listener: (context, state) {},
                               builder: (context, state) {
-                                if (state is SignUpLoadingState)
-                                  return CircularProgressIndicator();
-                                else
-                                  return Text("انشاء حساب");
+                                if (state is SignUpLoadingState) {
+                                  return const CircularProgressIndicator();
+                                } else {
+                                  return const Text("انشاء حساب");
+                                }
                               },
                             ),
                           );
@@ -314,39 +311,6 @@ class MechanicSignup extends StatelessWidget {
                         "تمتلك بالفعل حساب؟",
                         style: AppTextStyle.greyStyle(size: 14),
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Expanded(
-                          child: Divider(
-                        color: Color.fromARGB(255, 151, 151, 151),
-                        thickness: 1,
-                      )),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 6),
-                        child: Text(
-                          "أو",
-                          style: AppTextStyle.greyStyle(size: 12),
-                        ),
-                      ),
-                      const Expanded(
-                          child: Divider(
-                        color: Color.fromARGB(255, 151, 151, 151),
-                        thickness: 1,
-                      )),
-                    ],
-                  ),
-                  const SizedBox(height: 18),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      InkWell(
-                          onTap: () {},
-                          child: Image.asset("assets/images/google.png")),
-                      InkWell(
-                          onTap: () async {},
-                          child: Image.asset("assets/images/Facebook.png")),
                     ],
                   ),
                 ],

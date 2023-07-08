@@ -10,9 +10,9 @@ class CarModelAnalysisResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['model'] = this.model;
-    data['brand'] = this.brand;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['model'] = model;
+    data['brand'] = brand;
     return data;
   }
 }

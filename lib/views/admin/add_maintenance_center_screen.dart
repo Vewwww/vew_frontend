@@ -175,8 +175,8 @@ class AddMaintenanceCenterScreen extends StatelessWidget {
                               selectChoiceCubit.carTypeResponse!.carType![
                                   SelectChoiceCubit.get(context).carTypeChoice]
                             ]);
-                        await adminAddCubit.AddMaintenanceCenter(
-                            maintenanceCenter);
+                        await adminAddCubit
+                            .addMaintenanceCenter(maintenanceCenter);
                         NavigationUtils.navigateAndClearStack(
                             context: context,
                             destinationScreen: AdminHomeScreen());

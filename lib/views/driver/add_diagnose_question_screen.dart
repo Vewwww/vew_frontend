@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/core/components/custom_text_field.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
-
 import '../../bloc/diagnose_cubit/diagnose_cubit.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
-import '../../core/style/app_colors.dart';
 import '../../core/utils/navigation.dart';
 
 class AddDiagnoseQuestionScreen extends StatelessWidget {
   AddDiagnoseQuestionScreen({Key? key}) : super(key: key);
-  TextEditingController _question = TextEditingController();
+  final TextEditingController _question = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +18,7 @@ class AddDiagnoseQuestionScreen extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               CustomAppBar(
                 haveBackArrow: true,
                 haveLogo: true,
@@ -29,7 +27,7 @@ class AddDiagnoseQuestionScreen extends StatelessWidget {
                 color: Colors.grey,
                 thickness: 1,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Text(
                 "Please add a clear question for your case \nso an expert answer it \nfor furthet similier proplems",
                 style: AppTextStyle.greyStyle(),
@@ -39,7 +37,7 @@ class AddDiagnoseQuestionScreen extends StatelessWidget {
                 color: Colors.grey,
                 thickness: 0.3,
               ),
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               CustomTextField(
                 controller: _question,
                 hint:
@@ -47,7 +45,7 @@ class AddDiagnoseQuestionScreen extends StatelessWidget {
                 validator: (value) {},
                 label: "Question",
               ),
-              SizedBox(height: 200),
+              const SizedBox(height: 200),
               SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -65,11 +63,11 @@ class AddDiagnoseQuestionScreen extends StatelessWidget {
                               .addDriverQuestion(_question.text);
                           NavigationUtils.navigateAndClearStack(
                               context: context,
-                              destinationScreen: DriverHomeScreen());
+                              destinationScreen: const DriverHomeScreen());
                         }
                       },
-                      child: Text("Add"))),
-              SizedBox(height: 30),
+                      child: const Text("Add"))),
+              const SizedBox(height: 30),
             ],
           ),
         ),

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vewww/bloc/nearest_repairer_cubit/nearest_repairer_cubit.dart';
 import 'package:vewww/bloc/service_cubit/services_cubit.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/components/service_card.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/views/mechanic/mechanic_edit_profile_screen.dart';
 import 'package:vewww/views/mechanic/mechanic_signup.dart';
-
 import '../../core/utils/navigation.dart';
 import '../../model/mechanic_shop.dart';
 import '../../model/services.dart';
@@ -16,22 +14,18 @@ import '../driver/search_result_screen.dart';
 class ServicesScreen extends StatefulWidget {
   bool multiSelect;
   MechanicShop? mechanicShop;
-  ServicesScreen({this.multiSelect = false, this.mechanicShop, super.key}) {
-    if (mechanicShop != null) print(mechanicShop!.toJson());
-  }
+  ServicesScreen({this.multiSelect = false, this.mechanicShop, super.key}) ;
 
   @override
   State<ServicesScreen> createState() => _ServicesScreenState();
 }
 
 class _ServicesScreenState extends State<ServicesScreen> {
-  //List<Service> services = [];
   @override
   void initState() {
     super.initState();
     final servicesCubit = context.read<ServicesCubit>();
     servicesCubit.getAllServices();
-    print("selected services from init : ${servicesCubit.selectedServices}");
     servicesCubit.selectedServices =
         (widget.mechanicShop != null) ? widget.mechanicShop!.service ?? [] : [];
   }
@@ -63,8 +57,6 @@ class _ServicesScreenState extends State<ServicesScreen> {
                     for (Service s in servicesCubit.selectedServices) {
                       if (s.sId == servicesCubit.services![index].sId) {
                         isSelected = true;
-                        print(
-                            "1-${s.toJson()} ,\n2- ${servicesCubit.services![index].toJson()}");
                       }
                     }
                     return serviceCard(
@@ -72,8 +64,6 @@ class _ServicesScreenState extends State<ServicesScreen> {
                         function: () async {
                           servicesCubit
                               .addService(servicesCubit.services![index]);
-                          print(
-                              "now selected services is :${servicesCubit.selectedServices.length}");
 
                           String serviceId =
                               servicesCubit.services![index].sId!;
@@ -97,7 +87,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
                 ),
               );
             } else if (state is GetAllServicesLoadingState) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             } else {
               return Container();
             }

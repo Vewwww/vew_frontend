@@ -17,14 +17,14 @@ class EmailVerifiedScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image(
+            const Image(
               height: 200,
               width: 200,
               image: AssetImage(
                 'assets/images/done.png',
               ),
             ),
-            Text(
+            const Text(
               'Email Sent Successfully',
               style: TextStyle(
                 fontSize: 23,
@@ -33,7 +33,7 @@ class EmailVerifiedScreen extends StatelessWidget {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children:const [
                 Text(
                   'An email sent to ',
                   style: TextStyle(color: Colors.grey),
@@ -41,7 +41,7 @@ class EmailVerifiedScreen extends StatelessWidget {
                 Text('example@gmail.com'),
               ],
             ),
-            Text(
+            const Text(
               'Please check your inbox to verify the mail',
               style: TextStyle(color: Colors.grey),
             ),

@@ -48,7 +48,7 @@ class ComingRequestCard extends StatelessWidget {
                 color: Colors.grey.withOpacity(0.2),
                 spreadRadius: 5,
                 blurRadius: 7,
-                offset: const Offset(0, 3), // changes position of shadow
+                offset: const Offset(0, 3), 
               ),
             ],
           ),
@@ -110,7 +110,7 @@ class ComingRequestCard extends StatelessWidget {
                                       NavigationUtils.navigateAndClearStack(
                                           context: context,
                                           destinationScreen:
-                                              MechanicHomeScreen());
+                                              const MechanicHomeScreen());
                                     }
                                   } else {
                                     await requestsCubit.winchAcceptRequest(

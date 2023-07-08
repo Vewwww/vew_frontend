@@ -1,7 +1,6 @@
 import 'package:vewww/model/car_model.dart';
 import 'package:vewww/model/car_type.dart';
 import 'package:vewww/model/location.dart';
-import 'package:vewww/model/name.dart';
 import 'package:vewww/model/services.dart';
 
 import 'car_color.dart';

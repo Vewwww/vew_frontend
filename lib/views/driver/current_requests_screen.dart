@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
-import 'package:vewww/core/components/horizontal_line.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
@@ -35,7 +34,7 @@ class _CurrentRequestsScreenState extends State<CurrentRequestsScreen> {
             onPressed: () {
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => DriverHomeScreen()),
+                  MaterialPageRoute(builder: (context) => const DriverHomeScreen()),
                   (route) => false);
             },
             iconSize: 40,
@@ -52,11 +51,10 @@ class _CurrentRequestsScreenState extends State<CurrentRequestsScreen> {
         ),
         BlocBuilder<RequestCubit, RequestState>(
           builder: (context, state) {
-            print(state);
             if (state is! GetDriverCurrentReqErrorState &&
                 state is! GetDriverCurrentReqLoadingState &&
                 state is GetDriverReqSuccessState) {
-              if (state.previousRequests.length > 0) {
+              if (state.previousRequests.isNotEmpty) {
                 return Expanded(
                   child: ListView.separated(
                     padding: const EdgeInsets.all(8),

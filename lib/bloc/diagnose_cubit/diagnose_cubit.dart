@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/style/button_style/app_button_style.dart';
 import 'package:vewww/services/dio_helper.dart';
-
 import '../../core/utils/sp_helper/cache_helper.dart';
 import '../../model/case.dart';
 import '../../model/diagnose_result.dart';
 import '../../model/problem_response.dart';
 import '../../model/questions_response.dart';
-
 part 'diagnose_state.dart';
 
 class DiagnoseCubit extends Cubit<DiagnoseState> {
@@ -27,17 +25,15 @@ class DiagnoseCubit extends Cubit<DiagnoseState> {
 
   void getButtonStyle({isNextButton = true}) {}
 
+  //get next question for user diagnose when press next
   void nextQuestion() {
     if (questionNumber < questionsResponse!.data![0].questions!.length - 1 &&
         selectedAnswer != -1) {
       questionNumber++;
       selectedAnswer = -1;
     }
-
     previousButtonStyle =
         (questionNumber == 0) ? disabeledButton : enabeledButton;
-    print(
-        "qyestion number : $questionNumber , cat question length : ${questionsResponse!.data![0].questions!.length}");
     nextButtonTitle =
         (questionNumber == questionsResponse!.data![0].questions!.length - 1)
             ? "Finish"
@@ -45,6 +41,7 @@ class DiagnoseCubit extends Cubit<DiagnoseState> {
     emit(GoNextState());
   }
 
+  //get previous question for user diagnose when press back
   void previousQuestion() {
     if (questionNumber > 0) {
       questionNumber--;
@@ -61,158 +58,105 @@ class DiagnoseCubit extends Cubit<DiagnoseState> {
     emit(BackState());
   }
 
-  // Future<void> getAllQuestion() async {
-  //   emit(GetAllQuestionLoadingState());
-  //   await DioHelper.getData(url: "/question/").then((value) {
-  //     print("get all diagnose questions response : ${value.data}");
-  //     questionsRrsponse = QuestionsResponse.fromJson(value.data);
-  //     emit(GetAllQuestionSuccessState());
-  //   }).catchError((err) {
-  //     if (err is DioError)
-  //       print("get all diagnose questions error : ${err.response}");
-  //     print(err);
-  //     emit(GetAllQuestionErrorState());
-  //   });
-  // }
-
+  //get unsolved quesion to mechanic to provide solutions
   Future<void> getUnsolvedQuestion() async {
-    print("hereeee");
     emit(GetUnsolvedLoadingState());
     await DioHelper.getData(url: "/problem/unsolved").then((value) {
-      print("get unsolved questions response : ${value.data}");
       problemResponse = ProblemResponse.fromJson(value.data);
-      print("doneee");
       emit(GetUnsolvedSuccessState());
     }).catchError((err) {
-      if (err is DioError)
-        print("get unsolved questions error : ${err.response}");
-      print(err);
       emit(GetUnsolvedErrorState());
     });
   }
 
+  //get all diagnose categories 
   Future<void> getAllCategories() async {
     emit(GetCategoriesLoadingState());
     await DioHelper.getData(url: "/question/getAllCategories").then((value) {
-      print("get  all cat response : ${value.data}");
       catigories = value.data['data'].cast<String>();
-      print("doneee");
       emit(GetCategoriesSuccessState());
     }).catchError((err) {
-      if (err is DioError) print("get Categories error : ${err.response}");
-      print(err);
       emit(GetCategoriesErrorState());
     });
   }
 
+  //get cbr result based on the key words selected
   Future<void> getResults() async {
     List<String> caseKeyWords = [];
-    for (List<String> k in this.keywords) {
+    for (List<String> k in keywords) {
       caseKeyWords.addAll(k);
     }
-    print("********************");
-    for (String k in caseKeyWords) print(k);
-    print("********************");
-    print(caseKeyWords.length);
     emit(GetSolutionLoadingState());
     await DioHelper.postData(url: "/case/cbr", data: {"query": caseKeyWords})
         .then((value) {
-      print("get all diagnose questions response : ${value.data}");
       diagnoseResult = DiagnoseResult.fromJson(value.data);
       emit(GetSolutionSuccessState());
     }).catchError((err) {
-      if (err is DioError)
-        print("get all diagnose questions error : ${err.response}");
-      print(err);
       emit(GetSolutionErrorState());
     });
   }
 
+  //add driver question to unsolved questions to display it 
+  //to mechnic so they car provide answers and feed the database   
   Future<void> addDriverQuestion(String question) async {
     emit(AddQuestionLoadingState());
     await DioHelper.postData(url: "/problem/", data: {
       "problem": question,
     }).then((value) {
-      print("add driver problem response : ${value.data}");
       emit(AddQuestionSuccessState());
     }).catchError((err) {
-      if (err is DioError) print("add driver problem error : ${err.response}");
-      print(err);
       emit(AddQuestionErrorState());
     });
   }
 
+  //get question of specific category
   Future<void> getQuestionsByCategory(String cat) async {
     emit(GetQuestionsLoadingState());
     await DioHelper.getData(url: "/question/category/$cat").then((value) {
-      print("get cat questions response : ${value.data}");
       questionsResponse = QuestionsResponse.fromJson(value.data);
-      print("doneee:\n${questionsResponse!.toJson()}");
       emit(GetQuestionsSuccessState());
     }).catchError((err) {
-      if (err is DioError)
-        print("get Category  questions error : ${err.response}");
-      print(err);
       emit(GetQuestionsErrorState());
     });
   }
 
+  // add keywords of user answer to specific 
+  //question to the total keywords of the case
   void chooseAnswer(int? val, List<String> keywords) {
     selectedAnswer = val;
-    print("${this.keywords.length - 1} , ${questionNumber}");
-    if (selectedAnswer == 0) {
-      if (this.keywords.length - 1 > questionNumber) {
-        print("replace");
-        this.keywords.removeAt(questionNumber);
-        this.keywords.insert(questionNumber, keywords);
-      } else if (this.keywords.length == questionNumber) {
-        print("add");
-        this.keywords.add(keywords);
-      }
-      print("keywords added");
-    } else {
-      if (this.keywords.length - 1 > questionNumber)
-        this.keywords.removeAt(questionNumber);
-      else
-        this.keywords.add([]);
-      print("keywords removed");
+    if (this.keywords.length - 1 > questionNumber) {
+      this.keywords.removeAt(questionNumber);
+      this.keywords.insert(questionNumber, keywords);
+    } else if (this.keywords.length == questionNumber) {
+      this.keywords.add(keywords);
     }
     emit(AnswerChoosedState());
   }
 
+  //answer provided by mechanic for unsolved questions
   Future<void> solveDriverQuestion(
       ProblemData problemData, String solution) async {
     problemData.solution = solution;
     problemData.isSolved = true;
-    print("solve problem request: ${problemData.toJson()}");
     emit(SolveQuestionLoadingState());
     await DioHelper.putData(
             url: "/problem/${problemData.sId}", data: problemData.toJson())
         .then((value) {
-      print("solve driver problem response : ${value.data}");
       emit(SolveQuestionSuccessState());
     }).catchError((err) {
-      if (err is DioError)
-        print("solve driver problem error : ${err.response}");
-      print(err);
       emit(SolveQuestionErrorState());
     });
   }
 
   void addCase(Case aCase) async {
     emit(AddCaseLoadingState());
-    print(aCase.toJson());
     await DioHelper.postData(
       url: "/case/",
       data: aCase.toJson(),
       token: SharedPreferencesHelper.getData(key: 'vewToken'),
     ).then((value) {
-      print("Add Case response : ${value}");
       emit(AddCaseSuccessState());
     }).catchError((error) {
-      if (error is DioError) {
-        print(error.response);
-      }
       emit(AddCaseErrorState());
     });
   }

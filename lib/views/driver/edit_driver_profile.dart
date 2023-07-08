@@ -2,16 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/car_cubit/car_cubit.dart';
 import 'package:vewww/bloc/profile_cubit/profile_cubit.dart';
-import 'package:vewww/bloc/select_color_cubit/select_color_cubit.dart';
 import 'package:vewww/core/utils/navigation.dart';
-import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
-import 'package:vewww/views/driver/add_car_screen.dart';
-import 'package:vewww/views/driver/driver_home_screen.dart';
 import 'package:vewww/views/driver/driver_profile.dart';
-import '../../bloc/add_car_cubit/add_car_cubit.dart';
 import '../../bloc/gender_cubit/gender_cubit.dart';
-import '../../bloc/reminder_cubit/reminder_cubit.dart';
-import '../../bloc/select_choice_cubit/select_choice_cubit.dart';
 import '../../core/components/build_car.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/custom_text_field.dart';
@@ -31,7 +24,7 @@ class EditDriverProfile extends StatefulWidget {
 
   EditDriverProfile(
       {required this.driver, this.inProgress = true, this.color, Key? key})
-      : super(key: key) {}
+      : super(key: key);
 
   @override
   State<EditDriverProfile> createState() =>
@@ -45,7 +38,6 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
 
   List<Car> cloneCars() {
     List<Car> cars = [];
-    //print("owner from cloneCare : ${driver.cars![0].toJson()}");
     for (Car c in driver.cars!) {
       Car car = Car(
           averageMilesPerMonth: c.averageMilesPerMonth,
@@ -119,7 +111,7 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
                       onPressed: () {
                         NavigationUtils.navigateAndClearStack(
                             context: context,
-                            destinationScreen: DriverProfile());
+                            destinationScreen: const DriverProfile());
                       },
                     ),
                   ),
@@ -210,7 +202,7 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
                   BlocBuilder<CarCubit, CarState>(builder: (context, state) {
                     return ListView.builder(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: carCubit.updatedCars!.length,
                       itemBuilder: (BuildContext context, int index) {
                         return buildCarDetails(
@@ -234,14 +226,13 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
                                 p.user!.email = _email.text;
                                 p.user!.phoneNumber = _phone.text;
                                 p.user!.gender = genderCubit.genderInText;
-                                if (_licenseRenewalDate.text != null)
+                                if (_licenseRenewalDate.text != null) {
                                   p.user!.driverLisenceRenewalNotification =
                                       _licenseRenewalDate.text;
-                                //p.cars = carCubit.updatedCars;
-                                print("p.toJson():${p.toJson()}");
+                                }
                                 ProfileCubit profileCubit =
                                     ProfileCubit.get(context);
-                                await profileCubit.EditDriverProfile({
+                                await profileCubit.editDriverProfile({
                                   "name": _name.text,
                                   "phoneNumber": _phone.text,
                                   "gender": genderCubit.genderInText,
@@ -250,15 +241,13 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
                                           ? _licenseRenewalDate.text
                                           : null
                                 });
-                                print(state);
-                                print("after edit porfile");
                                 if (state is EdittingProfileSuccessState ||
                                     state is GettingProfileSuccessState) {
                                   await carCubit.handleCarEdit();
                                   // print(s);
                                   NavigationUtils.navigateAndClearStack(
                                       context: context,
-                                      destinationScreen: DriverProfile());
+                                      destinationScreen: const DriverProfile());
                                 } else {
                                   const snackBar = SnackBar(
                                       content: Text(

@@ -14,9 +14,7 @@ import '../../core/components/custom_text_field.dart';
 import 'add_car_screen.dart';
 
 class DriverProfile extends StatefulWidget {
-  // Driver driver;
-
-  DriverProfile({Key? key}) : super(key: key);
+  const DriverProfile({Key? key}) : super(key: key);
 
   @override
   State<DriverProfile> createState() => _DriverProfileState();
@@ -25,9 +23,6 @@ class DriverProfile extends StatefulWidget {
 class _DriverProfileState extends State<DriverProfile> {
   final TextEditingController _email = TextEditingController();
 
-  final TextEditingController _phone = TextEditingController();
-
-  final TextEditingController _licenseRenewalDate = TextEditingController();
 
   @override
   void initState() {
@@ -84,7 +79,7 @@ class _DriverProfileState extends State<DriverProfile> {
                               SizedBox(
                                   height:
                                       MediaQuery.of(context).size.height / 3),
-                              CircularProgressIndicator(),
+                              const CircularProgressIndicator(),
                             ],
                           ));
                   },
@@ -97,13 +92,13 @@ class _DriverProfileState extends State<DriverProfile> {
               top: 20,
               left: 20,
               child: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.arrow_back_ios,
                   color: Colors.white,
                 ),
                 onPressed: () {
                   NavigationUtils.navigateAndClearStack(
-                      context: context, destinationScreen: DriverHomeScreen());
+                      context: context, destinationScreen: const DriverHomeScreen());
                 },
               )),
           Positioned(
@@ -129,16 +124,15 @@ class _DriverProfileState extends State<DriverProfile> {
                                   icon: const Icon(Icons.edit),
                                   onPressed: () {
                                     if (profileCubit.state
-                                        is GettingProfileSuccessState)
-                                      // print(
-                                      //     "driver cars from profile : ${profileCubit.profileResponse!.data!.cars![0].toJson()}");
-                                    NavigationUtils.navigateTo(
+                                        is GettingProfileSuccessState) {
+                                      NavigationUtils.navigateTo(
                                         context: context,
                                         destinationScreen: EditDriverProfile(
                                           inProgress: false,
                                           driver: profileCubit
                                               .profileResponse!.data!,
                                         ));
+                                    }
                                   },
                                 )),
                             Column(
@@ -166,16 +160,13 @@ class _DriverProfileState extends State<DriverProfile> {
                     children: [
                       TextButton(
                           onPressed: () {
-                            //carCubit.add(driver.user!.sId!);
                             NavigationUtils.navigateAndClearStack(context: context , destinationScreen: AddCarScreen(profileCubit.profileResponse!.data!.user!.sId!));
-                            print("test from screennnnnnnnn");
-                            //carCubit.testcars();
                           },
                           child: Text(
                             "Add car",
                             style: AppTextStyle.mainStyle(size: 13),
                           )),
-                      Text("Cars"),
+                      const Text("Cars"),
                     ],
                   ),
                                 (profileCubit.profileResponse!.data!.cars !=
@@ -207,7 +198,7 @@ class _DriverProfileState extends State<DriverProfile> {
                           children: [
                             SizedBox(
                                 height: MediaQuery.of(context).size.height / 3),
-                            CircularProgressIndicator(),
+                            const CircularProgressIndicator(),
                           ],
                         ));
                       }

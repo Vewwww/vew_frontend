@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/bloc/profile_cubit/profile_cubit.dart';
-import 'package:vewww/core/components/logo.dart';
-import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/model/winch_driver.dart';
 import 'package:vewww/views/winch/winch_home_page.dart';
-
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/custom_text_field.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
-import '../../core/utils/navigation.dart';
-import '../common/select_color_screen.dart';
 
 class WinchEditProfileScreen extends StatelessWidget {
   WinchDriver winch;

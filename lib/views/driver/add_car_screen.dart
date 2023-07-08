@@ -6,11 +6,7 @@ import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/core/utils/navigation.dart';
-import 'package:vewww/model/profile_response.dart';
 import 'package:vewww/views/driver/driver_profile.dart';
-import 'package:vewww/views/driver/edit_driver_profile.dart';
-import '../../bloc/add_car_cubit/add_car_cubit.dart';
-import '../../bloc/auth_cubit/auth_cubit.dart';
 import '../../bloc/select_color_cubit/select_color_cubit.dart';
 import '../../core/components/build_car.dart';
 import '../../core/components/custom_text_field.dart';
@@ -50,9 +46,6 @@ class _AddCarScreenState extends State<AddCarScreen> {
   void initState() {
     super.initState();
     car = Car();
-    // SelectColorCubit.get(context).carColorResponse = null;
-    // SelectChoiceCubit.get(context).carTypeResponse = null;
-    // SelectChoiceCubit.get(context).carModelResponse = null;
   }
 
   @override
@@ -63,9 +56,9 @@ class _AddCarScreenState extends State<AddCarScreen> {
     return Scaffold(
         body: SingleChildScrollView(
             child: Padding(
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 child: Column(children: [
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   CustomAppBar(
                     title: Text(
                       "Add Car",
@@ -192,10 +185,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
                                       destinationScreen: SelectColorScreen());
                                 },
                                 validator: (value) {
-                                  if (SelectColorCubit.get(context).color !=
-                                      null) {
-                                    return "Please choose car color";
-                                  }
+                                  return "Please choose car color";
                                 },
                               );
                             }),
@@ -203,7 +193,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
                           label: "Car Plat Number",
                           controller: _carPlateNum,
                           validator: (value) {
-                            if (value!.isEmpty || value == null) {
+                            if (value!.isEmpty) {
                               return 'Car Number is required';
                             }
                           },
@@ -212,7 +202,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
                           label: "Year",
                           controller: _year,
                           validator: (value) {
-                            if (value!.isEmpty || value == null) {
+                            if (value!.isEmpty) {
                               return 'Car year is required';
                             }
                           },
@@ -233,7 +223,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
                           keyboardType: TextInputType.number,
                           controller: _miles,
                           validator: (value) {
-                            if (value!.isEmpty || value == null) {
+                            if (value!.isEmpty) {
                               return 'Miles is required';
                             }
                           },
@@ -243,7 +233,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
                           controller: _avgMilesPerMonth,
                           keyboardType: TextInputType.number,
                           validator: (value) {
-                            if (value!.isEmpty || value == null) {
+                            if (value!.isEmpty) {
                               return 'Average Miles per Month is required';
                             }
                           },
@@ -284,10 +274,8 @@ class _AddCarScreenState extends State<AddCarScreen> {
                                               .carColor![
                                           SelectColorCubit.get(context).color];
                                       car.plateNumber = _carPlateNum.text;
-                                      print(car.toJson());
 
                                       await carCubit.add(car);
-                                      print(state);
                                       if (state is AddCarSuccessState) {
                                         NavigationUtils.navigateAndClearStack(
                                             context: context,

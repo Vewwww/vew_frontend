@@ -1,7 +1,3 @@
-import 'dart:math';
-
-import 'package:vewww/model/car.dart';
-
 import 'car_type.dart';
 import 'location.dart';
 import 'name.dart';
@@ -27,7 +23,6 @@ abstract class Repairer {
     this.distance,
   });
   Repairer.fromJson(Map<String, dynamic> json, {bool isMechanic = false}) {
-    print(json);
     // if (isMechanic) {
     //   name = Name(en: json['name']);
     // } else {
@@ -42,7 +37,6 @@ abstract class Repairer {
         json['location'] != null ? Location.fromJson(json['location']) : null;
     sId = json['_id'];
     if (json["distance"] != null) {
-      print("dist : ${json['distance']}");
       distance = double.parse((json['distance']).toStringAsFixed(2));
     }
     phoneNumber = json['phoneNumber'];
@@ -87,7 +81,6 @@ class MaintenanceCenter extends Repairer {
     if (json['carType'] != null) {
       carType = <CarType>[];
       json['carType'].forEach((v) {
-        print(v.toString());
         carType!.add((v is String)
             ? CarType(sId: v)
             : (v is CarType)
@@ -209,9 +202,9 @@ class Mechanic extends Repairer {
     data['email'] = email;
     data['password'] = password;
     data['mechanicPhone'] = mechanicPhone;
-    if (name != null)
+    if (name != null) {
       data['name'] = name!.toJson();
-    else {}
+    } else {}
     data['phoneNumber'] = phoneNumber;
     data['hasDelivery'] = hasDelivery;
     if (service != null) {
@@ -310,10 +303,11 @@ class Place extends Repairer {
     iV = json['__v'];
     ownerName = json['ownerName'];
     email = json['email'];
-    if (json["name"] != null)
+    if (json["name"] != null) {
       name = (json["name"] is String)
           ? Name(ar: json["name"], en: json["name"])
           : Name.fromJson(json["name"]);
+    }
     password = json['password'];
     mechanicPhone = json['mechanicPhone'];
     hasDelivery = json['hasDelivery'];
@@ -333,7 +327,7 @@ class Place extends Repairer {
     }
     isSuspended = json['isSuspended'];
     report =
-        json['report'] != null ? new Report.fromJson(json['report']) : null;
+        json['report'] != null ? Report.fromJson(json['report']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -344,7 +338,6 @@ class Place extends Repairer {
     if (location != null) {
       data['location'] = location!.toJson();
     } else {
-      print("location null");
     }
     data['_id'] = sId;
     if (phoneNumber != null) data['phoneNumber'] = phoneNumber;

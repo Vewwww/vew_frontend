@@ -35,35 +35,30 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
   @override
   void initState() {
     super.initState();
-    print("saearch : $searchKey ,  $filter");
     final nearestRepairerCubit = context.read<NearestRepairerCubit>();
     final cubit = context.read<SelectChoiceCubit>();
     if (filter == "Maintenance Centers") {
       {
-        print("here getNearestMC");
         if (cubit.carTypeResponse != null &&
-            cubit.carTypeResponse!.carType != null)
+            cubit.carTypeResponse!.carType != null) {
           nearestRepairerCubit.getNearestMC(
               carTypeID:
                   cubit.carTypeResponse!.carType![cubit.carTypeChoice].sId);
-        else
+        } else {
           nearestRepairerCubit.getNearestMC();
+        }
       }
     } else if (filter == "Gas Station") {
       nearestRepairerCubit.getNearestGasStation();
     } else if (filter == "Mechanist") {
       nearestRepairerCubit.getNearestMechanic(serviceId!);
-    } else if (searchKey != null && searchKey!.length <= 0 && filter == "All") {
-      print("in search4  *${searchKey}**");
+    } else if (searchKey != null && searchKey!.isEmpty && filter == "All") {
       nearestRepairerCubit.getNearest();
     } else if (searchKey != null && filter == "All") {
-      print("in search1  *${searchKey}*");
       nearestRepairerCubit.search(searchKey!);
     } else if (searchKey == null && filter == "All") {
-      print("in search1  *${searchKey}**");
       nearestRepairerCubit.getNearest();
     } else if (searchKey != null && filter == null) {
-      print("in search3  *${searchKey}**");
       nearestRepairerCubit.search(searchKey!);
     }
   }
@@ -191,9 +186,9 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                   }
                 } else if (filter == "All" &&
                     searchKey != null &&
-                    searchKey!.length > 0) {
+                    searchKey!.isNotEmpty) {
                   if (state is SearchSuccessState) {
-                    if (state.places.length > 0) {
+                    if (state.places.isNotEmpty) {
                       return Expanded(
                         child: ListView.builder(
                           padding: const EdgeInsets.all(0),
@@ -231,9 +226,9 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                   }
                 } else if ((filter == null || filter == "All") &&
                     searchKey != null &&
-                    searchKey!.length == 0) {
+                    searchKey!.isEmpty) {
                   if (state is GettingNearestSuccessState) {
-                    if (state.places.length > 0) {
+                    if (state.places.isNotEmpty) {
                       return Expanded(
                         child: ListView.builder(
                           padding: const EdgeInsets.all(0),
@@ -247,7 +242,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                     } else {
                       return Center(
                         child: SingleChildScrollView(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           child: Column(
                             children: [
                               Image.asset(
@@ -272,7 +267,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                   }
                 } else if (searchKey == null && filter == "All") {
                   if (state is GettingNearestSuccessState) {
-                    if (state.places.length > 0) {
+                    if (state.places.isNotEmpty) {
                       return Expanded(
                         child: ListView.builder(
                           padding: const EdgeInsets.all(0),

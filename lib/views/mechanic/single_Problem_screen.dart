@@ -9,7 +9,7 @@ import '../../model/problem_response.dart';
 
 class SingleProblemScreen extends StatelessWidget {
   ProblemData problemData;
-  TextEditingController _solution = TextEditingController();
+  final TextEditingController _solution = TextEditingController();
   SingleProblemScreen({required this.problemData, Key? key}) : super(key: key);
 
   @override
@@ -25,11 +25,7 @@ class SingleProblemScreen extends StatelessWidget {
               haveBackArrow: true,
               haveLogo: true,
             ),
-            // const Divider(
-            //   color: Colors.grey,
-            //   thickness: 1,
-            // ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
               "من فضلك ادخل حل للمشكلة فقط اذا كنت متأكد",
               style: AppTextStyle.greyStyle(),
@@ -44,7 +40,7 @@ class SingleProblemScreen extends StatelessWidget {
               color: Colors.grey,
               thickness: 0.3,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               ":المشكلة ",
               style: AppTextStyle.mainStyle(),
@@ -55,12 +51,12 @@ class SingleProblemScreen extends StatelessWidget {
               style: AppTextStyle.darkGreyStyle(),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             const Divider(
               color: Colors.grey,
               thickness: 0.3,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             CustomTextField(
               isArabic: true,
               controller: _solution,
@@ -87,8 +83,8 @@ class SingleProblemScreen extends StatelessWidget {
                         NavigationUtils.navigateBack(context: context);
                       }
                     },
-                    child: Text("حل"))),
-            SizedBox(height: 30),
+                    child: const Text("حل"))),
+            const SizedBox(height: 30),
           ],
         ),
       )),

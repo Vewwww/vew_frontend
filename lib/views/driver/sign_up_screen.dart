@@ -12,13 +12,13 @@ import 'package:vewww/views/driver/sign_in_screen.dart';
 import '../../bloc/add_car_cubit/add_car_cubit.dart';
 import '../../bloc/auth_cubit/auth_cubit.dart';
 import '../../bloc/gender_cubit/gender_cubit.dart';
-import '../../bloc/reminder_cubit/reminder_cubit.dart';
 import '../../core/components/custom_text_field.dart';
 import '../../core/components/logo.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/navigation.dart';
 import '../../model/car.dart';
 import '../../model/car_color.dart';
+import '../../model/car_model.dart';
 import '../../model/person.dart';
 import '../common/select_car_type_screen.dart';
 
@@ -29,18 +29,14 @@ class SignUpScreen extends StatelessWidget {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final TextEditingController _name = TextEditingController();
-  final TextEditingController _driverlisenceRenewalDate =
-      TextEditingController();
+  final TextEditingController _year = TextEditingController();
   final TextEditingController _phoneNumber = TextEditingController();
   final TextEditingController _carType = TextEditingController();
   final TextEditingController _carPlateNum = TextEditingController();
   final TextEditingController _carColor = TextEditingController();
-  final TextEditingController _carlisenceRenewalDate = TextEditingController();
-  final TextEditingController _lastPeriodicMaintenanceDate =
-      TextEditingController();
   final TextEditingController _miles = TextEditingController();
   final TextEditingController _avgMilesPerMonth = TextEditingController();
-  SignUpScreen({this.carType, this.color, Key? key}) : super(key: key) {}
+  SignUpScreen({this.carType, this.color, Key? key}) : super(key: key) ;
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +44,7 @@ class SignUpScreen extends StatelessWidget {
     AddCarCubit addCarCubit = AddCarCubit.get(context);
     GenderCubit genderCubit = GenderCubit.get(context);
     SelectChoiceCubit selectChoiceCubit = SelectChoiceCubit.get(context);
-    ReminderCubit reminderCubit = ReminderCubit.get(context);
     AuthCubit authCubit = AuthCubit.get(context);
-    //CarCubit carCubit = CarCubit.get(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -145,6 +139,9 @@ class SignUpScreen extends StatelessWidget {
                       if (value!.isEmpty || value == null) {
                         return 'Phone number is required';
                       }
+                      if (value.length != 11) {
+                        return 'Phone number must be 11 characters long';
+                      }
                     },
                   ),
                   CustomTextField(
@@ -197,7 +194,7 @@ class SignUpScreen extends StatelessWidget {
                             },
                             child: CircleAvatar(
                               radius: 14,
-                              backgroundColor: (addCarCubit.cars.length > 0)
+                              backgroundColor: (addCarCubit.cars.isNotEmpty)
                                   ? Colors.grey
                                   : mainColor,
                               child: Icon(
@@ -359,11 +356,20 @@ class SignUpScreen extends StatelessWidget {
                                 }
                               },
                             ),
+                            CustomTextField(
+                              label: "Year",
+                              controller: _year,
+                              validator: (value) {
+                                if (addCarCubit.cars.isNotEmpty) {
+                                  if (value!.isEmpty || value == null) {
+                                    return 'Year is required';
+                                  }
+                                }
+                              },
+                            ),
                             buildDatePicker("Last Periodic Maintenance Date",
                                 (newDate) {
-                              if (authCubit.driver.cars == null) {
-                                authCubit.driver.cars = [Car()];
-                              }
+                              authCubit.driver.cars ??= [Car()];
                               authCubit.driver.cars![0]
                                       .lastPeriodicMaintenanceDate =
                                   newDate
@@ -424,6 +430,13 @@ class SignUpScreen extends StatelessWidget {
                                         .carType![SelectChoiceCubit.get(context)
                                             .carTypeChoice]
                                         .sId),
+                                carModel: CarModel(
+                                    sId: selectChoiceCubit
+                                        .carModelResponse!
+                                        .carModels![
+                                            SelectChoiceCubit.get(context)
+                                                .carModelChoice]
+                                        .sId),
                                 color: CarColor(
                                     sId: SelectColorCubit.get(context)
                                         .carColorResponse!
@@ -433,6 +446,7 @@ class SignUpScreen extends StatelessWidget {
                                 carLicenseRenewalDate: authCubit
                                     .driver.cars![0].carLicenseRenewalDate,
                                 miles: double.parse(_miles.text),
+                                year: _year.text,
                                 averageMilesPerMonth:
                                     double.parse(_avgMilesPerMonth.text),
                                 lastPeriodicMaintenanceDate: authCubit.driver
@@ -451,10 +465,9 @@ class SignUpScreen extends StatelessWidget {
                                   phoneNumber: _phoneNumber.text,
                                   cars: [car]);
                               await authCubit.driverSignUp(driver);
-                              print(state);
 
                               if (authCubit.state is SignUpSuccessState) {
-                                var snackBar = SnackBar(
+                                var snackBar = const SnackBar(
                                     content: Text(
                                         "Welcome to vewww plaese Check your email"));
                                 ScaffoldMessenger.of(context)
@@ -463,7 +476,6 @@ class SignUpScreen extends StatelessWidget {
                                     context: context,
                                     destinationScreen: SignInScreen());
                               } else if (state is SignUpErrorState) {
-                                print("here");
                                 var snackBar =
                                     SnackBar(content: Text(state.errMessage));
                                 ScaffoldMessenger.of(context)
@@ -504,39 +516,7 @@ class SignUpScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      const Expanded(
-                          child: Divider(
-                        color: Color.fromARGB(255, 151, 151, 151),
-                        thickness: 1,
-                      )),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 6),
-                        child: Text(
-                          "OR",
-                          style: AppTextStyle.greyStyle(size: 12),
-                        ),
-                      ),
-                      const Expanded(
-                          child: Divider(
-                        color: Color.fromARGB(255, 151, 151, 151),
-                        thickness: 1,
-                      )),
-                    ],
-                  ),
-                  const SizedBox(height: 18),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      InkWell(
-                          onTap: () {},
-                          child: Image.asset("assets/images/google.png")),
-                      InkWell(
-                          onTap: () async {},
-                          child: Image.asset("assets/images/Facebook.png")),
-                    ],
-                  ),
+                  
                 ],
               )),
         ),
@@ -544,18 +524,7 @@ class SignUpScreen extends StatelessWidget {
     );
   }
 
-  // bool validateFieldes(BuildContext context, AuthCubit authCubit,
-  //     SelectChoiceCubit selectChoiceCubit) {
-  //   if (_formKey.currentState!.validate() &&
-  //       SelectColorCubit.get(context).carColorResponse != null &&
-  //       selectChoiceCubit.carTypeResponse != null &&
-  //       selectChoiceCubit.carModelResponse != null &&
-  //       authCubit.driver.lisenceRenewalDate != null &&
-  //       authCubit.driver.cars![0].carLicenseRenewalDate != null &&
-  //       authCubit.driver.cars![0].lastPeriodicMaintenanceDate != null)
-  //     return true;
-  //   return false;
-  // }
+
   bool validateFieldes(BuildContext context, AuthCubit authCubit,
       SelectChoiceCubit selectChoiceCubit) {
     if (_formKey.currentState!.validate()) {
@@ -568,31 +537,31 @@ class SignUpScreen extends StatelessWidget {
                     null) {
                   return true;
                 } else {
-                  var snackBar = SnackBar(
+                  var snackBar = const SnackBar(
                       content: Text(
                           "car last periodic maintenance date is required "));
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 }
               } else {
-                var snackBar = SnackBar(
+                var snackBar = const SnackBar(
                     content: Text("car lisence renewal date is required "));
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
             } else {
               var snackBar =
-                  SnackBar(content: Text("Lisence renewal date is required"));
+                  const SnackBar(content: Text("Lisence renewal date is required"));
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
           } else {
-            var snackBar = SnackBar(content: Text("car model is required"));
+            var snackBar = const SnackBar(content: Text("car model is required"));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
         } else {
-          var snackBar = SnackBar(content: Text("car Type is required"));
+          var snackBar = const SnackBar(content: Text("car Type is required"));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
       } else {
-        var snackBar = SnackBar(content: Text("color is required"));
+        var snackBar = const SnackBar(content: Text("color is required"));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }
@@ -609,7 +578,7 @@ class SignUpScreen extends StatelessWidget {
             lable,
             style: AppTextStyle.darkGreyStyle(size: 14),
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           SizedBox(
             width: double.infinity,
             height: 70,
@@ -618,8 +587,6 @@ class SignUpScreen extends StatelessWidget {
               initialDateTime: DateTime.now(),
               onDateTimeChanged: (DateTime newDateTime) {
                 onChange(newDateTime);
-                // controller.text =
-                //     newDateTime.toString().replaceAll(" 00:00:00.000", "");
               },
             ),
           )

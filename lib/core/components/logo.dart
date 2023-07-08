@@ -36,7 +36,7 @@ class Logo extends StatelessWidget {
           height: size! / 15,
         ),
         Text(
-          (color == "white") ? "Vewww" : "",
+          (color ==Colors.white) ? "Vewww" : "",
           style: AppTextStyle.logoTextStyle(size! / 7, color: color!),
         ),
       ],

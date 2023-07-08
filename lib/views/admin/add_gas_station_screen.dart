@@ -117,12 +117,13 @@ class AddGasStationScreen extends StatelessWidget {
                             ar: arabicName.text,
                           ),
                           location: Location(
-                              description:
-                                  Name(en: addressController.text, ar: arabicAddress.text),
+                              description: Name(
+                                  en: addressController.text,
+                                  ar: arabicAddress.text),
                               latitude: locationCubit.lat,
                               longitude: locationCubit.long),
                         );
-                        adminAddCubit.AddGasStation(gasStation);
+                        adminAddCubit.addGasStation(gasStation);
                       }
                     },
                     text: 'Add'),

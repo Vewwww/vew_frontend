@@ -31,8 +31,6 @@ class ChoosePrblemCategoryScreen extends StatelessWidget {
               SizedBox(height: constraintsHight / 10 - 50),
               Center(child: Image.asset("assets/images/Logo(1).png")),
               SizedBox(height: constraintsHight / 60),
-
-              //const SizedBox(height: 10),
               const Divider(
                 thickness: 0,
                 color: Colors.grey,
@@ -50,7 +48,7 @@ class ChoosePrblemCategoryScreen extends StatelessWidget {
                   return ListView.builder(
                       padding: EdgeInsets.zero,
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: diagnoseCubit.catigories.length,
                       itemBuilder: (context, index) {
                         return card(

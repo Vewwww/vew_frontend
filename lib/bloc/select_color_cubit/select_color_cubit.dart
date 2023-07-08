@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import '../../model/car_color.dart';
 import '../../services/dio_helper.dart';
-
 part 'select_color_state.dart';
 
 class SelectColorCubit extends Cubit<SelectColorState> {
@@ -20,13 +19,9 @@ class SelectColorCubit extends Cubit<SelectColorState> {
   Future<void> getcolors() async {
     await DioHelper.getData(url: "/color/").then((value) {
       emit(GettingColorsLoadingState());
-      print("colors response : ${value.data}");
       carColorResponse = CarColorResponse.fromJson(value.data);
-      print("done");
       emit(GettingColorsSuccessState());
-      //print(carColorResponse!.carColor![5].code);
     }).onError((error, stackTrace) {
-      print("colors error : ${error}");
       emit(GettingColorsErrorState());
     });
   }

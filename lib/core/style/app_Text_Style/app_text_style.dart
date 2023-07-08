@@ -5,7 +5,7 @@ class AppTextStyle {
   static TextStyle mainStyle({double size = 18}) =>
       TextStyle(color: mainColor, fontSize: size);
   static TextStyle greyStyle({double size = 18}) =>
-      TextStyle(color: Color.fromARGB(255, 182, 182, 182), fontSize: size);
+      TextStyle(color: const Color.fromARGB(255, 182, 182, 182), fontSize: size);
   static TextStyle darkGreyStyle({double size = 18}) => TextStyle(
       color: const Color.fromARGB(255, 115, 115, 115), fontSize: size);
   static TextStyle boldStyle({double size = 18}) => TextStyle(
