@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vewww/bloc/diagnose_cunit/diagnose_cubit.dart';
 import 'package:vewww/bloc/warning_sign_cubit/warning_sign_cubit.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/components/default_button.dart';
@@ -13,6 +12,7 @@ import 'package:vewww/views/driver/search_screen.dart';
 import 'package:vewww/views/common/select_car_type_screen.dart';
 import 'package:vewww/views/driver/which_car_screen.dart';
 import '../../bloc/chat_cubit/chat_cubit.dart';
+import '../../bloc/diagnose_cubit/diagnose_cubit.dart';
 import '../../bloc/notification_cubit/notification_cubit.dart';
 import '../../bloc/select_choice_cubit/select_choice_cubit.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';

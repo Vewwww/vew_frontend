@@ -54,18 +54,14 @@ class _GenderAnalysisScreenState extends State<GenderAnalysisScreen> {
                    "Males":state.genderAnalysisResponse.maleRatio! ,
                   },
                   animationDuration: Duration(milliseconds: 800),
-                  //chartLegendSpacing: 42,
                   chartRadius: MediaQuery.of(context).size.width / 2,
                   colorList: colors,
-                  //initialAngleInDegree: 0,
                   chartType: ChartType.disc,
                   ringStrokeWidth: 32,
-                  //centerText: "Users",
                   legendOptions: LegendOptions(
                     showLegendsInRow: false,
                     legendPosition: LegendPosition.right,
                     showLegends: true,
-                    //legendShape: _BoxShape.circle,
                     legendTextStyle: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -77,8 +73,6 @@ class _GenderAnalysisScreenState extends State<GenderAnalysisScreen> {
                     showChartValuesOutside: false,
                     decimalPlaces: 1,
                   ),
-                  // gradientList: ---To add gradient colors---
-                  // emptyColorGradient: ---Empty Color gradient---
                 )
               ]),
             );

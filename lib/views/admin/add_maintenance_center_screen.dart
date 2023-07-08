@@ -122,11 +122,9 @@ class AddMaintenanceCenterScreen extends StatelessWidget {
                     Expanded(child: Container()),
                   ],
                 ),
-                //Add car type
                 const SizedBox(height: 15),
                 BlocConsumer<SelectChoiceCubit, SelectChoiceState>(
                   listener: (context, state) {
-                    // TODO: implement listener
                   },
                   builder: (context, state) {
                     return CustomTextField(

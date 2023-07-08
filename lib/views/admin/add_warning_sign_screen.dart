@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/add_image_cubit/add_image_cubit.dart';
 import 'package:vewww/bloc/admin_add_cubit/admin_add_cubit.dart';
 import 'package:vewww/core/utils/navigation.dart';
-import 'package:vewww/model/mechanic_shop.dart';
 import 'package:vewww/model/name.dart';
 import 'package:vewww/model/sign_image.dart';
 import 'package:vewww/views/admin/admin_home_screen.dart';
@@ -15,8 +14,6 @@ import '../../core/components/default_button.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/style/app_colors.dart';
 import 'package:image_picker/image_picker.dart';
-
-import '../../model/warning_sign.dart';
 
 class AddWarningSignScreen extends StatefulWidget {
   @override

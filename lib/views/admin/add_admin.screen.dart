@@ -91,7 +91,6 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
                       ),
                       CustomTextField(
                         controller: passwordController,
-                        //keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return '*Required';
