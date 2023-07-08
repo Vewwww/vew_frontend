@@ -33,3 +33,9 @@ class GetCarModelAnalysisSuccessState extends AdminAnalysisState {
   GetCarModelAnalysisSuccessState(this.carModelAnalysisResponse);
 }
 class GetCarModelAnalysisErrorState extends AdminAnalysisState {}
+class GetRoadAnalysisLoadingState extends AdminAnalysisState {}
+class GetRoadAnalysisSuccessState extends AdminAnalysisState {
+  final List<RoadAnalysisResponse> roadAnalysisResponses ;
+  GetRoadAnalysisSuccessState(this.roadAnalysisResponses);
+}
+class GetRoadAnalysisErrorState extends AdminAnalysisState {}
