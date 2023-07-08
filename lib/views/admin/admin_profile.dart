@@ -107,7 +107,6 @@ class _AdminProfileState extends State<AdminProfile> {
                                 CustomTextField(
                                   readOnly: true,
                                   label: "Name",
-                                  //controller: _name,
                                   hint: profileCubit
                                       .adminProfileResponse!.admin!.name,
                                   validator: (value) {},
@@ -115,7 +114,6 @@ class _AdminProfileState extends State<AdminProfile> {
                                 CustomTextField(
                                   readOnly: true,
                                   label: "Email",
-                                  //controller: _email,
                                   hint: profileCubit
                                       .adminProfileResponse!.admin!.email,
                                   validator: (value) {},
@@ -125,7 +123,6 @@ class _AdminProfileState extends State<AdminProfile> {
                                   label: "Phone Number",
                                   hint: profileCubit
                                       .adminProfileResponse!.admin!.phoneNumber,
-//controller: _phone,
                                   validator: (value) {},
                                 ),
                               ],

@@ -42,7 +42,6 @@ class _ADriverScreenState extends State<ADriverScreen> {
           if (state is GetDriverWithIdSuccessState) {
             _name.text = state.driver.person!.name!;
             _reportNum.text = state.driver.person!.report! as String;
-            //_carType.text=state.driver.cars
             _email.text = state.driver.person!.email!;
             _phone.text = state.driver.person!.phoneNumber!;
             return Column(children: [
