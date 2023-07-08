@@ -17,11 +17,9 @@ class LocationCubit extends Cubit<LocationState> {
   loc.LocationData? locationData;
   late double latitude;
   late double longitude;
-  // this where data from map saved
   double? lat;
   double? long;
   String address = "";
-  //---------------------------
 
   Future<void> getPermission() async {
     if (await Permission.location.isGranted) {

@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 part 'selected_page_index_state.dart';
 
+
+//Cubit to control app nav bar scrolling in mechanic and winch
 class SelectedPageIndexCubit extends Cubit<SelectedPageIndexState> {
   int? selectedIndex = 0;
   

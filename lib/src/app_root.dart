@@ -17,15 +17,12 @@ import '../bloc/notification_cubit/notification_cubit.dart';
 import '../bloc/profile_cubit/profile_cubit.dart';
 import '../bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
 import '../bloc/request_cubit/request_cubit.dart';
-import '../bloc/search_cubit/seaech_cubit.dart';
 import '../bloc/selected page index/cubit/selected_page_index_cubit.dart';
 import '../bloc/service_cubit/services_cubit.dart';
-import '../bloc/verification_cubit/verification_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/add_car_cubit/add_car_cubit.dart';
 import '../bloc/gender_cubit/gender_cubit.dart';
 import '../bloc/onboarding_cubit/onboarding_cubit.dart';
-import '../bloc/reminder_cubit/reminder_cubit.dart';
 import '../bloc/select_choice_cubit/select_choice_cubit.dart';
 import '../bloc/select_color_cubit/select_color_cubit.dart';
 import '../bloc/warning_sign_cubit/warning_sign_cubit.dart';
@@ -52,14 +49,11 @@ class AppRoot extends StatelessWidget {
           BlocProvider(create: (context) => SelectChoiceCubit()),
           BlocProvider(create: (context) => SelectColorCubit()),
           BlocProvider(create: (context) => GenderCubit()),
-          BlocProvider(create: (context) => ReminderCubit()),
           BlocProvider(create: (context) => LocationCubit()),
           BlocProvider(create: (context) => SelectedPageIndexCubit()),
           BlocProvider(create: (context) => AuthCubit()),
-          BlocProvider(create: (context) => SearchCubit()),
           BlocProvider(create: (context) => NearestRepairerCubit()),
           BlocProvider(create: (context) => AddImageCubit()),
-          BlocProvider(create: (context) => VerificationCubit()),
           BlocProvider(create: (context) => WarningSignCubit()),
           BlocProvider(create: (context) => ProfileCubit()),
           BlocProvider(create: (context) => ServicesCubit()),

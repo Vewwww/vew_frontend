@@ -116,7 +116,7 @@ class MechanicShop {
         }
       });
     }
-    rate = json['rate'] * 1.0;
+    if(json['rate'] != null)rate = json['rate'] * 1.0;
     numOfRates = json['numOfRates'];
     isSuspended = json['isSuspended'];
     emailConfirm = json['emailConfirm'];
@@ -143,6 +143,35 @@ class MechanicShop {
     if (hasDelivery != null) data['hasDelivery'] = hasDelivery;
     if (service != null) {
       data['service'] = service!.map((v) => v.toJson()).toList();
+    }
+    if (rate != null) data['rate'] = rate;
+    if (numOfRates != null) data['numOfRates'] = numOfRates;
+    if (isSuspended != null) data['isSuspended'] = isSuspended;
+    if (emailConfirm != null) data['emailConfirm'] = emailConfirm;
+    if (logedIn != null) data['logedIn'] = logedIn;
+    if (role != null) data['role'] = role;
+    if (iV != null) data['__v'] = iV;
+    return data;
+  }
+
+  Map<String, dynamic> toSignupJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (report != null) {
+      data['report'] = report!.toJson();
+    }
+    if (location != null) {
+      data['location'] = location!.toJson();
+    }
+    if (sId != null) data['_id'] = sId;
+    if (ownerName != null) data['ownerName'] = ownerName;
+    if (email != null) data['email'] = email;
+    if (password != null) data['password'] = password;
+    if (mechanicPhone != null) data['mechanicPhone'] = mechanicPhone;
+    if (name != null) data['name'] = name;
+    if (phoneNumber != null) data['phoneNumber'] = phoneNumber;
+    if (hasDelivery != null) data['hasDelivery'] = hasDelivery;
+    if (service != null) {
+      data['service'] = service!.map((v) => v.sId).toList();
     }
     if (rate != null) data['rate'] = rate;
     if (numOfRates != null) data['numOfRates'] = numOfRates;

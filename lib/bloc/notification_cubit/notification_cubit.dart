@@ -17,22 +17,17 @@ class NotificationCubit extends Cubit<NotificationState> {
   Future<void> getNotificatin() async {
     DateTime now = DateTime.now();
     DateTime date = DateTime(now.year, now.month, now.day);
-    //print(date.toString().replaceAll("00:00:00.000", ""));
     emit(GettingNotificationLoadingState());
     await DioHelper.getWithBody(
             url: "/driver/getNotifications/",
             query: {"toDay": date.toString().replaceAll("00:00:00.000", "")},
             token: SharedPreferencesHelper.getData(key: 'vewToken'))
         .then((value) {
-      print(" notification response : ${value.data}");
       notifivatoinResponse = NotifivatoinResponse.fromJson(value.data);
       haveNew = notifivatoinResponse!.newNotifications!;
       emit(GettingNotificationSuccessState(
           notifivatoinResponse!.notifications!));
     }).catchError((err) {
-      if (err is DioError) {
-        print("notification error message : ${err.response!.data}");
-      }
       emit(GettingNotificationErrorState());
     });
   }

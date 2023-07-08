@@ -11,7 +11,7 @@ import '../../core/components/logo.dart';
 
 class DiagnoseScreen extends StatefulWidget {
   String category;
-  DiagnoseScreen({required this.category});
+  DiagnoseScreen({required this.category , Key? key}):super(key: key);
 
   @override
   State<DiagnoseScreen> createState() => _DiagnoseScreenState();

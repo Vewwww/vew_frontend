@@ -4,12 +4,10 @@ import 'package:vewww/bloc/nearest_repairer_cubit/nearest_repairer_cubit.dart';
 import 'package:vewww/core/components/near_repairer_card.dart';
 import 'package:vewww/core/components/search_bar.dart';
 import 'package:vewww/views/driver/search_result_screen.dart';
-
 import '../../core/components/custom_app_bar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/style/app_colors.dart';
 import '../../core/utils/navigation.dart';
-import '../../model/repairer.dart';
 import 'driver_home_screen.dart';
 
 class SearchScreen extends StatefulWidget {

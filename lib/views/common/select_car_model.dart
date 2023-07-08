@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/core/utils/navigation.dart';
-import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import '../../bloc/car_cubit/car_cubit.dart';
 import '../../bloc/select_choice_cubit/select_choice_cubit.dart';
 import '../../core/components/custom_app_bar.dart';
@@ -18,7 +17,7 @@ class SelectCarModelScreen extends StatefulWidget {
 
   @override
   State<SelectCarModelScreen> createState() => _SelectCarModelScreenState(id,
-      destinationScreen: destinationScreen, index: this.index);
+      destinationScreen: destinationScreen, index: index);
 }
 
 class _SelectCarModelScreenState extends State<SelectCarModelScreen> {
@@ -31,7 +30,6 @@ class _SelectCarModelScreenState extends State<SelectCarModelScreen> {
   void initState() {
     super.initState();
     var carModelCubit = context.read<SelectChoiceCubit>();
-    print("id:$id");
     carModelCubit.getAllCarModels(id);
   }
 
@@ -127,17 +125,16 @@ class _SelectCarModelScreenState extends State<SelectCarModelScreen> {
                     width: MediaQuery.of(context).size.width * 11 / 12,
                     child: ElevatedButton(
                       onPressed: () {
-                        if (this.index != null &&
+                        if (index != null &&
                             selectChoiceCubit
-                                    .carModelResponse!.carModels!.length >
-                                0)
+                                    .carModelResponse!.carModels!.isNotEmpty) {
                           CarCubit.get(context).updatedCars![index!].carModel =
                               selectChoiceCubit.carModelResponse!
                                   .carModels![selectChoiceCubit.carModelChoice];
+                        }
                         if (destinationScreen == null) {
                           NavigationUtils.navigateBack(context: context);
                         } else {
-                          print("des : $destinationScreen");
                           NavigationUtils.navigateAndClearStack(
                               context: context,
                               destinationScreen: destinationScreen!);
@@ -154,7 +151,7 @@ class _SelectCarModelScreenState extends State<SelectCarModelScreen> {
                 child: Column(
               children: [
                 SizedBox(height: MediaQuery.of(context).size.height / 3),
-                CircularProgressIndicator(),
+                const CircularProgressIndicator(),
               ],
             ));
           }

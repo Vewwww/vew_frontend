@@ -1,12 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
-import 'package:vewww/core/components/horizontal_line.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
-import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
 import '../../bloc/request_cubit/request_cubit.dart';
 import '../../core/components/empty_requests.dart';
@@ -27,8 +24,8 @@ class _PenddingRequestsScreenState extends State<PenddingRequestsScreen> {
   _PenddingRequestsScreenState(this.isWinch);
   @override
   void initState() {
-    print("is winch $isWinch");
     super.initState();
+    initSocket();
     final requestCubit = context.read<RequestCubit>();
     requestCubit.getDriverPendingReq();
     startTime();
@@ -49,24 +46,20 @@ class _PenddingRequestsScreenState extends State<PenddingRequestsScreen> {
     socket!.connect();
     var cubit = context.read<RequestCubit>();
     socket!.onConnect((_) {
-      print(SharedPreferencesHelper.getData(key: "vewToken"));
-      print('Connection established , ${cubit.reqResponse}');
       if (cubit.reqResponse != null &&
           cubit.reqResponse!.previousRequests != null) {
         for (var req in cubit.reqResponse!.previousRequests!) {
           socket!.emit('join-room', {'room': req.sId});
-          print('joined room  ${req.sId}');
         }
       }
     });
     socket!.on("request-accepted-or-rejected", (data) {
-      print("recieved message from test \ndata is :  $data");
       cubit.reqResponse = null;
       cubit.getDriverPendingReq();
     });
-    socket!.onDisconnect((_) => print('Connection Disconnection'));
-    socket!.onConnectError((err) => print(err));
-    socket!.onError((err) => print(err));
+    socket!.onDisconnect((_) => debugPrint('Connection Disconnection'));
+    socket!.onConnectError((err) => debugPrint(err));
+    socket!.onError((err) => debugPrint(err));
   }
 
   @override
@@ -79,7 +72,7 @@ class _PenddingRequestsScreenState extends State<PenddingRequestsScreen> {
             onPressed: () {
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => DriverHomeScreen()),
+                  MaterialPageRoute(builder: (context) => const DriverHomeScreen()),
                   (route) => false);
             },
             iconSize: 40,
@@ -94,15 +87,12 @@ class _PenddingRequestsScreenState extends State<PenddingRequestsScreen> {
             style: AppTextStyle.mainStyle(),
           ),
         ),
-
-        //horizontalLine(),
         BlocBuilder<RequestCubit, RequestState>(
           builder: (context, state) {
             if (state is! GetDriverPendingReqErrorState &&
                 state is! GetDriverPendingReqLoadingState &&
                 state is GetDriverReqSuccessState) {
-              print("here");
-              if (state.previousRequests.length > 0)
+              if (state.previousRequests.isNotEmpty) {
                 return Expanded(
                   child: ListView.separated(
                     padding: const EdgeInsets.all(8),
@@ -110,7 +100,6 @@ class _PenddingRequestsScreenState extends State<PenddingRequestsScreen> {
                     itemBuilder: (BuildContext context, int index) {
                       bool isWinch =
                           state.previousRequests[index].winch != null;
-                      print(state);
                       if (isWinch) {
                         return requestCard(
                             function: () {
@@ -123,7 +112,7 @@ class _PenddingRequestsScreenState extends State<PenddingRequestsScreen> {
                             rate: state.previousRequests[index].winch!.rate!,
                             thirdVal: state
                                 .previousRequests[index].winch!.plateNumber!,
-                            requestState: 'On his way');
+                            requestState: 'pendding');
                       } else {
                         return requestCard(
                             function: () {
@@ -145,7 +134,7 @@ class _PenddingRequestsScreenState extends State<PenddingRequestsScreen> {
                     ),
                   ),
                 );
-              else {
+              } else {
                 return SizedBox(
                     height: 400,
                     child: EmptyRequests(
@@ -153,7 +142,6 @@ class _PenddingRequestsScreenState extends State<PenddingRequestsScreen> {
                     ));
               }
             } else {
-              print("not here");
               return const CircularProgressIndicator();
             }
           },

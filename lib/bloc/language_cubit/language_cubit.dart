@@ -11,6 +11,7 @@ class LanguageCubit extends Cubit<LanguageState> {
   String languageInText = "عربى";
   String currentLanguage = "en";
 
+  //change language in select role and sign in screen
   void changeLanguage() {
     if (currentLanguage == "en") {
       languageInText = "English";

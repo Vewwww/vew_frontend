@@ -9,7 +9,6 @@ import 'package:vewww/views/driver/driver_home_screen.dart';
 import 'package:vewww/views/driver/search_result_screen.dart';
 import 'package:vewww/views/common/select_car_type_screen.dart';
 import '../../bloc/select_choice_cubit/select_choice_cubit.dart';
-import '../../model/diagnose_result.dart';
 import '../common/services_screen.dart';
 import 'add_diagnose_question_screen.dart';
 
@@ -115,12 +114,12 @@ class DiagnoseResultScreen extends StatelessWidget {
                       style: enabeledButton,
                       child: const Text('Request mechanic'),
                       onPressed: () {
-                        if (diagnoseCubit.diagnoseResult!.serviceId == null)
+                        if (diagnoseCubit.diagnoseResult!.serviceId == null) {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: ((context) => ServicesScreen())));
-                        else {
+                        } else {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(

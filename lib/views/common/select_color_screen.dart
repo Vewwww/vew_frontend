@@ -24,9 +24,7 @@ class SelectColorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SelectColorCubit selectColorCubit = SelectColorCubit.get(context);
-    CarCubit carCubit = CarCubit.get(context);
     return Scaffold(
-      //appBar:
       body: Stack(
         children: [
           Container(
@@ -35,7 +33,6 @@ class SelectColorScreen extends StatelessWidget {
             child: BlocConsumer<SelectColorCubit, SelectColorState>(
               listener: (context, state) {},
               builder: (context, state) {
-                print(state);
                 if (state is GettingColorsSuccessState ||
                     state is ColorChoiceSelected) {
                   return ListView.builder(
@@ -55,7 +52,6 @@ class SelectColorScreen extends StatelessWidget {
                                       : MainAxisAlignment.end,
                                   children: [
                                     SizedBox(
-                                      //width: double.infinity,
                                       child: Text(
                                         (isArabic)
                                             ? selectColorCubit.carColorResponse!
@@ -129,25 +125,25 @@ class SelectColorScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   CarCubit carCubit = CarCubit.get(context);
-                  if (index != null)
+                  if (index != null) {
                     carCubit.updatedCars![index!].color = selectColorCubit
                         .carColorResponse!.carColor![selectColorCubit.color];
-                  if (destinationScreen == null)
+                  }
+                  if (destinationScreen == null) {
                     NavigationUtils.navigateBack(context: context);
-                  else {
-                    print("des : $destinationScreen");
+                  } else {
                     if (destinationScreen is EditDriverProfile) {
-                      print("going to edit");
                       NavigationUtils.navigateAndClearStack(
                           context: context,
                           destinationScreen: EditDriverProfile(
                             driver: driver!,
                             inProgress: true,
                           ));
-                    } else
+                    } else {
                       NavigationUtils.navigateAndClearStack(
                           context: context,
                           destinationScreen: destinationScreen!);
+                    }
                   }
                 },
                 child: const Text("Done"),

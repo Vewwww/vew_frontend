@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/warning_sign_cubit/warning_sign_cubit.dart';
-import 'package:vewww/core/components/horizontal_line.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/views/common/warning_light_screen.dart';
 import '../../bloc/warning_sign_cubit/warning_sign_cubit.dart';
-import '../../core/components/backward_arrow.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
-import '../../model/warning_sign.dart';
 
 class SingleWarningSignScreen extends StatefulWidget {
   SingleWarningSignScreen({
     Key? key,
     required this.id,
   }) : super(key: key);
-  //Signs sign;
   String id;
 
   @override
@@ -29,7 +25,6 @@ class _SingleWarningSignScreenState extends State<SingleWarningSignScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     final warningSignCubit = context.read<WarningSignCubit>();
     warningSignCubit.getSignWithId(id);
   }
@@ -46,7 +41,6 @@ class _SingleWarningSignScreenState extends State<SingleWarningSignScreen> {
           child: BlocBuilder<WarningSignCubit, WarningSignState>(
               builder: (context, state) {
             if (state is GetSingleWarningSignSuccessState) {
-              print(state.sign.name!.en);
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -62,12 +56,12 @@ class _SingleWarningSignScreenState extends State<SingleWarningSignScreen> {
                         Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => WarningLightScreen()),
+                                builder: (context) => const WarningLightScreen()),
                             (route) => false);
                       },
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Center(
@@ -77,7 +71,7 @@ class _SingleWarningSignScreenState extends State<SingleWarningSignScreen> {
                       width: 150,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Center(
@@ -86,10 +80,10 @@ class _SingleWarningSignScreenState extends State<SingleWarningSignScreen> {
                       style: AppTextStyle.mainStyle(size: 20),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-                  Text(
+                  const Text(
                     'Description: ',
                     style: TextStyle(
                       fontSize: 20,
@@ -97,19 +91,19 @@ class _SingleWarningSignScreenState extends State<SingleWarningSignScreen> {
                       color: Colors.grey,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(
                     state.sign.description!.en!,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 20,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
-                  Text(
+                  const Text(
                     'Solution: ',
                     style: TextStyle(
                       fontSize: 20,
@@ -117,12 +111,12 @@ class _SingleWarningSignScreenState extends State<SingleWarningSignScreen> {
                       color: Colors.grey,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(
                     state.sign.solution!.en!,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 20,
                     ),
                   )
@@ -133,7 +127,7 @@ class _SingleWarningSignScreenState extends State<SingleWarningSignScreen> {
                   child: Column(
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height / 3),
-                  CircularProgressIndicator(),
+                  const CircularProgressIndicator(),
                 ],
               ));
             }

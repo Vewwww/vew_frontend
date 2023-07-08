@@ -22,14 +22,13 @@ class CustomTextField extends StatelessWidget {
   final VoidCallback? onDrop;
   final bool isArabic;
 
-  CustomTextField({
+  const CustomTextField({super.key, 
     this.controller,
     required this.validator,
     this.onDrop,
     this.keyboardType = TextInputType.text,
     this.obsecure = false,
     this.isDroped = false,
-    //this.isDate = false,
     this.onTap,
     this.hint,
     this.isMulti = false,

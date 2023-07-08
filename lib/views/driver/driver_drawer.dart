@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/auth_cubit/auth_cubit.dart';
+import 'package:vewww/bloc/chat_cubit/chat_cubit.dart';
 import 'package:vewww/core/components/circular_icon.dart';
 import 'package:vewww/core/components/horizontal_line.dart';
 import 'package:vewww/core/utils/navigation.dart';
-//import 'package:vewww/views/change_password_screen.dart';
 import 'package:vewww/views/common/chats_screen.dart';
 import 'package:vewww/views/driver/notifications_screen.dart';
 import 'package:vewww/views/driver/prev_req_screen.dart';
 import 'package:vewww/views/driver/current_requests_screen.dart';
-
 import '../../bloc/notification_cubit/notification_cubit.dart';
 import '../../core/components/logo.dart';
-import '../../model/driver.dart';
 import '../common/change_password_screen.dart';
 import 'driver_profile.dart';
 import 'pendding_requests_screen.dart';
@@ -27,14 +25,13 @@ class DriverDrawer extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(children: [
-          //logo first
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           Logo(
             size: 180,
           ),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           horizontalLine(),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           GestureDetector(
             onTap: () {
               NavigationUtils.navigateAndClearStack(
@@ -48,18 +45,11 @@ class DriverDrawer extends StatelessWidget {
                   size: 30,
                 )),
           ),
-
-          // Row(
-          //   children: [
-          //     circularIcon(child: Switch(value: value, onChanged: onChanged))
-          //   ],
-          // ),
           const SizedBox(
             height: 15,
           ),
           GestureDetector(
             onTap: () {
-              //TODO::change password screen
               NavigationUtils.navigateAndClearStack(
                   context: context, destinationScreen: ChangePasswordScreen());
             },
@@ -81,7 +71,7 @@ class DriverDrawer extends StatelessWidget {
                 child: BlocBuilder<NotificationCubit, NotificationState>(
                   builder: (context, state) {
                     if (state is GettingNotificationSuccessState &&
-                        NotificationCubit.get(context).haveNew)
+                        NotificationCubit.get(context).haveNew) {
                       return Stack(
                         children: [
                           const Icon(Icons.notifications, color: Colors.white),
@@ -95,11 +85,12 @@ class DriverDrawer extends StatelessWidget {
                           )
                         ],
                       );
-                    else
-                      return Icon(
+                    } else {
+                      return const Icon(
                         Icons.notifications,
                         color: Colors.white,
                       );
+                    }
                   },
                 )),
           ),
@@ -109,11 +100,31 @@ class DriverDrawer extends StatelessWidget {
           GestureDetector(
             onTap: () {
               NavigationUtils.navigateAndClearStack(
-                  context: context, destinationScreen: ChatsScreen());
+                  context: context, destinationScreen: const ChatsScreen());
             },
             child: circularIcon(
                 title: 'Chat',
-                child: const Icon(Icons.chat, color: Colors.white)),
+                child: BlocBuilder<ChatCubit, ChatState>(
+                    builder: (context, state) {
+                  if (state is GettingChatsSuccessState &&
+                      ChatCubit.get(context).chatResponse!.newChats!) {
+                    return Stack(
+                      children: [
+                        const Icon(Icons.notifications, color: Colors.white),
+                        Positioned(
+                          right: 0,
+                          top: 1,
+                          child: CircleAvatar(
+                            radius: 5,
+                            backgroundColor: Colors.red.shade900,
+                          ),
+                        )
+                      ],
+                    );
+                  } else {
+                    return const Icon(Icons.chat, color: Colors.white);
+                  }
+                })),
           ),
           const SizedBox(
             height: 15,
@@ -121,7 +132,7 @@ class DriverDrawer extends StatelessWidget {
           GestureDetector(
             onTap: () {
               NavigationUtils.navigateAndClearStack(
-                  context: context, destinationScreen: PreviousReqScreen());
+                  context: context, destinationScreen: const PreviousReqScreen());
             },
             child: circularIcon(
                 title: 'Previous Requests',
@@ -159,10 +170,10 @@ class DriverDrawer extends StatelessWidget {
           GestureDetector(
             onTap: () async {
               await AuthCubit.get(context).logout();
-              if (AuthCubit.get(context).state is LogoutSuccessState)
+              if (AuthCubit.get(context).state is LogoutSuccessState) {
                 NavigationUtils.navigateAndClearStack(
                     context: context, destinationScreen: SignInScreen());
-              else {
+              } else {
                 const snackBar =
                     SnackBar(content: Text("Something went wrong try again !"));
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);

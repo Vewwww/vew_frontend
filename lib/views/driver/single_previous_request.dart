@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:vewww/bloc/evaluate_service_provider_cubit/evaluate_service_provider_cubit.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
-import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/components/horizontal_line.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
@@ -36,8 +35,6 @@ class SinglePreviousRequest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    EvaluateServiceProviderCubit evaluateServiceProviderCubit =
-        EvaluateServiceProviderCubit.get(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -62,7 +59,7 @@ class SinglePreviousRequest extends StatelessWidget {
                 PopupMenuButton(
                     icon: const Icon(
                       Icons.menu,
-                      color: const Color.fromRGBO(2, 113, 106, 1),
+                      color:  Color.fromRGBO(2, 113, 106, 1),
                       size: 30,
                     ),
                     itemBuilder: (context) => [
@@ -82,9 +79,11 @@ class SinglePreviousRequest extends StatelessWidget {
                     elevation: 0,
                     // on selected we show the dialog box
                     onSelected: (value) {
-                      if (value == 1)
+                      if (value == 1) {
                         _showRateDialog(context);
-                      else if (value == 2) _showReportDialog(context);
+                      } else if (value == 2) {
+                        _showReportDialog(context);
+                      }
                     }),
               ],
             ),
@@ -101,7 +100,7 @@ class SinglePreviousRequest extends StatelessWidget {
                       radius: 50,
                       backgroundColor: (color == Colors.white)
                           ? mainColor
-                          : Color.fromARGB(255, 212, 239, 236),
+                          : const Color.fromARGB(255, 212, 239, 236),
                       child: (isWinch)
                           ? Icon(
                               Icons.car_repair,
@@ -218,16 +217,17 @@ class SinglePreviousRequest extends StatelessWidget {
             ),
           ),
           content: RatingBar.builder(
-              itemBuilder: (context, _) => Icon(
+              itemBuilder: (context, _) => const Icon(
                     Icons.star,
                     color: Colors.amber,
                   ),
               onRatingUpdate: (val) {
-                if (isWinch)
-                  evaluateServiceProviderCubit.rateWinch(this.repairerId, val);
-                else
+                if (isWinch) {
+                  evaluateServiceProviderCubit.rateWinch(repairerId, val);
+                } else {
                   evaluateServiceProviderCubit.rateMechanic(
-                      this.repairerId, val);
+                      repairerId, val);
+                }
               }),
           actions: [
             MaterialButton(
@@ -257,7 +257,7 @@ class SinglePreviousRequest extends StatelessWidget {
       builder: (BuildContext context) {
         EvaluateServiceProviderCubit evaluateServiceProviderCubit =
             EvaluateServiceProviderCubit.get(context);
-        return Container(
+        return SizedBox(
           height: 300,
           child: AlertDialog(
             shape: const RoundedRectangleBorder(
@@ -283,7 +283,7 @@ class SinglePreviousRequest extends StatelessWidget {
                 ),
                 TextSpan(
                     text: "$serviceProviderName ?",
-                    style: TextStyle(color: Colors.red, fontSize: 18)),
+                    style: const TextStyle(color: Colors.red, fontSize: 18)),
               ],
             )),
             actions: [
@@ -293,11 +293,12 @@ class SinglePreviousRequest extends StatelessWidget {
                   style: AppTextStyle.mainStyle(size: 12),
                 ),
                 onPressed: () {
-                  if (isWinch)
-                    evaluateServiceProviderCubit.reportWinch(this.repairerId);
-                  else
+                  if (isWinch) {
+                    evaluateServiceProviderCubit.reportWinch(repairerId);
+                  } else {
                     evaluateServiceProviderCubit
-                        .reportMechanic(this.repairerId);
+                        .reportMechanic(repairerId);
+                  }
                   Navigator.of(context).pop();
                 },
               ),

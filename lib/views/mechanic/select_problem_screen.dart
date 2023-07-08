@@ -28,8 +28,8 @@ class _SelectProblemScreenState extends State<SelectProblemScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(8),
-          margin: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
+          margin: const EdgeInsets.all(8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
@@ -38,18 +38,16 @@ class _SelectProblemScreenState extends State<SelectProblemScreen> {
                 haveLogo: true,
                 haveBackArrow: true,
               ),
-              SizedBox(height: 10),
-              Divider(
+              const SizedBox(height: 10),
+              const Divider(
                 thickness: 0.5,
                 color: Colors.grey,
               ),
               BlocBuilder<DiagnoseCubit, DiagnoseState>(
                   builder: (context, state) {
                 if (state is GetUnsolvedSuccessState) {
-                  print(diagnoseCubit.problemResponse!.data);
                   return ListView.builder(
                       shrinkWrap: true,
-                      //primary: false,
                       physics: const NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.zero,
                       itemCount: diagnoseCubit.problemResponse!.data!.length,
@@ -130,7 +128,7 @@ class _SelectProblemScreenState extends State<SelectProblemScreen> {
                       child: Column(
                     children: [
                       SizedBox(height: MediaQuery.of(context).size.height / 3),
-                      CircularProgressIndicator(),
+                      const CircularProgressIndicator(),
                     ],
                   ));
                 }

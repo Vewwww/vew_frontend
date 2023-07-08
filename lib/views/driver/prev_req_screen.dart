@@ -52,12 +52,11 @@ class _PreviousReqScreenState extends State<PreviousReqScreen> {
           BlocBuilder<RequestCubit, RequestState>(
             builder: (context, state) {
               if (state is GetDriverPrevReqSuccessState) {
-                if (state.previousRequests.length > 0) {
+                if (state.previousRequests.isNotEmpty) {
                   return Expanded(
                     child: ListView.separated(
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          print("here2");
                           if (state.previousRequests[index].isWinch == true) {
                             return previousRequestCard(
                                 isWinch:

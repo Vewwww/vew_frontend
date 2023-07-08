@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/components/backward_arrow.dart';
 import 'package:vewww/core/components/custom_text_field.dart';
 import 'package:vewww/core/components/default_button.dart';
-import 'package:vewww/core/components/pop_up.dart';
 import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import 'package:vewww/views/driver/sign_in_screen.dart';
 import 'package:vewww/views/mechanic/mechanic_home_screen.dart';
@@ -94,7 +93,7 @@ class ChangePasswordScreen extends StatelessWidget {
                             await authCubit.changePassword(_newPassword.text);
                             print(state);
                             if (state is ChangePasswordSuccessState) {
-                              var snackBar = SnackBar(
+                              var snackBar = const SnackBar(
                                   content:
                                       Text('Password Changed Successfully'));
                               ScaffoldMessenger.of(context)
@@ -102,14 +101,15 @@ class ChangePasswordScreen extends StatelessWidget {
                               var role = SharedPreferencesHelper.getData(
                                   key: "vewRole");
                               Widget destinationScreen;
-                              if (role == "winch")
+                              if (role == "winch") {
                                 destinationScreen = WinchHomePage();
-                              else if (role == "user")
-                                destinationScreen = DriverHomeScreen();
-                              else if (role == "mechanic")
+                              } else if (role == "user") {
+                                destinationScreen = const DriverHomeScreen();
+                              } else if (role == "mechanic") {
                                 destinationScreen = MechanicHomeScreen();
-                              else
+                              } else {
                                 destinationScreen = SignInScreen();
+                              }
                               NavigationUtils.navigateTo(
                                   context: context,
                                   destinationScreen: destinationScreen);

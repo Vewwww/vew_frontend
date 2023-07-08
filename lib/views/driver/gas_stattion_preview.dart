@@ -55,11 +55,6 @@ class GasStationPreview extends StatelessWidget {
                     Controller.goToGoogleMaps(gasStation.location!);
                   },
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //   ],
-                // )
               ],
             ),
           ),

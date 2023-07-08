@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/model/mechanic_shop.dart';
 import 'package:vewww/services/dio_helper.dart';
-
 import '../../core/utils/sp_helper/cache_helper.dart';
 import '../../model/admin.dart';
 import '../../model/car.dart';
@@ -26,7 +25,6 @@ class ProfileCubit extends Cubit<ProfileState> {
             url: "/driver/getProfile",
             token: SharedPreferencesHelper.getData(key: 'vewToken'))
         .then((value) {
-      print("get driver profile response : ${value.data}");
       profileResponse = ProfileResponse.fromJson(value.data);
       if (profileResponse != null &&
           profileResponse!.data != null &&
@@ -37,28 +35,20 @@ class ProfileCubit extends Cubit<ProfileState> {
       }
       emit(GettingProfileSuccessState());
     }).catchError((err) {
-      if (err is DioError) {
-        print(err.response);
-      }
-      print(err);
-
       emit(GettingProfileErrorState());
     });
   }
 
-  Future<void> EditDriverProfile(Map<String, dynamic> driver) async {
+  Future<void> editDriverProfile(Map<String, dynamic> driver) async {
     emit(EdittingProfileLoadingState());
     await DioHelper.putData(
             url: "/driver/",
             data: driver,
             token: SharedPreferencesHelper.getData(key: 'vewToken'))
         .then((value) {
-      print("edit driver profile response : ${value.data}");
-      //profileResponse = ProfileResponse.fromJson(value.data);
       emit(EdittingProfileSuccessState());
     }).catchError((err) {
       if (err is DioError) {
-        print(err.response!.data);
         if (err.response != null) {
           ErrorResponse errorResponse =
               ErrorResponse.fromJson(err.response!.data);
@@ -78,11 +68,9 @@ class ProfileCubit extends Cubit<ProfileState> {
         url: "/winch/updateAvailableState",
         token: SharedPreferencesHelper.getData(key: 'vewToken'),
         data: {"available": isAvailable}).then((value) {
-      print("change available state response : ${value.data}");
       isWinchAvailable = isAvailable;
       emit(WinchAvailabitySuccessState());
     }).onError((error, stackTrace) {
-      print("error in avilablity update: $error");
       emit(WinchAvailabityErrorState());
     });
   }
@@ -93,14 +81,10 @@ class ProfileCubit extends Cubit<ProfileState> {
             url: "/admin/getProfile",
             token: SharedPreferencesHelper.getData(key: 'vewToken'))
         .then((value) {
-      print("get admin profile response : ${value.data}");
       adminProfileResponse = AdminProfileResponse.fromJson(value.data);
       emit(GettingProfileSuccessState());
     }).catchError((err) {
-      if (err is DioError) {
-        print(err.response);
-      }
-      print("error");
+      if (err is DioError) {}
       emit(GettingProfileErrorState());
     });
   }
@@ -112,12 +96,10 @@ class ProfileCubit extends Cubit<ProfileState> {
             data: admin.toUpdateJson(),
             token: SharedPreferencesHelper.getData(key: 'vewToken'))
         .then((value) {
-      print("get admin profile response : ${value.data}");
       adminProfileResponse = AdminProfileResponse.fromJson(value.data);
       emit(EdittingProfileSuccessState());
     }).catchError((err) {
       if (err is DioError) {
-        print(err.response!.data);
         if (err.response != null) {
           ErrorResponse errorResponse =
               ErrorResponse.fromJson(err.response!.data);
@@ -137,14 +119,10 @@ class ProfileCubit extends Cubit<ProfileState> {
             url: "/mechanic/getMechanicProfile",
             token: SharedPreferencesHelper.getData(key: 'vewToken'))
         .then((value) {
-      print("get mechanic profile response : ${value.data}");
       mechanicProfileResponse = MechanicProfileResponse.fromJson(value.data);
       emit(GettingProfileSuccessState());
     }).catchError((err) {
-      if (err is DioError) {
-        print(err.response);
-      }
-      print("error");
+      if (err is DioError) {}
       emit(GettingProfileErrorState());
     });
   }
@@ -155,15 +133,11 @@ class ProfileCubit extends Cubit<ProfileState> {
             url: "/winch/getWinchProfile",
             token: SharedPreferencesHelper.getData(key: 'vewToken'))
         .then((value) {
-      print("get winch profile response : ${value.data}");
       winchDriverResponse = WinchProfileResponse.fromJson(value.data);
       isWinchAvailable = winchDriverResponse!.winch!.available ?? false;
       emit(GettingProfileSuccessState());
     }).catchError((err) {
-      if (err is DioError) {
-        print(err.response);
-      }
-      print("error");
+      if (err is DioError) {}
       emit(GettingProfileErrorState());
     });
   }
@@ -175,12 +149,10 @@ class ProfileCubit extends Cubit<ProfileState> {
             data: winchDriver.toJson(),
             token: SharedPreferencesHelper.getData(key: 'vewToken'))
         .then((value) {
-      print("edit winch profile response : ${value.data}");
       winchDriverResponse = WinchProfileResponse.fromJson(value.data);
       emit(EdittingProfileSuccessState());
     }).catchError((err) {
       if (err is DioError) {
-        print(err.response!.data);
         if (err.response != null) {
           ErrorResponse errorResponse =
               ErrorResponse.fromJson(err.response!.data);
@@ -196,17 +168,14 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   Future<void> updateMechanicProfile(MechanicShop mechanicShop) async {
     emit(EdittingProfileLoadingState());
-    print(mechanicShop.toJson());
     await DioHelper.patchData(
             url: "/mechanic/updateMechanicProfile",
             data: mechanicShop.toJson(),
             token: SharedPreferencesHelper.getData(key: 'vewToken'))
         .then((value) {
-      print("edit mechanic profile response : ${value.data}");
       emit(EdittingProfileSuccessState());
     }).catchError((err) {
       if (err is DioError) {
-        print(err.response!.data);
         if (err.response != null) {
           ErrorResponse errorResponse =
               ErrorResponse.fromJson(err.response!.data);

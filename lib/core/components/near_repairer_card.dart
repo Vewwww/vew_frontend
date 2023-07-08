@@ -3,7 +3,6 @@ import 'package:vewww/core/components/rating_bar.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
-import 'package:vewww/model/car_type.dart';
 import 'package:vewww/views/driver/gas_stattion_preview.dart';
 import 'package:vewww/views/driver/which_car_screen.dart';
 import '../../model/repairer.dart';
@@ -39,9 +38,7 @@ class NearRepairerCard extends StatelessWidget {
         }
         if (repairer is Place) {
           Place r = repairer as Place;
-          print(r.toJson());
           if (r.carType != null && r.isVerified != null) {
-            print("is Mc");
             MaintenanceCenter maintenanceCenter =
                 MaintenanceCenter.fromJson(r.toJson());
             NavigationUtils.navigateTo(
@@ -50,24 +47,18 @@ class NearRepairerCard extends StatelessWidget {
                   maintenanceCenter: maintenanceCenter,
                 ));
           } else if (r.service != null || r.hasDelivery != null) {
-            print("is Mechanic");
             String id = SharedPreferencesHelper.getData(key: 'vewId');
-            print(r.toJson());
             Mechanic mechanic = Mechanic.fromJson(r.toJson());
-            print("mech :${mechanic.toJson()}");
             NavigationUtils.navigateTo(
                 context: context,
                 destinationScreen: WhichCarScreen(
-                    id: id, isWinch: false, repairer: mechanic as Mechanic));
+                    id: id, isWinch: false, repairer: mechanic));
           } else {
-            print("is gas station\n${r.toJson()}");
-            print(
-                "is gas station\n${SharedPreferencesHelper.getData(key: 'vewToken')}");
             GasStation gasStation = GasStation.fromJson(r.toJson());
             NavigationUtils.navigateTo(
                 context: context,
                 destinationScreen: GasStationPreview(
-                  gasStation: gasStation as GasStation,
+                  gasStation: gasStation,
                 ));
           }
         }

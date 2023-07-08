@@ -41,7 +41,7 @@ class LoadingWinchScreen extends StatelessWidget {
                 'Please Wait.... ',
                 style: AppTextStyle.darkGreyStyle(size: 20),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Text(

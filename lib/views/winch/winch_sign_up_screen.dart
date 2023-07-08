@@ -2,22 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/loaction_cubit/loaction_cubit.dart';
 import 'package:vewww/views/driver/sign_in_screen.dart';
-import 'package:vewww/views/winch/winch_home_page.dart';
-
 import '../../bloc/add_car_cubit/add_car_cubit.dart';
 import '../../bloc/auth_cubit/auth_cubit.dart';
-import '../../bloc/select_choice_cubit/select_choice_cubit.dart';
-import '../../bloc/select_color_cubit/select_color_cubit.dart';
 import '../../core/components/custom_text_field.dart';
 import '../../core/components/logo.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/navigation.dart';
 import '../../model/location.dart';
 import '../../model/winch_driver.dart';
-import '../common/map.dart';
-import '../common/select_color_screen.dart';
-import '../common/select_car_model.dart';
-import '../common/select_car_type_screen.dart';
 import '../common/map_screen.dart';
 
 class WinchSignUpScreen extends StatelessWidget {
@@ -26,9 +18,7 @@ class WinchSignUpScreen extends StatelessWidget {
   final TextEditingController _password = TextEditingController();
   final TextEditingController _phoneNumber = TextEditingController();
   final TextEditingController _name = TextEditingController();
-  final TextEditingController _carType = TextEditingController();
   final TextEditingController _carPlateNum = TextEditingController();
-  final TextEditingController _carColor = TextEditingController();
   WinchSignUpScreen({Key? key}) : super(key: key);
 
   @override
@@ -36,7 +26,6 @@ class WinchSignUpScreen extends StatelessWidget {
     double constraintsHight = MediaQuery.of(context).size.height;
     AddCarCubit addCarCubit = AddCarCubit.get(context);
     AuthCubit authCubit = AuthCubit.get(context);
-    SelectChoiceCubit selectChoiceCubit = SelectChoiceCubit.get(context);
     LocationCubit locationCubit = LocationCubit.get(context);
     return Scaffold(
       body: SingleChildScrollView(
@@ -65,7 +54,7 @@ class WinchSignUpScreen extends StatelessWidget {
                     label: "الاسم",
                     isArabic: true,
                     validator: (value) {
-                      if (value!.length < 1 || value == null) {
+                      if (value!.isEmpty || value == null) {
                         return 'برجاء ادخال الاسم';
                       }
                     },
@@ -117,7 +106,7 @@ class WinchSignUpScreen extends StatelessWidget {
                     label: "رقم الهاتف",
                     isArabic: true,
                     validator: (value) {
-                      if (value!.length < 1 || value == null) {
+                      if (value!.isEmpty || value == null) {
                         return 'برجاء ادخال رقم الهاتف';
                       }
                     },
@@ -127,9 +116,8 @@ class WinchSignUpScreen extends StatelessWidget {
                     controller: _carPlateNum,
                     label: "رقم السيارة",
                     validator: (value) {
-                      //Todo::test after edits
-                      if (addCarCubit.cars.length > 0) {
-                        if (value!.length < 1 || value == null) {
+                      if (addCarCubit.cars.isNotEmpty) {
+                        if (value!.isEmpty || value == null) {
                           return 'برجاء ادخال رقم السيارة';
                         }
                       }
@@ -146,9 +134,9 @@ class WinchSignUpScreen extends StatelessWidget {
                                   locationCubit: locationCubit,
                                 ));
                           },
-                          icon: Icon(Icons.location_on)),
+                          icon: const Icon(Icons.location_on)),
                       Expanded(child: Container()),
-                      Text("الموقع"),
+                      const Text("الموقع"),
                     ],
                   ),
                   const SizedBox(height: 10),
@@ -158,8 +146,6 @@ class WinchSignUpScreen extends StatelessWidget {
                         builder: (context, state) {
                           return ElevatedButton(
                             onPressed: () async {
-                              print(
-                                  "lat:${locationCubit.lat} , address:${locationCubit.address}");
                               if (_formKey.currentState!.validate()) {
                                 WinchDriver winch = WinchDriver(
                                     name: _name.text,
@@ -186,10 +172,11 @@ class WinchSignUpScreen extends StatelessWidget {
                             child: BlocConsumer<AuthCubit, AuthState>(
                               listener: (context, state) {},
                               builder: (context, state) {
-                                if (state is SignUpLoadingState)
-                                  return CircularProgressIndicator();
-                                else
-                                  return Text("انشاء حساب");
+                                if (state is SignUpLoadingState) {
+                                  return const CircularProgressIndicator();
+                                } else {
+                                  return const Text("انشاء حساب");
+                                }
                               },
                             ),
                           );
@@ -213,39 +200,6 @@ class WinchSignUpScreen extends StatelessWidget {
                         "تمتلك بالفعل حساب؟",
                         style: AppTextStyle.greyStyle(size: 14),
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Expanded(
-                          child: Divider(
-                        color: Color.fromARGB(255, 151, 151, 151),
-                        thickness: 1,
-                      )),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 6),
-                        child: Text(
-                          "أو",
-                          style: AppTextStyle.greyStyle(size: 12),
-                        ),
-                      ),
-                      const Expanded(
-                          child: Divider(
-                        color: Color.fromARGB(255, 151, 151, 151),
-                        thickness: 1,
-                      )),
-                    ],
-                  ),
-                  const SizedBox(height: 18),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      InkWell(
-                          onTap: () {},
-                          child: Image.asset("assets/images/google.png")),
-                      InkWell(
-                          onTap: () async {},
-                          child: Image.asset("assets/images/Facebook.png")),
                     ],
                   ),
                 ],

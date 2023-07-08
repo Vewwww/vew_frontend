@@ -7,7 +7,6 @@ import 'package:vewww/model/chat.dart';
 import 'package:vewww/views/common/chats_screen.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/message.dart';
-import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/navigation.dart';
@@ -42,22 +41,13 @@ class _SingleChatState extends State<SingleChat> {
             : "ar";
     socket!.connect();
     socket!.onConnect((_) {
-      print('Connection established');
       socket!.emit('join-room', {'room': widget.chat.room});
-      print('joined room');
     });
     socket!.on("recieve-message", (data) {
-      print("recieved message from test \ndata is :  $data");
       ChatCubit.get(context).reciveMessage(data, widget.chat);
-
-      //TODO::scroll down or sound
-      // FlutterRingtonePlayer.play(
-      //   android: AndroidSounds.notification,
-      // );
     });
-    socket!.onDisconnect((_) => print('Connection Disconnection'));
-    socket!.onConnectError((err) => print(err));
-    socket!.onError((err) => print(err));
+    socket!.onConnectError((err) => debugPrint(err));
+    socket!.onError((err) => debugPrint(err));
   }
 
   @override
@@ -87,8 +77,6 @@ class _SingleChatState extends State<SingleChat> {
             BlocConsumer<ChatCubit, ChatState>(
               listener: (context, state) {},
               builder: (context, state) {
-                print(
-                    "index ${chatCubit.chatResponse!.chats!.indexOf(widget.chat)}");
                 return Expanded(
                   child: ListView.builder(
                     reverse: true,
@@ -130,7 +118,6 @@ class _SingleChatState extends State<SingleChat> {
                   IconButton(
                       color: mainColor,
                       onPressed: () {
-                        //TODO::send message here
                         socket!.emit("send-message", {
                           'room': widget.chat.room,
                           'chatId': widget.chat.sId,
@@ -139,15 +126,6 @@ class _SingleChatState extends State<SingleChat> {
                           'content': _message.text,
                         });
                         _message.text = '';
-
-                        // var index = chat.messages! .lastIndexOf(chat);
-                        // chatCubit.sendMessage(
-                        //     MessageModel(
-                        //         message: _message.text,
-                        //         date: "now",
-                        //         sender: "me"),
-                        //     index);
-                        // _message.text = "";
                       },
                       icon: Icon(
                         Icons.send,
@@ -166,14 +144,14 @@ class _SingleChatState extends State<SingleChat> {
                             ? 'اكتب رسالتك...'
                             : ' write your message...',
                         isDense: true,
-                        contentPadding: EdgeInsets.fromLTRB(10, 20, 10, 0),
-                        border: OutlineInputBorder(
+                        contentPadding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
+                        border: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(6))),
                       ),
                       validator: (value) {},
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 12,
                   )
                 ],

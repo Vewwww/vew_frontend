@@ -21,12 +21,10 @@ class WarningSignCubit extends Cubit<WarningSignState> {
               url: (role == "user") ? "/driver/sign/" : "/admin/sign/",
               token: SharedPreferencesHelper.getData(key: "vewToken"))
           .then((value) {
-        print("get all warning sign response : ${value.data}");
         signResponse = SignResponse.fromJson(value.data);
         emit(GetAllWarningSignSuccessState(signs: signResponse!.signs!));
       }).catchError((error) {
         if (error is DioError) {
-          print(error.response);
         }
         emit(GetAllWarningSignErrorState());
       });
@@ -37,14 +35,11 @@ class WarningSignCubit extends Cubit<WarningSignState> {
 
   Future<void> getSignWithId(String id) async {
     emit(GetSingleWarningSignLoadingState());
-    await DioHelper.getData(url: "/driver/sign/${id}").then((value) {
-      print("get all warning sign response : ${value.data}");
+    await DioHelper.getData(url: "/driver/sign/$id").then((value) {
       sign = Sign.fromJson(value.data["data"]);
-      print("get all warning sign names : ${sign!.name!.en}");
       emit(GetSingleWarningSignSuccessState(sign: sign!));
     }).onError((error, stackTrace) {
       emit(GetSingleWarningSignErrorState());
-      print("gat all warning sign error : ${error}");
     });
   }
 }

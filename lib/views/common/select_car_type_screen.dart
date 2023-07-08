@@ -117,26 +117,26 @@ class SelectCarTypeScreen extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 11 / 12,
                     child: ElevatedButton(
                       onPressed: () async {
-                        if (this.index != null)
+                        if (index != null) {
                           CarCubit.get(context).updatedCars![index!].carType =
                               selectChoiceCubit.carTypeResponse!
                                   .carType![selectChoiceCubit.carTypeChoice];
-                        if (destinationScreen == null)
+                        }
+                        if (destinationScreen == null) {
                           NavigationUtils.navigateBack(context: context);
-                        else {
-                          print("des : $destinationScreen");
+                        } else {
                           if (destinationScreen is EditDriverProfile) {
-                            print("going to edit");
                             NavigationUtils.navigateAndClearStack(
                                 context: context,
                                 destinationScreen: EditDriverProfile(
                                   driver: driver!,
                                   inProgress: true,
                                 ));
-                          } else
+                          } else {
                             NavigationUtils.navigateAndClearStack(
                                 context: context,
                                 destinationScreen: destinationScreen!);
+                          }
                         }
                       },
                       child: Text((isArabic) ? "تم" : "Done"),
@@ -150,7 +150,7 @@ class SelectCarTypeScreen extends StatelessWidget {
                 child: Column(
               children: [
                 SizedBox(height: MediaQuery.of(context).size.height / 3),
-                CircularProgressIndicator(),
+                const CircularProgressIndicator(),
               ],
             ));
           }

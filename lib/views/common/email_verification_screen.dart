@@ -11,12 +11,12 @@ class EmailVerificationScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: Icon(
+        leading: const Icon(
           Icons.keyboard_arrow_left,
           color: Color.fromRGBO(2, 113, 106, 1),
         ),
         title: Stack(
-          children: [
+          children: const [
             Image(
               image: AssetImage(
                 'assets/images/Logo.png',
@@ -37,19 +37,19 @@ class EmailVerificationScreen extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
+          const Text(
             'Email Verification',
             style: TextStyle(
               fontSize: 25,
               color: Color.fromRGBO(2, 113, 106, 1),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Text(
                 'Send an email to ',
                 style: TextStyle(

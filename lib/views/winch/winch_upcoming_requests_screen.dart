@@ -19,7 +19,7 @@ import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
 
 class WinchUpcomingRequestsScreen extends StatefulWidget {
-  WinchUpcomingRequestsScreen({Key? key}) : super(key: key);
+  const WinchUpcomingRequestsScreen({Key? key}) : super(key: key);
 
   @override
   State<WinchUpcomingRequestsScreen> createState() =>
@@ -28,7 +28,7 @@ class WinchUpcomingRequestsScreen extends StatefulWidget {
 
 class _WinchUpcomingRequestsScreenState
     extends State<WinchUpcomingRequestsScreen> {
-  GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
@@ -38,8 +38,9 @@ class _WinchUpcomingRequestsScreenState
     var newRequestCubit = context.read<NewRequestCubit>();
     newRequestCubit.setHaveNew(false);
     var profileCubit = context.read<ProfileCubit>();
-    if (profileCubit.winchDriverResponse == null)
+    if (profileCubit.winchDriverResponse == null) {
       profileCubit.getWinchProfile();
+    }
     var repairerRequestsCubit = context.read<RepairerRequestsCubit>();
     repairerRequestsCubit.winchUpComingRequests();
   }
@@ -53,12 +54,10 @@ class _WinchUpcomingRequestsScreenState
     });
     socket!.connect();
     socket!.onConnect((_) {
-      print('Connection established');
+      debugPrint('Connection established');
       socket!.emit('join-room', {'room': id});
-      print('joined room');
     });
     socket!.on("upload-winch-location", (data) async {
-      print("listend to upload winch location event");
       Position location = await Controller.getLocation();
       var data = {
         "id": SharedPreferencesHelper.getData(key: "vewId"),
@@ -68,22 +67,19 @@ class _WinchUpcomingRequestsScreenState
       socket!.emit("update-winch-location", data);
     });
     socket!.on("new-request", (data) {
-      print("new request created");
       var requestCubit = context.read<RepairerRequestsCubit>();
       var newRequestCubit = context.read<NewRequestCubit>();
       newRequestCubit.setHaveNew(false);
       requestCubit.winchUpComingRequests();
     });
 
-    socket!.onDisconnect((_) => print('Connection Disconnection'));
-    socket!.onConnectError((err) => print(err));
-    socket!.onError((err) => print(err));
+    socket!.onDisconnect((_) => debugPrint('Connection Disconnection'));
+    socket!.onConnectError((err) => debugPrint(err));
+    socket!.onError((err) => debugPrint(err));
   }
 
   @override
   Widget build(BuildContext context) {
-    RepairerRequestsCubit repairerRequestsCubit =
-        RepairerRequestsCubit.get(context);
     return Scaffold(
       endDrawer: Sidebar(
         function: () {
@@ -97,14 +93,14 @@ class _WinchUpcomingRequestsScreenState
         homeFunction: () {
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => WinchHomePage()),
+              MaterialPageRoute(builder: (context) => const WinchHomePage()),
               (route) => false);
         },
         upComingReqFunction: () {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => WinchUpcomingRequestsScreen(),
+                builder: (context) => const WinchUpcomingRequestsScreen(),
               ));
         },
       ),
@@ -120,10 +116,10 @@ class _WinchUpcomingRequestsScreenState
             }, icon: BlocBuilder<ChatCubit, ChatState>(
               builder: (context, state) {
                 if (state is GettingChatsSuccessState &&
-                    ChatCubit.get(context).chatResponse!.newChats!)
+                    ChatCubit.get(context).chatResponse!.newChats!) {
                   return Stack(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.menu,
                         size: 30,
                         color: Colors.grey,
@@ -138,20 +134,19 @@ class _WinchUpcomingRequestsScreenState
                       )
                     ],
                   );
-                else
-                  return Icon(
+                } else {
+                  return const Icon(
                     Icons.menu,
                     size: 30,
                     color: Colors.grey,
                   );
+                }
               },
             )),
             actions: [AvailableButton()],
             haveLogo: true,
           ),
           Expanded(child: Container()),
-          //TODO::uncomment
-          //(comingRequests.length > 0)?
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
             child: Text(
@@ -161,31 +156,30 @@ class _WinchUpcomingRequestsScreenState
           ),
           BlocBuilder<RepairerRequestsCubit, RepairerRequestsState>(
               builder: (context, state) {
-            if (state is GettingWinchUpComingRequestsSuccessState) if (state
-                    .requestData.length >
-                0)
-              return Expanded(
-                  flex: 70,
-                  child: ListView.builder(
-                      itemCount: state.requestData.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ComingRequestCard(
-                          winchRequestsData: state.requestData[index],
-                        );
-                      }));
-            else
-              return SizedBox(height: 500, child: EmptyRequests());
-            else {
+            if (state is GettingWinchUpComingRequestsSuccessState) {
+              if (state.requestData.isNotEmpty) {
+                return Expanded(
+                    flex: 70,
+                    child: ListView.builder(
+                        itemCount: state.requestData.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ComingRequestCard(
+                            winchRequestsData: state.requestData[index],
+                          );
+                        }));
+              } else {
+                return SizedBox(height: 500, child: EmptyRequests());
+              }
+            } else {
               return Center(
                   child: Column(
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height / 3),
-                  CircularProgressIndicator(),
+                  const CircularProgressIndicator(),
                 ],
               ));
             }
           }),
-          //:const SizedBox(height: 400, child: EmptyRequests()),
           Expanded(child: Container()),
         ],
       )),

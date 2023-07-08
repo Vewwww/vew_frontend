@@ -57,7 +57,6 @@ class RequestWinchScreen extends StatelessWidget {
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 5, vertical: 7),
-                      //height: 50,
                       decoration: BoxDecoration(
                           color: Colors.grey.shade200,
                           border: Border.all(
@@ -67,9 +66,6 @@ class RequestWinchScreen extends StatelessWidget {
                         listener: (context, state) {},
                         builder: (context, state) {
                           return Text(
-                              // loactionCubit.placemark != null
-                              //     ? "${loactionCubit.placemark![0].street} ${loactionCubit.placemark![0].locality} ${loactionCubit.placemark![0].administrativeArea} ${loactionCubit.placemark![0].country}"
-                              //     : " ",
                               loactionCubit.address,
                               overflow: TextOverflow.ellipsis);
                         },
@@ -82,26 +78,12 @@ class RequestWinchScreen extends StatelessWidget {
                       child: MapElement(
                         locationCubit: loactionCubit,
                       )),
-                  const SizedBox(height: 15),
-                  // defaultButton(
-                  //     text: 'Current Location',
-                  //     buttonIcon: Icons.location_on,
-                  //     background: Colors.grey.shade100,
-                  //     textColor: const Color.fromRGBO(2, 113, 106, 1),
-                  //     width: 300,
-                  //     function: () async {
-                  //       await loactionCubit.getPermission();
-                  //       loactionCubit.getAddress();
-                  //     }),
-                  const SizedBox(
-                    height: 15,
-                  ),
+                  const SizedBox(height: 25),
                   BlocConsumer<LocationCubit, LocationState>(
                     listener: (context, state) {},
                     builder: (context, state) {
                       return defaultButton(
                           text: 'Next',
-                          // width: 300,
                           function: () {
                             Navigator.push(
                                 context,

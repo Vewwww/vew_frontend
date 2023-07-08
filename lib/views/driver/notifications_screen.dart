@@ -5,9 +5,7 @@ import 'package:vewww/core/components/notification_card.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/core/utils/navigation.dart';
-import 'package:vewww/model/notification.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
-
 import '../../bloc/notification_cubit/notification_cubit.dart';
 
 class NotificationsScreen extends StatefulWidget {
@@ -29,7 +27,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: SafeArea(
             child: Column(
           children: [
@@ -39,7 +37,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   onPressed: () {
                     NavigationUtils.navigateTo(
                         context: context,
-                        destinationScreen: DriverHomeScreen());
+                        destinationScreen: const DriverHomeScreen());
                   },
                   icon: Icon(
                     Icons.arrow_back_ios,
@@ -51,9 +49,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 if (state is GettingNotificationSuccessState) {
                   if (NotificationCubit.get(context)
                           .notifivatoinResponse!
-                          .notifications!
-                          .length >
-                      0)
+                          .notifications!.isNotEmpty) {
                     return Expanded(
                         child: ListView.builder(
                             itemCount: NotificationCubit.get(context)
@@ -64,10 +60,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 notification: NotificationCubit.get(context)
                                     .notifivatoinResponse!
                                     .notifications![index])));
-                  else
+                  } else {
                     return Center(
                       child: SingleChildScrollView(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         child: Column(
                           children: [
                             const SizedBox(
@@ -89,12 +85,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                         ),
                       ),
                     );
+                  }
                 } else {
                   return Center(
                       child: Column(
                     children: [
                       SizedBox(height: MediaQuery.of(context).size.height / 3),
-                      CircularProgressIndicator(),
+                      const CircularProgressIndicator(),
                     ],
                   ));
                 }

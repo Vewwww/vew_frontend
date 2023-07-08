@@ -59,13 +59,11 @@ class _MechanicEditProfileState extends State<MechanicEditProfile> {
             key: _formKey,
             child: SingleChildScrollView(
               child: Column(
-                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const SizedBox(height: 20),
                   CustomAppBar(
-                    //haveBackArrow: true,
                     leading: IconButton(
                       icon: Icon(
                         Icons.arrow_back_ios,
@@ -95,7 +93,7 @@ class _MechanicEditProfileState extends State<MechanicEditProfile> {
                       controller: _name,
                       label: "اسم الورشة",
                       validator: (value) {
-                        if (value!.length < 1 || value == null) {
+                        if (value!.isEmpty || value == null) {
                           return 'برجاء ادخال الاسم';
                         }
                       }),
@@ -180,7 +178,7 @@ class _MechanicEditProfileState extends State<MechanicEditProfile> {
                     ],
                   ),
                   (servicesCubit.selectedServices != null &&
-                          servicesCubit.selectedServices.length > 0)
+                          servicesCubit.selectedServices.isNotEmpty)
                       ? BlocConsumer<ServicesCubit, ServicesState>(
                           listener: (context, state) {},
                           builder: (context, state) {
@@ -189,7 +187,7 @@ class _MechanicEditProfileState extends State<MechanicEditProfile> {
                                 shrinkWrap: true,
                                 itemCount:
                                     servicesCubit.selectedServices.length,
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, index) => Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -211,21 +209,16 @@ class _MechanicEditProfileState extends State<MechanicEditProfile> {
                                       ],
                                     ));
                           })
-                      : Center(
+                      : const Center(
                           child: Text("No Services"),
                         ),
-                  (servicesCubit.selectedServices.length > 0)
-                      ? Column(
-                          children: [],
-                        )
-                      : Container(),
                   const SizedBox(height: 20),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          if (servicesCubit.selectedServices.length > 0) {
+                          if (servicesCubit.selectedServices.isNotEmpty) {
                             MechanicShop m = widget.mechanicShop;
                             m.email = _email.text;
                             m.name = _name.text;
@@ -233,17 +226,17 @@ class _MechanicEditProfileState extends State<MechanicEditProfile> {
                             m.ownerName = _ownerName.text;
                             m.mechanicPhone = _ownerPhone.text;
                             m.service = servicesCubit.selectedServices;
-                            print("editted version : ${m.toJson()}");
                             ProfileCubit profileCubit =
                                 ProfileCubit.get(context);
                             await profileCubit.updateMechanicProfile(m);
                             if (profileCubit.state
-                                is EdittingProfileSuccessState)
+                                is EdittingProfileSuccessState) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => MechanicHomeScreen()),
                               );
+                            }
                           } else {
                             const snackBar = SnackBar(
                                 content: Text("Please choose service first"));

@@ -11,7 +11,7 @@ import '../../core/utils/navigation.dart';
 import 'mechanic_edit_profile_screen.dart';
 
 class MechanicProfile extends StatefulWidget {
-  MechanicProfile({super.key});
+  const MechanicProfile({super.key});
 
   @override
   State<MechanicProfile> createState() => _MechanicProfileState();
@@ -57,7 +57,7 @@ class _MechanicProfileState extends State<MechanicProfile> {
                           function: () {
                             NavigationUtils.navigateAndClearStack(
                                 context: context,
-                                destinationScreen: MechanicHomeScreen());
+                                destinationScreen: const MechanicHomeScreen());
                           })
                     ]),
                     const SizedBox(height: 10),
@@ -189,12 +189,13 @@ class _MechanicProfileState extends State<MechanicProfile> {
                         child: IconButton(
                             onPressed: () {
                               if (profileCubit.state
-                                  is GettingProfileSuccessState)
+                                  is GettingProfileSuccessState) {
                                 NavigationUtils.navigateTo(
                                     context: context,
                                     destinationScreen: MechanicEditProfile(
                                         profileCubit.mechanicProfileResponse!
                                             .mechanicShop!));
+                              }
                             },
                             icon: Icon(Icons.edit_outlined,
                                 color: mainColor, size: 15)),

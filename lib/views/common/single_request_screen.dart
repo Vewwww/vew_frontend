@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/core/components/backward_arrow.dart';
-import 'package:vewww/core/components/rating_bar.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import 'package:vewww/model/winch_accepted_requests_response.dart';
 import 'package:vewww/views/mechanic/mechanic_home_screen.dart';
 import 'package:vewww/views/winch/winch_home_page.dart';
-
 import '../../bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
 import '../../core/components/data_element.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
@@ -93,7 +91,6 @@ class SingleRequestScreen extends StatelessWidget {
                   offset: const Offset(10, 50),
                   color: Colors.white,
                   elevation: 0,
-                  // on selected we show the dialog box
                   onSelected: (value) {
                     _showDialog(context);
                   }),
@@ -171,25 +168,25 @@ class SingleRequestScreen extends StatelessWidget {
                                         destinationScreen: WinchHomePage());
                                   } else {
                                     if (type == "accepted") {
-                                      print("here 1 ");
-                                      if (mechanicRequestData != null)
+                                      if (mechanicRequestData != null) {
                                         await repairerRequestsCubit
                                             .mechanicCompleteRequest(
                                                 mechanicRequestData!.sId!);
-                                      else
+                                      } else {
                                         await repairerRequestsCubit
                                             .winchCompleteRequest(
                                                 winchRequestData!.sId!);
+                                      }
                                     } else {
-                                      print("here 2 ");
-                                      if (mechanicRequestData != null)
+                                      if (mechanicRequestData != null) {
                                         await repairerRequestsCubit
                                             .mechanicAcceptRequest(
                                                 mechanicRequestData!.sId!);
-                                      else
+                                      } else {
                                         await repairerRequestsCubit
                                             .winchAcceptRequest(
                                                 winchRequestData!.sId!);
+                                      }
                                     }
 
                                     NavigationUtils.navigateTo(
@@ -206,7 +203,7 @@ class SingleRequestScreen extends StatelessWidget {
                                   width: double.infinity,
                                   child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                          backgroundColor: Color.fromARGB(
+                                          backgroundColor: const Color.fromARGB(
                                               255, 220, 220, 220)),
                                       onPressed: () async {
                                         RepairerRequestsCubit
@@ -260,11 +257,11 @@ class SingleRequestScreen extends StatelessWidget {
             ),
           ),
           content: Column(
-            children: const [
-              Text("هل انت متأكد انك تريد الابلاغ عن "),
+            children:  [
+              const Text("هل انت متأكد انك تريد الابلاغ عن "),
               Text(
-                "احمد كمال ؟",
-                style: TextStyle(color: Colors.red),
+                "${(winchRequestData != null)?winchRequestData!.driver!.name!:mechanicRequestData!.driver!.person!.name!} ",
+                style: const TextStyle(color: Colors.red),
               )
             ],
           ),
@@ -275,6 +272,7 @@ class SingleRequestScreen extends StatelessWidget {
                 style: AppTextStyle.darkGreyStyle(size: 12),
               ),
               onPressed: () {
+
                 Navigator.of(context).pop();
               },
             ),
