@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vewww/bloc/diagnose_cunit/diagnose_cubit.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/core/style/button_style/app_button_style.dart';
 import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/views/driver/diagnose_result_screen.dart';
+import '../../bloc/diagnose_cubit/diagnose_cubit.dart';
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/logo.dart';
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vewww/bloc/diagnose_cunit/diagnose_cubit.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
@@ -8,6 +7,7 @@ import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
 import 'package:vewww/views/driver/search_result_screen.dart';
 import 'package:vewww/views/common/select_car_type_screen.dart';
+import '../../bloc/diagnose_cubit/diagnose_cubit.dart';
 import '../../bloc/select_choice_cubit/select_choice_cubit.dart';
 import '../../model/diagnose_result.dart';
 import '../common/services_screen.dart';

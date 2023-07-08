@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
+import 'package:vewww/views/admin/add_case_screen.dart';
 import 'package:vewww/views/admin/admin_analysis_screen.dart';
 import 'package:vewww/views/admin/view_admins_screen.dart';
 import 'package:vewww/views/admin/view_app_users_screen.dart';
@@ -98,14 +99,27 @@ class AdminHomeScreen extends StatelessWidget {
               Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: defaultButton(
-                    height: 70,
-                    text: 'Analytics',
-                    function: () {
-                     Navigator.push(
+                      height: 70,
+                      function: () {
+                        Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: ((context) =>
-                                    const AdminAnalysisScreen())));
+                                    AddCaseScreen
+                                    ())));
+                      },
+                      text: 'Add Diagnose Case')),
+              Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: defaultButton(
+                    height: 70,
+                    text: 'Analytics',
+                    function: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) =>
+                                  const AdminAnalysisScreen())));
                     },
                   )),
             ],

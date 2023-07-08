@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vewww/bloc/diagnose_cunit/diagnose_cubit.dart';
 import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/views/mechanic/single_Problem_screen.dart';
+
+import '../../bloc/diagnose_cubit/diagnose_cubit.dart';
 
 class SelectProblemScreen extends StatefulWidget {
   const SelectProblemScreen({Key? key}) : super(key: key);
