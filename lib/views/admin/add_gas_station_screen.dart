@@ -90,16 +90,6 @@ class AddGasStationScreen extends StatelessWidget {
                 const SizedBox(
                   height: 15,
                 ),
-                // CustomTextField(
-                //     controller: latitudeController,
-                //     keyboardType: TextInputType.phone,
-                //     validator: (value) {
-                //       if (value == null || value.isEmpty) {
-                //         return '*Required';
-                //       }
-                //       return null;
-                //     },
-                //     label: 'Latitude'),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [

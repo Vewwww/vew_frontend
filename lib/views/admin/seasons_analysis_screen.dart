@@ -62,12 +62,10 @@ class _SeasonAnalysisScreenState extends State<SeasonAnalysisScreen> {
                 colorList: colors,
                 chartType: ChartType.disc,
                 ringStrokeWidth: 32,
-                //centerText: "Users",
                 legendOptions: const LegendOptions(
                   showLegendsInRow: false,
                   legendPosition: LegendPosition.right,
                   showLegends: true,
-                  //legendShape: _BoxShape.circle,
                   legendTextStyle: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -79,8 +77,6 @@ class _SeasonAnalysisScreenState extends State<SeasonAnalysisScreen> {
                   showChartValuesOutside: false,
                   decimalPlaces: 1,
                 ),
-                // gradientList: ---To add gradient colors---
-                // emptyColorGradient: ---Empty Color gradient---
               );
             } else {
               return Column(

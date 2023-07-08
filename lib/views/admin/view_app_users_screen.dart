@@ -6,7 +6,6 @@ import 'package:vewww/views/admin/view_drivers_screen.dart';
 import 'package:vewww/views/admin/view_mechanic_screen.dart';
 import 'package:vewww/views/admin/view_winch_screen.dart';
 
-import '../../core/components/backward_arrow.dart';
 
 class ViewAppUsersScreen extends StatelessWidget {
   @override
