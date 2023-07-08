@@ -8,18 +8,14 @@ import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/views/common/services_screen.dart';
 import 'package:vewww/views/common/warning_light_screen.dart';
 import 'package:vewww/views/driver/choose_problem_category_screen.dart';
-import 'package:vewww/views/driver/diagnose_screen.dart';
 import 'package:vewww/views/driver/driver_drawer.dart';
-import 'package:vewww/views/driver/request_winch_screen.dart';
 import 'package:vewww/views/driver/search_screen.dart';
-import 'package:vewww/views/driver/select_car_type_screen.dart';
+import 'package:vewww/views/common/select_car_type_screen.dart';
 import 'package:vewww/views/driver/which_car_screen.dart';
 import '../../bloc/chat_cubit/chat_cubit.dart';
 import '../../bloc/notification_cubit/notification_cubit.dart';
 import '../../bloc/select_choice_cubit/select_choice_cubit.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
-import 'maintenance_center_preview.dart';
-import 'nearest_winch_screen.dart';
 import 'search_result_screen.dart';
 
 class DriverHomeScreen extends StatefulWidget {
@@ -61,10 +57,10 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                       icon: BlocBuilder<NotificationCubit, NotificationState>(
                         builder: (context, state) {
                           if (state is GettingNotificationSuccessState &&
-                              NotificationCubit.get(context).haveNew)
+                              NotificationCubit.get(context).haveNew) {
                             return Stack(
                               children: [
-                                Icon(Icons.menu),
+                                const Icon(Icons.menu),
                                 Positioned(
                                   right: 0,
                                   top: 1,
@@ -75,8 +71,9 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                                 )
                               ],
                             );
-                          else
-                            return Icon(Icons.menu);
+                          } else {
+                            return const Icon(Icons.menu);
+                          }
                         },
                       ),
                       iconSize: 35,
@@ -89,7 +86,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                       onPressed: () {
                         NavigationUtils.navigateTo(
                             context: context,
-                            destinationScreen: SearchScreen());
+                            destinationScreen: const SearchScreen());
                       },
                       icon: const Icon(
                         Icons.search,
@@ -101,12 +98,13 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
               const SizedBox(
                 height: 50,
               ),
-              defaultButton(
+              homeButton(
+                  buttonIcon: Icons.live_help,
                   function: () {
                     DiagnoseCubit.get(context).getAllCategories();
                     NavigationUtils.navigateTo(
                         context: context,
-                        destinationScreen: ChoosePrblemCategoryScreen());
+                        destinationScreen: const ChoosePrblemCategoryScreen());
                   },
                   text: 'Do Not Know Car Problem',
                   width: 350,
@@ -133,20 +131,22 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  defaultButton(
+                  homeButton(
                       text: 'Mechanic',
+                      buttonIcon: Icons.engineering,
                       height: 80,
-                      width: 170,
+                      width: (MediaQuery.of(context).size.width - 50) / 2,
                       function: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: ((context) => ServicesScreen())));
                       }),
-                  defaultButton(
+                  homeButton(
                       text: 'Winch',
+                      buttonIcon: Icons.car_repair,
                       height: 80,
-                      width: 170,
+                      width: (MediaQuery.of(context).size.width - 50) / 2,
                       function: () {
                         String id =
                             SharedPreferencesHelper.getData(key: 'vewId');
@@ -181,10 +181,12 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  defaultButton(
-                      text: 'Maintenance \n Center',
+                  homeButton(
+                      text: 'Maintenance Center',
+                      textSize: 15,
+                      buttonIcon: Icons.build,
                       height: 80,
-                      width: 170,
+                      width: (MediaQuery.of(context).size.width - 50) / 2,
                       function: () {
                         SelectChoiceCubit.get(context).getAllCarTypes();
                         NavigationUtils.navigateTo(
@@ -195,10 +197,12 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                               ),
                             ));
                       }),
-                  defaultButton(
+                  homeButton(
                       text: 'Gas Station',
                       height: 80,
-                      width: 170,
+                      width: (MediaQuery.of(context).size.width - 50) / 2,
+                      buttonIcon: Icons.gas_meter,
+                      iconColor: Colors.white,
                       function: () {
                         NavigationUtils.navigateTo(
                           context: context,
@@ -212,16 +216,16 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
               const SizedBox(
                 height: 30,
               ),
-              defaultButton(
+              homeButton(
                 text: 'Warning Light',
+                buttonIcon: Icons.warning_amber_rounded,
                 height: 80,
                 width: 350,
                 function: () {
-                  // warningSignCubit.getAllSigns();
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: ((context) => WarningLightScreen())));
+                          builder: ((context) => const WarningLightScreen())));
                 },
               ),
             ],

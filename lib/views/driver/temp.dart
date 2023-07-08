@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/car_cubit/car_cubit.dart';
-import 'package:vewww/views/driver/select_car_model.dart';
-import 'package:vewww/views/driver/select_car_type_screen.dart';
+import 'package:vewww/views/common/select_car_model.dart';
+import 'package:vewww/views/common/select_car_type_screen.dart';
 
 import '../../bloc/add_car_cubit/add_car_cubit.dart';
 import '../../bloc/gender_cubit/gender_cubit.dart';

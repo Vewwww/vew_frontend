@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
-import 'package:vewww/views/driver/sign_up_screen.dart';
+import 'package:vewww/views/common/choose_role_screen.dart';
 import '../../bloc/onboarding_cubit/onboarding_cubit.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../model/onboarding_content.dart';
@@ -110,7 +110,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => SignUpScreen()),
+                                      builder: (context) => const ChooseRoleScreen()),
                                   (route) => true);
                             },
                             child: Text("   Sign Up Now   ",

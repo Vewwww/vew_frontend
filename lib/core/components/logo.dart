@@ -6,7 +6,7 @@ class Logo extends StatelessWidget {
   Image? logo;
   Color? color;
   double? size;
-  Logo({String? color, double? size , Key? key}):super(key: key) {
+  Logo({String? color, double? size, Key? key}) : super(key: key) {
     if (size == null) {
       this.size = 10;
     } else {
@@ -36,7 +36,7 @@ class Logo extends StatelessWidget {
           height: size! / 15,
         ),
         Text(
-          "Vewww",
+          (color == "white") ? "Vewww" : "",
           style: AppTextStyle.logoTextStyle(size! / 7, color: color!),
         ),
       ],

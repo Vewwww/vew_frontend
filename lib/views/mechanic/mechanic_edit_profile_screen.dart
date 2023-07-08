@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/profile_cubit/profile_cubit.dart';
 import 'package:vewww/bloc/service_cubit/services_cubit.dart';
@@ -8,13 +6,11 @@ import 'package:vewww/model/mechanic_shop.dart';
 import 'package:vewww/views/common/services_screen.dart';
 import 'package:vewww/views/mechanic/mechanic_home_screen.dart';
 import 'package:vewww/views/mechanic/mechanic_profile.dart';
-
 import '../../core/components/custom_app_bar.dart';
 import '../../core/components/custom_text_field.dart';
 import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/style/app_colors.dart';
 import '../../core/utils/navigation.dart';
-import '../../model/services.dart';
 
 class MechanicEditProfile extends StatefulWidget {
   MechanicEditProfile(this.mechanicShop, {super.key});

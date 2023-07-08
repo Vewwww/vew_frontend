@@ -5,7 +5,9 @@ import 'package:vewww/core/components/custom_app_bar.dart';
 import 'package:vewww/core/components/default_button.dart';
 import 'package:vewww/core/components/service_card.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
+import 'package:vewww/views/admin/car_model_analysis_screen.dart';
 import 'package:vewww/views/admin/gender_analysis.dart';
+import 'package:vewww/views/admin/road_analysis_screen.dart';
 import 'package:vewww/views/admin/seasons_analysis_screen.dart';
 import 'package:vewww/views/admin/users_analysis_screen.dart';
 
@@ -60,7 +62,24 @@ class AdminAnalysisScreen extends StatelessWidget {
                               builder: ((context) => SeasonAnalysisScreen())));
                     },
                     title: 'Seasons analysis.'),
-                serviceCard(function: () {}, title: 'Car types analysis'),
+                serviceCard(
+                    function: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) =>
+                                  CarModelAnalysisScreen())));
+                    },
+                    title: 'Car types analysis'),
+                serviceCard(
+                    function: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) =>
+                                  RoadAnalysisScreen())));
+                    },
+                    title: 'Roads analysis'),
               ],
             ),
           )

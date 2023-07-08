@@ -6,6 +6,7 @@ import 'package:vewww/services/dio_helper.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
 import '../../model/admin.dart';
 import '../../model/car.dart';
+import '../../model/error_response.dart';
 import '../../model/profile_response.dart';
 import '../../model/winch_driver.dart';
 part 'profile_state.dart';
@@ -57,11 +58,17 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(EdittingProfileSuccessState());
     }).catchError((err) {
       if (err is DioError) {
-        print(err.response);
+        print(err.response!.data);
+        if (err.response != null) {
+          ErrorResponse errorResponse =
+              ErrorResponse.fromJson(err.response!.data);
+          emit(EdittingProfileErrorState((errorResponse.message != null)
+              ? errorResponse.message!
+              : "Something went wrong, try again"));
+        }
       }
-      print(err);
 
-      emit(EdittingProfileErrorState());
+      emit(EdittingProfileErrorState("Something went wrong, try again"));
     });
   }
 
@@ -97,6 +104,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(GettingProfileErrorState());
     });
   }
+
   Future<void> updateAdminProfile(Admin admin) async {
     emit(EdittingProfileLoadingState());
     await DioHelper.patchData(
@@ -109,10 +117,17 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(EdittingProfileSuccessState());
     }).catchError((err) {
       if (err is DioError) {
-        print(err.response);
+        print(err.response!.data);
+        if (err.response != null) {
+          ErrorResponse errorResponse =
+              ErrorResponse.fromJson(err.response!.data);
+          emit(EdittingProfileErrorState((errorResponse.message != null)
+              ? errorResponse.message!
+              : "Something went wrong, try again"));
+        }
       }
-      print("error");
-      emit(EdittingProfileSuccessState());
+
+      emit(EdittingProfileErrorState("Something went wrong, try again"));
     });
   }
 
@@ -165,10 +180,17 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(EdittingProfileSuccessState());
     }).catchError((err) {
       if (err is DioError) {
-        print(err.response);
+        print(err.response!.data);
+        if (err.response != null) {
+          ErrorResponse errorResponse =
+              ErrorResponse.fromJson(err.response!.data);
+          emit(EdittingProfileErrorState((errorResponse.message != null)
+              ? errorResponse.message!
+              : "Something went wrong, try again"));
+        }
       }
-      print("error");
-      emit(EdittingProfileErrorState());
+
+      emit(EdittingProfileErrorState("Something went wrong, try again"));
     });
   }
 
@@ -184,10 +206,17 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(EdittingProfileSuccessState());
     }).catchError((err) {
       if (err is DioError) {
-        print(err.response);
+        print(err.response!.data);
+        if (err.response != null) {
+          ErrorResponse errorResponse =
+              ErrorResponse.fromJson(err.response!.data);
+          emit(EdittingProfileErrorState((errorResponse.message != null)
+              ? errorResponse.message!
+              : "Something went wrong, try again"));
+        }
       }
-      print("error");
-      emit(EdittingProfileErrorState());
+
+      emit(EdittingProfileErrorState("Something went wrong, try again"));
     });
   }
 }

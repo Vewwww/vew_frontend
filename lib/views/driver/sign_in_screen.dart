@@ -119,55 +119,60 @@ class SignInScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   SizedBox(
                       width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            Person person = Person(
-                                email: _email.text, password: _password.text);
-                            await authCubit.signIn(person);
-                            if (authCubit.state is SignInSuccessState) {
-                              String role = SharedPreferencesHelper.getData(
-                                  key: "vewRole");
-                              String id =
-                                  SharedPreferencesHelper.getData(key: "vewId");
-                              print("role is $role");
-                              const snackBar = SnackBar(
-                                  content: Text("Loged in successfully !"));
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                              Widget screen;
-                              if (role == "user")
-                                screen = const DriverHomeScreen();
-                              else if (role == "winch") {
-                                screen = WinchHomePage();
-                              } else if (role == "admin")
-                                screen = AdminHomeScreen();
-                              else {
-                                screen = MechanicHomeScreen();
+                      child: BlocBuilder<AuthCubit, AuthState>(
+                          builder: (context, state) {
+                        return ElevatedButton(
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              Person person = Person(
+                                  email: _email.text, password: _password.text);
+                              await authCubit.signIn(person);
+                              if (state is SignInSuccessState) {
+                                String role = SharedPreferencesHelper.getData(
+                                    key: "vewRole");
+                                String id = SharedPreferencesHelper.getData(
+                                    key: "vewId");
+                                print("role is $role");
+                                const snackBar = SnackBar(
+                                    content: Text("Loged in successfully !"));
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                                Widget screen;
+                                if (role == "user")
+                                  screen = const DriverHomeScreen();
+                                else if (role == "winch") {
+                                  screen = WinchHomePage();
+                                } else if (role == "admin")
+                                  screen = AdminHomeScreen();
+                                else {
+                                  screen = MechanicHomeScreen();
+                                }
+                                NavigationUtils.navigateAndClearStack(
+                                    context: context,
+                                    destinationScreen: screen);
+                              } else if (state is SignInErrorState) {
+                                var snackBar = SnackBar(
+                                    content: Text(state.errMessage ??
+                                        "Something went wrong try again !"));
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                                state.errMessage = null;
                               }
-                              NavigationUtils.navigateAndClearStack(
-                                  context: context, destinationScreen: screen);
-                            } else {
-                              const snackBar = SnackBar(
-                                  content:
-                                      Text("Something went wrong try again !"));
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
                             }
-                          }
-                        },
-                        child: (authCubit.state is SignInLoadingState)
-                            ? const CircularProgressIndicator()
-                            : BlocConsumer<LanguageCubit, LanguageState>(
-                                listener: (context, state) {},
-                                builder: (context, state) {
-                                  return Text(
-                                      (languageCubit.currentLanguage == "en")
-                                          ? "Login"
-                                          : "تسجيل الدخول");
-                                },
-                              ),
-                      )),
+                          },
+                          child: (authCubit.state is SignInLoadingState)
+                              ? const CircularProgressIndicator()
+                              : BlocConsumer<LanguageCubit, LanguageState>(
+                                  listener: (context, state) {},
+                                  builder: (context, state) {
+                                    return Text(
+                                        (languageCubit.currentLanguage == "en")
+                                            ? "Login"
+                                            : "تسجيل الدخول");
+                                  },
+                                ),
+                        );
+                      })),
                   BlocConsumer<LanguageCubit, LanguageState>(
                     listener: (context, state) {},
                     builder: (context, state) {

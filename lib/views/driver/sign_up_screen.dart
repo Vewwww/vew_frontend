@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vewww/bloc/car_cubit/car_cubit.dart';
 import 'package:vewww/bloc/select_choice_cubit/select_choice_cubit.dart';
 import 'package:vewww/bloc/select_color_cubit/select_color_cubit.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/model/car_type.dart';
 import 'package:vewww/model/driver.dart';
 import 'package:vewww/views/common/select_color_screen.dart';
-import 'package:vewww/views/driver/select_car_model.dart';
+import 'package:vewww/views/common/select_car_model.dart';
 import 'package:vewww/views/driver/sign_in_screen.dart';
 import '../../bloc/add_car_cubit/add_car_cubit.dart';
 import '../../bloc/auth_cubit/auth_cubit.dart';
@@ -21,7 +20,7 @@ import '../../core/utils/navigation.dart';
 import '../../model/car.dart';
 import '../../model/car_color.dart';
 import '../../model/person.dart';
-import 'select_car_type_screen.dart';
+import '../common/select_car_type_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   String? carType;
@@ -174,16 +173,6 @@ class SignUpScreen extends StatelessWidget {
                       return null;
                     },
                   ),
-                  // CustomTextField(
-                  //   label: "License Renewal Date",
-                  //   controller: _driverlisenceRenewalDate,
-
-                  //   validator: (value) {
-                  //     if (value!.isEmpty || value == null) {
-                  //       return 'License Renewal Date is required';
-                  //     }
-                  //   },
-                  // ),
                   buildDatePicker("License Renewal Date is required",
                       (newDate) {
                     authCubit.driver.lisenceRenewalDate =
@@ -200,10 +189,11 @@ class SignUpScreen extends StatelessWidget {
                         builder: (context, state) {
                           return InkWell(
                             onTap: () {
-                              if (addCarCubit.cars.isEmpty)
+                              if (addCarCubit.cars.isEmpty) {
                                 addCarCubit.add(Car());
-                              else
+                              } else {
                                 addCarCubit.remove(0);
+                              }
                             },
                             child: CircleAvatar(
                               radius: 14,
@@ -352,8 +342,9 @@ class SignUpScreen extends StatelessWidget {
                                     },
                                     validator: (value) {
                                       if (SelectColorCubit.get(context).color !=
-                                          null)
+                                          null) {
                                         return "Please choose car color";
+                                      }
                                     },
                                   );
                                 }),
@@ -370,8 +361,9 @@ class SignUpScreen extends StatelessWidget {
                             ),
                             buildDatePicker("Last Periodic Maintenance Date",
                                 (newDate) {
-                              if (authCubit.driver.cars == null)
+                              if (authCubit.driver.cars == null) {
                                 authCubit.driver.cars = [Car()];
+                              }
                               authCubit.driver.cars![0]
                                       .lastPeriodicMaintenanceDate =
                                   newDate
@@ -380,8 +372,7 @@ class SignUpScreen extends StatelessWidget {
                             }),
                             buildDatePicker("Car License Renewal Date",
                                 (newDate) {
-                              if (authCubit.driver.cars == null)
-                                authCubit.driver.cars = [Car()];
+                              authCubit.driver.cars ??= [Car()];
                               authCubit.driver.cars![0].carLicenseRenewalDate =
                                   newDate
                                       .toString()
@@ -459,8 +450,8 @@ class SignUpScreen extends StatelessWidget {
                                       authCubit.driver.lisenceRenewalDate,
                                   phoneNumber: _phoneNumber.text,
                                   cars: [car]);
-                              print(driver.toSignupJson());
                               await authCubit.driverSignUp(driver);
+                              print(state);
 
                               if (authCubit.state is SignUpSuccessState) {
                                 var snackBar = SnackBar(
@@ -472,20 +463,23 @@ class SignUpScreen extends StatelessWidget {
                                     context: context,
                                     destinationScreen: SignInScreen());
                               } else if (state is SignUpErrorState) {
+                                print("here");
                                 var snackBar =
                                     SnackBar(content: Text(state.errMessage));
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(snackBar);
+                                state.errMessage = null;
                               }
                             }
                           },
                           child: BlocConsumer<AuthCubit, AuthState>(
                             listener: (context, state) {},
                             builder: (context, state) {
-                              if (state is SignUpLoadingState)
+                              if (state is SignUpLoadingState) {
                                 return const CircularProgressIndicator();
-                              else
+                              } else {
                                 return const Text("Sign Up");
+                              }
                             },
                           ),
                         );
@@ -550,16 +544,58 @@ class SignUpScreen extends StatelessWidget {
     );
   }
 
+  // bool validateFieldes(BuildContext context, AuthCubit authCubit,
+  //     SelectChoiceCubit selectChoiceCubit) {
+  //   if (_formKey.currentState!.validate() &&
+  //       SelectColorCubit.get(context).carColorResponse != null &&
+  //       selectChoiceCubit.carTypeResponse != null &&
+  //       selectChoiceCubit.carModelResponse != null &&
+  //       authCubit.driver.lisenceRenewalDate != null &&
+  //       authCubit.driver.cars![0].carLicenseRenewalDate != null &&
+  //       authCubit.driver.cars![0].lastPeriodicMaintenanceDate != null)
+  //     return true;
+  //   return false;
+  // }
   bool validateFieldes(BuildContext context, AuthCubit authCubit,
       SelectChoiceCubit selectChoiceCubit) {
-    if (_formKey.currentState!.validate() &&
-        SelectColorCubit.get(context).carColorResponse != null &&
-        selectChoiceCubit.carTypeResponse != null &&
-        selectChoiceCubit.carModelResponse != null &&
-        authCubit.driver.lisenceRenewalDate != null &&
-        authCubit.driver.cars![0].carLicenseRenewalDate != null &&
-        authCubit.driver.cars![0].lastPeriodicMaintenanceDate != null)
-      return true;
+    if (_formKey.currentState!.validate()) {
+      if (SelectColorCubit.get(context).carColorResponse != null) {
+        if (selectChoiceCubit.carTypeResponse != null) {
+          if (selectChoiceCubit.carModelResponse != null) {
+            if (authCubit.driver.lisenceRenewalDate != null) {
+              if (authCubit.driver.cars![0].carLicenseRenewalDate != null) {
+                if (authCubit.driver.cars![0].lastPeriodicMaintenanceDate !=
+                    null) {
+                  return true;
+                } else {
+                  var snackBar = SnackBar(
+                      content: Text(
+                          "car last periodic maintenance date is required "));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
+              } else {
+                var snackBar = SnackBar(
+                    content: Text("car lisence renewal date is required "));
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }
+            } else {
+              var snackBar =
+                  SnackBar(content: Text("Lisence renewal date is required"));
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+          } else {
+            var snackBar = SnackBar(content: Text("car model is required"));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+        } else {
+          var snackBar = SnackBar(content: Text("car Type is required"));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+      } else {
+        var snackBar = SnackBar(content: Text("color is required"));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    }
     return false;
   }
 

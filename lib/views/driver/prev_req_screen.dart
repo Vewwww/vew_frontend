@@ -52,11 +52,12 @@ class _PreviousReqScreenState extends State<PreviousReqScreen> {
           BlocBuilder<RequestCubit, RequestState>(
             builder: (context, state) {
               if (state is GetDriverPrevReqSuccessState) {
-                return Expanded(
-                  child: ListView.separated(
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        if (state.previousRequests.isNotEmpty) {
+                if (state.previousRequests.length > 0) {
+                  return Expanded(
+                    child: ListView.separated(
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          print("here2");
                           if (state.previousRequests[index].isWinch == true) {
                             return previousRequestCard(
                                 isWinch:
@@ -101,8 +102,11 @@ class _PreviousReqScreenState extends State<PreviousReqScreen> {
                                                     .carType!
                                                     .name!
                                                     .en!,
-                                                color: state.previousRequests[index]
-                                          .car!.color!.code!,
+                                                color: state
+                                                    .previousRequests[index]
+                                                    .car!
+                                                    .color!
+                                                    .code!,
                                                 serviceProviderName: state
                                                     .previousRequests[index]
                                                     .winch!
@@ -142,8 +146,8 @@ class _PreviousReqScreenState extends State<PreviousReqScreen> {
                                           .previousRequests[index].createdAt!,
                                       carType: state.previousRequests[index]
                                           .car!.carType!.name!.en!,
-                                      color: state.previousRequests[index]
-                                          .car!.color!.code!,
+                                      color: state.previousRequests[index].car!
+                                          .color!.code!,
                                       serviceProviderName: state
                                           .previousRequests[index]
                                           .mechanic!
@@ -164,18 +168,19 @@ class _PreviousReqScreenState extends State<PreviousReqScreen> {
                                   })));
                                 });
                           } else {}
-                        } else {
-                          return Center(
-                              child: EmptyRequests(
-                            text: "You don't have previous requests right now",
-                          ));
-                        }
-                      },
-                      separatorBuilder: (context, index) => const SizedBox(
-                            height: 15,
-                          ),
-                      itemCount: state.previousRequests.length),
-                );
+                        },
+                        separatorBuilder: (context, index) => const SizedBox(
+                              height: 15,
+                            ),
+                        itemCount: state.previousRequests.length),
+                  );
+                } else {
+                  return SizedBox(
+                      height: 400,
+                      child: EmptyRequests(
+                        text: "No Previous Requests",
+                      ));
+                }
               } else {
                 return const CircularProgressIndicator();
               }

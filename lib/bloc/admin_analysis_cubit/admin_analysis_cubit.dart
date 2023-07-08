@@ -2,6 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:vewww/model/car_mosel_analysis_response.dart';
+import 'package:vewww/model/road_analysis_response.dart';
 
 import '../../core/utils/sp_helper/cache_helper.dart';
 import '../../model/analysis.dart';
@@ -61,6 +63,43 @@ class AdminAnalysisCubit extends Cubit<AdminAnalysisState> {
     }).onError((error, stackTrace) {
       print("Get season analysis error : $error");
       emit(GetSeasonAnalysisErrorState());
+    });
+  }
+
+  Future getCarModelAnalysis() async {
+    String url = "/admin/topModelsHadIssues/";
+    emit(GetCarModelAnalysisLoadingState());
+    DioHelper.getData(
+      url: url,
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
+    ).then((value) {
+      print("Get season analysis response : ${value.data}");
+      List<CarModelAnalysisResponse> carModelAnalysisResponses = [];
+      for (var v in value.data) {
+        carModelAnalysisResponses.add(CarModelAnalysisResponse.fromJson(v));
+      }
+      emit(GetCarModelAnalysisSuccessState(carModelAnalysisResponses));
+    }).onError((error, stackTrace) {
+      print("Get season analysis error : $error");
+      emit(GetCarModelAnalysisErrorState());
+    });
+  }
+  Future getRoadAnalysis() async {
+    String url = "/admin/roadsAnalytics/";
+    emit(GetRoadAnalysisLoadingState());
+    DioHelper.getData(
+      url: url,
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
+    ).then((value) {
+      print("Get road analysis response : ${value.data}");
+      List<RoadAnalysisResponse> roadAnalysisResponses = [];
+      for (var v in value.data) {
+        roadAnalysisResponses.add(RoadAnalysisResponse.fromJson(v));
+      }
+      emit(GetRoadAnalysisSuccessState(roadAnalysisResponses));
+    }).onError((error, stackTrace) {
+      print("Get roed analysis error : $error");
+      emit(GetRoadAnalysisErrorState());
     });
   }
 }
