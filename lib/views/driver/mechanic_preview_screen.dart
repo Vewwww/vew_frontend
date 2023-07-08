@@ -9,10 +9,8 @@ import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/model/location.dart';
 import 'package:vewww/model/requests.dart';
-import 'package:vewww/views/driver/current_requests_screen.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:vewww/views/driver/pendding_requests_screen.dart';
-import '../../bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
 import '../../controllers/controller.dart';
 import '../../core/components/rating_bar.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
@@ -25,7 +23,7 @@ class MechanicPreviewScreen extends StatefulWidget {
   String carId;
   MechanicPreviewScreen(
       {required this.mechanic, super.key, required this.carId}) {
-    print("current mechanic : ${mechanic.toJson()}");
+    //print("current mechanic : ${mechanic.toJson()}");
   }
 
   @override
@@ -180,7 +178,9 @@ class _MechanicPreviewScreenState extends State<MechanicPreviewScreen> {
                     ? BlocBuilder<RequestCubit, RequestState>(
                         builder: (context, state) {
                         return defaultButton(
-                          text: 'Request Mechanic',
+                          text: (state is CreateMechanicRequestLoadingState)
+                              ? "Loading..."
+                              : 'Request Mechanic',
                           width: 390,
                           function: () async {
                             print(
@@ -216,8 +216,6 @@ class _MechanicPreviewScreenState extends State<MechanicPreviewScreen> {
                                   MaterialPageRoute(
                                       builder: ((context) =>
                                           PenddingRequestsScreen())));
-                            } else {
-                              return CircularProgressIndicator();
                             }
                           },
                         );

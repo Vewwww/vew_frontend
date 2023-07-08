@@ -1,3 +1,7 @@
+import 'dart:math';
+
+import 'package:vewww/model/car.dart';
+
 import 'car_type.dart';
 import 'location.dart';
 import 'name.dart';
@@ -23,16 +27,23 @@ abstract class Repairer {
     this.distance,
   });
   Repairer.fromJson(Map<String, dynamic> json, {bool isMechanic = false}) {
-    if (isMechanic) {
-      name = Name(en: json['name']);
-    } else {
-      name = json['name'] != null ? Name.fromJson(json['name']) : null;
+    print(json);
+    // if (isMechanic) {
+    //   name = Name(en: json['name']);
+    // } else {
+    //   name = json['name'] != null ? Name.fromJson(json['name']) : null;
+    // }
+    if (json['name'] != null) {
+      name = (json['name'] is String)
+          ? Name(en: json['name'])
+          : Name.fromJson(json['name']);
     }
     location =
         json['location'] != null ? Location.fromJson(json['location']) : null;
     sId = json['_id'];
     if (json["distance"] != null) {
-      distance = double.parse((json['distance'] * 1.0).toStringAsFixed(2));
+      print("dist : ${json['distance']}");
+      distance = double.parse((json['distance']).toStringAsFixed(2));
     }
     phoneNumber = json['phoneNumber'];
     if (json['rate'] != null) rate = json['rate'] * 1.0;
@@ -76,11 +87,16 @@ class MaintenanceCenter extends Repairer {
     if (json['carType'] != null) {
       carType = <CarType>[];
       json['carType'].forEach((v) {
-        carType!.add((v is String) ? CarType(sId: v) : CarType.fromJson(v));
+        print(v.toString());
+        carType!.add((v is String)
+            ? CarType(sId: v)
+            : (v is CarType)
+                ? v
+                : CarType.fromJson(v));
       });
     }
     isVerified = json['isVerified'];
-    rate = json['rate'] * 1.0;
+    if (json['rate'] != null) rate = json['rate'] * 1.0;
     ratesNumber = json['ratesNumber'];
     iV = json['__v'];
   }
@@ -162,8 +178,7 @@ class Mechanic extends Repairer {
             ratesNumber: numOfRates,
             sId: sId);
 
-  Mechanic.fromJson(Map<String, dynamic> json)
-      : super.fromJson(json, isMechanic: true) {
+  Mechanic.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
     report = json['report'] != null ? Report.fromJson(json['report']) : null;
     ownerName = json['ownerName'];
     email = json['email'];
@@ -194,7 +209,9 @@ class Mechanic extends Repairer {
     data['email'] = email;
     data['password'] = password;
     data['mechanicPhone'] = mechanicPhone;
-    data['name'] = name!.en!;
+    if (name != null)
+      data['name'] = name!.toJson();
+    else {}
     data['phoneNumber'] = phoneNumber;
     data['hasDelivery'] = hasDelivery;
     if (service != null) {
@@ -233,9 +250,18 @@ class GasStation extends Repairer {
 }
 
 class Place extends Repairer {
-  List<String>? carType;
+  List<CarType>? carType;
   bool? isVerified;
   int? iV;
+  Report? report;
+  String? ownerName;
+  String? email;
+  String? password;
+  String? mechanicPhone;
+  bool? hasDelivery;
+  List<Service>? service;
+  bool? isSuspended;
+  String? role;
 
   Place(
       {name,
@@ -244,6 +270,15 @@ class Place extends Repairer {
       phoneNumber,
       this.carType,
       this.isVerified,
+      this.email,
+      this.hasDelivery,
+      this.isSuspended,
+      this.mechanicPhone,
+      this.ownerName,
+      this.password,
+      this.report,
+      this.role,
+      this.service,
       rate,
       distance,
       ratesNumber,
@@ -259,13 +294,46 @@ class Place extends Repairer {
 
   Place.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
     if (json['carType'] != null) {
-      carType = <String>[];
-      json['carType'].forEach((v) {
-        carType!.add(v);
-      });
+      if (json['carType'].length > 0 && json['carType'][0] is String) {
+        carType = [];
+        json['carType'].forEach((v) {
+          carType!.add(CarType(sId: v));
+        });
+      } else {
+        carType = <CarType>[];
+        json['carType'].forEach((v) {
+          carType!.add(CarType.fromJson(v));
+        });
+      }
     }
     isVerified = json['isVerified'];
     iV = json['__v'];
+    ownerName = json['ownerName'];
+    email = json['email'];
+    if (json["name"] != null)
+      name = (json["name"] is String)
+          ? Name(ar: json["name"], en: json["name"])
+          : Name.fromJson(json["name"]);
+    password = json['password'];
+    mechanicPhone = json['mechanicPhone'];
+    hasDelivery = json['hasDelivery'];
+    role = json['role'];
+    if (json['service'] != null) {
+      if (json['service'][0] != null && json['service'][0] is String) {
+        service = [];
+        json['service'].forEach((v) {
+          service!.add(Service(sId: v));
+        });
+      } else {
+        service = <Service>[];
+        json['service'].forEach((v) {
+          service!.add(Service.fromJson(v));
+        });
+      }
+    }
+    isSuspended = json['isSuspended'];
+    report =
+        json['report'] != null ? new Report.fromJson(json['report']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -275,14 +343,31 @@ class Place extends Repairer {
     }
     if (location != null) {
       data['location'] = location!.toJson();
+    } else {
+      print("location null");
     }
     data['_id'] = sId;
-    data['phoneNumber'] = phoneNumber;
-    data['carType'] = carType;
-    data['isVerified'] = isVerified;
-    data['rate'] = rate;
-    data['ratesNumber'] = ratesNumber;
-    data['__v'] = iV;
+    if (phoneNumber != null) data['phoneNumber'] = phoneNumber;
+    if (distance != null) data['distance'] = distance;
+    if (carType != null) data['carType'] = carType;
+    if (isVerified != null) data['isVerified'] = isVerified;
+    if (rate != null) data['rate'] = rate;
+    if (ratesNumber != null) data['ratesNumber'] = ratesNumber;
+    if (iV != null) data['__v'] = iV;
+    if (ownerName != null) data['ownerName'] = ownerName;
+    if (email != null) data['email'] = email;
+    if (password != null) data['password'] = password;
+    if (mechanicPhone != null) data['mechanicPhone'] = mechanicPhone;
+    if (hasDelivery != null) data['hasDelivery'] = hasDelivery;
+    if (role != null) data['role'] = role;
+    if (service != null) {
+      List<Map<String, dynamic>> x = [];
+      for (var s in service!) {
+        x.add(s.toJson());
+      }
+      data['service'] = x;
+    }
+    if (isSuspended != null) data['isSuspended'] = isSuspended;
     return data;
   }
 }

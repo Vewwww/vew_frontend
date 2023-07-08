@@ -22,34 +22,29 @@ class NearestRepairerCubit extends Cubit<NearestRepairerState> {
   NearesetMCResponse? nearesetMCResponse;
   NearestMechanicResponse? nearesetMechanicResponse;
   NearesetGasStationResponse? nearesetGasStationResponse;
-  //getNearestMaintainaceCenter
+
   Future getNearestMC({String? carTypeID, String? isVerified}) async {
-    String url = (carTypeID != null)
-        ? "/driver/getNearestMaintenanceCenters/?carType=$carTypeID"
-        : "/driver/getNearestMaintenanceCenters/";
+    String url = (carTypeID == null)
+        ? "/driver/getNearestMaintenanceCenters/"
+        : "/driver/getNearestMaintenanceCenters?carType=$carTypeID";
     Map<String, dynamic> query = await getCurrentLocation();
-    query.addAll({"carType": carTypeID, "isVerified": isVerified});
-    print("${query}");
+    print("query :  ${query}");
     emit(GettingNearestMCLoadingState());
-    if (nearesetMCResponse == null) {
-      await DioHelper.getWithBody(
-              url: url,
-              token: SharedPreferencesHelper.getData(key: 'vewToken'),
-              query: query)
-          .then((value) {
-        NearesetMCResponse nearesetMCResponse =
-            NearesetMCResponse.fromJson(value.data);
-        print("neareat MC response : ${nearesetMCResponse.results}");
-        emit(GettingNearestMCSuccessState(
-            nearesetMCResponse.maintenanceCenter!));
-      }).catchError((error) {
-        if (error is DioError) print("neareat MC error : ${error.response}");
-        emit(GettingNearestMCErrorState());
-      });
-    } else {
-      emit(
-          GettingNearestMCSuccessState(nearesetMCResponse!.maintenanceCenter!));
-    }
+    await DioHelper.getWithBody(
+            url: url,
+            token: SharedPreferencesHelper.getData(key: 'vewToken'),
+            query: query)
+        .then((value) {
+      print(value.data);
+      NearesetMCResponse nearesetMCResponse =
+          NearesetMCResponse.fromJson(value.data);
+      print("neareat MC response : ${nearesetMCResponse.results}");
+      emit(GettingNearestMCSuccessState(nearesetMCResponse.maintenanceCenter!));
+    }).catchError((error) {
+      if (error is DioError) print("neareat MC error : ${error.response}");
+      print(error);
+      emit(GettingNearestMCErrorState());
+    });
   }
 
   Future getNearestGasStation() async {

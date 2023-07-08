@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/bloc/car_cubit/car_cubit.dart';
 import 'package:vewww/bloc/profile_cubit/profile_cubit.dart';
+import 'package:vewww/bloc/select_color_cubit/select_color_cubit.dart';
 import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
+import 'package:vewww/views/driver/add_car_screen.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
 import 'package:vewww/views/driver/driver_profile.dart';
 import '../../bloc/add_car_cubit/add_car_cubit.dart';
@@ -43,7 +45,7 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
 
   List<Car> cloneCars() {
     List<Car> cars = [];
-    print("owner from cloneCare : ${driver.cars![0].toJson()}");
+    //print("owner from cloneCare : ${driver.cars![0].toJson()}");
     for (Car c in driver.cars!) {
       Car car = Car(
           averageMilesPerMonth: c.averageMilesPerMonth,
@@ -93,11 +95,8 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
   @override
   Widget build(BuildContext context) {
     var constraintsHight = MediaQuery.of(context).size.height;
-    AddCarCubit addCarCubit = AddCarCubit.get(context);
     CarCubit carCubit = CarCubit.get(context);
     GenderCubit genderCubit = GenderCubit.get(context);
-    ReminderCubit reminderCubit = ReminderCubit.get(context);
-    SelectChoiceCubit selectChoiceCubit = SelectChoiceCubit.get(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -208,22 +207,6 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
                     keyboardType: TextInputType.number,
                     validator: (value) {},
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextButton(
-                          onPressed: () {
-                            carCubit.add(driver.user!.sId!);
-                            print("test from screennnnnnnnn");
-                            carCubit.testcars();
-                          },
-                          child: Text(
-                            "Add car",
-                            style: AppTextStyle.mainStyle(size: 13),
-                          )),
-                      Text("Cars"),
-                    ],
-                  ),
                   BlocBuilder<CarCubit, CarState>(builder: (context, state) {
                     return ListView.builder(
                       shrinkWrap: true,
@@ -245,9 +228,6 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
                             builder: (context, state) {
                           return ElevatedButton(
                             onPressed: () async {
-                              for (Car car in carCubit.updatedCars!)
-                                print(SharedPreferencesHelper.getData(
-                                    key: "vewToken"));
                               if (_formKey.currentState!.validate()) {
                                 ProfileData p = driver;
                                 p.user!.name = _name.text;
@@ -274,21 +254,11 @@ class _EditDriverProfileState extends State<EditDriverProfile> {
                                 print("after edit porfile");
                                 if (state is EdittingProfileSuccessState ||
                                     state is GettingProfileSuccessState) {
-                                  print("objectyyy");
                                   await carCubit.handleCarEdit();
-                                  print(s);
-                                  //if (s is CarHandeledState)
+                                  // print(s);
                                   NavigationUtils.navigateAndClearStack(
                                       context: context,
                                       destinationScreen: DriverProfile());
-                                  // else {
-                                  //   print(s);
-                                  //   const snackBar = SnackBar(
-                                  //       content: Text(
-                                  //           "Something went wrong while editing cars try again!"));
-                                  //   ScaffoldMessenger.of(context)
-                                  //       .showSnackBar(snackBar);
-                                  // }
                                 } else {
                                   const snackBar = SnackBar(
                                       content: Text(

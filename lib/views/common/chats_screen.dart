@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vewww/core/components/empty_requests.dart';
 import 'package:vewww/core/style/app_Text_Style/app_text_style.dart';
 import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import 'package:vewww/views/mechanic/mechanic_home_screen.dart';
@@ -71,14 +72,22 @@ class _ChatsScreenState extends State<ChatsScreen> {
             builder: (context, state) {
               if (state is GettingChatsSuccessState) {
                 print(state);
-                return Expanded(
-                    child: ListView.builder(
-                        itemCount: state.chats.length - 1,
-                        itemBuilder: (context, index) {
-                          print(
-                              "$index , ${state.chats.length} ,${state.chats[index]}");
-                          return ChatHeadElement(chat: state.chats[index]);
-                        }));
+                if (state.chats.length > 0)
+                  return Expanded(
+                      child: ListView.builder(
+                          itemCount: state.chats.length,
+                          itemBuilder: (context, index) {
+                            print(
+                                "$index , ${state.chats.length} ,${state.chats[index]}");
+                            return ChatHeadElement(chat: state.chats[index]);
+                          }));
+                else
+                  return SizedBox(
+                    height: 400,
+                    child: EmptyRequests(
+                      text: "No chats",
+                    ),
+                  );
               } else
                 return Center(
                     child: Column(

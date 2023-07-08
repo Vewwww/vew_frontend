@@ -33,6 +33,10 @@ class CarCubit extends Cubit<CarState> {
             token: SharedPreferencesHelper.getData(key: "vewToken"))
         .then((value) {
       print("add car response : ${value}");
+      if (driverCars != null)
+        driverCars!.add(car);
+      else
+        driverCars = [car];
       emit(AddCarSuccessState());
     }).catchError((error) {
       if (error is DioError) print("add car error : ${error.response}");
@@ -124,10 +128,11 @@ class CarCubit extends Cubit<CarState> {
         if (exists) {
           print("will update");
           await updateCar(car);
-        } else {
-          print("will add");
-          await addCar(car);
-        }
+        } 
+        // else {
+        //   print("will add");
+        //   await addCar(car);
+        // }
       }
     }
     if (state is! UpdateCarErrorState &&
@@ -150,20 +155,31 @@ class CarCubit extends Cubit<CarState> {
     }
   }
 
-  void add(String id) {
+  Future<void> add(Car car ) async{
     if (updatedCars != null) {
-      Car car = Car(owner: id);
-      print("test before from add:");
-      testcars();
       updatedCars!.add(car);
-      print("test from add:");
-      testcars();
       emit(CarAdded());
     } else {
       updatedCars = [];
       updatedCars!.add(Car());
     }
+    await addCar(car);
   }
+  // void add(String id , ) {
+  //   if (updatedCars != null) {
+  //     Car car = Car(owner: id);
+  //     print("test before from add:");
+  //     testcars();
+  //     updatedCars!.add(car);
+  //     print("test from add:");
+  //     testcars();
+  //     emit(CarAdded());
+  //   } else {
+  //     updatedCars = [];
+  //     updatedCars!.add(Car());
+  //   }
+
+  // }
 
   Future getAllDriverCars(String id) async {
     String url = "/driver/car/carOwner/${id}";

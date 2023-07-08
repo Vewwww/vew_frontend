@@ -14,7 +14,7 @@ import '../../core/style/app_Text_Style/app_text_style.dart';
 import '../../core/utils/navigation.dart';
 import '../../model/name.dart';
 import '../common/map_screen.dart';
-import '../driver/select_car_type_screen.dart';
+import '../common/select_car_type_screen.dart';
 
 class AddMaintenanceCenterScreen extends StatelessWidget {
   var nameController = TextEditingController();

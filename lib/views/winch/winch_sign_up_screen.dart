@@ -16,8 +16,8 @@ import '../../model/location.dart';
 import '../../model/winch_driver.dart';
 import '../common/map.dart';
 import '../common/select_color_screen.dart';
-import '../driver/select_car_model.dart';
-import '../driver/select_car_type_screen.dart';
+import '../common/select_car_model.dart';
+import '../common/select_car_type_screen.dart';
 import '../common/map_screen.dart';
 
 class WinchSignUpScreen extends StatelessWidget {

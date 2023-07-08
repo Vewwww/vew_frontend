@@ -26,3 +26,10 @@ class GetSeasonAnalysisSuccessState extends AdminAnalysisState {
   GetSeasonAnalysisSuccessState(this.seasonAnalysisResponse);
 }
 class GetSeasonAnalysisErrorState extends AdminAnalysisState {}
+
+class GetCarModelAnalysisLoadingState extends AdminAnalysisState {}
+class GetCarModelAnalysisSuccessState extends AdminAnalysisState {
+  final List<CarModelAnalysisResponse> carModelAnalysisResponse;
+  GetCarModelAnalysisSuccessState(this.carModelAnalysisResponse);
+}
+class GetCarModelAnalysisErrorState extends AdminAnalysisState {}

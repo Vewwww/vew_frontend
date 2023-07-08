@@ -67,12 +67,14 @@ class _SelectCarModelScreenState extends State<SelectCarModelScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     SizedBox(
-                                      //width: double.infinity,
+                                      width: MediaQuery.of(context).size.width -
+                                          150,
                                       child: Text(
-                                          selectChoiceCubit.carModelResponse!
-                                              .carModels![index].name!,
-                                          style:
-                                              AppTextStyle.greyStyle(size: 20)),
+                                        selectChoiceCubit.carModelResponse!
+                                            .carModels![index].name!,
+                                        style: AppTextStyle.greyStyle(size: 20),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                     Container(
                                       height: 15,

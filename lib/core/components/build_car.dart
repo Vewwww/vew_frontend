@@ -4,12 +4,12 @@ import 'package:vewww/bloc/car_cubit/car_cubit.dart';
 import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/model/profile_response.dart';
 import 'package:vewww/views/driver/edit_driver_profile.dart';
-import 'package:vewww/views/driver/select_car_type_screen.dart';
+import 'package:vewww/views/common/select_car_type_screen.dart';
 import '../../bloc/select_choice_cubit/select_choice_cubit.dart';
 import '../../bloc/select_color_cubit/select_color_cubit.dart';
 import '../../model/car.dart';
 import '../../views/common/select_color_screen.dart';
-import '../../views/driver/select_car_model.dart';
+import '../../views/common/select_car_model.dart';
 import '../style/app_Text_Style/app_text_style.dart';
 import '../style/app_colors.dart';
 import 'custom_text_field.dart';
@@ -22,7 +22,7 @@ Widget buildCarDetails(Car car, index,
   CarCubit carCubit = CarCubit();
   if (editable) carCubit = CarCubit.get(context);
   return Form(
-    //key: formKey ?? GlobalKey(),
+    key: formKey ?? GlobalKey(),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -137,9 +137,9 @@ Widget buildCarDetails(Car car, index,
             if (SelectChoiceCubit.get(context).carModelChoice == null &&
                 SelectChoiceCubit.get(context).carModelResponse != null &&
                 SelectChoiceCubit.get(context)
-                        .carModelResponse!
-                        .carModels!
-                        .isNotEmpty) {
+                    .carModelResponse!
+                    .carModels!
+                    .isNotEmpty) {
               return "Please choose car type";
             }
           },

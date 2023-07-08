@@ -11,6 +11,7 @@ import 'package:vewww/views/driver/driver_home_screen.dart';
 import 'package:vewww/views/driver/edit_driver_profile.dart';
 import '../../core/components/build_car.dart';
 import '../../core/components/custom_text_field.dart';
+import 'add_car_screen.dart';
 
 class DriverProfile extends StatefulWidget {
   // Driver driver;
@@ -129,8 +130,8 @@ class _DriverProfileState extends State<DriverProfile> {
                                   onPressed: () {
                                     if (profileCubit.state
                                         is GettingProfileSuccessState)
-                                      print(
-                                          "driver cars from profile : ${profileCubit.profileResponse!.data!.cars![0].toJson()}");
+                                      // print(
+                                      //     "driver cars from profile : ${profileCubit.profileResponse!.data!.cars![0].toJson()}");
                                     NavigationUtils.navigateTo(
                                         context: context,
                                         destinationScreen: EditDriverProfile(
@@ -160,6 +161,23 @@ class _DriverProfileState extends State<DriverProfile> {
                                   validator: (value) {},
                                 ),
                                 const SizedBox(height: 20),
+                                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                          onPressed: () {
+                            //carCubit.add(driver.user!.sId!);
+                            NavigationUtils.navigateAndClearStack(context: context , destinationScreen: AddCarScreen(profileCubit.profileResponse!.data!.user!.sId!));
+                            print("test from screennnnnnnnn");
+                            //carCubit.testcars();
+                          },
+                          child: Text(
+                            "Add car",
+                            style: AppTextStyle.mainStyle(size: 13),
+                          )),
+                      Text("Cars"),
+                    ],
+                  ),
                                 (profileCubit.profileResponse!.data!.cars !=
                                         null)
                                     ? ListView.builder(

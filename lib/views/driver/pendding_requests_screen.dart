@@ -9,6 +9,7 @@ import 'package:vewww/core/style/app_colors.dart';
 import 'package:vewww/core/utils/sp_helper/cache_helper.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
 import '../../bloc/request_cubit/request_cubit.dart';
+import '../../core/components/empty_requests.dart';
 import '../../core/components/request_card.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -87,63 +88,70 @@ class _PenddingRequestsScreenState extends State<PenddingRequestsScreen> {
               Icons.keyboard_arrow_left,
             ),
           ),
-          haveLogo: true,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: Text(
+          haveLogo: false,
+          title: Text(
             'Pending Requests',
-            style: AppTextStyle.darkGreyStyle(),
+            style: AppTextStyle.mainStyle(),
           ),
         ),
-        horizontalLine(),
+
+        //horizontalLine(),
         BlocBuilder<RequestCubit, RequestState>(
           builder: (context, state) {
             if (state is! GetDriverPendingReqErrorState &&
                 state is! GetDriverPendingReqLoadingState &&
                 state is GetDriverReqSuccessState) {
               print("here");
-              return Expanded(
-                child: ListView.separated(
-                  padding: const EdgeInsets.all(8),
-                  itemCount: state.previousRequests.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    bool isWinch = state.previousRequests[index].winch != null;
-                    print(state);
-                    if (isWinch) {
-                      return requestCard(
-                          function: () {
-                            requestCubit.cancelRequest(
-                                state.previousRequests[index].sId!);
-                            requestCubit.getDriverPendingReq();
-                          },
-                          isWinch: isWinch,
-                          name: state.previousRequests[index].winch!.name!,
-                          rate: state.previousRequests[index].winch!.rate!,
-                          thirdVal:
-                              state.previousRequests[index].winch!.plateNumber!,
-                          requestState: 'On his way');
-                    } else {
-                      return requestCard(
-                          function: () {
-                            requestCubit.cancelRequest(
-                                state.previousRequests[index].sId!);
-                            requestCubit.getDriverPendingReq();
-                          },
-                          isWinch: isWinch,
-                          name: state.previousRequests[index].mechanic!.name!,
-                          rate: state.previousRequests[index].mechanic!.rate!,
-                          thirdVal:
-                              state.previousRequests[index].mechanic!.service,
-                          requestState: 'pendding');
-                    }
-                  },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const SizedBox(
-                    height: 15,
+              if (state.previousRequests.length > 0)
+                return Expanded(
+                  child: ListView.separated(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: state.previousRequests.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      bool isWinch =
+                          state.previousRequests[index].winch != null;
+                      print(state);
+                      if (isWinch) {
+                        return requestCard(
+                            function: () {
+                              requestCubit.cancelRequest(
+                                  state.previousRequests[index].sId!);
+                              requestCubit.getDriverPendingReq();
+                            },
+                            isWinch: isWinch,
+                            name: state.previousRequests[index].winch!.name!,
+                            rate: state.previousRequests[index].winch!.rate!,
+                            thirdVal: state
+                                .previousRequests[index].winch!.plateNumber!,
+                            requestState: 'On his way');
+                      } else {
+                        return requestCard(
+                            function: () {
+                              requestCubit.cancelRequest(
+                                  state.previousRequests[index].sId!);
+                              requestCubit.getDriverPendingReq();
+                            },
+                            isWinch: isWinch,
+                            name: state.previousRequests[index].mechanic!.name!,
+                            rate: state.previousRequests[index].mechanic!.rate!,
+                            thirdVal:
+                                state.previousRequests[index].mechanic!.service,
+                            requestState: 'pendding');
+                      }
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const SizedBox(
+                      height: 15,
+                    ),
                   ),
-                ),
-              );
+                );
+              else {
+                return SizedBox(
+                    height: 400,
+                    child: EmptyRequests(
+                      text: "No Pendding Requests",
+                    ));
+              }
             } else {
               print("not here");
               return const CircularProgressIndicator();

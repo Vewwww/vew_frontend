@@ -83,11 +83,8 @@ class Driver {
     data['role'] = person!.role;
     data['phoneNumber'] = phoneNumber;
     data['gender'] = person!.gender;
-    if (cars != null) {
-      data['cars'] = cars!.map((v) => v.toSignupJson()).toList();
-    }
+    if (cars != null) data['car'] = cars![0].toSignupJson();
+
     return data;
   }
 }
-
-

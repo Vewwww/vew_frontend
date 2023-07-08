@@ -14,7 +14,10 @@ class EdittingProfileLoadingState extends ProfileState {}
 
 class EdittingProfileSuccessState extends ProfileState {}
 
-class EdittingProfileErrorState extends ProfileState {}
+class EdittingProfileErrorState extends ProfileState {
+  final String? errorMessage ;
+  EdittingProfileErrorState(this.errorMessage);
+}
 
 class WinchAvailabityLoadingState extends ProfileState {}
 

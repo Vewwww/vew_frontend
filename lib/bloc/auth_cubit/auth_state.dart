@@ -9,7 +9,7 @@ class SignInLoadingState extends AuthState {}
 class SignInSuccessState extends AuthState {}
 
 class SignInErrorState extends AuthState {
-  final errMessage;
+  var errMessage;
   SignInErrorState({required this.errMessage});
 }
 
@@ -29,7 +29,7 @@ class SignUpSuccessState extends AuthState {
 }
 
 class SignUpErrorState extends AuthState {
-  final errMessage;
+  var errMessage;
   SignUpErrorState({required this.errMessage});
 }
 

@@ -8,7 +8,7 @@ import '../../core/components/custom_app_bar.dart';
 import '../../core/style/app_text_style/app_text_style.dart';
 import '../../core/utils/sp_helper/cache_helper.dart';
 import '../../model/profile_response.dart';
-import 'edit_driver_profile.dart';
+import '../driver/edit_driver_profile.dart';
 
 class SelectCarTypeScreen extends StatelessWidget {
   SelectCarTypeScreen(
@@ -25,7 +25,6 @@ class SelectCarTypeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     SelectChoiceCubit selectChoiceCubit = SelectChoiceCubit.get(context);
     return Scaffold(
-      //appBar:
       body: BlocConsumer<SelectChoiceCubit, SelectChoiceState>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -54,21 +53,17 @@ class SelectCarTypeScreen extends StatelessWidget {
                                       : MainAxisAlignment.end,
                                   children: [
                                     SizedBox(
-                                      //width: double.infinity,
+                                      width: MediaQuery.of(context).size.width -
+                                          150,
                                       child: Text(
-                                          (isArabic)
-                                              ? selectChoiceCubit
-                                                  .carTypeResponse!
-                                                  .carType![index]
-                                                  .name!
-                                                  .ar!
-                                              : selectChoiceCubit
-                                                  .carTypeResponse!
-                                                  .carType![index]
-                                                  .name!
-                                                  .en!,
-                                          style:
-                                              AppTextStyle.greyStyle(size: 20)),
+                                        (isArabic)
+                                            ? selectChoiceCubit.carTypeResponse!
+                                                .carType![index].name!.ar!
+                                            : selectChoiceCubit.carTypeResponse!
+                                                .carType![index].name!.en!,
+                                        style: AppTextStyle.greyStyle(size: 20),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                     Expanded(child: Container()),
                                     Container(

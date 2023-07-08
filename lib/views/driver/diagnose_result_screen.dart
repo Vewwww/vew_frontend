@@ -7,7 +7,7 @@ import 'package:vewww/core/style/button_style/app_button_style.dart';
 import 'package:vewww/core/utils/navigation.dart';
 import 'package:vewww/views/driver/driver_home_screen.dart';
 import 'package:vewww/views/driver/search_result_screen.dart';
-import 'package:vewww/views/driver/select_car_type_screen.dart';
+import 'package:vewww/views/common/select_car_type_screen.dart';
 import '../../bloc/select_choice_cubit/select_choice_cubit.dart';
 import '../../model/diagnose_result.dart';
 import '../common/services_screen.dart';
@@ -34,7 +34,7 @@ class DiagnoseResultScreen extends StatelessWidget {
                 ),
                 onPressed: () {
                   NavigationUtils.navigateAndClearStack(
-                      context: context, destinationScreen: DriverHomeScreen());
+                      context: context, destinationScreen: const DriverHomeScreen());
                 },
               ),
               title: Row(
@@ -52,7 +52,7 @@ class DiagnoseResultScreen extends StatelessWidget {
               color: Colors.grey,
               thickness: 1,
             ),
-            SizedBox(height: 70),
+            const SizedBox(height: 70),
             Center(
               child: RichText(
                 text: TextSpan(
@@ -71,8 +71,8 @@ class DiagnoseResultScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 40),
-            Expanded(child: SizedBox()),
+            const SizedBox(height: 40),
+            const Expanded(child: SizedBox()),
             (diagnoseCubit.diagnoseResult!.gasStation!)
                 ? SizedBox(
                     width: double.infinity,
@@ -133,28 +133,28 @@ class DiagnoseResultScreen extends StatelessWidget {
                     ),
                   )
                 : Container(),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Your problem still unsolved?",
-                  style: AppTextStyle.greyStyle(size: 16),
-                ),
-                TextButton(
-                  child: Text("Add question",
-                      style: AppTextStyle.titleTextStyle(14)),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AddDiagnoseQuestionScreen()),
-                    );
-                  },
-                ),
-              ],
+            const SizedBox(height: 10),
+            Center(
+              child: Text(
+                "Your problem still unsolved?",
+                style: AppTextStyle.greyStyle(size: 16),
+              ),
             ),
-            SizedBox(height: 30),
+            Center(
+              child: TextButton(
+                child: Text("Add question",
+                    style: AppTextStyle.titleTextStyle(14)),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AddDiagnoseQuestionScreen()),
+                  );
+                },
+              ),
+            ),
+           
+            const SizedBox(height: 30),
           ],
         ),
       ),
