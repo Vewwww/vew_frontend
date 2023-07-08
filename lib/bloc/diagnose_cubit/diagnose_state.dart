@@ -52,3 +52,9 @@ class SolveQuestionLoadingState extends DiagnoseState {}
 class SolveQuestionSuccessState extends DiagnoseState {}
 
 class SolveQuestionErrorState extends DiagnoseState {}
+
+class AddCaseLoadingState extends DiagnoseState {}
+
+class AddCaseSuccessState extends DiagnoseState {}
+
+class AddCaseErrorState extends DiagnoseState {}

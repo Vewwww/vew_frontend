@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vewww/core/style/button_style/app_button_style.dart';
 import 'package:vewww/services/dio_helper.dart';
 
+import '../../core/utils/sp_helper/cache_helper.dart';
+import '../../model/case.dart';
 import '../../model/diagnose_result.dart';
 import '../../model/problem_response.dart';
 import '../../model/questions_response.dart';
@@ -194,6 +196,24 @@ class DiagnoseCubit extends Cubit<DiagnoseState> {
         print("solve driver problem error : ${err.response}");
       print(err);
       emit(SolveQuestionErrorState());
+    });
+  }
+
+  void addCase(Case aCase) async {
+    emit(AddCaseLoadingState());
+    print(aCase.toJson());
+    await DioHelper.postData(
+      url: "/case/",
+      data: aCase.toJson(),
+      token: SharedPreferencesHelper.getData(key: 'vewToken'),
+    ).then((value) {
+      print("Add Case response : ${value}");
+      emit(AddCaseSuccessState());
+    }).catchError((error) {
+      if (error is DioError) {
+        print(error.response);
+      }
+      emit(AddCaseErrorState());
     });
   }
 }

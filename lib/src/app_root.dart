@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:vewww/bloc/chat_cubit/chat_cubit.dart';
-import 'package:vewww/bloc/diagnose_cunit/diagnose_cubit.dart';
 import 'package:vewww/views/common/splash_screen.dart';
 import '../bloc/add_image_cubit/add_image_cubit.dart';
 import '../bloc/admin_add_cubit/admin_add_cubit.dart';
 import '../bloc/admin_analysis_cubit/admin_analysis_cubit.dart';
 import '../bloc/auth_cubit/auth_cubit.dart';
 import '../bloc/car_cubit/car_cubit.dart';
+import '../bloc/diagnose_cubit/diagnose_cubit.dart';
 import '../bloc/evaluate_service_provider_cubit/evaluate_service_provider_cubit.dart';
 import '../bloc/get_all_cubit/get_all_cubit.dart';
 import '../bloc/language_cubit/language_cubit.dart';
@@ -15,6 +15,7 @@ import '../bloc/nearest_repairer_cubit/nearest_repairer_cubit.dart';
 import '../bloc/new_request_cubit/new_request_cubit.dart';
 import '../bloc/notification_cubit/notification_cubit.dart';
 import '../bloc/profile_cubit/profile_cubit.dart';
+import '../bloc/radio_button_cubit/radio_button_cubit.dart';
 import '../bloc/repairer_requests_cubit.dart/repairer_requests_cubit.dart';
 import '../bloc/request_cubit/request_cubit.dart';
 import '../bloc/search_cubit/seaech_cubit.dart';
@@ -73,6 +74,7 @@ class AppRoot extends StatelessWidget {
           BlocProvider(create: (context) => AdminAnalysisCubit()),
           BlocProvider(create: (context) => AdminAddCubit()),
           BlocProvider(create: (context) => RequestCubit()),
+          BlocProvider(create: (context) => RadioButtonCubit()),
         ],
         child: MaterialApp(
           theme: ThemeData(
