@@ -101,6 +101,7 @@ class SignInScreen extends StatelessWidget {
                     listener: (context, state) {},
                     builder: (context, state) {
                       return CustomTextField(
+                        isPassword: true,
                         controller: _password,
                         isArabic: languageCubit.currentLanguage == "ar",
                         label: languageCubit.currentLanguage == "ar"

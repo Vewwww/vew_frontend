@@ -21,6 +21,8 @@ class CustomTextField extends StatelessWidget {
   final bool? isDroped;
   final VoidCallback? onDrop;
   final bool isArabic;
+  final bool isPassword;
+  final Function()? suffixPressed;
 
   const CustomTextField({super.key, 
     this.controller,
@@ -42,6 +44,8 @@ class CustomTextField extends StatelessWidget {
     this.onEditingCompleted,
     this.onChanged,
     this.isArabic = false,
+    this.isPassword=false,
+    this.suffixPressed,
   });
 
   @override
@@ -63,10 +67,10 @@ class CustomTextField extends StatelessWidget {
           (!isDroped!)
               ? TextFormField(
                   onChanged: onChanged,
-                  keyboardType: keyboardType,
+                  keyboardType: (isPassword)?TextInputType.visiblePassword:keyboardType,
                   controller: controller,
                   enabled: enabled,
-
+                  obscureText: (isPassword)? true: false,
                   readOnly: readOnly,
                   textDirection:
                       (isArabic) ? TextDirection.rtl : TextDirection.ltr,
@@ -80,6 +84,7 @@ class CustomTextField extends StatelessWidget {
                     isDense: true,
                     contentPadding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
                     border: const OutlineInputBorder(),
+                    suffixIcon:(isPassword)? IconButton(icon:Icon(Icons.remove_red_eye), onPressed: suffixPressed,):null
                   ),
                   validator: (value) {
                     return validator(value);
